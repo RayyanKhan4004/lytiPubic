@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  /* color  */
+  --primary: #333333;
+  --secondary: #2d3f50;
+  --greyText: #808080;
+  --smoke: #e5e5e5;
+  --inputBorder: #f4efe9;
+  --redStar: #ea4335;
+
+  /* fonts  */
+  --font-poppin: "Poppins", serif;
+  --font-jakarta: "Plus Jakarta Sans", serif;
+
+  /* shadow  */
+  --cardShadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
