@@ -132,7 +132,7 @@ const AddUser = () => {
             <div className="w-full flex justify-between ">
               <div className="w-[48%]  flex flex-col gap-4">
                 <div className="flex justify-between items-center w-full">
-                  <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                  <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                     <label
                       htmlFor="firstName"
                       className="text-[14px] leading-[18px] font-medium"
@@ -159,7 +159,7 @@ const AddUser = () => {
                     )}
                   </div>
 
-                  <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                  <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                     <label
                       htmlFor="lastName"
                       className="text-[14px] leading-[18px] font-medium"
@@ -187,7 +187,7 @@ const AddUser = () => {
                   </div>
                 </div>
 
-                <div className="text-greyText flex flex-col gap-1.5 w-full">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
                   <label
                     htmlFor="altEmail"
                     className="text-[14px] leading-[18px] font-medium"
@@ -218,7 +218,7 @@ const AddUser = () => {
                   )}
                 </div>
 
-                <div className="text-greyText flex flex-col gap-1.5 w-full">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
                   <label
                     htmlFor="businessEntity"
                     className="text-[14px] leading-[18px] font-medium"
@@ -247,7 +247,7 @@ const AddUser = () => {
               </div>
 
               <div className=" w-[48%] flex flex-col gap-4">
-                <div className="text-greyText flex flex-col gap-1.5 w-full">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
                   <label
                     htmlFor="email"
                     className="text-[14px] leading-[18px] font-medium"
@@ -276,7 +276,7 @@ const AddUser = () => {
                   )}
                 </div>
                 <div className="flex justify-between items-center w-full">
-                  <div className="text-greyText flex flex-col gap-1.5 w-[48%] mt-5">
+                  <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] mt-5">
                     <label
                       htmlFor="role"
                       className="text-[14px] leading-[18px] font-medium"
@@ -305,7 +305,7 @@ const AddUser = () => {
                     )}
                   </div>
 
-                  <div className="text-greyText flex flex-col gap-1.5 w-[48%] mt-5">
+                  <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] mt-5">
                     <label
                       htmlFor="startDate"
                       className="text-[14px] leading-[18px] font-medium"
@@ -340,7 +340,7 @@ const AddUser = () => {
             <div className="w-full flex justify-between ">
               <div className="w-[48%] flex flex-col gap-4">
                 <div className="flex justify-between items-center w-full">
-                  <div className="text-greyText flex flex-col gap-1.5 w-full">
+                  <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
                     <label
                       htmlFor="aeCommission"
                       className="text-[14px] leading-[18px] font-medium"
@@ -368,7 +368,7 @@ const AddUser = () => {
                   </div>
                 </div>
 
-                <div className="text-greyText flex flex-col gap-1.5 w-full">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
                   <label
                     htmlFor="aeEscrow"
                     className="text-[14px] leading-[18px] font-medium"
@@ -398,7 +398,7 @@ const AddUser = () => {
 
               <div className="w-[48%] flex flex-col gap-4">
                 {/* Year Anniversary */}
-                <div className="text-greyText flex flex-col gap-1.5 w-full">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
                   <label
                     htmlFor="yearAnniversary"
                     className="text-[14px] leading-[18px] font-medium"
@@ -427,7 +427,7 @@ const AddUser = () => {
 
                 {/* Agent Monthly Fee */}
                 <div className="flex justify-between items-center w-full">
-                  <div className="text-greyText flex flex-col gap-1.5 w-full">
+                  <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
                     <label
                       htmlFor="aeTitle"
                       className="text-[14px] leading-[18px] font-medium"
@@ -461,7 +461,7 @@ const AddUser = () => {
 
             <div className="w-full flex justify-between flex-col gap-4">
               <div className="flex w-full justify-between ">
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="last"
                     className="text-[14px] leading-[18px] font-medium"
@@ -475,7 +475,7 @@ const AddUser = () => {
                     className={`placeholder:text-[16px] placeholder:leading-[20px] placeholder:font-normal h-[55px] border-2 border-(--inputBorder)  rounded-[10px] w-full px-5 text-blackText`}
                   />
                 </div>
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="last"
                     className="text-[14px] leading-[18px] font-medium"
@@ -490,7 +490,7 @@ const AddUser = () => {
                   />
                 </div>
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-full">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
                 {/* Apply selected Commission Template(s) */}
                 <label
                   htmlFor="commissionTemplate"
@@ -522,7 +522,7 @@ const AddUser = () => {
               </div>
 
               {/* Notes */}
-              <div className="text-greyText flex flex-col gap-1.5 w-full">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
                 <label
                   htmlFor="notes"
                   className="text-[14px] leading-[18px] font-medium"
@@ -553,7 +553,7 @@ const AddUser = () => {
                   <input
                     type="checkbox"
                     id="challenges"
-                    className="accent-(--primary) outline-greyText w-5 h-5"
+                    className="accent-(--primary) outline-(--greyText) w-5 h-5"
                     checked={isChallange}
                     onChange={() => setIsChallange(!isChallange)}
                   />
@@ -565,7 +565,7 @@ const AddUser = () => {
                   <input
                     type="checkbox"
                     id="challenges"
-                    className="accent-(--primary) outline-greyText w-5 h-5"
+                    className="accent-(--primary) outline-(--greyText) w-5 h-5"
                     checked={isChallange}
                     onChange={() => setIsChallange(!isChallange)}
                   />
@@ -577,7 +577,7 @@ const AddUser = () => {
                   <input
                     type="checkbox"
                     id="challenges"
-                    className="accent-(--primary) outline-greyText w-5 h-5"
+                    className="accent-(--primary) outline-(--greyText) w-5 h-5"
                     checked={isChallange}
                     onChange={() => setIsChallange(!isChallange)}
                   />

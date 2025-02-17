@@ -39,7 +39,7 @@ const ChangePassword = () => {
           <div>
             <div className="relative flex flex-col gap-1.5">
               <label
-                className="text-greyText mb-2 text-sm"
+                className="text-(--greyText) mb-2 text-sm"
                 htmlFor="currentPassword"
               >
                 Current Password
@@ -70,7 +70,7 @@ const ChangePassword = () => {
 
             <div className="relative flex flex-col gap-1.5">
               <label
-                className="text-greyText mb-2 text-sm"
+                className="text-(--greyText) mb-2 text-sm"
                 htmlFor="newPassword"
               >
                 New Password
@@ -101,7 +101,7 @@ const ChangePassword = () => {
 
             <div className="relative flex flex-col gap-1.5">
               <label
-                className="text-greyText mb-2 text-sm"
+                className="text-(--greyText) mb-2 text-sm"
                 htmlFor="confirmPassword"
               >
                 Confirm Password

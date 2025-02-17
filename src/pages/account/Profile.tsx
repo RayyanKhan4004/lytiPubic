@@ -49,7 +49,7 @@ const Profile = () => {
               User information
             </h1>
             <div className="w-full flex justify-between items-center flex-wrap gap-4">
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                 <label
                   htmlFor="firstName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -75,7 +75,7 @@ const Profile = () => {
                   </span>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                 <label
                   htmlFor="lastName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -101,7 +101,7 @@ const Profile = () => {
                   </span>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                 <label
                   htmlFor="email"
                   className="text-[14px] leading-[18px] font-medium"
@@ -129,7 +129,7 @@ const Profile = () => {
                   </span>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                 <label
                   htmlFor="firstName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -155,7 +155,7 @@ const Profile = () => {
                   </span>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                 <label
                   htmlFor="firstName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -181,7 +181,7 @@ const Profile = () => {
                   </span>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                 <label
                   htmlFor="firstName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -207,7 +207,7 @@ const Profile = () => {
                   </span>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                 <label
                   htmlFor="firstName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -237,7 +237,7 @@ const Profile = () => {
           </div>
 
           <div className="shadow-(--cardShadow) rounded-2xl w-full bg-white  px-4   py-4 flex flex-col gap-3">
-            <div className="text-greyText flex flex-col gap-1.5 w-full">
+            <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
               <label
                 htmlFor="notes"
                 className="text-lg font-semibold text-(--primary)"
@@ -271,7 +271,7 @@ const Profile = () => {
               User Address{" "}
             </h1>
             <div className="w-full flex justify-between items-center flex-wrap gap-4">
-              <div className="text-greyText flex flex-col gap-1.5 w-full">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
                 <label
                   htmlFor="firstName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -297,7 +297,7 @@ const Profile = () => {
                   </span>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-full">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
                 <label
                   htmlFor="firstName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -323,7 +323,7 @@ const Profile = () => {
                   </span>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-full">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
                 <label
                   htmlFor="firstName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -350,7 +350,7 @@ const Profile = () => {
                 )}
               </div>
               <div className="w-full flex justify-between items-center flex-wrap gap-4">
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="firstName"
                     className="text-[14px] leading-[18px] font-medium"
@@ -376,7 +376,7 @@ const Profile = () => {
                     </span>
                   )}
                 </div>
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="lastName"
                     className="text-[14px] leading-[18px] font-medium"
@@ -411,7 +411,7 @@ const Profile = () => {
               Cap & Split Settings{" "}
             </h1>
             <div className="w-full flex justify-between items-center flex-wrap gap-4">
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                 <label
                   htmlFor="firstName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -437,7 +437,7 @@ const Profile = () => {
                   </span>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                 <label
                   htmlFor="lastName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -463,7 +463,7 @@ const Profile = () => {
                   </span>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                 <label
                   htmlFor="firstName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -489,7 +489,7 @@ const Profile = () => {
                   </span>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                 <label
                   htmlFor="lastName"
                   className="text-[14px] leading-[18px] font-medium"

@@ -68,7 +68,7 @@ const OrderEdit = () => {
         <div className="w-full flex justify-between">
           <div className="shadow-(--cardShadow) rounded-2xl bg-white px-4 min-h-auto my-6 w-[74%] py-6 flex flex-col gap-3">
             <div className="w-full flex flex-col gap-3 pt-2">
-              <p className="text-greyText text-sm ">
+              <p className="text-(--greyText) text-sm ">
                 This is the main form in the system that you see in a
                 spreadsheet style view when you go into transactions.
                 Rearranging, adding or removing fields here will affect the
@@ -79,7 +79,7 @@ const OrderEdit = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full flex justify-between items-center flex-wrap py-4 gap-4"
               >
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="titleOffice"
                     className="text-[14px] font-medium"
@@ -107,7 +107,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Agent Dropdown */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label htmlFor="agent" className="text-[14px] font-medium">
                     Agent
                   </label>
@@ -134,7 +134,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Title Rep Pct */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="titleRepPct"
                     className="text-[14px] font-medium"
@@ -162,7 +162,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Open Date */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label htmlFor="openDate" className="text-[14px] font-medium">
                     Open Date
                   </label>
@@ -187,7 +187,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Estimated Closing Date */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="estimatedClosingDate"
                     className="text-[14px] font-medium"
@@ -215,7 +215,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Closed Date */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="closedDate"
                     className="text-[14px] font-medium"
@@ -243,7 +243,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Cancel Date */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="cancelDate"
                     className="text-[14px] font-medium"
@@ -271,7 +271,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Transaction Type Dropdown */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="transactionType"
                     className="text-[14px] font-medium"
@@ -301,7 +301,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Order Number */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="orderNumber"
                     className="text-[14px] font-medium"
@@ -329,7 +329,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Order Status Dropdown */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="orderStatus"
                     className="text-[14px] font-medium"
@@ -359,7 +359,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Sale Price */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="salePrice"
                     className="text-[14px] font-medium"
@@ -387,7 +387,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Loan Amount */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="loanAmount"
                     className="text-[14px] font-medium"
@@ -415,7 +415,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Property Address */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="propertyAddress"
                     className="text-[14px] font-medium"
@@ -443,7 +443,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Property County */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="propertyCounty"
                     className="text-[14px] font-medium"
@@ -470,7 +470,7 @@ const OrderEdit = () => {
                   )}
                 </div>
                 {/* Property State */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="propertyState"
                     className="text-[14px] font-medium"
@@ -498,7 +498,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* File Status */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="fileStatus"
                     className="text-[14px] font-medium"
@@ -526,7 +526,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Title Officer */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="titleOfficer"
                     className="text-[14px] font-medium"
@@ -554,7 +554,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Escrow Officer */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="escrowOfficer"
                     className="text-[14px] font-medium"
@@ -582,7 +582,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Listing Agent Company */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="listingAgentCompany"
                     className="text-[14px] font-medium"
@@ -610,7 +610,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Listing Agent Contact Name */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="listingAgentContactName"
                     className="text-[14px] font-medium"
@@ -638,7 +638,7 @@ const OrderEdit = () => {
                 </div>
 
                 {/* Listing Agent Phone */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="listingAgentPhone"
                     className="text-[14px] font-medium"
@@ -665,7 +665,7 @@ const OrderEdit = () => {
                   )}
                 </div>
                 {/* Mortgage Broker Phone */}
-                <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                   <label
                     htmlFor="mortgageBrokerPhone"
                     className="text-[14px] font-medium"
@@ -694,7 +694,7 @@ const OrderEdit = () => {
 
                 <div className="w-full">
                   {/* Underwriter */}
-                  <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+                  <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                     <label
                       htmlFor="underwriter"
                       className="text-[14px] font-medium"
@@ -760,7 +760,7 @@ const OrderEdit = () => {
                 />
                 <div>
                   <h3 className="font-medium ">John doe</h3>
-                  <h3 className="font-normal text-sm text-greyText">
+                  <h3 className="font-normal text-sm text-(--greyText)">
                     Reality group
                   </h3>
                 </div>

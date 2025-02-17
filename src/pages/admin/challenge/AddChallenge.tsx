@@ -22,7 +22,7 @@ const AddChallenge = () => {
         <div className="flex flex-col gap-5 w-[48%]">
           <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full p-4 flex flex-col gap-2">
             <h2 className="text-lg font-semibold text-(--primary)">Scope</h2>
-            <p className="text-greyText text-sm leading-[24px]">
+            <p className="text-(--greyText) text-sm leading-[24px]">
               Challenges can be run at different levels or scope . An
               organization is a collection of teams. A team is a collection of
               agents. A group is a collection of team agents.
@@ -36,7 +36,7 @@ const AddChallenge = () => {
 
             <div className=" w-full flex flex-col gap-2">
               <h2 className="text-lg font-medium text-(--primary)">Race</h2>
-              <p className="text-greyText text-sm leading-[24px]">
+              <p className="text-(--greyText) text-sm leading-[24px]">
                 This challenge type pushes agents to be the top performer in the
                 selected category. You select a point value for 1st, 2nd, and
                 3rd, and it's a race to see who can produce the most.
@@ -46,7 +46,7 @@ const AddChallenge = () => {
               <h2 className="text-lg font-medium text-(--primary)">
                 Everybody Wins
               </h2>
-              <p className="text-greyText text-sm leading-[24px]">
+              <p className="text-(--greyText) text-sm leading-[24px]">
                 Everybody Wins. This challenge type gives everybody a chance to
                 win. You set a threshold and any agent who exceeds that
                 threshold is awarded points (For example, everyone who does at
@@ -57,7 +57,7 @@ const AddChallenge = () => {
             </div>
             <div className=" w-full flex flex-col gap-2">
               <h2 className="text-lg font-medium text-(--primary)">Per-Unit</h2>
-              <p className="text-greyText text-sm leading-[24px]">
+              <p className="text-(--greyText) text-sm leading-[24px]">
                 This challenge type awards agents on a per-unit basis. You can
                 define the point value of each unit, and points are awarded
                 accordingly (For example, every contact is worth 100 points or
@@ -72,7 +72,7 @@ const AddChallenge = () => {
               Create New Challenge
             </h2>
             <div className="w-full flex flex-wrap justify-between items-center gap-4 my-4">
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%]">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
                 <label
                   htmlFor="challengeName"
                   className="text-[14px] leading-[18px] font-medium"
@@ -98,7 +98,7 @@ const AddChallenge = () => {
                   </span>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%] ">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] ">
                 <label
                   htmlFor="scope"
                   className="text-[14px] leading-[18px] font-medium"
@@ -124,7 +124,7 @@ const AddChallenge = () => {
                   <p className="text-red-500 text-sm">{errors.scope.message}</p>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%] ">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] ">
                 <label
                   htmlFor="scope"
                   className="text-[14px] leading-[18px] font-medium"
@@ -150,7 +150,7 @@ const AddChallenge = () => {
                   <p className="text-red-500 text-sm">{errors.scope.message}</p>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%] ">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] ">
                 <label
                   htmlFor="scope"
                   className="text-[14px] leading-[18px] font-medium"
@@ -176,7 +176,7 @@ const AddChallenge = () => {
                   <p className="text-red-500 text-sm">{errors.scope.message}</p>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%] ">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] ">
                 <label
                   htmlFor="scope"
                   className="text-[14px] leading-[18px] font-medium"
@@ -202,7 +202,7 @@ const AddChallenge = () => {
                   <p className="text-red-500 text-sm">{errors.scope.message}</p>
                 )}
               </div>
-              <div className="text-greyText flex flex-col gap-1.5 w-[48%] ">
+              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] ">
                 <label
                   htmlFor="scope"
                   className="text-[14px] leading-[18px] font-medium"
