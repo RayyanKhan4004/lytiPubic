@@ -17,16 +17,16 @@ export default function TabNavigation({
   };
 
   return (
-    <div className="border-b border-gray-300 w-[60%] shadow-(--cardShadow) rounded-xl  font-Poppins px-3 h-[53px] flex  items-center">
+    <div className="border-b border-gray-300 min-w-[60%] w-fit shadow-(--cardShadow) rounded-xl  font-Poppins px-3 h-[53px] flex  items-center">
       <div className="flex space-x-6">
         {tabs.map((tab) => (
           <button
             key={tab}
             onClick={() => handleTabClick(tab)}
-            className={` text-sm font-medium ${
+            className={` text-sm  ${
               selectedTab === tab
                 ? "font-semibold text-gray-900  "
-                : "text-greyText"
+                : "text-(--greyText) font-medium"
             }`}
           >
             {tab}

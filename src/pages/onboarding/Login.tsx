@@ -37,7 +37,7 @@ const Login = () => {
           <h1 className="text-[#212B27] text-4xl font-semibold">Log In</h1>
 
           <div className="w-full flex flex-col gap-2 my-5">
-            <div className="text-greyText flex flex-col gap-1.5">
+            <div className="text-(--greyText) flex flex-col gap-1.5">
               <label
                 htmlFor="email"
                 className="text-[14px] leading-[18px] font-medium"
@@ -66,7 +66,7 @@ const Login = () => {
               )}
             </div>
 
-            <div className="text-greyText flex flex-col gap-1.5">
+            <div className="text-(--greyText) flex flex-col gap-1.5">
               <label
                 htmlFor="password"
                 className="text-[14px] leading-[18px] font-medium"
@@ -118,7 +118,7 @@ const Login = () => {
 
       <div>
         <img src={PoweredByLyti} alt="" />
-        <h2 className="text-greyText font-Poppins text-sm ">
+        <h2 className="text-(--greyText) font-Poppins text-sm ">
           © LYTI 2021. All rights reserved.
         </h2>
       </div>

@@ -21,6 +21,7 @@ import Commission from "../pages/admin/Commission";
 import StagesBoardDragDrop from "../pages/order/StagesBoardDrapDrop";
 import Ranking from "../pages/account/Ranking";
 import Goals from "../pages/account/Goals";
+import TeamDashboard from "../pages/dashboard/teamDashboard/TeamDashboard";
 
 const appRouter = createBrowserRouter([
   {
@@ -177,6 +178,14 @@ const appRouter = createBrowserRouter([
     element: (
       <DashboardLayout>
         <Goals />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/dashboard/team-dashboard",
+    element: (
+      <DashboardLayout>
+        <TeamDashboard />
       </DashboardLayout>
     ),
   },

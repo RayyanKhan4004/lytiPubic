@@ -24,7 +24,7 @@ const AdminDashboard = () => {
         <div className="w-full flex justify-between">
           {["1", "2", "3", "4"].map(() => (
             <div className=" relative w-[24%] flex flex-col gap-5 border-[1px] rounded-xl px-3 py-4 border-(--inputBorder)">
-              <div className="text-greyText flex flex-col gap-1.5 ">
+              <div className="text-(--greyText) flex flex-col gap-1.5 ">
                 <label
                   htmlFor="DashboardName"
                   className="text-[14px] leading-[18px] font-medium"
