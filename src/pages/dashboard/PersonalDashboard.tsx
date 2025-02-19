@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import Breadcrumb from "../../../components/common/BreadCrumb";
-import TabNavigation from "../../../components/common/TabNavigation";
-import CirclesDashboard from "./CirclesDashboard";
-import YtdDashboard from "./YtdDashboard";
-import ActivitiesDashboard from "./ActivitiesDashboard";
-import LeaderboardsDashboard from "./LeaderboardsDashboard";
-import AdminDashboard from "./AdminDashboard";
+import Breadcrumb from "../../components/common/BreadCrumb";
+import TabNavigation from "../../components/common/TabNavigation";
+import CirclesDashboard from "./teamDashboard/CirclesDashboard";
+import YtdDashboard from "./teamDashboard/YtdDashboard";
+import ActivitiesDashboard from "./teamDashboard/ActivitiesDashboard";
+import LeaderboardsDashboard from "./teamDashboard/LeaderboardsDashboard";
+import AdminDashboard from "../admin/AdminDashboard";
 
-const TeamDashboard = () => {
+const PersonalDashboard = () => {
   const tabItems = [
     "Circles Dashboard",
     "YTD Dashboard",
@@ -19,7 +19,7 @@ const TeamDashboard = () => {
 
   return (
     <div className="w-full px-4 my-8 font-Poppins">
-      <Breadcrumb items={[" Dashboard", "Personal Dashboard"]} />
+      <Breadcrumb items={["CEO Dashboard", "Team Dashboard"]} />
       <div className="my-8">
         <TabNavigation tabs={tabItems} onTabSelect={setActiveTab} />
       </div>
@@ -33,4 +33,4 @@ const TeamDashboard = () => {
   );
 };
 
-export default TeamDashboard;
+export default PersonalDashboard;

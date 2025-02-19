@@ -34,8 +34,13 @@ export const SidebarData = () => {
       path: "/dashboard/snapShot",
       subMenu: [
         { id: 101, title: "SnapShot", path: "/dashboard/snapShot" },
-        { id: 102, title: "Team Dashboard", path: "/dashboard/team-dashboard" },
-        { id: 103, title: "Personal Dashboard", path: "/Dashboard/Personal" },
+        { id: 102, title: "CEO Dashboard", path: "/dashboard/ceo-dashboard" },
+        { id: 103, title: "Team Dashboard", path: "/dashboard/team-dashboard" },
+        {
+          id: 104,
+          title: "Personal Dashboard",
+          path: "/dashboard/personal-dashboard",
+        },
       ],
     },
     {
