@@ -22,6 +22,7 @@ import StagesBoardDragDrop from "../pages/order/StagesBoardDrapDrop";
 import Ranking from "../pages/account/Ranking";
 import Goals from "../pages/account/Goals";
 import TeamDashboard from "../pages/dashboard/teamDashboard/TeamDashboard";
+import CeoDashboard from "../pages/dashboard/CeoDashboard";
 
 const appRouter = createBrowserRouter([
   {
@@ -178,6 +179,24 @@ const appRouter = createBrowserRouter([
     element: (
       <DashboardLayout>
         <Goals />
+      </DashboardLayout>
+    ),
+  },
+
+  {
+    path: "/dashboard/ceo-dashboard",
+    element: (
+      <DashboardLayout>
+        <CeoDashboard />
+      </DashboardLayout>
+    ),
+  },
+
+  {
+    path: "/dashboard/personal-dashboard",
+    element: (
+      <DashboardLayout>
+        <TeamDashboard />
       </DashboardLayout>
     ),
   },

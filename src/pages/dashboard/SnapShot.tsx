@@ -59,8 +59,11 @@ const SnapShot = () => {
       </div>
 
       <div className="flex gap-3 w-full my-5">
-        {["1", "2", "3"].map(() => (
-          <div className="shadow-(--cardShadow) rounded-xl w-[250px] px-3 py-5 flex flex-col gap-2">
+        {["1", "2", "3"].map((i) => (
+          <div
+            key={i}
+            className="shadow-(--cardShadow) rounded-xl w-[250px] px-3 py-5 flex flex-col gap-2"
+          >
             <div className="flex items-center gap-2">
               <h2 className="text-(--secondary) font-semibold text-2xl">65</h2>
               <div className="flex gap-1.5 items-center text-xs font-normal ">
