@@ -67,7 +67,7 @@ const UsersTable = () => {
               setSelected={(e) => setSelectedFilter(e)}
               width="w-[180px]"
             />
-            <SelectField
+            {/* <SelectField
               label=""
               name="filter"
               control={control}
@@ -76,7 +76,7 @@ const UsersTable = () => {
               error={errors.filter?.message}
               required={false}
               className="w-[150px]  "
-            />
+            /> */}
             <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
               <img src={upload} alt="" />
             </div>
