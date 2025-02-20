@@ -7,6 +7,10 @@ import { useNavigate } from "react-router-dom";
 import InputField from "../../components/inputs/InputFields";
 import { useLoginMutation } from "../../lib/rtkQuery/authApi";
 import { error } from "console";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../lib/store/slices/authSlice";
+import Spinner from "../../components/common/Spinner";
 
 type FormValues = {
   email: string;
@@ -14,6 +18,7 @@ type FormValues = {
 };
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const naviagte = useNavigate();
   const [login, { isLoading, isError }] = useLoginMutation();
@@ -25,21 +30,14 @@ const Login = () => {
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    // try {
-    //   const formData = new FormData();
-    //   formData.append("email", data.email);
-    //   formData.append("password", data.password);
-
-    //   const res = await login(formData).unwrap();
-    //   console.log(res, "===res===");
-    // } catch (err: unknown) {
-    //   if (err instanceof Error) {
-    //     console.log(err.message);
-    //   } else {
-    //     console.log("An unknown error occurred");
-    //   }
-    // }
-    naviagte("/dashboard/snapShot");
+    try {
+      const res = await login(data).unwrap();
+      toast.success("Log in successfully");
+      dispatch(setAuth(res));
+      naviagte("/dashboard/snapShot");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Log in failed");
+    }
   };
   return (
     <div className="w-full min-h-screen h-auto flex justify-center items-center flex-col   gap-8">
@@ -80,7 +78,7 @@ const Login = () => {
             type="submit"
             className="text-white bg-(--primary) w-full rounded-xl h-[48px] cursor-pointer flex justify-center items-center my-3"
           >
-            Login
+            {isLoading ? <Spinner /> : "Login"}
           </button>
         </form>
       </div>
