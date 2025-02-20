@@ -25,21 +25,21 @@ const Login = () => {
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    try {
-      const formData = new FormData();
-      formData.append("email", data.email);
-      formData.append("password", data.password);
+    // try {
+    //   const formData = new FormData();
+    //   formData.append("email", data.email);
+    //   formData.append("password", data.password);
 
-      const res = await login(formData).unwrap();
-      console.log(res, "===res===");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.log(err.message);
-      } else {
-        console.log("An unknown error occurred");
-      }
-    }
-    // naviagte("/dashboard/snapShot");
+    //   const res = await login(formData).unwrap();
+    //   console.log(res, "===res===");
+    // } catch (err: unknown) {
+    //   if (err instanceof Error) {
+    //     console.log(err.message);
+    //   } else {
+    //     console.log("An unknown error occurred");
+    //   }
+    // }
+    naviagte("/dashboard/snapShot");
   };
   return (
     <div className="w-full min-h-screen h-auto flex justify-center items-center flex-col   gap-8">
