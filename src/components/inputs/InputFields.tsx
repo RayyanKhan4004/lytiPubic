@@ -48,7 +48,7 @@ function InputField<T extends FieldValues>({
         )}
       />
 
-      {error && <ErrorsMessage title={error} className="text-right" />}
+      {error && <ErrorsMessage title={error} className="text-left" />}
     </div>
   );
 }

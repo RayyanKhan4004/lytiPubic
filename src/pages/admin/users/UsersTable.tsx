@@ -10,6 +10,12 @@ import SearchInput from "../../../components/common/SearchInput";
 import CustomizableDropdown from "../../../components/common/CustomizableDropdown";
 import UserActionsPopup from "../../../components/admin/users/UserActionsPopup";
 import Pagination from "../../../components/common/Pagination";
+import SelectField from "../../../components/inputs/SelectField";
+import { useForm } from "react-hook-form";
+
+interface FormValues {
+  filter: string;
+}
 
 const UsersTable = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -29,6 +35,20 @@ const UsersTable = () => {
   const toggleDropdown = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+    control,
+  } = useForm<FormValues>();
+  const filterOption = [
+    { value: "all", label: "All" },
+    { value: "active", label: "Active" },
+    { value: "inactive", label: "Inactive" },
+    { value: "excluded", label: "Excluded" },
+  ];
   return (
     <div className="w-full px-4 my-8">
       <Breadcrumb items={["Admin", "User"]} />
@@ -46,6 +66,16 @@ const UsersTable = () => {
               selected={selectedFilter}
               setSelected={(e) => setSelectedFilter(e)}
               width="w-[180px]"
+            />
+            <SelectField
+              label=""
+              name="filter"
+              control={control}
+              options={filterOption}
+              placeholder="Select..."
+              error={errors.filter?.message}
+              required={false}
+              className="w-[150px]  "
             />
             <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
               <img src={upload} alt="" />
