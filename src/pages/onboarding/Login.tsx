@@ -1,9 +1,12 @@
 import { useState } from "react";
 import LytiLogo from "../../assets/icons/LytiLogo.svg";
 import Eye from "../../assets/icons/Eye.svg";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import PoweredByLyti from "../../assets/images/PoweredByLyti.svg";
 import { useNavigate } from "react-router-dom";
+import InputField from "../../components/inputs/InputFields";
+import { useLoginMutation } from "../../lib/rtkQuery/authApi";
+import { error } from "console";
 
 type FormValues = {
   email: string;
@@ -13,15 +16,30 @@ type FormValues = {
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const naviagte = useNavigate();
-
+  const [login, { isLoading, isError }] = useLoginMutation();
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    naviagte("/dashboard/snapShot");
+    try {
+      const formData = new FormData();
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+
+      const res = await login(formData).unwrap();
+      console.log(res, "===res===");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.log(err.message);
+      } else {
+        console.log("An unknown error occurred");
+      }
+    }
+    // naviagte("/dashboard/snapShot");
   };
   return (
     <div className="w-full min-h-screen h-auto flex justify-center items-center flex-col   gap-8">
@@ -37,74 +55,25 @@ const Login = () => {
           <h1 className="text-[#212B27] text-4xl font-semibold">Log In</h1>
 
           <div className="w-full flex flex-col gap-2 my-5">
-            <div className="text-(--greyText) flex flex-col gap-1.5">
-              <label
-                htmlFor="email"
-                className="text-[14px] leading-[18px] font-medium"
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                placeholder="bill.sanders@example.com"
-                className={`placeholder:text-[16px] placeholder:leading-[20px] placeholder:font-normal h-[55px] border-2 ${
-                  errors.email ? "border-red-500" : "border-(--inputBorder"
-                } rounded-[10px] w-full px-5 text-blackText`}
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Email is invalid",
-                  },
-                })}
-              />
-              {errors.email && (
-                <span className="text-red-500 text-sm">
-                  {errors.email.message}
-                </span>
-              )}
-            </div>
+            <InputField
+              label="Email Address"
+              name="email"
+              control={control}
+              type="text"
+              required={true}
+              placeholder="Enter your email"
+              error={errors.email?.message}
+            />
 
-            <div className="text-(--greyText) flex flex-col gap-1.5">
-              <label
-                htmlFor="password"
-                className="text-[14px] leading-[18px] font-medium"
-              >
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  placeholder="********"
-                  className={`placeholder:text-[16px] placeholder:leading-[20px] placeholder:font-normal h-[55px] border-2 ${
-                    errors.password ? "border-red-500" : "border-(--inputBorder"
-                  } rounded-[10px] w-full px-5 text-blackText`}
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters",
-                    },
-                  })}
-                />
-                <img
-                  src={Eye}
-                  alt="Show Password"
-                  className="absolute my-auto top-0 bottom-0 right-2 cursor-pointer"
-                  onClick={() => setShowPassword(!showPassword)}
-                />
-              </div>
-              {errors.password && (
-                <span className="text-red-500 text-sm">
-                  {errors.password.message}
-                </span>
-              )}
-              <div className="text-(--secondary) text-end cursor-pointer text-sm">
-                Forgot Password?
-              </div>
-            </div>
+            <InputField
+              label="Password"
+              name="password"
+              control={control}
+              type="password"
+              required={true}
+              placeholder="********"
+              error={errors.password?.message}
+            />
           </div>
 
           <button
