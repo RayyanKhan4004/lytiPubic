@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const authApi = createApi({
-  reducerPath: "authApi",
+export const orderApi = createApi({
+  reducerPath: "orderApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/",
     // baseUrl: process.env.REACT_APP_API_BASE_URL,
@@ -17,7 +17,7 @@ export const authApi = createApi({
         return headers;
       }
 
-      const token = (getState() as any)?.auth?.accessToken;
+      const token = (getState() as any)?.auth?.access_token;
 
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -36,14 +36,10 @@ export const authApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    login: builder.mutation<any, { email: string; password: string }>({
-      query: (body) => ({
-        url: "auth/login",
-        method: "POST",
-        body,
-      }),
+    getOrders: builder.query<any, { filter: string }>({
+      query: ({ filter }) => `orders/?titleOffice=${filter}`,
     }),
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const { useGetOrdersQuery } = orderApi;

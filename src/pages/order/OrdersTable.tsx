@@ -11,6 +11,8 @@ import SearchInput from "../../components/common/SearchInput";
 import CustomizableDropdown from "../../components/common/CustomizableDropdown";
 import OrderActionsPopup from "../../components/orders/OrderActionsPopup";
 import Pagination from "../../components/common/Pagination";
+import TableHeader from "../../components/table/TableHeader";
+import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
 
 const OrdersTable = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -25,10 +27,46 @@ const OrdersTable = () => {
     "30 Items Per Page",
   ];
   const users = DummyData();
+  const { data } = useGetOrdersQuery({ filter: "" });
 
   const toggleDropdown = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
+
+  const tableHeaders = [
+    { text: "id", arrowIcon: true },
+    { text: "titleOfficer", arrowIcon: true },
+    { text: "titleOffice", arrowIcon: true },
+    { text: "titleRep", arrowIcon: true },
+    { text: "titleRepPct", arrowIcon: true },
+    { text: "openDate", arrowIcon: true },
+    { text: "estimatedClosingDate", arrowIcon: true },
+    { text: "closedDate", arrowIcon: true },
+    { text: "fileType", arrowIcon: true },
+    { text: "orderNumber", arrowIcon: true },
+    { text: "fileStatus", arrowIcon: true },
+    { text: "salePrice", arrowIcon: true },
+    { text: "loanAmount", arrowIcon: true },
+    { text: "propertyAddress", arrowIcon: true },
+    { text: "propertyCounty", arrowIcon: true },
+    { text: "propertyState", arrowIcon: true },
+    { text: "escrowOfficer", arrowIcon: true },
+    { text: "listingAgentCompany", arrowIcon: true },
+    { text: "listingAgentContactName", arrowIcon: true },
+    { text: "listingAgentContactEmail", arrowIcon: true },
+    { text: "listingAgentPhone", arrowIcon: true },
+    { text: "sellingAgentCompany", arrowIcon: true },
+    { text: "sellingAgentContactName", arrowIcon: true },
+    { text: "sellingAgentContactEmail", arrowIcon: true },
+    { text: "sellingAgentPhone", arrowIcon: true },
+    { text: "mortgageBrokerCompany", arrowIcon: true },
+    { text: "mortgageBrokerContact", arrowIcon: true },
+    { text: "mortgageBrokerContactEmail", arrowIcon: true },
+    { text: "mortgageBrokerPhone", arrowIcon: true },
+    { text: "underwriter", arrowIcon: true },
+    { text: "createdAt", arrowIcon: true },
+  ];
+
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Orders", "Orders"]} />
@@ -84,109 +122,79 @@ const OrdersTable = () => {
           </div>
         </div>
 
-        <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-6">
-          <thead className="text-sm font-normal text-start">
-            <tr className="border-b-[1px] border-[#F4EFE9] ">
-              <th className="text-start py-4 font-medium"> </th>
-              <th className="text-start font-medium ">
-                <div className="flex  gap-2 items-center">
-                  User ID <img src={arrowUpDown} alt="" />
-                </div>
-              </th>
-              <th className="text-start font-medium ">
-                <div className="flex  gap-2 items-center">
-                  Agent <img src={arrowUpDown} alt="" />
-                </div>
-              </th>
-              <th className="text-start font-medium ">
-                <div className="flex  gap-2 items-center">
-                  Added <img src={arrowUpDown} alt="" />
-                </div>
-              </th>
-              <th className="text-start font-medium ">
-                <div className="flex  gap-2 items-center">
-                  Last Access <img src={arrowUpDown} alt="" />
-                </div>
-              </th>
-              <th className="text-start font-medium ">
-                <div className="flex  gap-2 items-center">
-                  Lead source <img src={arrowUpDown} alt="" />
-                </div>
-              </th>
-              <th className="text-start font-medium ">
-                <div className="flex  gap-2 items-center">
-                  Status <img src={arrowUpDown} alt="" />
-                </div>
-              </th>
-              <th className="text-start font-medium ">
-                <div className="flex  gap-2 items-center">
-                  Lead Date <img src={arrowUpDown} alt="" />
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(
-              (e: any, i: number) => (
-                <tr
-                  key={i}
-                  className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9]"
-                >
-                  <td>
-                    <input
-                      type="checkbox"
-                      name=""
-                      id=""
-                      className="w-[21px] h-[21px] accent-(--primary) "
-                    />
-                  </td>
-                  <td
-                    className="cursor-pointer px-3 "
-                    style={{
-                      maxWidth: "50px",
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                    }}
-                    title={e.id}
+        <div className="w-full overflow-x-auto">
+          <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-6">
+            <thead className="text-sm font-normal text-start">
+              <tr className="border-b-[1px] border-[#F4EFE9] ">
+                <th className="text-start py-4 font-medium px-6"> </th>
+                {tableHeaders.map(({ text, arrowIcon }) => (
+                  <TableHeader key={text} text={text} arrowIcon={arrowIcon} />
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data?.orders?.map(
+                (e: any, i: number) => (
+                  <tr
+                    key={i}
+                    className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9]"
                   >
-                    {e.id}
-                  </td>
-                  <td>
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={e.image}
-                        alt=""
-                        className="w-[40px] h-[40px] rounded-full"
+                    <td>
+                      <input
+                        type="checkbox"
+                        name=""
+                        id=""
+                        className="w-[21px] h-[21px] accent-(--primary) "
                       />
-                      <div>
-                        <h3 className="font-medium ">{e.name}</h3>
-                        <h3 className="font-normal">{e.role}</h3>
-                      </div>
-                    </div>
-                  </td>
-                  <td>{e.phone}</td>
-                  <td>{e.added}</td>
-                  <td>{e.lastAccess}</td>
-                  <td>{e.status}</td>
-                  <td>{e.excluded ? "Yes" : "No"}</td>
-
-                  <td>
-                    <img
-                      src={menu}
-                      alt=""
-                      onClick={() => {
-                        toggleDropdown(i);
-                      }}
-                    />
-                    {activeIndex === i && <OrderActionsPopup />}
-                  </td>
-                </tr>
-              ),
-              []
-            )}
-          </tbody>
-        </table>
+                    </td>
+                    <td>{e.id}</td>
+                    <td>{e.titleOfficer}</td>
+                    <td>{e.titleOffice}</td>
+                    <td>{e.titleRep}</td>
+                    <td>{e.titleRepPct}</td>
+                    <td>{e.openDate}</td>
+                    <td>{e.estimatedClosingDate}</td>
+                    <td>{e.closedDate}</td>
+                    <td>{e.fileType}</td>
+                    <td>{e.orderNumber}</td>
+                    <td>{e.fileStatus}</td>
+                    <td>{e.salePrice}</td>
+                    <td>{e.loanAmount}</td>
+                    <td>{e.propertyAddress}</td>
+                    <td>{e.propertyCounty}</td>
+                    <td>{e.propertyState}</td>
+                    <td>{e.escrowOfficer}</td>
+                    <td>{e.listingAgentCompany}</td>
+                    <td>{e.listingAgentContactName}</td>
+                    <td>{e.listingAgentContactEmail}</td>
+                    <td>{e.listingAgentPhone}</td>
+                    <td>{e.sellingAgentCompany}</td>
+                    <td>{e.sellingAgentContactName}</td>
+                    <td>{e.sellingAgentContactEmail}</td>
+                    <td>{e.sellingAgentPhone}</td>
+                    <td>{e.mortgageBrokerCompany}</td>
+                    <td>{e.mortgageBrokerContact}</td>
+                    <td>{e.mortgageBrokerContactEmail}</td>
+                    <td>{e.mortgageBrokerPhone}</td>
+                    <td>{e.underwriter}</td>
+                    <td>{e.createdAt}</td>
+                    <td>
+                      <img
+                        src={menu}
+                        alt=""
+                        onClick={() => {
+                          toggleDropdown(i);
+                        }}
+                      />
+                      {activeIndex === i && <OrderActionsPopup />}
+                    </td>
+                  </tr>
+                ),
+                []
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div className="w-full flex justify-end gap-5 items-center">
