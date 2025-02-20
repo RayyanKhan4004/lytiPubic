@@ -6,6 +6,7 @@ import CustomizableDropdown from "../../components/common/CustomizableDropdown";
 import LineChartComponent from "../../components/dashboard/snapShot/LineChartComponent";
 import StackedBarChart from "../../components/dashboard/snapShot/StackedBarChart";
 import SlimBarChart from "../../components/dashboard/snapShot/SlimBarChart";
+import StatsCard from "../../components/orders/StatsCard";
 
 const SnapShot = () => {
   const [selectedFilter, setSelectedFilter] = useState("Active");
@@ -58,31 +59,31 @@ const SnapShot = () => {
         </div>
       </div>
 
-      <div className="flex gap-3 w-full my-5">
-        {["1", "2", "3"].map((i) => (
-          <div
-            key={i}
-            className="shadow-(--cardShadow) rounded-xl w-[250px] px-3 py-5 flex flex-col gap-2"
-          >
-            <div className="flex items-center gap-2">
-              <h2 className="text-(--secondary) font-semibold text-2xl">65</h2>
-              <div className="flex gap-1.5 items-center text-xs font-normal ">
-                Total MTD:65
-                <img src={arrow} alt="" />
-              </div>
-            </div>
-
-            <p className="flex gap-2 text-xs ">YTD order</p>
-            <div className="flex items-center gap-4">
-              <div className="flex gap-2 text-xs ">
-                sellers <span>20</span>
-              </div>
-              <div className="flex gap-2 text-xs ">
-                Buyers <span>20</span>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="w-full flex gap-4 mt-6">
+        <StatsCard
+          heading="Orders"
+          stats={[
+            { value: "20.7k", text: "Total Orders" },
+            { value: "3k", text: "Total Amount" },
+            { value: "57k", text: "Avg /Order" },
+          ]}
+        />
+        <StatsCard
+          heading="Title"
+          stats={[
+            { value: "9k", text: "Total Units" },
+            { value: "2k", text: "Title charges" },
+            { value: "27k", text: "Avg Title " },
+          ]}
+        />
+        <StatsCard
+          heading="Escrow"
+          stats={[
+            { value: "98k", text: "Escrow Units" },
+            { value: "78k", text: "Escrow charges" },
+            { value: "9k", text: "Avg Escrow" },
+          ]}
+        />
       </div>
       <div className="w-full flex justify-end mb-8">
         <div className="flex justify-between shadow-(--cardShadow) items-center bg-white rounded-lg w-[300px] h-[60px] px-2.5">

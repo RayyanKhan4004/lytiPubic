@@ -6,6 +6,9 @@ import pencil from "../../../assets/icons/Edit.svg";
 import CustomizableDropdown from "../../../components/common/CustomizableDropdown";
 import DateInput from "../../../components/common/DateInput";
 import Breadcrumb from "../../../components/common/BreadCrumb";
+import SelectField from "../../../components/inputs/SelectField";
+import CustomDatePicker from "../../../components/inputs/CustomDatePicker";
+import InputField from "../../../components/inputs/InputFields";
 
 interface FormValues {
   firstName: string;
@@ -43,6 +46,25 @@ const AddUser = () => {
     watch,
     control,
   } = useForm<FormValues>();
+
+  const roleOption = [
+    { value: 2025, label: "2025" },
+    { value: 2024, label: "2024" },
+    { value: 2023, label: "2023" },
+    { value: 2022, label: "2022" },
+    { value: 2021, label: "2021" },
+    { value: 2020, label: "2020" },
+    { value: 2019, label: "2019" },
+    { value: 2018, label: "2018" },
+    { value: 2017, label: "2017" },
+    { value: 2016, label: "2016" },
+    { value: 2015, label: "2015" },
+    { value: 2014, label: "2014" },
+    { value: 2013, label: "2013" },
+    { value: 2012, label: "2012" },
+    { value: 2011, label: "2011" },
+    { value: 2010, label: "2010" },
+  ];
 
   const profileImagePreview =
     watch("profileImage") instanceof File
@@ -90,7 +112,7 @@ const AddUser = () => {
                 <img
                   src={pencil}
                   alt="Edit"
-                  className="  right-2 bottom-2"
+                  className="right-2 bottom-2"
                   onClick={() => {
                     removeImage("profileImage");
                   }}
@@ -100,7 +122,7 @@ const AddUser = () => {
           ) : (
             <label
               htmlFor="profileImage"
-              className="w-[146px] h-[146px] rounded-full flex justify-center items-center bg-smoke"
+              className="w-[146px] h-[146px] rounded-full flex justify-center items-center bg-(--smoke)"
             >
               <img src={image} alt="" />
             </label>
@@ -132,59 +154,27 @@ const AddUser = () => {
             <div className="w-full flex justify-between ">
               <div className="w-[48%]  flex flex-col gap-4">
                 <div className="flex justify-between items-center w-full">
-                  <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                    <label
-                      htmlFor="firstName"
-                      className="text-[14px] leading-[18px] font-medium"
-                    >
-                      First Name
-                    </label>
-                    <input
-                      type="text"
-                      id="firstName"
-                      placeholder="John"
-                      className={`h-[55px] border-2 ${
-                        errors.firstName
-                          ? "border-red-500"
-                          : "border-(--inputBorder)"
-                      } rounded-[10px] w-full px-5 text-blackText`}
-                      {...register("firstName", {
-                        required: "First Name is required",
-                      })}
-                    />
-                    {errors.firstName && (
-                      <span className="text-red-500 text-sm">
-                        {errors.firstName.message}
-                      </span>
-                    )}
-                  </div>
+                  <InputField
+                    label="First Name"
+                    name="firstName"
+                    control={control}
+                    type="text"
+                    // required={true}
+                    placeholder="Enter your name"
+                    error={errors.firstName?.message}
+                    className="w-[48%]"
+                  />
 
-                  <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                    <label
-                      htmlFor="lastName"
-                      className="text-[14px] leading-[18px] font-medium"
-                    >
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      placeholder="Doe"
-                      className={`h-[55px] border-2 ${
-                        errors.lastName
-                          ? "border-red-500"
-                          : "border-(--inputBorder)"
-                      } rounded-[10px] w-full px-5 text-blackText`}
-                      {...register("lastName", {
-                        required: "Last Name is required",
-                      })}
-                    />
-                    {errors.lastName && (
-                      <span className="text-red-500 text-sm">
-                        {errors.lastName.message}
-                      </span>
-                    )}
-                  </div>
+                  <InputField
+                    label="Last Name"
+                    name="lastName"
+                    control={control}
+                    type="text"
+                    // required={true}
+                    placeholder="Enter your last name"
+                    error={errors.lastName?.message}
+                    className="w-[48%]"
+                  />
                 </div>
 
                 <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
@@ -276,7 +266,7 @@ const AddUser = () => {
                   )}
                 </div>
                 <div className="flex justify-between items-center w-full">
-                  <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] mt-5">
+                  {/* <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] mt-5">
                     <label
                       htmlFor="role"
                       className="text-[14px] leading-[18px] font-medium"
@@ -303,9 +293,19 @@ const AddUser = () => {
                         {errors.role.message}
                       </p>
                     )}
-                  </div>
+                  </div> */}
+                  <SelectField
+                    label="Role"
+                    name="role"
+                    control={control}
+                    options={roleOption}
+                    placeholder="Select..."
+                    error={errors.role?.message}
+                    required={false}
+                    className="w-[49%] hidden sm:block "
+                  />
 
-                  <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] mt-5">
+                  {/* <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] mt-5">
                     <label
                       htmlFor="startDate"
                       className="text-[14px] leading-[18px] font-medium"
@@ -330,12 +330,20 @@ const AddUser = () => {
                         {errors.startDate.message}
                       </p>
                     )}
-                  </div>
+                  </div> */}
+                  <CustomDatePicker
+                    name="startDate"
+                    control={control}
+                    label="Select a Date"
+                    placeholder="8-21-15"
+                    // rules={{ required: "Date is required" }}
+                    className=""
+                  />
                 </div>
               </div>
             </div>
 
-            <div className="w-full border-t-[1.5px] border-smoke"> </div>
+            <div className="w-full border-t-[1.5px] border-(--smoke)"> </div>
 
             <div className="w-full flex justify-between ">
               <div className="w-[48%] flex flex-col gap-4">
@@ -457,7 +465,7 @@ const AddUser = () => {
               </div>
             </div>
 
-            <div className="w-full border-t-[1.5px] border-smoke"> </div>
+            <div className="w-full border-t-[1.5px] border-(--smoke)"> </div>
 
             <div className="w-full flex justify-between flex-col gap-4">
               <div className="flex w-full justify-between ">

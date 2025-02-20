@@ -54,7 +54,7 @@ const LeadSource = () => {
             {items?.map((e: any, i: number) => (
               <div
                 key={i}
-                className="border-t-[1.5px] border-smoke flex justify-between items-center py-3"
+                className="border-t-[1.5px] border-(--smoke) flex justify-between items-center py-3"
               >
                 <div className="flex items-center gap-4 text-sm">
                   <input
