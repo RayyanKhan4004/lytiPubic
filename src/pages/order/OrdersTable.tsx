@@ -72,7 +72,7 @@ const OrdersTable = () => {
               setSelected={(e) => setSelectedFilter(e)}
               width="w-[180px]"
             />
-            <div className="rounded-xl flex justify-center items-center bg-smoke w-[44px] h-[44px]">
+            <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
               <img src={upload} alt="" />
             </div>
             <div

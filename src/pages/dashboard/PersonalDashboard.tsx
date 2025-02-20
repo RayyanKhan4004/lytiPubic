@@ -19,7 +19,7 @@ const PersonalDashboard = () => {
 
   return (
     <div className="w-full px-4 my-8 font-Poppins">
-      <Breadcrumb items={["CEO Dashboard", "Team Dashboard"]} />
+      <Breadcrumb items={["Dashboard", "Personal Dashboard"]} />
       <div className="my-8">
         <TabNavigation tabs={tabItems} onTabSelect={setActiveTab} />
       </div>

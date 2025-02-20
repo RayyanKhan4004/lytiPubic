@@ -19,7 +19,7 @@ const TeamDashboard = () => {
 
   return (
     <div className="w-full px-4 my-8 font-Poppins">
-      <Breadcrumb items={[" Dashboard", "Personal Dashboard"]} />
+      <Breadcrumb items={["Dashboard", "Team Dashboard"]} />
       <div className="my-8">
         <TabNavigation tabs={tabItems} onTabSelect={setActiveTab} />
       </div>

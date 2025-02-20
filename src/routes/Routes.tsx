@@ -23,6 +23,7 @@ import Ranking from "../pages/account/Ranking";
 import Goals from "../pages/account/Goals";
 import TeamDashboard from "../pages/dashboard/teamDashboard/TeamDashboard";
 import CeoDashboard from "../pages/dashboard/CeoDashboard";
+import PersonalDashboard from "../pages/dashboard/PersonalDashboard";
 
 const appRouter = createBrowserRouter([
   {
@@ -38,14 +39,6 @@ const appRouter = createBrowserRouter([
     element: <Login />,
   },
 
-  {
-    path: "/dashboard/snapShot",
-    element: (
-      <DashboardLayout>
-        <SnapShot />
-      </DashboardLayout>
-    ),
-  },
   {
     path: "/admin/users-table",
     element: (
@@ -183,6 +176,16 @@ const appRouter = createBrowserRouter([
     ),
   },
 
+  //  dashboard
+
+  {
+    path: "/dashboard/snapShot",
+    element: (
+      <DashboardLayout>
+        <SnapShot />
+      </DashboardLayout>
+    ),
+  },
   {
     path: "/dashboard/ceo-dashboard",
     element: (
@@ -196,7 +199,7 @@ const appRouter = createBrowserRouter([
     path: "/dashboard/personal-dashboard",
     element: (
       <DashboardLayout>
-        <TeamDashboard />
+        <PersonalDashboard />
       </DashboardLayout>
     ),
   },
