@@ -1,4 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+interface FormValues {
+  keyword: string;
+  page: number;
+  pageSize: number;
+}
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -35,13 +40,11 @@ export const userApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getUsers: builder.query<any, void>({
-      query: () => ({
-        url: "users",
-        method: "GET",
-      }),
+    fetchUsers: builder.query<any, FormValues>({
+      query: ({ keyword, page, pageSize }) =>
+        `users?keyword=${keyword}&page=${page}&pageSize=${10}`,
     }),
   }),
 });
 
-export const { useGetUsersQuery } = userApi;
+export const { useFetchUsersQuery } = userApi;
