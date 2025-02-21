@@ -15,11 +15,11 @@ interface FormValues {
   agentMonthlyFee?: string;
   commissionTemplate?: string;
   notes?: string;
-  // ae_commission_threshold?: number;
-  // ae_escrow_commission?: number;
-  // ae_title_commission?: number;
-  // career_path?: number;
-  // lead_source?: number;
+  ae_commission_threshold?: number;
+  ae_escrow_commission?: number;
+  ae_title_commission?: number;
+  career_path?: number;
+  lead_source?: number;
   exclude_challenges_leaderboards?: boolean;
   download_transactions?: boolean;
   send_welcome_email?: boolean;

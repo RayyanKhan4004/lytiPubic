@@ -32,11 +32,11 @@ interface FormValues {
   agentMonthlyFee?: string;
   commissionTemplate?: string;
   notes?: string;
-  // ae_commission_threshold?: number;
-  // ae_escrow_commission?: number;
-  // ae_title_commission?: number;
-  // career_path?: number;
-  // lead_source?: number;
+  ae_commission_threshold?: number;
+  ae_escrow_commission?: number;
+  ae_title_commission?: number;
+  career_path?: number;
+  lead_source?: number;
   exclude_challenges_leaderboards?: boolean;
   download_transactions?: boolean;
   send_welcome_email?: boolean;
@@ -106,8 +106,6 @@ const AddUser = () => {
       navigate("/admin/users-table");
       // console.log(res, "===res====");
     } catch (error: any) {
-      console.log(error);
-
       toast.error(error?.data?.message || "Can't add user");
     }
   };
@@ -184,7 +182,7 @@ const AddUser = () => {
                     name="firstname"
                     control={control}
                     type="text"
-                    required={true}
+                    // required={true}
                     placeholder="Enter your name"
                     error={errors.firstname?.message}
                     className="w-[48%]"
@@ -195,7 +193,7 @@ const AddUser = () => {
                     name="lastname"
                     control={control}
                     type="text"
-                    required={true}
+                    // required={true}
                     placeholder="Enter your last name"
                     error={errors.lastname?.message}
                     className="w-[48%]"
@@ -215,7 +213,7 @@ const AddUser = () => {
                   label="Business Entity"
                   name="business_entity"
                   control={control}
-                  required={true}
+                  // required={true}
                   type="text"
                   placeholder="Enter your business entity"
                   error={errors.business_entity?.message}
@@ -228,7 +226,7 @@ const AddUser = () => {
                   name="email"
                   control={control}
                   type="email"
-                  required={true}
+                  // required={true}
                   placeholder="Enter your Email Address"
                   error={errors.email?.message}
                 />
@@ -249,7 +247,7 @@ const AddUser = () => {
                     control={control}
                     label="Select a Date"
                     placeholder="8-21-15"
-                    rules={{ required: "Date is required" }}
+                    // rules={{ required: "Date is required" }}
                     className="w-[48%]"
                   />
                 </div>
@@ -267,7 +265,7 @@ const AddUser = () => {
 
             <div className="w-full border-t-[1.5px] border-(--smoke)"> </div>
 
-            {/* <div className="w-full flex justify-between flex-wrap gap-4">
+            <div className="w-full flex justify-between flex-wrap gap-4">
               <InputField
                 label="AE Commission Threshold"
                 name="ae_commission_threshold"
@@ -295,12 +293,12 @@ const AddUser = () => {
                 error={errors.ae_title_commission?.message}
                 className="w-[48%]"
               />
-            </div> */}
+            </div>
 
             <div className="w-full border-t-[1.5px] border-(--smoke)"> </div>
 
             <div className="w-full flex justify-between flex-col gap-4">
-              {/* <div className="flex w-full justify-between ">
+              <div className="flex w-full justify-between ">
                 <InputField
                   label="Career Path"
                   name="career_path"
@@ -319,7 +317,18 @@ const AddUser = () => {
                   error={errors.lead_source?.message}
                   className="w-[48%]"
                 />
-              </div> */}
+              </div>
+              {/* <input
+                type="number"
+                id="lead_source"
+                placeholder="John"
+                className={`h-[55px] border-2 ${
+                  errors.lead_source
+                    ? "border-red-500"
+                    : "border-(--inputBorder)"
+                } rounded-[10px] w-full px-5 text-blackText`}
+                {...register("lead_source", { valueAsNumber: true })}
+              /> */}
 
               {/* Notes */}
               <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
@@ -333,7 +342,7 @@ const AddUser = () => {
                   name="notes"
                   control={control}
                   defaultValue=""
-                  rules={{ required: "Notes are required" }}
+                  // rules={{ required: "Notes are required" }}
                   render={({ field }) => (
                     <textarea
                       id="notes"
