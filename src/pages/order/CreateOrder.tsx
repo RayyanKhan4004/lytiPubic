@@ -16,6 +16,7 @@ import { useCreateOrderMutation } from "../../lib/rtkQuery/orderApi";
 import toast from "react-hot-toast";
 import { useAppSelector } from "../../lib/store/hooks";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../components/common/Spinner";
 
 interface FormValues {
   titleOffice: string;
@@ -53,7 +54,7 @@ interface FormValues {
 }
 
 const CreateOrder = () => {
-  const [createOrder] = useCreateOrderMutation();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
   const navigate = useNavigate();
   const {
     register,
@@ -382,7 +383,7 @@ const CreateOrder = () => {
                 type="submit"
                 className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] w-fit px-8  rounded-xl text-white"
               >
-                Create Order
+                {isLoading ? <Spinner /> : "Create Order"}
               </button>
             </div>
           </form>

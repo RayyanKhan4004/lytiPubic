@@ -1,12 +1,36 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+interface FormValues {
+  firstname?: string;
+  lastname?: string;
+  alternativemail?: string;
+  password?: string;
+  business_entity?: string;
+  email?: string;
+  role?: string;
+  startDate?: string;
+  profileImage?: File | null;
+  brokerageCap?: string;
+  yearAnniversary?: string;
+  agentTransactionFee?: string;
+  agentMonthlyFee?: string;
+  commissionTemplate?: string;
+  notes?: string;
+  // ae_commission_threshold?: number;
+  // ae_escrow_commission?: number;
+  // ae_title_commission?: number;
+  // career_path?: number;
+  // lead_source?: number;
+  exclude_challenges_leaderboards?: boolean;
+  download_transactions?: boolean;
+  send_welcome_email?: boolean;
+}
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.REACT_APP_API_BASE_URL,
 
     prepareHeaders: (headers, { getState, endpoint }) => {
-      const noAuthRequiredEndpoints = ["login"];
+      const noAuthRequiredEndpoints = ["login", "signUp"];
 
       if (
         noAuthRequiredEndpoints.some((noAuthEndpoint) =>
@@ -42,7 +66,14 @@ export const authApi = createApi({
         body,
       }),
     }),
+    signUp: builder.mutation<any, FormValues>({
+      query: (body) => ({
+        url: "auth/signup",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation, useSignUpMutation } = authApi;

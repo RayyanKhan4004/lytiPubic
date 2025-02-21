@@ -1,50 +1,53 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import searchIcon from "../../assets/icons/MagnifyingGlass.svg";
 
 type SearchInputProps = {
   placeholder?: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
   debounceTimeout?: number;
 };
 
 const SearchInput: React.FC<SearchInputProps> = ({
-  placeholder = ``,
+  placeholder = "Search...",
   value = "",
-  onChange = () => {},
+  onChange,
   debounceTimeout = 400,
 }) => {
-  const [debouncedValue, setDebouncedValue] = useState(value);
+  const [searchTerm, setSearchTerm] = useState(value);
+
+  useEffect(() => {
+    setSearchTerm(value);
+  }, [value]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDebouncedValue(value);
+      if (searchTerm !== value) {
+        onChange(searchTerm);
+      }
     }, debounceTimeout);
 
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, debounceTimeout]);
+    return () => clearTimeout(handler);
+  }, [searchTerm, debounceTimeout, onChange, value]);
 
-  useEffect(() => {
-    if (debouncedValue !== value) {
-      onChange({
-        target: { value: debouncedValue },
-      } as React.ChangeEvent<HTMLInputElement>);
-    }
-  }, [debouncedValue, onChange, value]);
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(e.target.value);
+    },
+    []
+  );
 
   return (
     <div className="w-[320px] h-[43px] rounded-[10px] flex items-center border-(--inputBorder) border-2 focus-within:border-black">
       <label htmlFor="search">
-        <img src={searchIcon} alt="search icon" className="ml-3" />
+        <img src={searchIcon} alt="Search" className="ml-3" />
       </label>
       <input
         type="text"
         id="search"
-        placeholder={placeholder || "Search Keywords"}
-        value={value}
-        onChange={(e) => onChange(e)}
+        placeholder={placeholder}
+        value={searchTerm}
+        onChange={handleInputChange}
         className="placeholder:text-[16px] placeholder:leading-[20px] placeholder:font-normal h-full w-auto px-3 text-blackText outline-none rounded-[10px]"
       />
     </div>

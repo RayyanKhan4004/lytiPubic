@@ -1,35 +1,35 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface FormValues {
-  titleOffice: string;
-  // titleRep: string;
-  titleRepPct: string;
-  openDate: string;
-  estimatedClosingDate: string;
-  closedDate: string;
-  fileType: string;
-  orderNumber: string;
-  fileStatus: string;
-  // salePrice: string;
-  // loanAmount: string;
-  propertyAddress: string;
-  propertyCounty: string;
-  propertyState: string;
-  titleOfficer: string;
-  escrowOfficer: string;
-  listingAgentCompany: string;
-  listingAgentContactName: string;
-  listingAgentContactEmail: string;
-  listingAgentPhone: string;
-  sellingAgentCompany: string;
-  sellingAgentContactName: string;
-  sellingAgentContactEmail: string;
-  sellingAgentPhone: string;
-  mortgageBrokerCompany: string;
-  mortgageBrokerContact: string;
-  mortgageBrokerContactEmail: string;
-  mortgageBrokerPhone: string;
-  underwriter: string;
+  titleOffice?: string;
+  titleRepPct?: string;
+  openDate?: string;
+  estimatedClosingDate?: string;
+  closedDate?: string;
+  fileType?: string;
+  orderNumber?: string;
+  fileStatus?: string;
+  propertyAddress?: string;
+  propertyCounty?: string;
+  propertyState?: string;
+  titleOfficer?: string;
+  escrowOfficer?: string;
+  listingAgentCompany?: string;
+  listingAgentContactName?: string;
+  listingAgentContactEmail?: string;
+  listingAgentPhone?: string;
+  sellingAgentCompany?: string;
+  sellingAgentContactName?: string;
+  sellingAgentContactEmail?: string;
+  sellingAgentPhone?: string;
+  mortgageBrokerCompany?: string;
+  mortgageBrokerContact?: string;
+  mortgageBrokerContactEmail?: string;
+  mortgageBrokerPhone?: string;
+  underwriter?: string;
+  filter?: string;
+  page?: number;
+  limit?: number;
 }
 
 export const orderApi = createApi({
@@ -67,8 +67,8 @@ export const orderApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getOrders: builder.query<any, { filter: string }>({
-      query: ({ filter }) => `orders/?titleOffice=${filter}`,
+    getOrders: builder.query<any, FormValues>({
+      query: ({ filter, page, limit }) => `orders/?page=${page}&limit=${10}`,
     }),
 
     createOrder: builder.mutation<any, FormValues>({

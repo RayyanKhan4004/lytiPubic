@@ -9,35 +9,51 @@ import Breadcrumb from "../../../components/common/BreadCrumb";
 import SelectField from "../../../components/inputs/SelectField";
 import CustomDatePicker from "../../../components/inputs/CustomDatePicker";
 import InputField from "../../../components/inputs/InputFields";
+import Checkbox from "../../../components/inputs/CheckBox";
+import ErrorsMessage from "../../../components/common/ErrorMessage";
+import { useSignUpMutation } from "../../../lib/rtkQuery/authApi";
+import { formatDate } from "../../../utils/formatDate";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import Spinner from "../../../components/common/Spinner";
 
 interface FormValues {
-  firstName: string;
-  lastName: string;
-  altEmail: string;
-  businessEntity: string;
-  email: string;
-  role: string;
-  startDate: string;
-  profileImage: File | null;
-  brokerageCap: string;
-  yearAnniversary: string;
-  agentTransactionFee: string;
-  agentMonthlyFee: string;
-  commissionTemplate: string;
-  notes: string;
-  aeEscrow: string;
-  aeCommission: string;
-  aeTitle: string;
+  firstname?: string;
+  lastname?: string;
+  alternativemail?: string;
+  password?: string;
+  business_entity?: string;
+  email?: string;
+  role?: string;
+  startDate?: string;
+  profileImage?: File | null;
+  brokerageCap?: string;
+  yearAnniversary?: string;
+  agentTransactionFee?: string;
+  agentMonthlyFee?: string;
+  commissionTemplate?: string;
+  notes?: string;
+  // ae_commission_threshold?: number;
+  // ae_escrow_commission?: number;
+  // ae_title_commission?: number;
+  // career_path?: number;
+  // lead_source?: number;
+  exclude_challenges_leaderboards?: boolean;
+  download_transactions?: boolean;
+  send_welcome_email?: boolean;
 }
 
 const AddUser = () => {
   const [startDate, setStartDate] = useState("");
   const [selectedRole, setSelectedRole] = useState("Agent");
   const [isChallange, setIsChallange] = useState<boolean>(false);
+  const [isDownlaod, setIsDownload] = useState<boolean>(false);
+  const [isWelcome, setIsWelcome] = useState<boolean>(false);
   const handleSelectRole = (e: any) => {
     setSelectedRole(e);
   };
-
+  const navigate = useNavigate();
+  const [signUp, { isLoading }] = useSignUpMutation();
   const {
     register,
     handleSubmit,
@@ -48,22 +64,10 @@ const AddUser = () => {
   } = useForm<FormValues>();
 
   const roleOption = [
-    { value: 2025, label: "2025" },
-    { value: 2024, label: "2024" },
-    { value: 2023, label: "2023" },
-    { value: 2022, label: "2022" },
-    { value: 2021, label: "2021" },
-    { value: 2020, label: "2020" },
-    { value: 2019, label: "2019" },
-    { value: 2018, label: "2018" },
-    { value: 2017, label: "2017" },
-    { value: 2016, label: "2016" },
-    { value: 2015, label: "2015" },
-    { value: 2014, label: "2014" },
-    { value: 2013, label: "2013" },
-    { value: 2012, label: "2012" },
-    { value: 2011, label: "2011" },
-    { value: 2010, label: "2010" },
+    { value: "Admin", label: "Admin" },
+    { value: "ISA", label: "ISA" },
+    { value: "Sales Manager", label: "Sales Manager" },
+    { value: "Account Executive", label: "Account Executive" },
   ];
 
   const profileImagePreview =
@@ -85,7 +89,29 @@ const AddUser = () => {
     }, 0);
   };
 
-  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {};
+  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+    // console.log(data, "==formData===");
+
+    const formattedData = {
+      ...data,
+      startDate: formatDate(data.startDate),
+      exclude_challenges_leaderboards: isChallange,
+      download_transactions: isDownlaod,
+      send_welcome_email: isWelcome,
+    };
+    // console.log(formattedData, "==data===");
+
+    try {
+      const res = await signUp(formattedData).unwrap();
+      toast.success("User created successfully");
+      navigate("/admin/users-table");
+      // console.log(res, "===res====");
+    } catch (error: any) {
+      console.log(error);
+
+      toast.error(error?.data?.message || "Can't add user");
+    }
+  };
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Admin", "User", "Add User"]} />
@@ -94,11 +120,8 @@ const AddUser = () => {
           Add User
         </h2>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-full flex flex-col  items-center"
-        >
-          {profileImagePreview ? (
+        <div className="w-full flex flex-col  items-center">
+          {/* {profileImagePreview ? (
             <div className=" relative w-[146px] h-[146px] rounded-full">
               <img
                 src={profileImagePreview}
@@ -148,152 +171,69 @@ const AddUser = () => {
                 className="hidden"
               />
             )}
-          />
+          /> */}
 
-          <div className="flex flex-col gap-5 w-full my-6">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-5 w-full my-6"
+          >
             <div className="w-full flex justify-between ">
               <div className="w-[48%]  flex flex-col gap-4">
                 <div className="flex justify-between items-center w-full">
                   <InputField
                     label="First Name"
-                    name="firstName"
+                    name="firstname"
                     control={control}
                     type="text"
-                    // required={true}
+                    required={true}
                     placeholder="Enter your name"
-                    error={errors.firstName?.message}
+                    error={errors.firstname?.message}
                     className="w-[48%]"
                   />
 
                   <InputField
                     label="Last Name"
-                    name="lastName"
+                    name="lastname"
                     control={control}
                     type="text"
-                    // required={true}
+                    required={true}
                     placeholder="Enter your last name"
-                    error={errors.lastName?.message}
+                    error={errors.lastname?.message}
                     className="w-[48%]"
                   />
                 </div>
 
-                <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
-                  <label
-                    htmlFor="altEmail"
-                    className="text-[14px] leading-[18px] font-medium"
-                  >
-                    Alternative Email
-                  </label>
-                  <input
-                    type="email"
-                    id="altEmail"
-                    placeholder="bill.sanders@example.com"
-                    className={`h-[55px] border-2 ${
-                      errors.altEmail
-                        ? "border-red-500"
-                        : "border-(--inputBorder)"
-                    } rounded-[10px] w-full px-5 text-blackText`}
-                    {...register("altEmail", {
-                      required: "Alternative Email is required",
-                      pattern: {
-                        value: /^\S+@\S+$/,
-                        message: "Invalid email format",
-                      },
-                    })}
-                  />
-                  {errors.altEmail && (
-                    <span className="text-red-500 text-sm">
-                      {errors.altEmail.message}
-                    </span>
-                  )}
-                </div>
-
-                <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
-                  <label
-                    htmlFor="businessEntity"
-                    className="text-[14px] leading-[18px] font-medium"
-                  >
-                    Business Entity
-                  </label>
-                  <input
-                    type="text"
-                    id="businessEntity"
-                    placeholder="Razorx"
-                    className={`h-[55px] border-2 ${
-                      errors.businessEntity
-                        ? "border-red-500"
-                        : "border-(--inputBorder)"
-                    } rounded-[10px] w-full px-5 text-blackText`}
-                    {...register("businessEntity", {
-                      required: "Business Entity is required",
-                    })}
-                  />
-                  {errors.businessEntity && (
-                    <span className="text-red-500 text-sm">
-                      {errors.businessEntity.message}
-                    </span>
-                  )}
-                </div>
+                <InputField
+                  label="Alternative Email"
+                  name="alternativemail"
+                  control={control}
+                  type="email"
+                  required={true}
+                  placeholder="Enter your Alternative Email"
+                  error={errors.alternativemail?.message}
+                />
+                <InputField
+                  label="Business Entity"
+                  name="business_entity"
+                  control={control}
+                  required={true}
+                  type="text"
+                  placeholder="Enter your business entity"
+                  error={errors.business_entity?.message}
+                />
               </div>
 
               <div className=" w-[48%] flex flex-col gap-4">
-                <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
-                  <label
-                    htmlFor="email"
-                    className="text-[14px] leading-[18px] font-medium"
-                  >
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    placeholder="bill.sanders@example.com"
-                    className={`h-[55px] border-2 ${
-                      errors.email ? "border-red-500" : "border-(--inputBorder)"
-                    } rounded-[10px] w-full px-5 text-blackText`}
-                    {...register("email", {
-                      required: "Email is required",
-                      pattern: {
-                        value: /^\S+@\S+$/,
-                        message: "Invalid email format",
-                      },
-                    })}
-                  />
-                  {errors.email && (
-                    <span className="text-red-500 text-sm">
-                      {errors.email.message}
-                    </span>
-                  )}
-                </div>
+                <InputField
+                  label="Email Address"
+                  name="email"
+                  control={control}
+                  type="email"
+                  required={true}
+                  placeholder="Enter your Email Address"
+                  error={errors.email?.message}
+                />
                 <div className="flex justify-between items-center w-full">
-                  {/* <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] mt-5">
-                    <label
-                      htmlFor="role"
-                      className="text-[14px] leading-[18px] font-medium"
-                    >
-                      Role
-                    </label>
-                    <Controller
-                      name="role"
-                      control={control}
-                      defaultValue=""
-                      rules={{ required: "Role is required" }}
-                      render={({ field }) => (
-                        <CustomizableDropdown
-                          height="h-[55px]"
-                          options={["Agent", "Users", "Admin"]}
-                          selected={field.value}
-                          setSelected={field.onChange}
-                          width="w-full"
-                        />
-                      )}
-                    />
-                    {errors.role && (
-                      <p className="text-red-500 text-sm">
-                        {errors.role.message}
-                      </p>
-                    )}
-                  </div> */}
                   <SelectField
                     label="Role"
                     name="role"
@@ -302,232 +242,85 @@ const AddUser = () => {
                     placeholder="Select..."
                     error={errors.role?.message}
                     required={false}
-                    className="w-[49%] hidden sm:block "
+                    className="w-[48%]  "
                   />
 
-                  {/* <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%] mt-5">
-                    <label
-                      htmlFor="startDate"
-                      className="text-[14px] leading-[18px] font-medium"
-                    >
-                      Start Date
-                    </label>
-                    <Controller
-                      name="startDate"
-                      control={control}
-                      defaultValue=""
-                      rules={{ required: "Start Date is required" }}
-                      render={({ field }) => (
-                        <DateInput
-                          value={field.value}
-                          onChange={field.onChange}
-                          height="h-[55px]"
-                        />
-                      )}
-                    />
-                    {errors.startDate && (
-                      <p className="text-red-500 text-sm">
-                        {errors.startDate.message}
-                      </p>
-                    )}
-                  </div> */}
                   <CustomDatePicker
                     name="startDate"
                     control={control}
                     label="Select a Date"
                     placeholder="8-21-15"
-                    // rules={{ required: "Date is required" }}
+                    rules={{ required: "Date is required" }}
                     className="w-[48%]"
                   />
                 </div>
+                <InputField
+                  label="Password"
+                  name="password"
+                  control={control}
+                  type="password"
+                  required={true}
+                  placeholder="Enter your password"
+                  error={errors.password?.message}
+                />
               </div>
             </div>
 
             <div className="w-full border-t-[1.5px] border-(--smoke)"> </div>
 
-            <div className="w-full flex justify-between ">
-              <div className="w-[48%] flex flex-col gap-4">
-                <div className="flex justify-between items-center w-full">
-                  <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
-                    <label
-                      htmlFor="aeCommission"
-                      className="text-[14px] leading-[18px] font-medium"
-                    >
-                      AE Commission Threshold
-                    </label>
-                    <input
-                      type="text"
-                      id="aeCommission"
-                      placeholder="John"
-                      className={`h-[55px] border-2 ${
-                        errors.aeCommission
-                          ? "border-red-500"
-                          : "border-(--inputBorder)"
-                      } rounded-[10px] w-full px-5 text-blackText`}
-                      {...register("aeCommission", {
-                        required: "aeCommission is required",
-                      })}
-                    />
-                    {errors.aeCommission && (
-                      <span className="text-red-500 text-sm">
-                        {errors.aeCommission.message}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
-                  <label
-                    htmlFor="aeEscrow"
-                    className="text-[14px] leading-[18px] font-medium"
-                  >
-                    AE Escrow Commission
-                  </label>
-                  <input
-                    type="text"
-                    id="aeEscrow"
-                    placeholder="John"
-                    className={`h-[55px] border-2 ${
-                      errors.firstName
-                        ? "border-red-500"
-                        : "border-(--inputBorder)"
-                    } rounded-[10px] w-full px-5 text-blackText`}
-                    {...register("aeEscrow", {
-                      required: "aeEscrow is required",
-                    })}
-                  />
-                  {errors.aeEscrow && (
-                    <span className="text-red-500 text-sm">
-                      {errors.aeEscrow.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="w-[48%] flex flex-col gap-4">
-                {/* Year Anniversary */}
-                <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
-                  <label
-                    htmlFor="yearAnniversary"
-                    className="text-[14px] leading-[18px] font-medium"
-                  >
-                    Year Anniversary
-                  </label>
-                  <Controller
-                    name="yearAnniversary"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: "Year Anniversary is required" }}
-                    render={({ field }) => (
-                      <DateInput
-                        value={field.value}
-                        onChange={field.onChange}
-                        height="h-[55px]"
-                      />
-                    )}
-                  />
-                  {errors.yearAnniversary && (
-                    <p className="text-red-500 text-sm">
-                      {errors.yearAnniversary.message}
-                    </p>
-                  )}
-                </div>
-
-                {/* Agent Monthly Fee */}
-                <div className="flex justify-between items-center w-full">
-                  <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
-                    <label
-                      htmlFor="aeTitle"
-                      className="text-[14px] leading-[18px] font-medium"
-                    >
-                      AE Title Commission
-                    </label>
-                    <input
-                      type="text"
-                      id="aeTitle"
-                      placeholder="John"
-                      className={`h-[55px] border-2 ${
-                        errors.aeTitle
-                          ? "border-red-500"
-                          : "border-(--inputBorder)"
-                      } rounded-[10px] w-full px-5 text-blackText`}
-                      {...register("aeCommission", {
-                        required: "AE Title is required",
-                      })}
-                    />
-                    {errors.aeTitle && (
-                      <span className="text-red-500 text-sm">
-                        {errors.aeTitle.message}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* <div className="w-full flex justify-between flex-wrap gap-4">
+              <InputField
+                label="AE Commission Threshold"
+                name="ae_commission_threshold"
+                control={control}
+                type="number"
+                placeholder="Enter AE Commission Threshold"
+                error={errors.ae_commission_threshold?.message}
+                className="w-[48%]"
+              />
+              <InputField
+                label="AE Escrow Commission"
+                name="ae_escrow_commission"
+                control={control}
+                type="number"
+                placeholder="Enter AE Escrow Commission"
+                error={errors.ae_escrow_commission?.message}
+                className="w-[48%]"
+              />
+              <InputField
+                label="AE Title Commission"
+                name="ae_title_commission"
+                control={control}
+                type="number"
+                placeholder="Enter AE Title Commission"
+                error={errors.ae_title_commission?.message}
+                className="w-[48%]"
+              />
+            </div> */}
 
             <div className="w-full border-t-[1.5px] border-(--smoke)"> </div>
 
             <div className="w-full flex justify-between flex-col gap-4">
-              <div className="flex w-full justify-between ">
-                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                  <label
-                    htmlFor="last"
-                    className="text-[14px] leading-[18px] font-medium"
-                  >
-                    Alternative Email
-                  </label>
-                  <input
-                    type="text"
-                    id="last"
-                    placeholder="bill.sanders@example.com"
-                    className={`placeholder:text-[16px] placeholder:leading-[20px] placeholder:font-normal h-[55px] border-2 border-(--inputBorder)  rounded-[10px] w-full px-5 text-blackText`}
-                  />
-                </div>
-                <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                  <label
-                    htmlFor="last"
-                    className="text-[14px] leading-[18px] font-medium"
-                  >
-                    Business Entity
-                  </label>
-                  <input
-                    type="text"
-                    id="last"
-                    placeholder="Razorx"
-                    className={`placeholder:text-[16px] placeholder:leading-[20px] placeholder:font-normal h-[55px] border-2 border-(--inputBorder)  rounded-[10px] w-full px-5 text-blackText`}
-                  />
-                </div>
-              </div>
-              <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
-                {/* Apply selected Commission Template(s) */}
-                <label
-                  htmlFor="commissionTemplate"
-                  className="text-[14px] leading-[18px] font-medium"
-                >
-                  Apply selected Commission Template(s) when Transactions go
-                  Under Contract
-                </label>
-                <Controller
-                  name="commissionTemplate"
+              {/* <div className="flex w-full justify-between ">
+                <InputField
+                  label="Career Path"
+                  name="career_path"
                   control={control}
-                  defaultValue=""
-                  rules={{ required: "This field is required" }}
-                  render={({ field }) => (
-                    <CustomizableDropdown
-                      height="h-[55px]"
-                      options={["Agent", "Users", "Admin"]}
-                      selected={field.value}
-                      setSelected={field.onChange}
-                      width="w-full"
-                    />
-                  )}
+                  type="number"
+                  placeholder="Enter career path"
+                  error={errors.career_path?.message}
+                  className="w-[48%]"
                 />
-                {errors.commissionTemplate && (
-                  <p className="text-red-500 text-sm">
-                    {errors.commissionTemplate.message}
-                  </p>
-                )}
-              </div>
+                <InputField
+                  label="Lead Source"
+                  name="lead_source"
+                  control={control}
+                  type="number"
+                  placeholder="Enter career path"
+                  error={errors.lead_source?.message}
+                  className="w-[48%]"
+                />
+              </div> */}
 
               {/* Notes */}
               <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
@@ -560,7 +353,7 @@ const AddUser = () => {
                 <div className="gap-4 flex items-center">
                   <input
                     type="checkbox"
-                    id="challenges"
+                    id="exclude_challenges_leaderboards"
                     className="accent-(--primary) outline-(--greyText) w-5 h-5"
                     checked={isChallange}
                     onChange={() => setIsChallange(!isChallange)}
@@ -574,8 +367,8 @@ const AddUser = () => {
                     type="checkbox"
                     id="challenges"
                     className="accent-(--primary) outline-(--greyText) w-5 h-5"
-                    checked={isChallange}
-                    onChange={() => setIsChallange(!isChallange)}
+                    checked={isDownlaod}
+                    onChange={() => setIsDownload(!isDownlaod)}
                   />
                   <label htmlFor="challenges" className="text-sm">
                     Download Transactions
@@ -586,8 +379,8 @@ const AddUser = () => {
                     type="checkbox"
                     id="challenges"
                     className="accent-(--primary) outline-(--greyText) w-5 h-5"
-                    checked={isChallange}
-                    onChange={() => setIsChallange(!isChallange)}
+                    checked={isWelcome}
+                    onChange={() => setIsWelcome(!isWelcome)}
                   />
                   <label htmlFor="challenges" className="text-sm">
                     Send Welcome Email
@@ -601,11 +394,11 @@ const AddUser = () => {
                 type="submit"
                 className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] w-fit px-8  rounded-xl text-white"
               >
-                Add User
+                {isLoading ? <Spinner /> : "Add User"}
               </button>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );
