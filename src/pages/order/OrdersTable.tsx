@@ -14,12 +14,19 @@ import OrderActionsPopup from "../../components/orders/OrderActionsPopup";
 import Pagination from "../../components/common/Pagination";
 import TableHeader from "../../components/ui/table/TableHeader";
 import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
+import SelectField from "../../components/inputs/SelectField";
+import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
+import NoDataRow from "../../components/ui/NoDataRow";
+import DropdownInput from "../../components/inputs/DropdownInput";
+import { useForm } from "react-hook-form";
 
 const OrdersTable = () => {
   const [searchValue, setSearchValue] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [selectedFilter, setSelectedFilter] = useState("Active");
+  const [selectedFileType, setSelectedFileType] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("");
+
   const navigate = useNavigate();
 
   const options: string[] = [
@@ -35,7 +42,12 @@ const OrdersTable = () => {
       setPage(newPage);
     }
   };
-  const { data } = useGetOrdersQuery({ filter: "", page, limit: 10 });
+  const { data, isLoading } = useGetOrdersQuery({
+    status: selectedFilter,
+    type: selectedFileType,
+    page,
+    limit: 10,
+  });
 
   const toggleDropdown = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -75,6 +87,21 @@ const OrdersTable = () => {
     { text: "Created At", arrowIcon: true },
   ];
 
+  const documentTypes = [
+    "Title Only - REFI",
+    "Title Only - SALE",
+    "Prelim/Commitment",
+    "Escrow Only - Sale",
+    "Escrow Only - REFI",
+    "Title and Escrow - SALE",
+    "Title and Escrow - REFI",
+    "Commercial Escrow - REFI",
+    "Commercial Title - REFI",
+    "Commercial Title - SALE",
+    "LCP",
+    "Other",
+  ];
+
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Orders", "Orders"]} />
@@ -112,11 +139,20 @@ const OrdersTable = () => {
           />
           <div className="flex items-center gap-3">
             <CustomizableDropdown
+              placeholder="Type"
               height="h-[44px]"
-              options={["All", "Active", "InActive"]}
+              options={documentTypes}
+              selected={selectedFileType}
+              setSelected={(e) => setSelectedFileType(e)}
+              width="w-[180px]"
+            />
+            <CustomizableDropdown
+              placeholder="Status"
+              height="h-[44px]"
+              options={["Open", "Closed", "On Hold", "Cancelled"]}
               selected={selectedFilter}
               setSelected={(e) => setSelectedFilter(e)}
-              width="w-[180px]"
+              width="w-[130px]"
             />
             <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
               <img src={upload} alt="" />
@@ -145,64 +181,76 @@ const OrdersTable = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.orders?.map(
-                (e: any, i: number) => (
-                  <tr
-                    key={i}
-                    className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9]"
-                  >
-                    <td>
-                      <input
-                        type="checkbox"
-                        name=""
-                        id=""
-                        className="w-[21px] h-[21px] accent-(--primary) "
-                      />
-                    </td>
-                    <td>{e.id}</td>
-                    <td>{e.titleOfficer}</td>
-                    <td>{e.titleOffice}</td>
-                    <td>{e.titleRep}</td>
-                    <td>{e.titleRepPct}</td>
-                    <td>{e.openDate}</td>
-                    <td>{e.estimatedClosingDate}</td>
-                    <td>{e.closedDate}</td>
-                    <td>{e.fileType}</td>
-                    <td>{e.orderNumber}</td>
-                    <td>{e.fileStatus}</td>
-                    <td>{e.salePrice}</td>
-                    <td>{e.loanAmount}</td>
-                    <td>{e.propertyAddress}</td>
-                    <td>{e.propertyCounty}</td>
-                    <td>{e.propertyState}</td>
-                    <td>{e.escrowOfficer}</td>
-                    <td>{e.listingAgentCompany}</td>
-                    <td>{e.listingAgentContactName}</td>
-                    <td>{e.listingAgentContactEmail}</td>
-                    <td>{e.listingAgentPhone}</td>
-                    <td>{e.sellingAgentCompany}</td>
-                    <td>{e.sellingAgentContactName}</td>
-                    <td>{e.sellingAgentContactEmail}</td>
-                    <td>{e.sellingAgentPhone}</td>
-                    <td>{e.mortgageBrokerCompany}</td>
-                    <td>{e.mortgageBrokerContact}</td>
-                    <td>{e.mortgageBrokerContactEmail}</td>
-                    <td>{e.mortgageBrokerPhone}</td>
-                    <td>{e.underwriter}</td>
-                    <td>{e.createdAt}</td>
-                    <td>
-                      <img
-                        src={menu}
-                        alt=""
-                        onClick={() => {
-                          toggleDropdown(i);
-                        }}
-                      />
-                      {activeIndex === i && <OrderActionsPopup />}
-                    </td>
-                  </tr>
-                ),
-                []
+              {isLoading ? (
+                <TableSkeleton columns={30} />
+              ) : (
+                <>
+                  {data?.orders?.length === 0 ? (
+                    <NoDataRow colSpan={4} />
+                  ) : (
+                    <>
+                      {data?.orders?.map(
+                        (e: any, i: number) => (
+                          <tr
+                            key={i}
+                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9]"
+                          >
+                            <td>
+                              <input
+                                type="checkbox"
+                                name=""
+                                id=""
+                                className="w-[21px] h-[21px] accent-(--primary) "
+                              />
+                            </td>
+                            <td>{e.id}</td>
+                            <td>{e.titleOfficer}</td>
+                            <td>{e.titleOffice}</td>
+                            <td>{e.titleRep}</td>
+                            <td>{e.titleRepPct}</td>
+                            <td>{e.openDate}</td>
+                            <td>{e.estimatedClosingDate}</td>
+                            <td>{e.closedDate}</td>
+                            <td>{e.fileType}</td>
+                            <td>{e.orderNumber}</td>
+                            <td>{e.fileStatus}</td>
+                            <td>{e.salePrice}</td>
+                            <td>{e.loanAmount}</td>
+                            <td>{e.propertyAddress}</td>
+                            <td>{e.propertyCounty}</td>
+                            <td>{e.propertyState}</td>
+                            <td>{e.escrowOfficer}</td>
+                            <td>{e.listingAgentCompany}</td>
+                            <td>{e.listingAgentContactName}</td>
+                            <td>{e.listingAgentContactEmail}</td>
+                            <td>{e.listingAgentPhone}</td>
+                            <td>{e.sellingAgentCompany}</td>
+                            <td>{e.sellingAgentContactName}</td>
+                            <td>{e.sellingAgentContactEmail}</td>
+                            <td>{e.sellingAgentPhone}</td>
+                            <td>{e.mortgageBrokerCompany}</td>
+                            <td>{e.mortgageBrokerContact}</td>
+                            <td>{e.mortgageBrokerContactEmail}</td>
+                            <td>{e.mortgageBrokerPhone}</td>
+                            <td>{e.underwriter}</td>
+                            <td>{e.createdAt}</td>
+                            <td>
+                              <img
+                                src={menu}
+                                alt=""
+                                onClick={() => {
+                                  toggleDropdown(i);
+                                }}
+                              />
+                              {activeIndex === i && <OrderActionsPopup />}
+                            </td>
+                          </tr>
+                        ),
+                        []
+                      )}
+                    </>
+                  )}
+                </>
               )}
             </tbody>
           </table>

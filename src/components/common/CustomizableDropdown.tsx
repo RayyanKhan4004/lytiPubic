@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import arrow from "../../assets/icons/ArrowBlack.svg";
 
 interface DropdownInputProps {
-  label?: string;
+  placeholder?: string;
   options: string[];
   selected: string;
   setSelected: (value: string) => void;
@@ -14,7 +14,7 @@ interface DropdownInputProps {
 }
 
 const CustomizableDropdown: React.FC<DropdownInputProps> = ({
-  label,
+  placeholder = "Select..",
   options,
   selected,
   setSelected,
@@ -32,7 +32,9 @@ const CustomizableDropdown: React.FC<DropdownInputProps> = ({
         className={`flex items-center justify-between ${height} px-4 py-2 ${customBorder} ${customBackground} rounded-lg cursor-pointer`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="text-sm">{selected}</span>
+        <span className={`text-sm ${!selected ? "text-gray-400" : ""}`}>
+          {selected || placeholder}
+        </span>
         <img src={arrow} alt="arrow icon" />
       </div>
       {isOpen && (
