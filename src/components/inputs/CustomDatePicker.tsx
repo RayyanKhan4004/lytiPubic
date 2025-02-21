@@ -54,7 +54,7 @@ const CustomDatePicker: React.FC<DatePickerProps> = ({
                 placeholderText={placeholder}
                 dateFormat="yyyy-MM-dd"
                 className={`custom_datepicker w-full px-4 h-[55px] border-2 font-Mulish rounded-[10px] focus:outline-none placeholder-gray-400  ${
-                  error ? "border-red-500" : "border-[#EAECF0]"
+                  error ? "border-red-500" : "border-[#f4efe9]"
                 }`}
               />
               <AiOutlineCalendar
