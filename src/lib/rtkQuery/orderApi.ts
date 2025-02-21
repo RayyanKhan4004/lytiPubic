@@ -35,7 +35,7 @@ interface FormValues {
 export const orderApi = createApi({
   reducerPath: "orderApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_BASE_URL,
+    baseUrl: import.meta.env.REACT_APP_API_BASE_URL,
 
     prepareHeaders: (headers, { getState, endpoint }) => {
       const noAuthRequiredEndpoints = ["login"];
