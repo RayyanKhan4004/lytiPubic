@@ -9,7 +9,6 @@ import Breadcrumb from "../../../components/common/BreadCrumb";
 import SelectField from "../../../components/inputs/SelectField";
 import CustomDatePicker from "../../../components/inputs/CustomDatePicker";
 import InputField from "../../../components/inputs/InputFields";
-import Checkbox from "../../../components/inputs/CheckBox";
 import ErrorsMessage from "../../../components/common/ErrorMessage";
 import { useSignUpMutation } from "../../../lib/rtkQuery/authApi";
 import { formatDate } from "../../../utils/formatDate";
