@@ -30,6 +30,8 @@ interface FormValues {
   filter?: string;
   page?: number;
   limit?: number;
+  status?: string;
+  type?: string;
 }
 
 export const orderApi = createApi({
@@ -68,7 +70,8 @@ export const orderApi = createApi({
   }),
   endpoints: (builder) => ({
     getOrders: builder.query<any, FormValues>({
-      query: ({ filter, page, limit }) => `orders/?page=${page}&limit=${10}`,
+      query: ({ status, page, limit, type }) =>
+        `orders/?page=${page}&limit=${10}&fileStatus=${status}&fileType=${type}`,
     }),
 
     createOrder: builder.mutation<any, FormValues>({
