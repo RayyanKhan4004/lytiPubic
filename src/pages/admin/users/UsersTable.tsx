@@ -12,7 +12,9 @@ import UserActionsPopup from "../../../components/admin/users/UserActionsPopup";
 import Pagination from "../../../components/common/Pagination";
 import SelectField from "../../../components/inputs/SelectField";
 import { useForm } from "react-hook-form";
-
+import { useFetchUsersQuery } from "../../../lib/rtkQuery/userApi";
+import TableHeader from "../../../components/table/TableHeader";
+import dummyImage from "../../../assets/images/Dummy.jpg";
 interface FormValues {
   filter: string;
 }
@@ -49,6 +51,31 @@ const UsersTable = () => {
     { value: "inactive", label: "Inactive" },
     { value: "excluded", label: "Excluded" },
   ];
+  const { data, error } = useFetchUsersQuery({
+    keyword: "",
+    page: 1,
+    pageSize: 10,
+  });
+  console.log(data, "===data===");
+  const tableHeaders = [
+    { text: "ID", arrowIcon: false },
+    { text: "User", arrowIcon: false },
+    { text: "Email", arrowIcon: false },
+    { text: "Alternative Email", arrowIcon: false },
+    { text: "Business Entity", arrowIcon: false },
+    { text: "Career Path", arrowIcon: false },
+    { text: "Lead Source", arrowIcon: false },
+    { text: "AE Commission Threshold", arrowIcon: false },
+    { text: "AE Escrow Commission", arrowIcon: false },
+    { text: "AE Title Commission", arrowIcon: false },
+    { text: "Exclude Challenges Leaderboards", arrowIcon: false },
+    { text: "Send Welcome Email", arrowIcon: false },
+    { text: "Download Transactions", arrowIcon: false },
+    { text: "Notes", arrowIcon: false },
+    { text: "Start Date", arrowIcon: false },
+    { text: "Created At", arrowIcon: false },
+  ];
+
   return (
     <div className="w-full px-4 my-8">
       <Breadcrumb items={["Admin", "User"]} />
@@ -90,87 +117,76 @@ const UsersTable = () => {
           </div>
         </div>
 
-        <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-3">
-          <thead className="text-sm font-normal text-start">
-            <tr className="border-b-[1px] border-[#F4EFE9] ">
-              <th className="text-start py-4 font-medium">User ID </th>
-              <th className="text-start font-medium">User</th>
-              <th className="text-start font-medium">Phone No</th>
-              <th className="text-start font-medium ">
-                <div className="flex  gap-2 items-center">
-                  Added <img src={arrowUpDown} alt="" />
-                </div>
-              </th>
-              <th className="text-start font-medium ">
-                <div className="flex  gap-2 items-center">
-                  Last Access <img src={arrowUpDown} alt="" />
-                </div>
-              </th>
-              <th className="text-start font-medium ">
-                <div className="flex  gap-2 items-center">
-                  Status <img src={arrowUpDown} alt="" />
-                </div>
-              </th>
-              <th className="text-start font-medium">Excluded</th>
-              <th className="text-start font-medium ">Download Trans.</th>{" "}
-              <th className="text-start font-medium">Active Trans.</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(
-              (e: any, i: number) => (
-                <tr
-                  key={i}
-                  className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9]"
-                >
-                  <td
-                    className="cursor-pointer px-3 "
-                    style={{
-                      maxWidth: "50px",
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                    }}
-                    title={e.id}
+        <div className="w-full overflow-x-auto">
+          <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-6">
+            <thead className="text-sm font-normal text-start">
+              <tr className="border-b-[1px] border-[#F4EFE9] ">
+                {tableHeaders.map(({ text, arrowIcon }) => (
+                  <TableHeader key={text} text={text} arrowIcon={arrowIcon} />
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data?.users?.map(
+                (e: any, i: number) => (
+                  <tr
+                    key={i}
+                    className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9]"
                   >
-                    {e.id}
-                  </td>
-                  <td>
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={e.image}
-                        alt=""
-                        className="w-[40px] h-[40px] rounded-full"
-                      />
-                      <div>
-                        <h3 className="font-medium ">{e.name}</h3>
-                        <h3 className="font-normal">{e.role}</h3>
-                      </div>
-                    </div>
-                  </td>
-                  <td>{e.phone}</td>
-                  <td>{e.added}</td>
-                  <td>{e.lastAccess}</td>
-                  <td>{e.status}</td>
-                  <td>{e.excluded ? "Yes" : "No"}</td>
-                  <td>{e.downloadTrans ? "Yes" : "No"}</td>
-                  <td>{e.activeTrans}</td>
-                  <td>
-                    <img
-                      src={menu}
-                      alt=""
-                      onClick={() => {
-                        toggleDropdown(i);
+                    <td
+                      className="cursor-pointer px-3 "
+                      style={{
+                        maxWidth: "50px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
                       }}
-                    />
-                    {activeIndex === i && <UserActionsPopup />}
-                  </td>
-                </tr>
-              ),
-              []
-            )}
-          </tbody>
-        </table>
+                      title={e.id}
+                    >
+                      {e.id}
+                    </td>
+                    <td>
+                      <div className="flex items-center gap-2">
+                        <img
+                          src={e.profileImage || dummyImage}
+                          alt=""
+                          className="w-[40px] h-[40px] rounded-full"
+                        />
+                        <div>
+                          <h3 className="font-medium ">{e.firstname}</h3>
+                          <h3 className="text-xs text-(--secondary)">
+                            {e.role}
+                          </h3>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td>{e.email}</td>
+                    <td>{e.alternativemail}</td>
+                    <td>{e.businessEntity}</td>
+                    <td>{e.careerPath}</td>
+                    <td>{e.leadSource}</td>
+                    <td>{e.aeCommissionThreshold}</td>
+                    <td>{e.aeEscrowCommission}</td>
+                    <td>{e.aeTitleCommission}</td>
+                    <td>{e.excludeChallengesLeaderboards ? "Yes" : "No"}</td>
+                    <td>{e.sendWelcomeEmail ? "Yes" : "No"}</td>
+                    <td>{e.downloadTransactions ? "Yes" : "No"}</td>
+                    <td>{e.notes}</td>
+
+                    <td>
+                      {e.startDate
+                        ? new Date(e.startDate).toLocaleDateString()
+                        : "N/A"}
+                    </td>
+                    <td>{new Date(e.createdAt).toLocaleDateString()}</td>
+                  </tr>
+                ),
+                []
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div className="w-full flex justify-end gap-5 items-center">
