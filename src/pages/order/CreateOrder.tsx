@@ -68,9 +68,9 @@ const CreateOrder = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const formattedData = {
       ...data,
-      openDate: formatDate(data.openDate),
-      estimatedClosingDate: formatDate(data.estimatedClosingDate),
-      closedDate: formatDate(data.closedDate),
+      // openDate: formatDate(data.openDate),
+      // estimatedClosingDate: formatDate(data.estimatedClosingDate),
+      // closedDate: formatDate(data.closedDate),
     };
 
     try {
@@ -128,7 +128,7 @@ const CreateOrder = () => {
               control={control}
               label="Open Date"
               placeholder="8-21-15"
-              rules={{ required: "Date is required" }}
+              // rules={{ required: "Date is required" }}
               className="w-[48%]"
             />
 
@@ -137,7 +137,7 @@ const CreateOrder = () => {
               control={control}
               label="Estimated Closing Date"
               placeholder="8-21-15"
-              rules={{ required: "Date is required" }}
+              // rules={{ required: "Date is required" }}
               className="w-[48%]"
             />
             <CustomDatePicker
@@ -145,7 +145,7 @@ const CreateOrder = () => {
               control={control}
               label="Closing Date"
               placeholder="8-21-15"
-              rules={{ required: "Date is required" }}
+              // rules={{ required: "Date is required" }}
               className="w-[48%]"
             />
 
