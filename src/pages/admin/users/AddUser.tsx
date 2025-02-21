@@ -337,7 +337,7 @@ const AddUser = () => {
                     label="Select a Date"
                     placeholder="8-21-15"
                     // rules={{ required: "Date is required" }}
-                    className=""
+                    className="w-[48%]"
                   />
                 </div>
               </div>

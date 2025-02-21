@@ -1,6 +1,7 @@
 import { useState } from "react";
 import upload from "../../assets/icons/UploadSimple.svg";
-import add from "../../assets/icons/AlignLeft.svg";
+import filter from "../../assets/icons/AlignLeft.svg";
+import add from "../../assets/icons/Add.svg";
 import menu from "../../assets/icons/Menu.svg";
 import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
 import { useNavigate } from "react-router-dom";
@@ -113,11 +114,15 @@ const OrdersTable = () => {
             <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
               <img src={upload} alt="" />
             </div>
+            <div className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white">
+              <img src={filter} alt="" />
+            </div>
             <div
               className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
-              // onClick={() => navigate("/admin/add-user")}
+              onClick={() => navigate("/orders/add-order")}
             >
               <img src={add} alt="" />
+              Add Order
             </div>
           </div>
         </div>
@@ -198,14 +203,7 @@ const OrdersTable = () => {
       </div>
 
       <div className="w-full flex justify-end gap-5 items-center">
-        <CustomizableDropdown
-          options={options}
-          selected={`${itemsPerPage} Items Per Page`}
-          setSelected={() => ""}
-          width="w-60"
-        />
-
-        <Pagination onPageChange={() => ""} pageCount={4} />
+        <Pagination onPageChange={() => ""} pageCount={data?.totalPages} />
       </div>
     </div>
   );
