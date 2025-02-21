@@ -13,8 +13,12 @@ import Pagination from "../../../components/common/Pagination";
 import SelectField from "../../../components/inputs/SelectField";
 import { useForm } from "react-hook-form";
 import { useFetchUsersQuery } from "../../../lib/rtkQuery/userApi";
-import TableHeader from "../../../components/table/TableHeader";
+import TableHeader from "../../../components/ui/table/TableHeader";
 import dummyImage from "../../../assets/images/Dummy.jpg";
+import NoData from "../../../components/ui/NoData";
+import NoDataRow from "../../../components/ui/NoDataRow";
+import Spinner from "../../../components/common/Spinner";
+import TableSkeleton from "../../../components/ui/skeleton/TableSkeleton";
 interface FormValues {
   filter: string;
 }
@@ -31,8 +35,6 @@ const UsersTable = () => {
     "20 Items Per Page",
     "30 Items Per Page",
   ];
-
-  const users = DummyData();
 
   const toggleDropdown = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -51,12 +53,20 @@ const UsersTable = () => {
     { value: "inactive", label: "Inactive" },
     { value: "excluded", label: "Excluded" },
   ];
-  const { data, error } = useFetchUsersQuery({
-    keyword: "",
-    page: 1,
-    pageSize: 10,
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    const newPage = selected + 1;
+    if (newPage >= 1 && newPage <= data?.totalPages) {
+      setPage(newPage);
+    }
+  };
+
+  const { data, error, isLoading } = useFetchUsersQuery({
+    keyword: searchValue,
+    page,
+    limit: 10,
   });
-  console.log(data, "===data===");
   const tableHeaders = [
     { text: "ID", arrowIcon: false },
     { text: "User", arrowIcon: false },
@@ -83,10 +93,8 @@ const UsersTable = () => {
         <div className="font-Poppins flex justify-between items-center w-full pt-3">
           <h2 className="text-lg text-(--primary) font-semibold">Users</h2>
           <div className="flex items-center gap-3">
-            <SearchInput
-              value={searchValue}
-              onChange={(e: any) => setSearchValue(e.target.value)}
-            />
+            <SearchInput value={searchValue} onChange={setSearchValue} />
+
             <CustomizableDropdown
               height="h-[44px]"
               options={["All", "Active", "InActive"]}
@@ -127,62 +135,80 @@ const UsersTable = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.users?.map(
-                (e: any, i: number) => (
-                  <tr
-                    key={i}
-                    className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9]"
-                  >
-                    <td
-                      className="cursor-pointer px-3 "
-                      style={{
-                        maxWidth: "50px",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis",
-                      }}
-                      title={e.id}
-                    >
-                      {e.id}
-                    </td>
-                    <td>
-                      <div className="flex items-center gap-2">
-                        <img
-                          src={e.profileImage || dummyImage}
-                          alt=""
-                          className="w-[40px] h-[40px] rounded-full"
-                        />
-                        <div>
-                          <h3 className="font-medium ">{e.firstname}</h3>
-                          <h3 className="text-xs text-(--secondary)">
-                            {e.role}
-                          </h3>
-                        </div>
-                      </div>
-                    </td>
+              {isLoading ? (
+                <TableSkeleton columns={30} />
+              ) : (
+                <>
+                  {data?.users?.length === 0 ? (
+                    <NoDataRow colSpan={4} />
+                  ) : (
+                    <>
+                      {data?.users?.map(
+                        (e: any, i: number) => (
+                          <tr
+                            key={i}
+                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9]"
+                          >
+                            <td
+                              className="cursor-pointer px-3 "
+                              style={{
+                                maxWidth: "50px",
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
+                              }}
+                              title={e.id}
+                            >
+                              {e.id}
+                            </td>
+                            <td>
+                              <div className="flex items-center gap-2">
+                                <img
+                                  src={e.profileImage || dummyImage}
+                                  alt=""
+                                  className="w-[40px] h-[40px] rounded-full"
+                                />
+                                <div>
+                                  <h3 className="font-medium ">
+                                    {e.firstname}
+                                  </h3>
+                                  <h3 className="text-xs text-(--secondary)">
+                                    {e.role}
+                                  </h3>
+                                </div>
+                              </div>
+                            </td>
 
-                    <td>{e.email}</td>
-                    <td>{e.alternativemail}</td>
-                    <td>{e.businessEntity}</td>
-                    <td>{e.careerPath}</td>
-                    <td>{e.leadSource}</td>
-                    <td>{e.aeCommissionThreshold}</td>
-                    <td>{e.aeEscrowCommission}</td>
-                    <td>{e.aeTitleCommission}</td>
-                    <td>{e.excludeChallengesLeaderboards ? "Yes" : "No"}</td>
-                    <td>{e.sendWelcomeEmail ? "Yes" : "No"}</td>
-                    <td>{e.downloadTransactions ? "Yes" : "No"}</td>
-                    <td>{e.notes}</td>
+                            <td>{e.email}</td>
+                            <td>{e.alternativemail}</td>
+                            <td>{e.businessEntity}</td>
+                            <td>{e.careerPath}</td>
+                            <td>{e.leadSource}</td>
+                            <td>{e.aeCommissionThreshold}</td>
+                            <td>{e.aeEscrowCommission}</td>
+                            <td>{e.aeTitleCommission}</td>
+                            <td>
+                              {e.excludeChallengesLeaderboards ? "Yes" : "No"}
+                            </td>
+                            <td>{e.sendWelcomeEmail ? "Yes" : "No"}</td>
+                            <td>{e.downloadTransactions ? "Yes" : "No"}</td>
+                            <td>{e.notes}</td>
 
-                    <td>
-                      {e.startDate
-                        ? new Date(e.startDate).toLocaleDateString()
-                        : "N/A"}
-                    </td>
-                    <td>{new Date(e.createdAt).toLocaleDateString()}</td>
-                  </tr>
-                ),
-                []
+                            <td>
+                              {e.startDate
+                                ? new Date(e.startDate).toLocaleDateString()
+                                : "N/A"}
+                            </td>
+                            <td>
+                              {new Date(e.createdAt).toLocaleDateString()}
+                            </td>
+                          </tr>
+                        ),
+                        []
+                      )}
+                    </>
+                  )}
+                </>
               )}
             </tbody>
           </table>
@@ -190,14 +216,17 @@ const UsersTable = () => {
       </div>
 
       <div className="w-full flex justify-end gap-5 items-center">
-        <CustomizableDropdown
+        {/* <CustomizableDropdown
           options={options}
           selected={`${itemsPerPage} Items Per Page`}
           setSelected={() => ""}
           width="w-60"
-        />
+        /> */}
 
-        <Pagination onPageChange={() => ""} pageCount={4} />
+        <Pagination
+          onPageChange={handlePageChange}
+          pageCount={data?.totalPages}
+        />
       </div>
     </div>
   );

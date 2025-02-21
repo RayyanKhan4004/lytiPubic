@@ -1,5 +1,5 @@
 import React from "react";
-import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
+import arrowUpDown from "../../../assets/icons/ArrowsDownUp.svg";
 
 interface TableHeaderProps {
   text: string;

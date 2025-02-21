@@ -12,7 +12,7 @@ import SearchInput from "../../components/common/SearchInput";
 import CustomizableDropdown from "../../components/common/CustomizableDropdown";
 import OrderActionsPopup from "../../components/orders/OrderActionsPopup";
 import Pagination from "../../components/common/Pagination";
-import TableHeader from "../../components/table/TableHeader";
+import TableHeader from "../../components/ui/table/TableHeader";
 import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
 
 const OrdersTable = () => {
@@ -27,45 +27,52 @@ const OrdersTable = () => {
     "20 Items Per Page",
     "30 Items Per Page",
   ];
-  const users = DummyData();
-  const { data } = useGetOrdersQuery({ filter: "" });
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    const newPage = selected + 1;
+    if (newPage >= 1 && newPage <= data?.totalPages) {
+      setPage(newPage);
+    }
+  };
+  const { data } = useGetOrdersQuery({ filter: "", page, limit: 10 });
 
   const toggleDropdown = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
   const tableHeaders = [
-    { text: "id", arrowIcon: true },
-    { text: "titleOfficer", arrowIcon: true },
-    { text: "titleOffice", arrowIcon: true },
-    { text: "titleRep", arrowIcon: true },
-    { text: "titleRepPct", arrowIcon: true },
-    { text: "openDate", arrowIcon: true },
-    { text: "estimatedClosingDate", arrowIcon: true },
-    { text: "closedDate", arrowIcon: true },
-    { text: "fileType", arrowIcon: true },
-    { text: "orderNumber", arrowIcon: true },
-    { text: "fileStatus", arrowIcon: true },
-    { text: "salePrice", arrowIcon: true },
-    { text: "loanAmount", arrowIcon: true },
-    { text: "propertyAddress", arrowIcon: true },
-    { text: "propertyCounty", arrowIcon: true },
-    { text: "propertyState", arrowIcon: true },
-    { text: "escrowOfficer", arrowIcon: true },
-    { text: "listingAgentCompany", arrowIcon: true },
-    { text: "listingAgentContactName", arrowIcon: true },
-    { text: "listingAgentContactEmail", arrowIcon: true },
-    { text: "listingAgentPhone", arrowIcon: true },
-    { text: "sellingAgentCompany", arrowIcon: true },
-    { text: "sellingAgentContactName", arrowIcon: true },
-    { text: "sellingAgentContactEmail", arrowIcon: true },
-    { text: "sellingAgentPhone", arrowIcon: true },
-    { text: "mortgageBrokerCompany", arrowIcon: true },
-    { text: "mortgageBrokerContact", arrowIcon: true },
-    { text: "mortgageBrokerContactEmail", arrowIcon: true },
-    { text: "mortgageBrokerPhone", arrowIcon: true },
-    { text: "underwriter", arrowIcon: true },
-    { text: "createdAt", arrowIcon: true },
+    { text: "ID", arrowIcon: true },
+    { text: "Title Officer", arrowIcon: true },
+    { text: "Title Office", arrowIcon: true },
+    { text: "Title Rep", arrowIcon: true },
+    { text: "Title Rep Pct", arrowIcon: true },
+    { text: "Open Date", arrowIcon: true },
+    { text: "Estimated Closing Date", arrowIcon: true },
+    { text: "Closed Date", arrowIcon: true },
+    { text: "File Type", arrowIcon: true },
+    { text: "Order Number", arrowIcon: true },
+    { text: "File Status", arrowIcon: true },
+    { text: "Sale Price", arrowIcon: true },
+    { text: "Loan Amount", arrowIcon: true },
+    { text: "Property Address", arrowIcon: true },
+    { text: "Property County", arrowIcon: true },
+    { text: "Property State", arrowIcon: true },
+    { text: "Escrow Officer", arrowIcon: true },
+    { text: "Listing Agent Company", arrowIcon: true },
+    { text: "Listing Agent Contact Name", arrowIcon: true },
+    { text: "Listing Agent Contact Email", arrowIcon: true },
+    { text: "Listing Agent Phone", arrowIcon: true },
+    { text: "Selling Agent Company", arrowIcon: true },
+    { text: "Selling Agent Contact Name", arrowIcon: true },
+    { text: "Selling Agent Contact Email", arrowIcon: true },
+    { text: "Selling Agent Phone", arrowIcon: true },
+    { text: "Mortgage Broker Company", arrowIcon: true },
+    { text: "Mortgage Broker Contact", arrowIcon: true },
+    { text: "Mortgage Broker Contact Email", arrowIcon: true },
+    { text: "Mortgage Broker Phone", arrowIcon: true },
+    { text: "Underwriter", arrowIcon: true },
+    { text: "Created At", arrowIcon: true },
   ];
 
   return (
@@ -203,7 +210,10 @@ const OrdersTable = () => {
       </div>
 
       <div className="w-full flex justify-end gap-5 items-center">
-        <Pagination onPageChange={() => ""} pageCount={data?.totalPages} />
+        <Pagination
+          onPageChange={handlePageChange}
+          pageCount={data?.totalPages}
+        />
       </div>
     </div>
   );
