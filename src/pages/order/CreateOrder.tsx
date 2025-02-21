@@ -88,6 +88,52 @@ const CreateOrder = () => {
     { value: "Agent 3", label: "Agent 3" },
     { value: "Agent 4", label: "Agent 4" },
   ];
+  const fileStatusOption = [
+    { value: "Open", label: "Open" },
+    { value: "Closed", label: "Closed" },
+    { value: "On Hold", label: "On Hold" },
+    { value: "Cancelled", label: "Cancelled" },
+  ];
+  const countyOptions = [
+    { value: "Alameda", label: "Alameda" },
+    { value: "Bedford", label: "Bedford" },
+    { value: "Contra Costa", label: "Contra Costa" },
+    { value: "Fresno", label: "Fresno" },
+    { value: "Imperial", label: "Imperial" },
+    { value: "Inyo", label: "Inyo" },
+    { value: "Kern", label: "Kern" },
+    { value: "Los Angeles", label: "Los Angeles" },
+    { value: "Mendocino", label: "Mendocino" },
+    { value: "Modoc", label: "Modoc" },
+    { value: "Napa", label: "Napa" },
+    { value: "Orange", label: "Orange" },
+    { value: "Riverside", label: "Riverside" },
+    { value: "Sacramento", label: "Sacramento" },
+    { value: "San Bernardino", label: "San Bernardino" },
+    { value: "San Diego", label: "San Diego" },
+    { value: "San Luis Obispo", label: "San Luis Obispo" },
+    { value: "San Mateo", label: "San Mateo" },
+    { value: "Santa Barbara", label: "Santa Barbara" },
+    { value: "Santa Clara", label: "Santa Clara" },
+    { value: "Stanislaus", label: "Stanislaus" },
+    { value: "Tulare", label: "Tulare" },
+    { value: "Ventura", label: "Ventura" },
+  ];
+  const fileTypeOptions = [
+    { value: "Title Only - REFI", label: "Title Only - REFI" },
+    { value: "Title Only - SALE", label: "Title Only - SALE" },
+    { value: "Prelim/Commitment", label: "Prelim/Commitment" },
+    { value: "Escrow Only - Sale", label: "Escrow Only - Sale" },
+    { value: "Escrow Only - REFI", label: "Escrow Only - REFI" },
+    { value: "Title and Escrow - SALE", label: "Title and Escrow - SALE" },
+    { value: "Title and Escrow - REFI", label: "Title and Escrow - REFI" },
+    { value: "Commercial Escrow - REFI", label: "Commercial Escrow - REFI" },
+    { value: "Commercial Title - REFI", label: "Commercial Title - REFI" },
+    { value: "Commercial Title - SALE", label: "Commercial Title - SALE" },
+    { value: "LCP", label: "LCP" },
+    { value: "Other", label: "Other" },
+  ];
+
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Orders", "Orders Table", "Create Order"]} />
@@ -168,14 +214,26 @@ const CreateOrder = () => {
               error={errors.orderNumber?.message}
               className="w-[48%]"
             />
-            <InputField
+
+            <SelectField
               label="File Status"
               name="fileStatus"
               control={control}
-              type="text"
-              placeholder="Enter your file status"
+              options={fileStatusOption}
+              placeholder="Select..."
               error={errors.fileStatus?.message}
-              className="w-[48%]"
+              required={false}
+              className="w-[48%] "
+            />
+            <SelectField
+              label="File Type"
+              name="fileType"
+              control={control}
+              options={fileTypeOptions}
+              placeholder="Select..."
+              error={errors.fileType?.message}
+              required={false}
+              className="w-[48%] "
             />
 
             {/* <InputField
@@ -208,14 +266,15 @@ const CreateOrder = () => {
               className="w-[48%]"
             />
 
-            <InputField
+            <SelectField
               label="Property County"
               name="propertyCounty"
               control={control}
-              type="text"
-              placeholder="Enter property county"
+              options={countyOptions}
+              placeholder="Select..."
               error={errors.propertyCounty?.message}
-              className="w-[48%]"
+              required={false}
+              className="w-[48%] "
             />
 
             <InputField
