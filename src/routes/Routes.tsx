@@ -25,6 +25,7 @@ import TeamDashboard from "../pages/dashboard/teamDashboard/TeamDashboard";
 import CeoDashboard from "../pages/dashboard/CeoDashboard";
 import PersonalDashboard from "../pages/dashboard/PersonalDashboard";
 import CreateOrder from "../pages/order/CreateOrder";
+import OrderDetail from "../pages/order/OrderDetail";
 
 const appRouter = createBrowserRouter([
   {
@@ -133,6 +134,14 @@ const appRouter = createBrowserRouter([
     element: (
       <DashboardLayout>
         <OrderEdit />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/orders/order-detail",
+    element: (
+      <DashboardLayout>
+        <OrderDetail />
       </DashboardLayout>
     ),
   },

@@ -102,6 +102,9 @@ const OrdersTable = () => {
     "Other",
   ];
 
+  const handleDetailPage = (orderData: any) => {
+    navigate(`/orders/order-detail`, { state: { orderData } });
+  };
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Orders", "Orders"]} />
@@ -193,7 +196,8 @@ const OrdersTable = () => {
                         (e: any, i: number) => (
                           <tr
                             key={i}
-                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9]"
+                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9] cursor-pointer "
+                            onClick={() => handleDetailPage(e)}
                           >
                             <td>
                               <input
