@@ -20,7 +20,7 @@ import Spinner from "../../components/common/Spinner";
 
 interface FormValues {
   titleOffice: string;
-  agent: string;
+  titleRep: string;
   titleRepPct: string;
   openDate: string;
   estimatedClosingDate: string;
@@ -161,11 +161,11 @@ const CreateOrder = () => {
             />
             <SelectField
               label="Agent"
-              name="agent"
+              name="titleRep"
               control={control}
               options={roleOption}
               placeholder="Select..."
-              error={errors.agent?.message}
+              error={errors.titleRep?.message}
               required={false}
               className="w-[48%] "
             />
@@ -196,12 +196,12 @@ const CreateOrder = () => {
             />
 
             <InputField
-              label="Title Office"
-              name="fileType"
+              label="Title Officer"
+              name="titleOfficer"
               control={control}
               type="text"
-              placeholder="Enter your file type"
-              error={errors.fileType?.message}
+              placeholder="Enter title officer"
+              error={errors.titleOfficer?.message}
               className="w-[48%]"
             />
 
@@ -284,16 +284,6 @@ const CreateOrder = () => {
               type="text"
               placeholder="Enter property state"
               error={errors.propertyState?.message}
-              className="w-[48%]"
-            />
-
-            <InputField
-              label="Title Officer"
-              name="titleOfficer"
-              control={control}
-              type="text"
-              placeholder="Enter title officer"
-              error={errors.titleOfficer?.message}
               className="w-[48%]"
             />
 

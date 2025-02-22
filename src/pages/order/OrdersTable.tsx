@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import upload from "../../assets/icons/UploadSimple.svg";
 import filter from "../../assets/icons/AlignLeft.svg";
 import add from "../../assets/icons/Add.svg";
@@ -42,7 +42,7 @@ const OrdersTable = () => {
       setPage(newPage);
     }
   };
-  const { data, isLoading } = useGetOrdersQuery({
+  const { data, isLoading, refetch } = useGetOrdersQuery({
     status: selectedFilter,
     type: selectedFileType,
     page,
@@ -105,6 +105,10 @@ const OrdersTable = () => {
   const handleDetailPage = (orderData: any) => {
     navigate(`/orders/order-detail`, { state: { orderData } });
   };
+  useEffect(() => {
+    refetch();
+  }, []);
+
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Orders", "Orders"]} />
