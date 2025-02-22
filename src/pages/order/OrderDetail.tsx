@@ -12,7 +12,10 @@ import InputField from "../../components/inputs/InputFields";
 import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 import { formatDate } from "../../utils/formatDate";
-import { useCreateOrderMutation } from "../../lib/rtkQuery/orderApi";
+import {
+  useCreateOrderMutation,
+  useDeleteOrderMutation,
+} from "../../lib/rtkQuery/orderApi";
 import toast from "react-hot-toast";
 import { useAppSelector } from "../../lib/store/hooks";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -54,7 +57,7 @@ interface FormValues {
 }
 
 const OrderDetail = () => {
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const [deleteOrder, { isLoading }] = useDeleteOrderMutation();
   const navigate = useNavigate();
   const {
     register,
@@ -71,14 +74,10 @@ const OrderDetail = () => {
   console.log(orderData);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const formattedData = {
-      ...data,
-    };
-
     try {
-      //   const res = await createOrder(formattedData).unwrap();
-      //   navigate("/orders/orders");
-      //   toast.success("Order Created Successfully");
+      const res = await deleteOrder(orderData?.id).unwrap();
+      toast.success("Order delete Successfully");
+      navigate("/orders/orders");
     } catch (err: any) {
       toast.error(err?.data?.message || "Order creation failed");
     }
@@ -490,12 +489,12 @@ const OrderDetail = () => {
             />
 
             <div className="flex justify-end w-full my-3">
-              {/* <button
+              <button
                 type="submit"
                 className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] w-fit px-8  rounded-xl text-white"
               >
-                {isLoading ? <Spinner /> : "Update Order"}
-              </button> */}
+                {isLoading ? <Spinner /> : "Delete Order"}
+              </button>
             </div>
           </form>
         </div>

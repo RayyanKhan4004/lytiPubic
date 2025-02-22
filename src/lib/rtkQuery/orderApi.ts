@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface FormValues {
   titleOffice?: string;
+  titleRep?: string;
   titleRepPct?: string;
   openDate?: string;
   estimatedClosingDate?: string;
@@ -81,7 +82,17 @@ export const orderApi = createApi({
         body,
       }),
     }),
+    deleteOrder: builder.mutation<any, string>({
+      query: (id) => ({
+        url: `orders/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useGetOrdersQuery, useCreateOrderMutation } = orderApi;
+export const {
+  useGetOrdersQuery,
+  useCreateOrderMutation,
+  useDeleteOrderMutation,
+} = orderApi;
