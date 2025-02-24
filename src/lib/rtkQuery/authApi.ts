@@ -18,8 +18,8 @@ interface FormValues {
   ae_commission_threshold?: number;
   ae_escrow_commission?: number;
   ae_title_commission?: number;
-  career_path?: number;
-  lead_source?: number;
+  career_path?: string;
+  lead_source?: string;
   exclude_challenges_leaderboards?: boolean;
   download_transactions?: boolean;
   send_welcome_email?: boolean;
@@ -40,7 +40,7 @@ export const authApi = createApi({
         return headers;
       }
 
-      const token = (getState() as any)?.auth?.accessToken;
+      const token = (getState() as any)?.auth?.access_token;
 
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -73,7 +73,28 @@ export const authApi = createApi({
         body,
       }),
     }),
+    updateUser: builder.mutation<
+      any,
+      { id: string; data: Partial<FormValues> }
+    >({
+      query: ({ id, data }) => ({
+        url: `users/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    deleteUser: builder.mutation<any, string>({
+      query: (id) => ({
+        url: `users/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useSignUpMutation } = authApi;
+export const {
+  useLoginMutation,
+  useSignUpMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+} = authApi;

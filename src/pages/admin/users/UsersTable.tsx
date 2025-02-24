@@ -10,7 +10,6 @@ import SearchInput from "../../../components/common/SearchInput";
 import CustomizableDropdown from "../../../components/common/CustomizableDropdown";
 import UserActionsPopup from "../../../components/admin/users/UserActionsPopup";
 import Pagination from "../../../components/common/Pagination";
-import SelectField from "../../../components/inputs/SelectField";
 import { useForm } from "react-hook-form";
 import { useFetchUsersQuery } from "../../../lib/rtkQuery/userApi";
 import TableHeader from "../../../components/ui/table/TableHeader";
@@ -25,7 +24,6 @@ interface FormValues {
 
 const UsersTable = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [selectedFilter, setSelectedFilter] = useState("Active");
   const navigate = useNavigate();
@@ -86,6 +84,9 @@ const UsersTable = () => {
     { text: "Created At", arrowIcon: false },
   ];
 
+  const handleDetailPage = (userData: any) => {
+    navigate(`/admin/edit-user`, { state: { userData } });
+  };
   return (
     <div className="w-full px-4 my-8">
       <Breadcrumb items={["Admin", "User"]} />
@@ -147,7 +148,8 @@ const UsersTable = () => {
                         (e: any, i: number) => (
                           <tr
                             key={i}
-                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9]"
+                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9] cursor-pointer"
+                            onClick={() => handleDetailPage(e)}
                           >
                             <td
                               className="cursor-pointer px-3 "

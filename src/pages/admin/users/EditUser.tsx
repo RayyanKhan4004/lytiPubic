@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import image from "../../../assets/icons/Image.svg";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Breadcrumb from "../../../components/common/BreadCrumb";
 import SelectField from "../../../components/inputs/SelectField";
 import CustomDatePicker from "../../../components/inputs/CustomDatePicker";
 import InputField from "../../../components/inputs/InputFields";
-import { useSignUpMutation } from "../../../lib/rtkQuery/authApi";
+import {
+  useDeleteUserMutation,
+  useSignUpMutation,
+  useUpdateUserMutation,
+} from "../../../lib/rtkQuery/authApi";
 import { formatDate } from "../../../utils/formatDate";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../../../components/common/Spinner";
+import { useDeleteOrderMutation } from "../../../lib/rtkQuery/orderApi";
 
 interface FormValues {
   firstname?: string;
@@ -37,13 +42,18 @@ interface FormValues {
   send_welcome_email?: boolean;
 }
 
-const AddUser = () => {
+const EditUser = () => {
   const [isChallange, setIsChallange] = useState<boolean>(false);
   const [isDownlaod, setIsDownload] = useState<boolean>(false);
   const [isWelcome, setIsWelcome] = useState<boolean>(false);
 
+  const data = useLocation();
+
+  const { userData } = data.state || {};
+  console.log(userData, "==data===");
+
   const navigate = useNavigate();
-  const [signUp, { isLoading }] = useSignUpMutation();
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
   const {
     register,
     handleSubmit,
@@ -64,8 +74,6 @@ const AddUser = () => {
     watch("profileImage") instanceof File
       ? URL.createObjectURL(watch("profileImage") as File)
       : null;
-
-  console.log(profileImagePreview);
 
   const removeImage = (name: "profileImage") => {
     setValue(name, null);
@@ -92,17 +100,60 @@ const AddUser = () => {
     // console.log(formattedData, "==data===");
 
     try {
-      const res = await signUp(formattedData).unwrap();
-      toast.success("User created successfully");
+      const res = await updateUser({
+        id: userData.id,
+        data: formattedData,
+      }).unwrap();
+      toast.success("User updated successfully");
       navigate("/admin/users-table");
-      // console.log(res, "===res====");
+      console.log(res, "===res====");
     } catch (error: any) {
-      toast.error(error?.data?.message || "Can't add user");
+      toast.error(error?.data?.message || "Can't update user");
     }
   };
+
+  const [deleteUser, { isLoading: isDeleteLoading }] = useDeleteUserMutation();
+  const handleDeleteUser = async () => {
+    try {
+      const res = await deleteUser(userData?.id).unwrap();
+      toast.success("user delete Successfully");
+      navigate("/admin/users-table");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Can not delete ");
+    }
+  };
+
+  useEffect(() => {
+    if (userData) {
+      setValue("firstname", userData.firstname || "");
+      setValue("lastname", userData.lastname || "");
+      setValue("alternativemail", userData.alternativemail || "");
+      setValue("business_entity", userData.business_entity || "");
+      setValue("email", userData.email || "");
+      setValue("role", userData.role || "");
+      setValue("startDate", userData.startdate || "");
+      setValue("brokerageCap", userData.brokerageCap || "");
+      setValue("yearAnniversary", userData.yearAnniversary || "");
+      setValue("agentTransactionFee", userData.agentTransactionFee || "");
+      setValue("agentMonthlyFee", userData.agentMonthlyFee || "");
+      setValue("commissionTemplate", userData.commissionTemplate || "");
+      setValue("notes", userData.notes || "");
+      setValue(
+        "ae_commission_threshold",
+        userData.ae_commission_threshold || 0
+      );
+      setValue("ae_escrow_commission", userData.ae_escrow_commission || 0);
+      setValue("ae_title_commission", userData.ae_title_commission || 0);
+      setValue("career_path", userData.career_path || 0);
+      setValue("lead_source", userData.lead_source || 0);
+      setIsChallange(userData.exclude_challenges_leaderboards || false);
+      setIsDownload(userData.download_transactions || false);
+      setIsWelcome(userData.send_welcome_email || false);
+    }
+  }, [userData, setValue]);
   return (
     <div className="w-full px-4 my-8 font-Poppins">
-      <Breadcrumb items={["Admin", "User", "Add User"]} />
+      <Breadcrumb items={["Admin", "User", "Edit User"]} />
       <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-screen my-6">
         <h2 className="text-lg text-(--primary) font-semibold pt-3">
           Add User
@@ -242,7 +293,7 @@ const AddUser = () => {
                     className="w-[48%]"
                   />
                 </div>
-                <InputField
+                {/* <InputField
                   label="Password"
                   name="password"
                   control={control}
@@ -250,7 +301,7 @@ const AddUser = () => {
                   required={true}
                   placeholder="Enter your password"
                   error={errors.password?.message}
-                />
+                /> */}
               </div>
             </div>
 
@@ -388,12 +439,19 @@ const AddUser = () => {
               </div>
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-4">
+              <button
+                type="button"
+                className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] w-fit px-8  rounded-xl text-white"
+                onClick={handleDeleteUser}
+              >
+                {isDeleteLoading ? <Spinner /> : "Delete"}
+              </button>
               <button
                 type="submit"
                 className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] w-fit px-8  rounded-xl text-white"
               >
-                {isLoading ? <Spinner /> : "Add User"}
+                {isLoading ? <Spinner /> : "Save Chnages"}
               </button>
             </div>
           </form>
@@ -403,4 +461,4 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default EditUser;
