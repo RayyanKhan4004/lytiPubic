@@ -64,7 +64,7 @@ export const SidebarData = () => {
       title: "Leaderboards",
       icon1: icon5,
       icon2: icon6,
-      path: "/Leaderboards",
+      path: "/leader-board",
     },
     {
       id: 4,

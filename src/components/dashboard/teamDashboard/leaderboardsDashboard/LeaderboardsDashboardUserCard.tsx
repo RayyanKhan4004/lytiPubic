@@ -5,6 +5,8 @@ type UserCardProps = {
   rank: number;
   name: string;
   count: number;
+  width?: string;
+  border?: string;
 };
 
 const LeaderboardsDashboardUserCard: React.FC<UserCardProps> = ({
@@ -12,16 +14,22 @@ const LeaderboardsDashboardUserCard: React.FC<UserCardProps> = ({
   rank,
   name,
   count,
+  width = "w-[48%]",
+  border = "border border-white",
 }) => {
   return (
-    <div className="bg-white flex flex-col gap-1 rounded-xl p-3 w-[48%] items-center mt-4">
+    <div
+      className={`bg-white flex flex-col gap-1 rounded-xl p-3 ${border} ${width} items-center mt-4`}
+    >
       <div className="relative mb-1">
         <img
           src={image}
           alt={name}
           className="w-[60px] h-[60px] rounded-full"
         />
-        <div className="w-[24px] h-[24px] rounded-full flex justify-center items-center bg-(--secondary) text-white absolute left-0 mx-auto right-0 bottom-[-11px] text-base font-semibold border border-white">
+        <div
+          className={`w-[24px] h-[24px] rounded-full flex justify-center items-center bg-(--secondary) text-white absolute left-0 mx-auto right-0 bottom-[-11px] text-base font-semibold `}
+        >
           {rank}
         </div>
       </div>

@@ -27,6 +27,7 @@ import PersonalDashboard from "../pages/dashboard/PersonalDashboard";
 import CreateOrder from "../pages/order/CreateOrder";
 import OrderDetail from "../pages/order/OrderDetail";
 import EditUser from "../pages/admin/users/EditUser";
+import LeaderBoards from "../pages/LeaderBoards";
 
 const appRouter = createBrowserRouter([
   {
@@ -235,6 +236,14 @@ const appRouter = createBrowserRouter([
     element: (
       <DashboardLayout>
         <TeamDashboard />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/leader-board",
+    element: (
+      <DashboardLayout>
+        <LeaderBoards />
       </DashboardLayout>
     ),
   },
