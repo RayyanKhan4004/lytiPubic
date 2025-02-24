@@ -32,11 +32,15 @@ const Sidebar: React.FC = () => {
       if (e.subMenu.length > 0) {
         setSelectedSubItem(e.subMenu[0].id);
       }
-      navigate(e.path);
     } else {
       setOpenDropdown(null);
       setSelectedItem(index);
       setSelectedSubItem(null);
+    }
+
+    // Ensure navigation happens in both cases
+    if (e.path) {
+      navigate(e.path);
     }
   };
 

@@ -183,24 +183,20 @@ const UsersTable = () => {
 
                             <td>{e.email}</td>
                             <td>{e.alternativemail}</td>
-                            <td>{e.businessEntity}</td>
-                            <td>{e.careerPath}</td>
-                            <td>{e.leadSource}</td>
-                            <td>{e.aeCommissionThreshold}</td>
-                            <td>{e.aeEscrowCommission}</td>
-                            <td>{e.aeTitleCommission}</td>
+                            <td>{e.business_entity}</td>
+                            <td>{e.career_path}</td>
+                            <td>{e.lead_source}</td>
+                            <td>{e.ae_commission_threshold}</td>
+                            <td>{e.ae_escrow_commission}</td>
+                            <td>{e.ae_title_commission}</td>
                             <td>
-                              {e.excludeChallengesLeaderboards ? "Yes" : "No"}
+                              {e.exclude_challenges_leaderboards ? "Yes" : "No"}
                             </td>
-                            <td>{e.sendWelcomeEmail ? "Yes" : "No"}</td>
-                            <td>{e.downloadTransactions ? "Yes" : "No"}</td>
+                            <td>{e.send_welcome_email ? "Yes" : "No"}</td>
+                            <td>{e.download_transactions ? "Yes" : "No"}</td>
                             <td>{e.notes}</td>
 
-                            <td>
-                              {e.startDate
-                                ? new Date(e.startDate).toLocaleDateString()
-                                : "N/A"}
-                            </td>
+                            <td>{e.startdate}</td>
                             <td>
                               {new Date(e.createdAt).toLocaleDateString()}
                             </td>

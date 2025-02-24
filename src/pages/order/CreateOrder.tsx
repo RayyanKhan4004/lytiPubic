@@ -29,8 +29,8 @@ interface FormValues {
   transactionType: string;
   orderNumber: string;
   orderStatus: string;
-  // salePrice: string;
-  // loanAmount: string;
+  salePrice: string;
+  loanAmount: string;
   propertyAddress: string;
   propertyCounty: string;
   propertyState: string;
@@ -240,7 +240,7 @@ const CreateOrder = () => {
               label="Sale Price"
               name="salePrice"
               control={control}
-              type="text"
+              type="number"
               placeholder="Enter sale price"
               error={errors.salePrice?.message}
               className="w-[48%]"
@@ -250,7 +250,7 @@ const CreateOrder = () => {
               label="Loan Amount"
               name="loanAmount"
               control={control}
-              type="text"
+              type="number"
               placeholder="Enter loan amount"
               error={errors.loanAmount?.message}
               className="w-[48%]"
