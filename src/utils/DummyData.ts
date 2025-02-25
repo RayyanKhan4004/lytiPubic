@@ -214,7 +214,6 @@ export const DummyData = () => {
 };
 
 export const tableHeaders = [
-  { text: "ID", arrowIcon: true },
   { text: "Title Officer", arrowIcon: true },
   { text: "Title Office", arrowIcon: true },
   { text: "Title Rep", arrowIcon: true },
@@ -248,7 +247,6 @@ export const tableHeaders = [
 ];
 
 export const userTableHeaders = [
-  { text: "ID", arrowIcon: false },
   { text: "User", arrowIcon: false },
   { text: "Email", arrowIcon: false },
   { text: "Alternative Email", arrowIcon: false },

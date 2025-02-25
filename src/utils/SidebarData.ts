@@ -24,7 +24,7 @@ export interface Item {
   path?: string;
 }
 
-export const SidebarData = () => {
+export const sidebarData = () => {
   return [
     {
       id: 1,

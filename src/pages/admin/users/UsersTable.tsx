@@ -8,7 +8,6 @@ import { filterOption } from "../../../utils/options";
 
 import Breadcrumb from "../../../components/common/BreadCrumb";
 import Pagination from "../../../components/common/Pagination";
-import UserActionsPopup from "../../../components/admin/users/UserActionsPopup";
 import TableHeader from "../../../components/ui/table/TableHeader";
 import SearchInput from "../../../components/inputs/SearchInput";
 import SelectField from "../../../components/inputs/SelectField";
@@ -22,36 +21,29 @@ import add from "../../../assets/icons/Add.svg";
 import menu from "../../../assets/icons/Menu.svg";
 import arrowUpDown from "../../../assets/icons/ArrowsDownUp.svg";
 import dummyImage from "../../../assets/images/Dummy.jpg";
-
-interface FormValues {
-  filter: string;
-  type: string;
-}
+import PopoverMenu from "../../../components/ui/popup/PopupMenu";
+import toast from "react-hot-toast";
+import { useDeleteUserMutation } from "../../../lib/rtkQuery/authApi";
+import { UserTableType } from "../../../utils/types";
 
 const UsersTable = () => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [page, setPage] = useState(1);
-
+  const [loading, setLoading] = useState("");
   const navigate = useNavigate();
+  const [deleteUser] = useDeleteUserMutation();
 
   const {
-    handleSubmit,
     formState: { errors },
-    setValue,
     watch,
     control,
-  } = useForm<FormValues>();
+  } = useForm<UserTableType>();
 
-  const { data, error, isLoading } = useFetchUsersQuery({
+  const { data, error, isLoading, refetch } = useFetchUsersQuery({
     keyword: searchTerm,
     page,
     limit: 10,
   });
-
-  const toggleDropdown = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
 
   const handlePageChange = ({ selected }: { selected: number }) => {
     const newPage = selected + 1;
@@ -60,13 +52,29 @@ const UsersTable = () => {
     }
   };
 
-  const handleDetailPage = (userData: any) => {
-    navigate(`/admin/edit-user`, { state: { userData } });
-  };
-
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm.toLowerCase());
   };
+
+  const handleAction = async (action: string, userData?: any) => {
+    if (action === "edit" && userData) {
+      navigate(`/admin/edit-user`, { state: { userData } });
+    }
+
+    if (action === "delete" && userData) {
+      setLoading(userData?.id);
+      try {
+        await deleteUser(userData?.id).unwrap();
+        toast.success("User deleted successfully");
+        refetch();
+      } catch (err: any) {
+        toast.error(err?.data?.message || "Cannot delete user");
+      } finally {
+        setLoading("");
+      }
+    }
+  };
+
   return (
     <div className="w-full px-4 my-8">
       <Breadcrumb items={["Admin", "User"]} />
@@ -107,6 +115,8 @@ const UsersTable = () => {
           <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-6">
             <thead className="text-sm font-normal text-start">
               <tr className="border-b-[1px] border-[#F4EFE9] ">
+                <th className="px-6"></th>
+                <th className="text-start font-medium min-w-[100px]">Id</th>
                 {userTableHeaders.map(({ text, arrowIcon }) => (
                   <TableHeader key={text} text={text} arrowIcon={arrowIcon} />
                 ))}
@@ -125,9 +135,66 @@ const UsersTable = () => {
                         (e: any, i: number) => (
                           <tr
                             key={i}
-                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9] cursor-pointer"
-                            onClick={() => handleDetailPage(e)}
+                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9] cursor-pointer 
+                            bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out"
                           >
+                            <td>
+                              {loading == e?.id ? (
+                                <Spinner />
+                              ) : (
+                                <>
+                                  <PopoverMenu
+                                    triggerImage={menu}
+                                    options={[
+                                      {
+                                        label: "Edit User",
+                                        onClick: () => handleAction("edit", e),
+                                      },
+                                      // {
+                                      //   label: "Documents",
+                                      //   onClick: () =>
+                                      //     handleAction("documents"),
+                                      // },
+                                      // {
+                                      //   label: "Comments",
+                                      //   onClick: () => handleAction("comments"),
+                                      // },
+                                      // {
+                                      //   label: "History",
+                                      //   onClick: () => handleAction("history"),
+                                      // },
+                                      // {
+                                      //   label: "Services",
+                                      //   onClick: () => handleAction("services"),
+                                      // },
+                                      // {
+                                      //   label: "Client Portal",
+                                      //   onClick: () =>
+                                      //     handleAction("client_portal"),
+                                      // },
+                                      // {
+                                      //   label: "Lock",
+                                      //   onClick: () => handleAction("lock"),
+                                      // },
+                                      // {
+                                      //   label: "Lost",
+                                      //   onClick: () => handleAction("lost"),
+                                      // },
+                                      // {
+                                      //   label: "Duplicate",
+                                      //   onClick: () =>
+                                      //     handleAction("duplicate"),
+                                      // },
+                                      {
+                                        label: "Delete",
+                                        onClick: () =>
+                                          handleAction("delete", e),
+                                      },
+                                    ]}
+                                  />
+                                </>
+                              )}
+                            </td>
                             <td
                               className="cursor-pointer px-3 "
                               style={{

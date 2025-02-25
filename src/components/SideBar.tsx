@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { SidebarData } from "../utils/SidebarData";
-import logo from "../assets/icons/LytiCropIcon.svg";
 import { useNavigate } from "react-router-dom";
+
+import logo from "../assets/icons/LytiCropIcon.svg";
 import ArrowWhite from "../assets/icons/ArrowWhite.svg";
 import ArrowBlack from "../assets/icons/ArrowBlack.svg";
 import ArrowLeft from "../assets/icons/ArrowLineLeft.svg";
 
+import { sidebarData } from "../utils/SidebarData";
+
 const Sidebar: React.FC = () => {
+  const sidebarItems = sidebarData();
+  const navigate = useNavigate();
+
   const [selectedItem, setSelectedItem] = useState<number | null>(() => {
     const storedItem = localStorage.getItem("selectedItem");
     return storedItem ? JSON.parse(storedItem) : null;
@@ -14,9 +19,6 @@ const Sidebar: React.FC = () => {
 
   const [selectedSubItem, setSelectedSubItem] = useState<number | null>(1);
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-
-  const sidebarItems = SidebarData();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedItem !== null) {
@@ -38,7 +40,6 @@ const Sidebar: React.FC = () => {
       setSelectedSubItem(null);
     }
 
-    // Ensure navigation happens in both cases
     if (e.path) {
       navigate(e.path);
     }

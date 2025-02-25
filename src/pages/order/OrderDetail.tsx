@@ -4,27 +4,16 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 import chat from "../../assets/icons/ChatCircle.svg";
-import phone from "../../assets/icons/Phone.svg";
-import plane from "../../assets/icons/PaperPlaneTilt.svg";
-import dummy from "../../assets/images/Dummy.jpg";
 
 import Breadcrumb from "../../components/common/BreadCrumb";
 import TabNavigation from "../../components/common/TabNavigation";
-import CustomizableDropdown from "../../components/common/CustomizableDropdown";
-import DateInput from "../../components/common/DateInput";
 import Spinner from "../../components/common/Spinner";
 
 import InputField from "../../components/inputs/InputFields";
 import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 
-import { formatDate } from "../../utils/formatDate";
-import { useAppSelector } from "../../lib/store/hooks";
-
-import {
-  useCreateOrderMutation,
-  useDeleteOrderMutation,
-} from "../../lib/rtkQuery/orderApi";
+import { useDeleteOrderMutation } from "../../lib/rtkQuery/orderApi";
 
 import {
   countyOptions,
@@ -32,58 +21,22 @@ import {
   fileTypeOptions,
   roleOption,
 } from "../../utils/options";
-
-interface FormValues {
-  titleOffice: string;
-  agent: string;
-  titleRepPct: string;
-  openDate: string;
-  estimatedClosingDate: string;
-  closedDate: string;
-  cancelDate: string;
-  transactionType: string;
-  orderNumber: string;
-  orderStatus: string;
-  // salePrice: string;
-  // loanAmount: string;
-  propertyAddress: string;
-  propertyCounty: string;
-  propertyState: string;
-  fileStatus: string;
-  titleOfficer: string;
-  escrowOfficer: string;
-  listingAgentCompany: string;
-  listingAgentContactName: string;
-  listingAgentContactEmail: string;
-  listingAgentPhone: string;
-  sellingAgentCompany: string;
-  sellingAgentContactName: string;
-  sellingAgentContactEmail: string;
-  sellingAgentPhone: string;
-  mortgageBrokerCompany: string;
-  mortgageBrokerContact: string;
-  mortgageBrokerContactEmail: string;
-  mortgageBrokerPhone: string;
-  underwriter: string;
-  fileType: string;
-}
+import { OrderDataType } from "../../utils/types";
 
 const OrderDetail = () => {
   const [deleteOrder, { isLoading }] = useDeleteOrderMutation();
   const navigate = useNavigate();
   const data = useLocation();
   const {
-    register,
     handleSubmit,
     formState: { errors },
     setValue,
-    watch,
     control,
-  } = useForm<FormValues>();
+  } = useForm<OrderDataType>();
 
   const { orderData } = data.state || {};
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<OrderDataType> = async (data) => {
     try {
       const res = await deleteOrder(orderData?.id).unwrap();
       toast.success("Order delete Successfully");
@@ -245,13 +198,22 @@ const OrderDetail = () => {
               className="w-[48%] "
             />
 
-            {/* <InputField
+            <InputField
               label="Sale Price"
               name="salePrice"
               control={control}
-              type="text"
+              type="number"
               placeholder="Enter sale price"
               error={errors.salePrice?.message}
+              className="w-[48%]"
+            />
+            <InputField
+              label="Title RepPct"
+              name="titleRepPct"
+              control={control}
+              type="number"
+              placeholder="Enter your value"
+              error={errors.titleRepPct?.message}
               className="w-[48%]"
             />
 
@@ -259,11 +221,11 @@ const OrderDetail = () => {
               label="Loan Amount"
               name="loanAmount"
               control={control}
-              type="text"
+              type="number"
               placeholder="Enter loan amount"
               error={errors.loanAmount?.message}
               className="w-[48%]"
-            /> */}
+            />
 
             <InputField
               label="Property Address"
