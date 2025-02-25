@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
+import {
+  useDeleteOrderMutation,
+  useGetOrdersQuery,
+} from "../../lib/rtkQuery/orderApi";
 import { DummyData, tableHeaders } from "../../utils/DummyData";
 import {
   countyOptions,
@@ -13,8 +16,6 @@ import {
 import Breadcrumb from "../../components/common/BreadCrumb";
 import Pagination from "../../components/common/Pagination";
 import StatsCard from "../../components/orders/StatsCard";
-import CustomizableDropdown from "../../components/common/CustomizableDropdown";
-import OrderActionsPopup from "../../components/orders/OrderActionsPopup";
 import TableHeader from "../../components/ui/table/TableHeader";
 import SelectField from "../../components/inputs/SelectField";
 import SearchInput from "../../components/inputs/SearchInput";
@@ -26,15 +27,14 @@ import filter from "../../assets/icons/AlignLeft.svg";
 import add from "../../assets/icons/Add.svg";
 import menu from "../../assets/icons/Menu.svg";
 import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
+import Spinner from "../../components/common/Spinner";
+import PopoverMenu from "../../components/ui/popup/PopupMenu";
+import toast from "react-hot-toast";
+import { OrderTableType } from "../../utils/types";
 
-interface FormValues {
-  propertyCounty: string;
-  fileStatus: string;
-  fileType: string;
-}
 const OrdersTable = () => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [loading, setLoading] = useState("");
   const [page, setPage] = useState(1);
 
   const navigate = useNavigate();
@@ -44,18 +44,20 @@ const OrdersTable = () => {
     setValue,
     watch,
     control,
-  } = useForm<FormValues>();
+  } = useForm<OrderTableType>();
 
   const selectedPropertyCounty = watch("propertyCounty") || "";
   const selectedFileStatus = watch("fileStatus") || "";
   const selectedFileType = watch("fileType") || "";
 
+  const [deleteOrder] = useDeleteOrderMutation();
   const { data, isLoading, refetch } = useGetOrdersQuery({
     status: selectedFileStatus,
     type: selectedFileType,
     propertyCounty: selectedPropertyCounty,
     page,
     limit: 10,
+    keyword: searchTerm,
   });
 
   const handlePageChange = ({ selected }: { selected: number }) => {
@@ -65,16 +67,27 @@ const OrdersTable = () => {
     }
   };
 
-  const toggleDropdown = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
-
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm.toLowerCase());
   };
 
-  const handleDetailPage = (orderData: any) => {
-    navigate(`/orders/order-detail`, { state: { orderData } });
+  const handleAction = async (action: string, orderData?: any) => {
+    if (action === "edit" && orderData) {
+      navigate(`/orders/order-detail`, { state: { orderData } });
+    }
+
+    if (action === "delete" && orderData) {
+      setLoading(orderData?.id);
+      try {
+        await deleteOrder(orderData?.id).unwrap();
+        toast.success("Order deleted successfully");
+        refetch();
+      } catch (err: any) {
+        toast.error(err?.data?.message || "Cannot delete user");
+      } finally {
+        setLoading("");
+      }
+    }
   };
 
   useEffect(() => {
@@ -149,9 +162,9 @@ const OrdersTable = () => {
               height="44px"
             />
 
-            <button className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white">
+            {/* <button className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white">
               <img src={filter} alt="" />
-            </button>
+            </button> */}
             <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
               <img src={upload} alt="" />
             </div>
@@ -170,7 +183,10 @@ const OrdersTable = () => {
           <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-6">
             <thead className="text-sm font-normal text-start">
               <tr className="border-b-[1px] border-[#F4EFE9] ">
-                <th className="text-start py-4 font-medium px-6"> </th>
+                <th className="px-6"></th>
+
+                <th className="text-start font-medium min-w-[100px]">Id</th>
+
                 {tableHeaders.map(({ text, arrowIcon }) => (
                   <TableHeader key={text} text={text} arrowIcon={arrowIcon} />
                 ))}
@@ -189,17 +205,34 @@ const OrdersTable = () => {
                         (e: any, i: number) => (
                           <tr
                             key={i}
-                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9] cursor-pointer "
-                            onClick={() => handleDetailPage(e)}
+                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
+                            bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out
+                            "
                           >
                             <td>
-                              <input
-                                type="checkbox"
-                                name=""
-                                id=""
-                                className="w-[21px] h-[21px] accent-(--primary) "
-                              />
+                              {loading == e?.id ? (
+                                <Spinner />
+                              ) : (
+                                <>
+                                  <PopoverMenu
+                                    triggerImage={menu}
+                                    options={[
+                                      {
+                                        label: "Edit order",
+                                        onClick: () => handleAction("edit", e),
+                                      },
+
+                                      {
+                                        label: "Delete",
+                                        onClick: () =>
+                                          handleAction("delete", e),
+                                      },
+                                    ]}
+                                  />
+                                </>
+                              )}
                             </td>
+
                             <td>{e.id}</td>
                             <td>{e.titleOfficer}</td>
                             <td>{e.titleOffice}</td>
@@ -231,16 +264,6 @@ const OrdersTable = () => {
                             <td>{e.mortgageBrokerPhone}</td>
                             <td>{e.underwriter}</td>
                             <td>{e.createdAt}</td>
-                            <td>
-                              <img
-                                src={menu}
-                                alt=""
-                                onClick={() => {
-                                  toggleDropdown(i);
-                                }}
-                              />
-                              {activeIndex === i && <OrderActionsPopup />}
-                            </td>
                           </tr>
                         ),
                         []

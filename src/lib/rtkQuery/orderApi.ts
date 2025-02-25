@@ -1,39 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-interface FormValues {
-  titleOffice?: string;
-  titleRep?: string;
-  titleRepPct?: string;
-  openDate?: string;
-  estimatedClosingDate?: string;
-  closedDate?: string;
-  fileType?: string;
-  orderNumber?: string;
-  fileStatus?: string;
-  propertyAddress?: string;
-  propertyCounty?: string;
-  propertyState?: string;
-  titleOfficer?: string;
-  escrowOfficer?: string;
-  listingAgentCompany?: string;
-  listingAgentContactName?: string;
-  listingAgentContactEmail?: string;
-  listingAgentPhone?: string;
-  sellingAgentCompany?: string;
-  sellingAgentContactName?: string;
-  sellingAgentContactEmail?: string;
-  sellingAgentPhone?: string;
-  mortgageBrokerCompany?: string;
-  mortgageBrokerContact?: string;
-  mortgageBrokerContactEmail?: string;
-  mortgageBrokerPhone?: string;
-  underwriter?: string;
-  filter?: string;
-  page?: number;
-  limit?: number;
-  status?: string;
-  type?: string;
-}
+import { OrderDataType } from "../../utils/types";
 
 export const orderApi = createApi({
   reducerPath: "orderApi",
@@ -70,12 +36,12 @@ export const orderApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getOrders: builder.query<any, FormValues>({
-      query: ({ status, page, limit, type, propertyCounty }) =>
-        `orders/?page=${page}&limit=${10}&fileStatus=${status}&fileType=${type}&propertyCounty=${propertyCounty}`,
+    getOrders: builder.query<any, OrderDataType>({
+      query: ({ status, page, limit, type, propertyCounty, keyword }) =>
+        `orders/?page=${page}&limit=${10}&fileStatus=${status}&fileType=${type}&propertyCounty=${propertyCounty}&keyword=${keyword}`,
     }),
 
-    createOrder: builder.mutation<any, FormValues>({
+    createOrder: builder.mutation<any, OrderDataType>({
       query: (body) => ({
         url: "orders",
         method: "POST",

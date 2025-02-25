@@ -16,41 +16,7 @@ import {
   fileTypeOptions,
   roleOption,
 } from "../../utils/options";
-
-interface FormValues {
-  titleOffice: string;
-  titleRep: string;
-  titleRepPct: string;
-  openDate: string;
-  estimatedClosingDate: string;
-  closedDate: string;
-  cancelDate: string;
-  transactionType: string;
-  orderNumber: string;
-  orderStatus: string;
-  salePrice: string;
-  loanAmount: string;
-  propertyAddress: string;
-  propertyCounty: string;
-  propertyState: string;
-  fileStatus: string;
-  titleOfficer: string;
-  escrowOfficer: string;
-  listingAgentCompany: string;
-  listingAgentContactName: string;
-  listingAgentContactEmail: string;
-  listingAgentPhone: string;
-  sellingAgentCompany: string;
-  sellingAgentContactName: string;
-  sellingAgentContactEmail: string;
-  sellingAgentPhone: string;
-  mortgageBrokerCompany: string;
-  mortgageBrokerContact: string;
-  mortgageBrokerContactEmail: string;
-  mortgageBrokerPhone: string;
-  underwriter: string;
-  fileType: string;
-}
+import { OrderDataType } from "../../utils/types";
 
 const CreateOrder = () => {
   const [createOrder, { isLoading }] = useCreateOrderMutation();
@@ -62,9 +28,9 @@ const CreateOrder = () => {
     setValue,
     watch,
     control,
-  } = useForm<FormValues>();
+  } = useForm<OrderDataType>();
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<OrderDataType> = async (data) => {
     const formattedData = {
       ...data,
     };
@@ -120,7 +86,6 @@ const CreateOrder = () => {
               // rules={{ required: "Date is required" }}
               className="w-[48%]"
             />
-
             <CustomDatePicker
               name="estimatedClosingDate"
               control={control}
@@ -137,7 +102,6 @@ const CreateOrder = () => {
               // rules={{ required: "Date is required" }}
               className="w-[48%]"
             />
-
             <InputField
               label="Title Officer"
               name="titleOfficer"
@@ -147,7 +111,6 @@ const CreateOrder = () => {
               error={errors.titleOfficer?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Order Number"
               name="orderNumber"
@@ -157,7 +120,6 @@ const CreateOrder = () => {
               error={errors.orderNumber?.message}
               className="w-[48%]"
             />
-
             <SelectField
               label="File Status"
               name="fileStatus"
@@ -178,14 +140,22 @@ const CreateOrder = () => {
               required={false}
               className="w-[48%] "
             />
-
-            {/* <InputField
+            <InputField
               label="Sale Price"
               name="salePrice"
               control={control}
               type="number"
               placeholder="Enter sale price"
               error={errors.salePrice?.message}
+              className="w-[48%]"
+            />
+            <InputField
+              label="Title RepPct"
+              name="titleRepPct"
+              control={control}
+              type="number"
+              placeholder="Enter your value"
+              error={errors.titleRepPct?.message}
               className="w-[48%]"
             />
 
@@ -197,8 +167,7 @@ const CreateOrder = () => {
               placeholder="Enter loan amount"
               error={errors.loanAmount?.message}
               className="w-[48%]"
-            /> */}
-
+            />
             <InputField
               label="Property Address"
               name="propertyAddress"
@@ -208,7 +177,6 @@ const CreateOrder = () => {
               error={errors.propertyAddress?.message}
               className="w-[48%]"
             />
-
             <SelectField
               label="Property County"
               name="propertyCounty"
@@ -219,7 +187,6 @@ const CreateOrder = () => {
               required={false}
               className="w-[48%] "
             />
-
             <InputField
               label="Property State"
               name="propertyState"
@@ -229,7 +196,6 @@ const CreateOrder = () => {
               error={errors.propertyState?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Escrow Officer"
               name="escrowOfficer"
@@ -239,7 +205,6 @@ const CreateOrder = () => {
               error={errors.escrowOfficer?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Listing Agent Company"
               name="listingAgentCompany"
@@ -249,7 +214,6 @@ const CreateOrder = () => {
               error={errors.listingAgentCompany?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Listing Agent Contact Name"
               name="listingAgentContactName"
@@ -259,7 +223,6 @@ const CreateOrder = () => {
               error={errors.listingAgentContactName?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Listing Agent Contact Email"
               name="listingAgentContactEmail"
@@ -269,7 +232,6 @@ const CreateOrder = () => {
               error={errors.listingAgentContactEmail?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Listing Agent Phone"
               name="listingAgentPhone"
@@ -279,7 +241,6 @@ const CreateOrder = () => {
               error={errors.listingAgentPhone?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Selling Agent Company"
               name="sellingAgentCompany"
@@ -289,7 +250,6 @@ const CreateOrder = () => {
               error={errors.sellingAgentCompany?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Selling Agent Contact Name"
               name="sellingAgentContactName"
@@ -299,7 +259,6 @@ const CreateOrder = () => {
               error={errors.sellingAgentContactName?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Selling Agent Contact Email"
               name="sellingAgentContactEmail"
@@ -309,7 +268,6 @@ const CreateOrder = () => {
               error={errors.sellingAgentContactEmail?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Selling Agent Phone"
               name="sellingAgentPhone"
@@ -319,7 +277,6 @@ const CreateOrder = () => {
               error={errors.sellingAgentPhone?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Mortgage Broker Company"
               name="mortgageBrokerCompany"
@@ -329,7 +286,6 @@ const CreateOrder = () => {
               error={errors.mortgageBrokerCompany?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Mortgage Broker Contact"
               name="mortgageBrokerContact"
@@ -339,7 +295,6 @@ const CreateOrder = () => {
               error={errors.mortgageBrokerContact?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Mortgage Broker Contact Email"
               name="mortgageBrokerContactEmail"
@@ -349,7 +304,6 @@ const CreateOrder = () => {
               error={errors.mortgageBrokerContactEmail?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Mortgage Broker Phone"
               name="mortgageBrokerPhone"
@@ -359,7 +313,6 @@ const CreateOrder = () => {
               error={errors.mortgageBrokerPhone?.message}
               className="w-[48%]"
             />
-
             <InputField
               label="Underwriter"
               name="underwriter"
@@ -369,7 +322,6 @@ const CreateOrder = () => {
               error={errors.underwriter?.message}
               className="w-[48%]"
             />
-
             <div className="flex justify-end w-full my-3">
               <button
                 type="submit"
