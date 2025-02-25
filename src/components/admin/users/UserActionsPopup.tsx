@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 const UserActionsPopup = () => {
   const navigate = useNavigate();
   return (
-    <div className="absolute right-0 -mt-72 w-48 bg-white border rounded shadow-lg">
+    <div className="absolute right-0 -mt-72 w-48 bg-white  rounded shadow-lg">
       <ul className="flex flex-col">
         <li
           className="p-2 hover:bg-gray-100 cursor-pointer"
