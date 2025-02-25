@@ -142,6 +142,14 @@ const appRouter = createBrowserRouter([
 
   // Orders Routes
   {
+    path: "/order",
+    element: (
+      <DashboardLayout>
+        <OrderEdit />
+      </DashboardLayout>
+    ),
+  },
+  {
     path: "/orders/orders",
     element: (
       <DashboardLayout>

@@ -17,23 +17,25 @@ import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
 import SelectField from "../../components/inputs/SelectField";
 import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
 import NoDataRow from "../../components/ui/NoDataRow";
-import DropdownInput from "../../components/inputs/DropdownInput";
-import { useForm } from "react-hook-form";
-
+import { SubmitHandler, useForm } from "react-hook-form";
+interface FormValues {
+  propertyCounty: string;
+  fileStatus: string;
+  fileType: string;
+}
 const OrdersTable = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [selectedFileType, setSelectedFileType] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("");
 
   const navigate = useNavigate();
+  const {
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+    control,
+  } = useForm<FormValues>();
 
-  const options: string[] = [
-    "10 Items Per Page",
-    "20 Items Per Page",
-    "30 Items Per Page",
-  ];
   const [page, setPage] = useState(1);
 
   const handlePageChange = ({ selected }: { selected: number }) => {
@@ -42,9 +44,15 @@ const OrdersTable = () => {
       setPage(newPage);
     }
   };
+
+  const selectedPropertyCounty = watch("propertyCounty") || "";
+  const selectedFileStatus = watch("fileStatus") || "";
+  const selectedFileType = watch("fileType") || "";
+
   const { data, isLoading, refetch } = useGetOrdersQuery({
-    status: selectedFilter,
+    status: selectedFileStatus,
     type: selectedFileType,
+    propertyCounty: selectedPropertyCounty,
     page,
     limit: 10,
   });
@@ -87,21 +95,6 @@ const OrdersTable = () => {
     { text: "Created At", arrowIcon: true },
   ];
 
-  const documentTypes = [
-    "Title Only - REFI",
-    "Title Only - SALE",
-    "Prelim/Commitment",
-    "Escrow Only - Sale",
-    "Escrow Only - REFI",
-    "Title and Escrow - SALE",
-    "Title and Escrow - REFI",
-    "Commercial Escrow - REFI",
-    "Commercial Title - REFI",
-    "Commercial Title - SALE",
-    "LCP",
-    "Other",
-  ];
-
   const handleDetailPage = (orderData: any) => {
     navigate(`/orders/order-detail`, { state: { orderData } });
   };
@@ -109,6 +102,51 @@ const OrdersTable = () => {
     refetch();
   }, []);
 
+  const fileStatusOption = [
+    { value: "Open", label: "Open" },
+    { value: "Closed", label: "Closed" },
+    { value: "On Hold", label: "On Hold" },
+    { value: "Cancelled", label: "Cancelled" },
+  ];
+  const countyOptions = [
+    { value: "Alameda", label: "Alameda" },
+    { value: "Bedford", label: "Bedford" },
+    { value: "Contra Costa", label: "Contra Costa" },
+    { value: "Fresno", label: "Fresno" },
+    { value: "Imperial", label: "Imperial" },
+    { value: "Inyo", label: "Inyo" },
+    { value: "Kern", label: "Kern" },
+    { value: "Los Angeles", label: "Los Angeles" },
+    { value: "Mendocino", label: "Mendocino" },
+    { value: "Modoc", label: "Modoc" },
+    { value: "Napa", label: "Napa" },
+    { value: "Orange", label: "Orange" },
+    { value: "Riverside", label: "Riverside" },
+    { value: "Sacramento", label: "Sacramento" },
+    { value: "San Bernardino", label: "San Bernardino" },
+    { value: "San Diego", label: "San Diego" },
+    { value: "San Luis Obispo", label: "San Luis Obispo" },
+    { value: "San Mateo", label: "San Mateo" },
+    { value: "Santa Barbara", label: "Santa Barbara" },
+    { value: "Santa Clara", label: "Santa Clara" },
+    { value: "Stanislaus", label: "Stanislaus" },
+    { value: "Tulare", label: "Tulare" },
+    { value: "Ventura", label: "Ventura" },
+  ];
+  const fileTypeOptions = [
+    { value: "Title Only - REFI", label: "Title Only - REFI" },
+    { value: "Title Only - SALE", label: "Title Only - SALE" },
+    { value: "Prelim/Commitment", label: "Prelim/Commitment" },
+    { value: "Escrow Only - Sale", label: "Escrow Only - Sale" },
+    { value: "Escrow Only - REFI", label: "Escrow Only - REFI" },
+    { value: "Title and Escrow - SALE", label: "Title and Escrow - SALE" },
+    { value: "Title and Escrow - REFI", label: "Title and Escrow - REFI" },
+    { value: "Commercial Escrow - REFI", label: "Commercial Escrow - REFI" },
+    { value: "Commercial Title - REFI", label: "Commercial Title - REFI" },
+    { value: "Commercial Title - SALE", label: "Commercial Title - SALE" },
+    { value: "LCP", label: "LCP" },
+    { value: "Other", label: "Other" },
+  ];
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Orders", "Orders"]} />
@@ -139,34 +177,50 @@ const OrdersTable = () => {
         />
       </div>
       <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-screen my-6">
-        <div className="font-Poppins flex justify-between items-center w-full pt-3">
+        <form className="font-Poppins flex justify-between items-center w-full pt-3 gap-2">
           <SearchInput
             value={searchValue}
             onChange={(e: any) => setSearchValue(e.target.value)}
           />
-          <div className="flex items-center gap-3">
-            <CustomizableDropdown
-              placeholder="Type"
-              height="h-[44px]"
-              options={documentTypes}
-              selected={selectedFileType}
-              setSelected={(e) => setSelectedFileType(e)}
-              width="w-[180px]"
+          <div className="flex items-center gap-1.5">
+            <SelectField
+              name="propertyCounty"
+              control={control}
+              options={countyOptions}
+              placeholder="County"
+              error={errors.propertyCounty?.message}
+              required={false}
+              className="w-[150px]"
+              height="44px"
             />
-            <CustomizableDropdown
+            <SelectField
+              name="fileStatus"
+              control={control}
+              options={fileStatusOption}
               placeholder="Status"
-              height="h-[44px]"
-              options={["Open", "Closed", "On Hold", "Cancelled"]}
-              selected={selectedFilter}
-              setSelected={(e) => setSelectedFilter(e)}
-              width="w-[130px]"
+              error={errors.fileStatus?.message}
+              required={false}
+              className="w-[120px]"
+              height="44px"
             />
+            <SelectField
+              name="fileType"
+              control={control}
+              options={fileTypeOptions}
+              placeholder="Type"
+              error={errors.fileType?.message}
+              required={false}
+              className="w-[180px]"
+              height="44px"
+            />
+
+            <button className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white">
+              <img src={filter} alt="" />
+            </button>
             <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
               <img src={upload} alt="" />
             </div>
-            <div className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white">
-              <img src={filter} alt="" />
-            </div>
+
             <div
               className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
               onClick={() => navigate("/orders/add-order")}
@@ -175,7 +229,7 @@ const OrdersTable = () => {
               Add Order
             </div>
           </div>
-        </div>
+        </form>
 
         <div className="w-full overflow-x-auto">
           <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-6">

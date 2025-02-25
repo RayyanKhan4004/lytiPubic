@@ -68,11 +68,7 @@ const CreateOrder = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const formattedData = {
       ...data,
-      // openDate: formatDate(data.openDate),
-      // estimatedClosingDate: formatDate(data.estimatedClosingDate),
-      // closedDate: formatDate(data.closedDate),
     };
-
     try {
       const res = await createOrder(formattedData).unwrap();
       navigate("/orders/orders");

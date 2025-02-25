@@ -14,7 +14,7 @@ interface Option {
 }
 
 interface SelectFieldProps<T extends FieldValues> {
-  label: string;
+  label?: string;
   name: Path<T>;
   control: Control<T>;
   options: Option[];
@@ -24,9 +24,10 @@ interface SelectFieldProps<T extends FieldValues> {
   required?: boolean;
   className?: string;
   menuPlacement?: "auto" | "top" | "bottom";
+  height?: string; // New optional height prop
 }
 
-const customStyles = {
+const customStyles = (height: string) => ({
   control: (base: any, state: any) => ({
     ...base,
     border: state.isFocused ? "2px solid #f4efe9" : "2px solid #f4efe9",
@@ -34,7 +35,7 @@ const customStyles = {
     borderRadius: "10px",
     padding: "4px",
     transition: "border-color 0.2s ease-in-out",
-    height: "55px",
+    height: height,
   }),
   placeholder: (base: any) => ({
     ...base,
@@ -68,12 +69,12 @@ const customStyles = {
     cursor: "pointer",
     textAlign: "left",
   }),
-};
+});
 
 const DropdownIndicator = (props: any) => {
   return (
     <components.DropdownIndicator {...props}>
-      <FaChevronDown style={{ color: "#98A2B3" }} className="text-base" />{" "}
+      <FaChevronDown style={{ color: "#98A2B3" }} className="text-base" />
     </components.DropdownIndicator>
   );
 };
@@ -89,6 +90,7 @@ function SelectField<T extends FieldValues>({
   required = false,
   className = "",
   menuPlacement = "auto",
+  height = "55px", // Default height
 }: SelectFieldProps<T>) {
   return (
     <div
@@ -96,10 +98,12 @@ function SelectField<T extends FieldValues>({
         error ? "select-field-error" : ""
       }`}
     >
-      <label className="block  text-sm font-medium text-(--greyText) mb-1">
-        {label}
-        {required && <span className="text-red-500">*</span>}
-      </label>
+      {label && (
+        <label className="block text-sm font-medium text-(--greyText) mb-1">
+          {label}
+          {required && <span className="text-red-500">*</span>}
+        </label>
+      )}
       <Controller
         name={name}
         control={control}
@@ -107,7 +111,7 @@ function SelectField<T extends FieldValues>({
         render={({ field }) => (
           <Select
             {...field}
-            styles={customStyles}
+            styles={customStyles(height)}
             options={options}
             isMulti={isMulti}
             placeholder={placeholder}
