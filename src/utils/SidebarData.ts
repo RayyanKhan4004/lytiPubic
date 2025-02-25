@@ -71,7 +71,7 @@ export const SidebarData = () => {
       title: "Challenges",
       icon1: icon7,
       icon2: icon8,
-      path: "/Challenges",
+      path: "/challenges",
     },
     {
       id: 5,
