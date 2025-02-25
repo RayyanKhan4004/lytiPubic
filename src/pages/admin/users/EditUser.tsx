@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
-import image from "../../../assets/icons/Image.svg";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+
+import image from "../../../assets/icons/Image.svg";
 import Breadcrumb from "../../../components/common/BreadCrumb";
+import Spinner from "../../../components/common/Spinner";
 import SelectField from "../../../components/inputs/SelectField";
 import CustomDatePicker from "../../../components/inputs/CustomDatePicker";
 import InputField from "../../../components/inputs/InputFields";
+
+import { formatDate } from "../../../utils/formatDate";
+import { roleOption } from "../../../utils/options";
+
 import {
   useDeleteUserMutation,
   useSignUpMutation,
   useUpdateUserMutation,
 } from "../../../lib/rtkQuery/authApi";
-import { formatDate } from "../../../utils/formatDate";
-import toast from "react-hot-toast";
-import { useLocation, useNavigate } from "react-router-dom";
-import Spinner from "../../../components/common/Spinner";
 import { useDeleteOrderMutation } from "../../../lib/rtkQuery/orderApi";
 
 interface FormValues {
@@ -43,17 +47,17 @@ interface FormValues {
 }
 
 const EditUser = () => {
-  const [isChallange, setIsChallange] = useState<boolean>(false);
-  const [isDownlaod, setIsDownload] = useState<boolean>(false);
+  const [isChallenge, setIsChallenge] = useState<boolean>(false);
+  const [isDownload, setIsDownload] = useState<boolean>(false);
   const [isWelcome, setIsWelcome] = useState<boolean>(false);
 
   const data = useLocation();
-
   const { userData } = data.state || {};
-  console.log(userData, "==data===");
 
   const navigate = useNavigate();
   const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const [deleteUser, { isLoading: isDeleteLoading }] = useDeleteUserMutation();
+
   const {
     register,
     handleSubmit,
@@ -63,17 +67,9 @@ const EditUser = () => {
     control,
   } = useForm<FormValues>();
 
-  const roleOption = [
-    { value: "Admin", label: "Admin" },
-    { value: "ISA", label: "ISA" },
-    { value: "Sales Manager", label: "Sales Manager" },
-    { value: "Account Executive", label: "Account Executive" },
-  ];
-
+  const profileImage = watch("profileImage");
   const profileImagePreview =
-    watch("profileImage") instanceof File
-      ? URL.createObjectURL(watch("profileImage") as File)
-      : null;
+    profileImage instanceof File ? URL.createObjectURL(profileImage) : null;
 
   const removeImage = (name: "profileImage") => {
     setValue(name, null);
@@ -88,16 +84,13 @@ const EditUser = () => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-    // console.log(data, "==formData===");
-
     const formattedData = {
       ...data,
       startDate: formatDate(data.startDate),
-      exclude_challenges_leaderboards: isChallange,
-      download_transactions: isDownlaod,
+      exclude_challenges_leaderboards: isChallenge,
+      download_transactions: isDownload,
       send_welcome_email: isWelcome,
     };
-    // console.log(formattedData, "==data===");
 
     try {
       const res = await updateUser({
@@ -112,14 +105,13 @@ const EditUser = () => {
     }
   };
 
-  const [deleteUser, { isLoading: isDeleteLoading }] = useDeleteUserMutation();
   const handleDeleteUser = async () => {
     try {
-      const res = await deleteUser(userData?.id).unwrap();
-      toast.success("user delete Successfully");
+      await deleteUser(userData?.id).unwrap();
+      toast.success("User deleted successfully");
       navigate("/admin/users-table");
     } catch (err: any) {
-      toast.error(err?.data?.message || "Can not delete ");
+      toast.error(err?.data?.message || "Can not delete user");
     }
   };
 
@@ -146,7 +138,7 @@ const EditUser = () => {
       setValue("ae_title_commission", userData.ae_title_commission || 0);
       setValue("career_path", userData.career_path || 0);
       setValue("lead_source", userData.lead_source || 0);
-      setIsChallange(userData.exclude_challenges_leaderboards || false);
+      setIsChallenge(userData.exclude_challenges_leaderboards || false);
       setIsDownload(userData.download_transactions || false);
       setIsWelcome(userData.send_welcome_email || false);
     }
@@ -405,8 +397,8 @@ const EditUser = () => {
                     type="checkbox"
                     id="exclude_challenges_leaderboards"
                     className="accent-(--primary) outline-(--greyText) w-5 h-5"
-                    checked={isChallange}
-                    onChange={() => setIsChallange(!isChallange)}
+                    checked={isChallenge}
+                    onChange={() => setIsChallenge(!isChallenge)}
                   />
                   <label htmlFor="challenges" className="text-sm">
                     Exclude from challenges & leaderboards
@@ -417,8 +409,8 @@ const EditUser = () => {
                     type="checkbox"
                     id="challenges"
                     className="accent-(--primary) outline-(--greyText) w-5 h-5"
-                    checked={isDownlaod}
-                    onChange={() => setIsDownload(!isDownlaod)}
+                    checked={isDownload}
+                    onChange={() => setIsDownload(!isDownload)}
                   />
                   <label htmlFor="challenges" className="text-sm">
                     Download Transactions

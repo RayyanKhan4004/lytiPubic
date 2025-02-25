@@ -1,49 +1,50 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
+import { DummyData, tableHeaders } from "../../utils/DummyData";
+import {
+  countyOptions,
+  fileStatusOption,
+  fileTypeOptions,
+} from "../../utils/options";
+
+import Breadcrumb from "../../components/common/BreadCrumb";
+import Pagination from "../../components/common/Pagination";
+import StatsCard from "../../components/orders/StatsCard";
+import CustomizableDropdown from "../../components/common/CustomizableDropdown";
+import OrderActionsPopup from "../../components/orders/OrderActionsPopup";
+import TableHeader from "../../components/ui/table/TableHeader";
+import SelectField from "../../components/inputs/SelectField";
+import SearchInput from "../../components/inputs/SearchInput";
+import NoDataRow from "../../components/ui/NoDataRow";
+import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
+
 import upload from "../../assets/icons/UploadSimple.svg";
 import filter from "../../assets/icons/AlignLeft.svg";
 import add from "../../assets/icons/Add.svg";
 import menu from "../../assets/icons/Menu.svg";
 import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
-import { useNavigate } from "react-router-dom";
-import { DummyData } from "../../utils/DummyData";
-import Breadcrumb from "../../components/common/BreadCrumb";
-import StatsCard from "../../components/orders/StatsCard";
-import SearchInput from "../../components/common/SearchInput";
-import CustomizableDropdown from "../../components/common/CustomizableDropdown";
-import OrderActionsPopup from "../../components/orders/OrderActionsPopup";
-import Pagination from "../../components/common/Pagination";
-import TableHeader from "../../components/ui/table/TableHeader";
-import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
-import SelectField from "../../components/inputs/SelectField";
-import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
-import NoDataRow from "../../components/ui/NoDataRow";
-import { SubmitHandler, useForm } from "react-hook-form";
+
 interface FormValues {
   propertyCounty: string;
   fileStatus: string;
   fileType: string;
 }
 const OrdersTable = () => {
-  const [searchValue, setSearchValue] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [page, setPage] = useState(1);
 
   const navigate = useNavigate();
+
   const {
-    handleSubmit,
     formState: { errors },
     setValue,
     watch,
     control,
   } = useForm<FormValues>();
-
-  const [page, setPage] = useState(1);
-
-  const handlePageChange = ({ selected }: { selected: number }) => {
-    const newPage = selected + 1;
-    if (newPage >= 1 && newPage <= data?.totalPages) {
-      setPage(newPage);
-    }
-  };
 
   const selectedPropertyCounty = watch("propertyCounty") || "";
   const selectedFileStatus = watch("fileStatus") || "";
@@ -57,96 +58,28 @@ const OrdersTable = () => {
     limit: 10,
   });
 
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    const newPage = selected + 1;
+    if (newPage >= 1 && newPage <= data?.totalPages) {
+      setPage(newPage);
+    }
+  };
+
   const toggleDropdown = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
-  const tableHeaders = [
-    { text: "ID", arrowIcon: true },
-    { text: "Title Officer", arrowIcon: true },
-    { text: "Title Office", arrowIcon: true },
-    { text: "Title Rep", arrowIcon: true },
-    { text: "Title Rep Pct", arrowIcon: true },
-    { text: "Open Date", arrowIcon: true },
-    { text: "Estimated Closing Date", arrowIcon: true },
-    { text: "Closed Date", arrowIcon: true },
-    { text: "File Type", arrowIcon: true },
-    { text: "Order Number", arrowIcon: true },
-    { text: "File Status", arrowIcon: true },
-    { text: "Sale Price", arrowIcon: true },
-    { text: "Loan Amount", arrowIcon: true },
-    { text: "Property Address", arrowIcon: true },
-    { text: "Property County", arrowIcon: true },
-    { text: "Property State", arrowIcon: true },
-    { text: "Escrow Officer", arrowIcon: true },
-    { text: "Listing Agent Company", arrowIcon: true },
-    { text: "Listing Agent Contact Name", arrowIcon: true },
-    { text: "Listing Agent Contact Email", arrowIcon: true },
-    { text: "Listing Agent Phone", arrowIcon: true },
-    { text: "Selling Agent Company", arrowIcon: true },
-    { text: "Selling Agent Contact Name", arrowIcon: true },
-    { text: "Selling Agent Contact Email", arrowIcon: true },
-    { text: "Selling Agent Phone", arrowIcon: true },
-    { text: "Mortgage Broker Company", arrowIcon: true },
-    { text: "Mortgage Broker Contact", arrowIcon: true },
-    { text: "Mortgage Broker Contact Email", arrowIcon: true },
-    { text: "Mortgage Broker Phone", arrowIcon: true },
-    { text: "Underwriter", arrowIcon: true },
-    { text: "Created At", arrowIcon: true },
-  ];
+  const handleSearch = (searchTerm: string) => {
+    setSearchTerm(searchTerm.toLowerCase());
+  };
 
   const handleDetailPage = (orderData: any) => {
     navigate(`/orders/order-detail`, { state: { orderData } });
   };
+
   useEffect(() => {
     refetch();
   }, []);
-
-  const fileStatusOption = [
-    { value: "Open", label: "Open" },
-    { value: "Closed", label: "Closed" },
-    { value: "On Hold", label: "On Hold" },
-    { value: "Cancelled", label: "Cancelled" },
-  ];
-  const countyOptions = [
-    { value: "Alameda", label: "Alameda" },
-    { value: "Bedford", label: "Bedford" },
-    { value: "Contra Costa", label: "Contra Costa" },
-    { value: "Fresno", label: "Fresno" },
-    { value: "Imperial", label: "Imperial" },
-    { value: "Inyo", label: "Inyo" },
-    { value: "Kern", label: "Kern" },
-    { value: "Los Angeles", label: "Los Angeles" },
-    { value: "Mendocino", label: "Mendocino" },
-    { value: "Modoc", label: "Modoc" },
-    { value: "Napa", label: "Napa" },
-    { value: "Orange", label: "Orange" },
-    { value: "Riverside", label: "Riverside" },
-    { value: "Sacramento", label: "Sacramento" },
-    { value: "San Bernardino", label: "San Bernardino" },
-    { value: "San Diego", label: "San Diego" },
-    { value: "San Luis Obispo", label: "San Luis Obispo" },
-    { value: "San Mateo", label: "San Mateo" },
-    { value: "Santa Barbara", label: "Santa Barbara" },
-    { value: "Santa Clara", label: "Santa Clara" },
-    { value: "Stanislaus", label: "Stanislaus" },
-    { value: "Tulare", label: "Tulare" },
-    { value: "Ventura", label: "Ventura" },
-  ];
-  const fileTypeOptions = [
-    { value: "Title Only - REFI", label: "Title Only - REFI" },
-    { value: "Title Only - SALE", label: "Title Only - SALE" },
-    { value: "Prelim/Commitment", label: "Prelim/Commitment" },
-    { value: "Escrow Only - Sale", label: "Escrow Only - Sale" },
-    { value: "Escrow Only - REFI", label: "Escrow Only - REFI" },
-    { value: "Title and Escrow - SALE", label: "Title and Escrow - SALE" },
-    { value: "Title and Escrow - REFI", label: "Title and Escrow - REFI" },
-    { value: "Commercial Escrow - REFI", label: "Commercial Escrow - REFI" },
-    { value: "Commercial Title - REFI", label: "Commercial Title - REFI" },
-    { value: "Commercial Title - SALE", label: "Commercial Title - SALE" },
-    { value: "LCP", label: "LCP" },
-    { value: "Other", label: "Other" },
-  ];
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Orders", "Orders"]} />
@@ -179,8 +112,10 @@ const OrdersTable = () => {
       <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-screen my-6">
         <form className="font-Poppins flex justify-between items-center w-full pt-3 gap-2">
           <SearchInput
-            value={searchValue}
-            onChange={(e: any) => setSearchValue(e.target.value)}
+            debounceTimeout={500}
+            placeholder="Search..."
+            onChange={handleSearch}
+            className="w-[27%]"
           />
           <div className="flex items-center gap-1.5">
             <SelectField
@@ -190,7 +125,7 @@ const OrdersTable = () => {
               placeholder="County"
               error={errors.propertyCounty?.message}
               required={false}
-              className="w-[150px]"
+              className="w-[113px]"
               height="44px"
             />
             <SelectField
@@ -200,7 +135,7 @@ const OrdersTable = () => {
               placeholder="Status"
               error={errors.fileStatus?.message}
               required={false}
-              className="w-[120px]"
+              className="w-[90px]"
               height="44px"
             />
             <SelectField

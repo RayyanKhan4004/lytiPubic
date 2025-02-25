@@ -1,25 +1,37 @@
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+
 import chat from "../../assets/icons/ChatCircle.svg";
 import phone from "../../assets/icons/Phone.svg";
 import plane from "../../assets/icons/PaperPlaneTilt.svg";
 import dummy from "../../assets/images/Dummy.jpg";
-import { useEffect, useState } from "react";
+
 import Breadcrumb from "../../components/common/BreadCrumb";
 import TabNavigation from "../../components/common/TabNavigation";
 import CustomizableDropdown from "../../components/common/CustomizableDropdown";
 import DateInput from "../../components/common/DateInput";
+import Spinner from "../../components/common/Spinner";
+
 import InputField from "../../components/inputs/InputFields";
 import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
+
 import { formatDate } from "../../utils/formatDate";
+import { useAppSelector } from "../../lib/store/hooks";
+
 import {
   useCreateOrderMutation,
   useDeleteOrderMutation,
 } from "../../lib/rtkQuery/orderApi";
-import toast from "react-hot-toast";
-import { useAppSelector } from "../../lib/store/hooks";
-import { useLocation, useNavigate } from "react-router-dom";
-import Spinner from "../../components/common/Spinner";
+
+import {
+  countyOptions,
+  fileStatusOption,
+  fileTypeOptions,
+  roleOption,
+} from "../../utils/options";
 
 interface FormValues {
   titleOffice: string;
@@ -59,6 +71,7 @@ interface FormValues {
 const OrderDetail = () => {
   const [deleteOrder, { isLoading }] = useDeleteOrderMutation();
   const navigate = useNavigate();
+  const data = useLocation();
   const {
     register,
     handleSubmit,
@@ -68,10 +81,7 @@ const OrderDetail = () => {
     control,
   } = useForm<FormValues>();
 
-  const data = useLocation();
-
   const { orderData } = data.state || {};
-  console.log(orderData);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
@@ -82,58 +92,6 @@ const OrderDetail = () => {
       toast.error(err?.data?.message || "Order creation failed");
     }
   };
-
-  const roleOption = [
-    { value: "Agent 1", label: "Agent 1" },
-    { value: "Agent 2", label: "Agent 2" },
-    { value: "Agent 3", label: "Agent 3" },
-    { value: "Agent 4", label: "Agent 4" },
-  ];
-  const fileStatusOption = [
-    { value: "Open", label: "Open" },
-    { value: "Closed", label: "Closed" },
-    { value: "On Hold", label: "On Hold" },
-    { value: "Cancelled", label: "Cancelled" },
-  ];
-  const countyOptions = [
-    { value: "Alameda", label: "Alameda" },
-    { value: "Bedford", label: "Bedford" },
-    { value: "Contra Costa", label: "Contra Costa" },
-    { value: "Fresno", label: "Fresno" },
-    { value: "Imperial", label: "Imperial" },
-    { value: "Inyo", label: "Inyo" },
-    { value: "Kern", label: "Kern" },
-    { value: "Los Angeles", label: "Los Angeles" },
-    { value: "Mendocino", label: "Mendocino" },
-    { value: "Modoc", label: "Modoc" },
-    { value: "Napa", label: "Napa" },
-    { value: "Orange", label: "Orange" },
-    { value: "Riverside", label: "Riverside" },
-    { value: "Sacramento", label: "Sacramento" },
-    { value: "San Bernardino", label: "San Bernardino" },
-    { value: "San Diego", label: "San Diego" },
-    { value: "San Luis Obispo", label: "San Luis Obispo" },
-    { value: "San Mateo", label: "San Mateo" },
-    { value: "Santa Barbara", label: "Santa Barbara" },
-    { value: "Santa Clara", label: "Santa Clara" },
-    { value: "Stanislaus", label: "Stanislaus" },
-    { value: "Tulare", label: "Tulare" },
-    { value: "Ventura", label: "Ventura" },
-  ];
-  const fileTypeOptions = [
-    { value: "Title Only - REFI", label: "Title Only - REFI" },
-    { value: "Title Only - SALE", label: "Title Only - SALE" },
-    { value: "Prelim/Commitment", label: "Prelim/Commitment" },
-    { value: "Escrow Only - Sale", label: "Escrow Only - Sale" },
-    { value: "Escrow Only - REFI", label: "Escrow Only - REFI" },
-    { value: "Title and Escrow - SALE", label: "Title and Escrow - SALE" },
-    { value: "Title and Escrow - REFI", label: "Title and Escrow - REFI" },
-    { value: "Commercial Escrow - REFI", label: "Commercial Escrow - REFI" },
-    { value: "Commercial Title - REFI", label: "Commercial Title - REFI" },
-    { value: "Commercial Title - SALE", label: "Commercial Title - SALE" },
-    { value: "LCP", label: "LCP" },
-    { value: "Other", label: "Other" },
-  ];
 
   useEffect(() => {
     if (orderData) {

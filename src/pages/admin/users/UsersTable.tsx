@@ -1,57 +1,57 @@
 import { useState } from "react";
-import upload from "../../../assets/icons/UploadSimple.svg";
-import add from "../../../assets/icons/Add.svg";
-import menu from "../../../assets/icons/Menu.svg";
-import arrowUpDown from "../../../assets/icons/ArrowsDownUp.svg";
 import { useNavigate } from "react-router-dom";
-import { DummyData } from "../../../utils/DummyData";
-import Breadcrumb from "../../../components/common/BreadCrumb";
-import SearchInput from "../../../components/common/SearchInput";
-import CustomizableDropdown from "../../../components/common/CustomizableDropdown";
-import UserActionsPopup from "../../../components/admin/users/UserActionsPopup";
-import Pagination from "../../../components/common/Pagination";
 import { useForm } from "react-hook-form";
+
 import { useFetchUsersQuery } from "../../../lib/rtkQuery/userApi";
+import { DummyData, userTableHeaders } from "../../../utils/DummyData";
+import { filterOption } from "../../../utils/options";
+
+import Breadcrumb from "../../../components/common/BreadCrumb";
+import Pagination from "../../../components/common/Pagination";
+import UserActionsPopup from "../../../components/admin/users/UserActionsPopup";
 import TableHeader from "../../../components/ui/table/TableHeader";
-import dummyImage from "../../../assets/images/Dummy.jpg";
+import SearchInput from "../../../components/inputs/SearchInput";
+import SelectField from "../../../components/inputs/SelectField";
 import NoData from "../../../components/ui/NoData";
 import NoDataRow from "../../../components/ui/NoDataRow";
 import Spinner from "../../../components/common/Spinner";
 import TableSkeleton from "../../../components/ui/skeleton/TableSkeleton";
+
+import upload from "../../../assets/icons/UploadSimple.svg";
+import add from "../../../assets/icons/Add.svg";
+import menu from "../../../assets/icons/Menu.svg";
+import arrowUpDown from "../../../assets/icons/ArrowsDownUp.svg";
+import dummyImage from "../../../assets/images/Dummy.jpg";
+
 interface FormValues {
   filter: string;
+  type: string;
 }
 
 const UsersTable = () => {
-  const [searchValue, setSearchValue] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [selectedFilter, setSelectedFilter] = useState("Active");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [page, setPage] = useState(1);
+
   const navigate = useNavigate();
 
-  const options: string[] = [
-    "10 Items Per Page",
-    "20 Items Per Page",
-    "30 Items Per Page",
-  ];
-
-  const toggleDropdown = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
   const {
-    register,
     handleSubmit,
     formState: { errors },
     setValue,
     watch,
     control,
   } = useForm<FormValues>();
-  const filterOption = [
-    { value: "all", label: "All" },
-    { value: "active", label: "Active" },
-    { value: "inactive", label: "Inactive" },
-    { value: "excluded", label: "Excluded" },
-  ];
-  const [page, setPage] = useState(1);
+
+  const { data, error, isLoading } = useFetchUsersQuery({
+    keyword: searchTerm,
+    page,
+    limit: 10,
+  });
+
+  const toggleDropdown = (index: number) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
 
   const handlePageChange = ({ selected }: { selected: number }) => {
     const newPage = selected + 1;
@@ -60,32 +60,12 @@ const UsersTable = () => {
     }
   };
 
-  const { data, error, isLoading } = useFetchUsersQuery({
-    keyword: searchValue,
-    page,
-    limit: 10,
-  });
-  const tableHeaders = [
-    { text: "ID", arrowIcon: false },
-    { text: "User", arrowIcon: false },
-    { text: "Email", arrowIcon: false },
-    { text: "Alternative Email", arrowIcon: false },
-    { text: "Business Entity", arrowIcon: false },
-    { text: "Career Path", arrowIcon: false },
-    { text: "Lead Source", arrowIcon: false },
-    { text: "AE Commission Threshold", arrowIcon: false },
-    { text: "AE Escrow Commission", arrowIcon: false },
-    { text: "AE Title Commission", arrowIcon: false },
-    { text: "Exclude Challenges Leaderboards", arrowIcon: false },
-    { text: "Send Welcome Email", arrowIcon: false },
-    { text: "Download Transactions", arrowIcon: false },
-    { text: "Notes", arrowIcon: false },
-    { text: "Start Date", arrowIcon: false },
-    { text: "Created At", arrowIcon: false },
-  ];
-
   const handleDetailPage = (userData: any) => {
     navigate(`/admin/edit-user`, { state: { userData } });
+  };
+
+  const handleSearch = (searchTerm: string) => {
+    setSearchTerm(searchTerm.toLowerCase());
   };
   return (
     <div className="w-full px-4 my-8">
@@ -93,26 +73,23 @@ const UsersTable = () => {
       <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-screen my-6">
         <div className="font-Poppins flex justify-between items-center w-full pt-3">
           <h2 className="text-lg text-(--primary) font-semibold">Users</h2>
-          <div className="flex items-center gap-3">
-            <SearchInput value={searchValue} onChange={setSearchValue} />
-
-            <CustomizableDropdown
-              height="h-[44px]"
-              options={["All", "Active", "InActive"]}
-              selected={selectedFilter}
-              setSelected={(e) => setSelectedFilter(e)}
-              width="w-[180px]"
+          <form className="flex items-center gap-3">
+            <SearchInput
+              debounceTimeout={500}
+              placeholder="Search..."
+              onChange={handleSearch}
             />
-            {/* <SelectField
-              label=""
-              name="filter"
+            <SelectField
+              name="type"
               control={control}
               options={filterOption}
-              placeholder="Select..."
-              error={errors.filter?.message}
+              placeholder="Type"
+              error={errors.type?.message}
               required={false}
-              className="w-[150px]  "
-            /> */}
+              className="w-[120px]"
+              height="44px"
+            />
+
             <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
               <img src={upload} alt="" />
             </div>
@@ -123,14 +100,14 @@ const UsersTable = () => {
               <img src={add} alt="" />
               Add User
             </div>
-          </div>
+          </form>
         </div>
 
         <div className="w-full overflow-x-auto">
           <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-6">
             <thead className="text-sm font-normal text-start">
               <tr className="border-b-[1px] border-[#F4EFE9] ">
-                {tableHeaders.map(({ text, arrowIcon }) => (
+                {userTableHeaders.map(({ text, arrowIcon }) => (
                   <TableHeader key={text} text={text} arrowIcon={arrowIcon} />
                 ))}
               </tr>
