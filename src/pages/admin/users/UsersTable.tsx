@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
@@ -75,6 +75,9 @@ const UsersTable = () => {
     }
   };
 
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <div className="w-full px-4 my-8">
       <Breadcrumb items={["Admin", "User"]} />
