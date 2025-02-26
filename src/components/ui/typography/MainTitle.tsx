@@ -5,7 +5,7 @@ type MainTitleProps = {
 };
 
 const MainTitle: React.FC<MainTitleProps> = ({ title }) => {
-  return <div className="text-lg font-semibold leading-[27px] ">{title}</div>;
+  return <div className="text-lg font-semibold text-(--primary) ">{title}</div>;
 };
 
 export default MainTitle;

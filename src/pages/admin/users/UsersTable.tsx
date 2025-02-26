@@ -25,6 +25,9 @@ import PopoverMenu from "../../../components/ui/popup/PopupMenu";
 import toast from "react-hot-toast";
 import { useDeleteUserMutation } from "../../../lib/rtkQuery/authApi";
 import { UserTableType } from "../../../utils/types";
+import PrimaryButton from "../../../components/ui/button/PrimaryButton";
+import MainTitle from "../../../components/ui/typography/MainTitle";
+import CardLayout from "../../../components/layouts/CardLayout";
 
 const UsersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -81,9 +84,9 @@ const UsersTable = () => {
   return (
     <div className="w-full px-4 my-8">
       <Breadcrumb items={["Admin", "User"]} />
-      <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-screen my-6">
-        <div className="font-Poppins flex justify-between items-center w-full pt-3">
-          <h2 className="text-lg text-(--primary) font-semibold">Users</h2>
+      <CardLayout>
+        <div className="font-Poppins flex justify-between items-center w-full ">
+          <MainTitle title="Users" />
           <form className="flex items-center gap-3">
             <SearchInput
               debounceTimeout={500}
@@ -258,16 +261,9 @@ const UsersTable = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </CardLayout>
 
       <div className="w-full flex justify-end gap-5 items-center">
-        {/* <CustomizableDropdown
-          options={options}
-          selected={`${itemsPerPage} Items Per Page`}
-          setSelected={() => ""}
-          width="w-60"
-        /> */}
-
         <Pagination
           onPageChange={handlePageChange}
           pageCount={data?.totalPages}
