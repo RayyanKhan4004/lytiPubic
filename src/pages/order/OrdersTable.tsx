@@ -31,6 +31,8 @@ import Spinner from "../../components/common/Spinner";
 import PopoverMenu from "../../components/ui/popup/PopupMenu";
 import toast from "react-hot-toast";
 import { OrderTableType } from "../../utils/types";
+import PrimaryButton from "../../components/ui/button/PrimaryButton";
+import CardLayout from "../../components/layouts/CardLayout";
 
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -122,7 +124,7 @@ const OrdersTable = () => {
           ]}
         />
       </div>
-      <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-screen my-6">
+      <CardLayout>
         <form className="font-Poppins flex justify-between items-center w-full pt-3 gap-2">
           <SearchInput
             debounceTimeout={500}
@@ -162,13 +164,12 @@ const OrdersTable = () => {
               height="44px"
             />
 
-            {/* <button className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white">
+            <button className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white">
               <img src={filter} alt="" />
-            </button> */}
+            </button>
             <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
               <img src={upload} alt="" />
             </div>
-
             <div
               className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
               onClick={() => navigate("/orders/add-order")}
@@ -275,7 +276,7 @@ const OrdersTable = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </CardLayout>
 
       <div className="w-full flex justify-end gap-5 items-center">
         <Pagination
