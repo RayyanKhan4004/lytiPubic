@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
+=======
+import { Suspense } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import DashboardLayout from "../components/layouts/DashboardLayout";
+>>>>>>> fc77864 (resolve merge)
 import NotFoundPage from "../pages/NotFoundPage";
 import Login from "../pages/onboarding/Login";
 import LeaderBoards from "../pages/LeaderBoards";
@@ -40,10 +47,16 @@ import Goals from "../pages/account/Goals";
 // Challenges
 import Challenges from "../pages/challenges/Challenges";
 import CreateChallenge from "../pages/challenges/CreateChallenge";
+<<<<<<< HEAD
+=======
+import FeeDetail from "../pages/order/FeeDetail";
+import CreateNewOrder from "../pages/order/CreateNewOrder";
+>>>>>>> fc77864 (resolve merge)
 
 import ProtectedLayout from "./ProtectedLayout";
 import PublicRoute from "./PublicRoute";
 import StatusesBoard from "../pages/order/StatusesBoard";
+import DashboardLayout from "../components/layouts/DashboardLayout";
 
 export const router = createBrowserRouter([
   {
@@ -87,9 +100,244 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: (
-      <PublicRoute>
-        <Login />
-      </PublicRoute>
+      <DashboardLayout>
+        <UsersTable />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/admin/add-user",
+    element: (
+      <DashboardLayout>
+        <AddUser />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/admin/edit-user",
+    element: (
+      <DashboardLayout>
+        <EditUser />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/admin/challenge",
+    element: (
+      <DashboardLayout>
+        <AdminChallengeTable />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/admin/create-challenge",
+    element: (
+      <DashboardLayout>
+        <AddChallenge />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/admin/lead-source",
+    element: (
+      <DashboardLayout>
+        <LeadSource />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/admin/team-settings",
+    element: (
+      <DashboardLayout>
+        <TeamSettings />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/admin/tasks",
+    element: (
+      <DashboardLayout>
+        <Tasks />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/admin/commissions",
+    element: (
+      <DashboardLayout>
+        <Commission />
+      </DashboardLayout>
+    ),
+  },
+
+  // Orders Routes
+  {
+    path: "/order",
+    element: (
+      <DashboardLayout>
+        <OrderEdit />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/orders/orders",
+    element: (
+      <DashboardLayout>
+        <OrdersTable />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/orders/create-order",
+    element: (
+      <DashboardLayout>
+        <CreateNewOrder />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/orders/add-order",
+    element: (
+      <DashboardLayout>
+        <CreateOrder />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/orders/edit-order",
+    element: (
+      <DashboardLayout>
+        <OrderEdit />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/orders/order-detail",
+    element: (
+      <DashboardLayout>
+        <OrderDetail />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/orders/underwriter-board",
+    element: (
+      <DashboardLayout>
+        <UnderwriterBoard />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/orders/stages-board",
+    element: (
+      <DashboardLayout>
+        <StagesBoardDragDrop />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/orders/fee-detail",
+    element: (
+      <DashboardLayout>
+        <FeeDetail />
+      </DashboardLayout>
+    ),
+  },
+
+  // Account Routes
+  {
+    path: "/account/change-password",
+    element: (
+      <DashboardLayout>
+        <ChangePassword />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/account/profile",
+    element: (
+      <DashboardLayout>
+        <Profile />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/account/ranking",
+    element: (
+      <DashboardLayout>
+        <Ranking />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/account/goals",
+    element: (
+      <DashboardLayout>
+        <Goals />
+      </DashboardLayout>
+    ),
+  },
+
+  // Dashboard Routes
+  {
+    path: "/dashboard/snapShot",
+    element: (
+      <DashboardLayout>
+        <SnapShot />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/dashboard/ceo-dashboard",
+    element: (
+      <DashboardLayout>
+        <CeoDashboard />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/dashboard/personal-dashboard",
+    element: (
+      <DashboardLayout>
+        <PersonalDashboard />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/dashboard/team-dashboard",
+    element: (
+      <DashboardLayout>
+        <TeamDashboard />
+      </DashboardLayout>
+    ),
+  },
+
+  // Miscellaneous Routes
+
+  {
+    path: "/leader-board",
+    element: (
+      <DashboardLayout>
+        <LeaderBoards />
+      </DashboardLayout>
+    ),
+  },
+
+  // challenge
+  {
+    path: "/challenges",
+    element: (
+      <DashboardLayout>
+        <Challenges />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/create-challenge",
+    element: (
+      <DashboardLayout>
+        <CreateChallenge />
+      </DashboardLayout>
     ),
   },
 ]);
