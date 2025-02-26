@@ -78,7 +78,7 @@ const Login = () => {
             type="submit"
             className="text-white bg-(--primary) w-full rounded-xl h-[48px] cursor-pointer flex justify-center items-center my-3"
           >
-            {isLoading ? <Spinner /> : "Login"}
+            {isLoading ? <Spinner color="#FFFFFF" /> : "Login"}
           </button>
         </form>
       </div>
