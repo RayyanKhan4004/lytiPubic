@@ -57,6 +57,16 @@ export const sidebarData = () => {
           title: "Underwriter Borad",
           path: "/orders/underwriter-board",
         },
+        {
+          id: 205,
+          title: "Accounting Fee Details",
+          path: "/orders/fee-detail",
+        },
+        {
+          id: 206,
+          title: "Create New Order",
+          path: "/orders/create-order",
+        },
       ],
     },
     {

@@ -41,6 +41,7 @@ import Ranking from "../pages/account/Ranking";
 import Goals from "../pages/account/Goals";
 import Challenges from "../pages/challenges/Challenges";
 import CreateChallenge from "../pages/challenges/CreateChallenge";
+import FeeDetail from "../pages/order/FeeDetail";
 
 const appRouter = createBrowserRouter([
   {
@@ -194,6 +195,14 @@ const appRouter = createBrowserRouter([
     element: (
       <DashboardLayout>
         <StagesBoardDragDrop />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/orders/fee-detail",
+    element: (
+      <DashboardLayout>
+        <FeeDetail />
       </DashboardLayout>
     ),
   },
