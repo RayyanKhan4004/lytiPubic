@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import DashboardLayout from "../components/DashboardLayout";
+import DashboardLayout from "../components/layouts/DashboardLayout";
 import NotFoundPage from "../pages/NotFoundPage";
 import LeaderBoards from "../pages/LeaderBoards";
 
@@ -42,6 +42,7 @@ import Goals from "../pages/account/Goals";
 import Challenges from "../pages/challenges/Challenges";
 import CreateChallenge from "../pages/challenges/CreateChallenge";
 import FeeDetail from "../pages/order/FeeDetail";
+import CreateNewOrder from "../pages/order/CreateNewOrder";
 
 const appRouter = createBrowserRouter([
   {
@@ -155,6 +156,14 @@ const appRouter = createBrowserRouter([
     element: (
       <DashboardLayout>
         <OrdersTable />
+      </DashboardLayout>
+    ),
+  },
+  {
+    path: "/orders/create-order",
+    element: (
+      <DashboardLayout>
+        <CreateNewOrder />
       </DashboardLayout>
     ),
   },
