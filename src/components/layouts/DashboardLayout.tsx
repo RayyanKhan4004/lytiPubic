@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from "react";
-import Navbar from "./Navbar";
-import Sidebar from "./SideBar";
+import Navbar from "../Navbar";
+import Sidebar from "../SideBar";
 
 interface DashboardLayoutProps {
   children: ReactNode;
