@@ -126,7 +126,7 @@ const OrdersTable = () => {
         <form className="font-Poppins flex justify-between items-center w-full pt-3 gap-2">
           <SearchInput
             debounceTimeout={500}
-            placeholder="Search..."
+            placeholder="Search Keyword"
             onChange={handleSearch}
             className="w-[27%]"
           />

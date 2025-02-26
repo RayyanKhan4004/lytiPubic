@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import Breadcrumb from "../../components/common/BreadCrumb";
-import Spinner from "../../components/common/Spinner";
 import InputField from "../../components/inputs/InputFields";
 import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
@@ -34,12 +33,14 @@ const CreateNewOrder = () => {
   } = useForm<OrderDataType>();
 
   const onSubmit: SubmitHandler<OrderDataType> = async (data) => {
+    console.log(data, "==formData===");
+
     const formattedData = {
       ...data,
     };
     try {
-      const res = await createOrder(formattedData).unwrap();
-      navigate("/orders/orders");
+      //   const res = await createOrder(formattedData).unwrap();
+      //   navigate("/orders/orders");
       toast.success("Order Created Successfully");
     } catch (err: any) {
       toast.error(err?.data?.message || "Order creation failed");
@@ -49,359 +50,358 @@ const CreateNewOrder = () => {
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Orders", "Create New Order"]} />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <CardLayout>
+          <MainTitle title="Create New Order" />
+          <div className="w-full flex  items-center flex-wrap py-4 gap-4">
+            <SelectField
+              label="Transaction Type"
+              name="titleRep"
+              control={control}
+              options={roleOption}
+              placeholder="Select..."
+              error={errors.titleRep?.message}
+              required={false}
+              className="w-[34%] "
+            />
+            <InputField
+              label="Add contact"
+              name="titleOffice"
+              control={control}
+              type="number"
+              placeholder="Enter contact"
+              error={errors.titleOffice?.message}
+              className="w-[34%]"
+            />
+          </div>
+        </CardLayout>
+        <CardLayout>
+          <MainTitle title="Transaction Details" />
+          <p className="text-(--greyText) text-sm ">
+            This is the main form in the system that you see in a spreadsheet
+            style view when you go into transactions. Rearranging, adding or
+            removing fields here will affect the columns you see in the
+            "transactions" screen and also the order you see them in.
+          </p>
+          <div className="w-full flex justify-between items-center flex-wrap  py-4 gap-x-1 gap-y-5">
+            <InputField
+              label="Title Office"
+              name="titleOffice"
+              control={control}
+              type="text"
+              placeholder="Enter your title Office"
+              error={errors.titleOffice?.message}
+              className="w-[24%]"
+            />
+            <SelectField
+              label="Agent"
+              name="titleRep"
+              control={control}
+              options={roleOption}
+              placeholder="Select..."
+              error={errors.titleRep?.message}
+              required={false}
+              className="w-[24%] "
+            />
+            <CustomDatePicker
+              name="openDate"
+              control={control}
+              label="Open Date"
+              placeholder="8-21-15"
+              // rules={{ required: "Date is required" }}
+              className="w-[24%]"
+            />
+            <CustomDatePicker
+              name="estimatedClosingDate"
+              control={control}
+              label="Estimated Closing Date"
+              placeholder="8-21-15"
+              // rules={{ required: "Date is required" }}
+              className="w-[24%]"
+            />
+            <CustomDatePicker
+              name="closedDate"
+              control={control}
+              label="Closing Date"
+              placeholder="8-21-15"
+              // rules={{ required: "Date is required" }}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Title Officer"
+              name="titleOfficer"
+              control={control}
+              type="text"
+              placeholder="Enter title officer"
+              error={errors.titleOfficer?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Order Number"
+              name="orderNumber"
+              control={control}
+              type="text"
+              placeholder="Enter your order number"
+              error={errors.orderNumber?.message}
+              className="w-[24%]"
+            />
+            <SelectField
+              label="File Status"
+              name="fileStatus"
+              control={control}
+              options={fileStatusOption}
+              placeholder="Select..."
+              error={errors.fileStatus?.message}
+              required={false}
+              className="w-[24%] "
+            />
+            <SelectField
+              label="File Type"
+              name="fileType"
+              control={control}
+              options={fileTypeOptions}
+              placeholder="Select..."
+              error={errors.fileType?.message}
+              required={false}
+              className="w-[24%] "
+            />
+            <InputField
+              label="Sale Price"
+              name="salePrice"
+              control={control}
+              type="number"
+              placeholder="Enter sale price"
+              error={errors.salePrice?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Title RepPct"
+              name="titleRepPct"
+              control={control}
+              type="number"
+              placeholder="Enter your value"
+              error={errors.titleRepPct?.message}
+              className="w-[24%]"
+            />
 
-      <CardLayout>
-        <MainTitle title="Create New Order" />
-        <div className="w-full flex  items-center flex-wrap py-4 gap-4">
-          <SelectField
-            label="Transaction Type"
-            name="titleRep"
-            control={control}
-            options={roleOption}
-            placeholder="Select..."
-            error={errors.titleRep?.message}
-            required={false}
-            className="w-[34%] "
-          />
-          <InputField
-            label="Add contact"
-            name="titleOffice"
-            control={control}
-            type="number"
-            placeholder="Enter contact"
-            error={errors.titleOffice?.message}
-            className="w-[34%]"
+            <InputField
+              label="Loan Amount"
+              name="loanAmount"
+              control={control}
+              type="number"
+              placeholder="Enter loan amount"
+              error={errors.loanAmount?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Property Address"
+              name="propertyAddress"
+              control={control}
+              type="text"
+              placeholder="Enter property address"
+              error={errors.propertyAddress?.message}
+              className="w-[24%]"
+            />
+            <SelectField
+              label="Property County"
+              name="propertyCounty"
+              control={control}
+              options={countyOptions}
+              placeholder="Select..."
+              error={errors.propertyCounty?.message}
+              required={false}
+              className="w-[24%] "
+            />
+            <InputField
+              label="Property State"
+              name="propertyState"
+              control={control}
+              type="text"
+              placeholder="Enter property state"
+              error={errors.propertyState?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Escrow Officer"
+              name="escrowOfficer"
+              control={control}
+              type="text"
+              placeholder="Enter escrow officer"
+              error={errors.escrowOfficer?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Listing Agent Company"
+              name="listingAgentCompany"
+              control={control}
+              type="text"
+              placeholder="Enter listing agent company"
+              error={errors.listingAgentCompany?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Listing Agent Contact Name"
+              name="listingAgentContactName"
+              control={control}
+              type="text"
+              placeholder="Enter listing agent contact name"
+              error={errors.listingAgentContactName?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Listing Agent Contact Email"
+              name="listingAgentContactEmail"
+              control={control}
+              type="email"
+              placeholder="Enter listing agent contact email"
+              error={errors.listingAgentContactEmail?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Listing Agent Phone"
+              name="listingAgentPhone"
+              control={control}
+              type="text"
+              placeholder="Enter listing agent phone"
+              error={errors.listingAgentPhone?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Selling Agent Company"
+              name="sellingAgentCompany"
+              control={control}
+              type="text"
+              placeholder="Enter selling agent company"
+              error={errors.sellingAgentCompany?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Selling Agent Contact Name"
+              name="sellingAgentContactName"
+              control={control}
+              type="text"
+              placeholder="Enter selling agent contact name"
+              error={errors.sellingAgentContactName?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Selling Agent Contact Email"
+              name="sellingAgentContactEmail"
+              control={control}
+              type="email"
+              placeholder="Enter selling agent contact email"
+              error={errors.sellingAgentContactEmail?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Selling Agent Phone"
+              name="sellingAgentPhone"
+              control={control}
+              type="text"
+              placeholder="Enter selling agent phone"
+              error={errors.sellingAgentPhone?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Mortgage Broker Company"
+              name="mortgageBrokerCompany"
+              control={control}
+              type="text"
+              placeholder="Enter mortgage broker company"
+              error={errors.mortgageBrokerCompany?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Mortgage Broker Contact"
+              name="mortgageBrokerContact"
+              control={control}
+              type="text"
+              placeholder="Enter mortgage broker contact"
+              error={errors.mortgageBrokerContact?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Mortgage Broker Contact Email"
+              name="mortgageBrokerContactEmail"
+              control={control}
+              type="email"
+              placeholder="Enter mortgage broker contact email"
+              error={errors.mortgageBrokerContactEmail?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Mortgage Broker Phone"
+              name="mortgageBrokerPhone"
+              control={control}
+              type="text"
+              placeholder="Enter mortgage broker phone"
+              error={errors.mortgageBrokerPhone?.message}
+              className="w-[24%]"
+            />
+            <InputField
+              label="Underwriter"
+              name="underwriter"
+              control={control}
+              type="text"
+              placeholder="Enter underwriter"
+              error={errors.underwriter?.message}
+              className="w-[24%]"
+            />
+          </div>
+        </CardLayout>
+        <CardLayout>
+          <MainTitle title="Fee Details" />
+
+          <div className="w-full flex justify-between items-center flex-wrap  py-4 gap-x-1 gap-y-5">
+            <InputField
+              label="Description"
+              name="titleOffice"
+              control={control}
+              type="number"
+              placeholder="Enter contact"
+              error={errors.titleOffice?.message}
+              className="w-[24%]"
+            />
+            <SelectField
+              label="Account"
+              name="titleRep"
+              control={control}
+              options={roleOption}
+              placeholder="Select..."
+              error={errors.titleRep?.message}
+              required={false}
+              className="w-[24%] "
+            />
+            <SelectField
+              label="Fee Category"
+              name="titleRep"
+              control={control}
+              options={roleOption}
+              placeholder="Select..."
+              error={errors.titleRep?.message}
+              required={false}
+              className="w-[24%] "
+            />
+            <InputField
+              label="Amount"
+              name="titleOffice"
+              control={control}
+              type="number"
+              placeholder="Enter contact"
+              error={errors.titleOffice?.message}
+              className="w-[24%]"
+            />
+          </div>
+        </CardLayout>
+
+        <div className="flex justify-end w-full my-3">
+          <PrimaryButton
+            text="Create Order"
+            type="submit"
+            isLoading={isLoading}
           />
         </div>
-      </CardLayout>
-      <CardLayout>
-        <MainTitle title="Transaction Details" />
-        <p className="text-(--greyText) text-sm ">
-          This is the main form in the system that you see in a spreadsheet
-          style view when you go into transactions. Rearranging, adding or
-          removing fields here will affect the columns you see in the
-          "transactions" screen and also the order you see them in.
-        </p>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-full flex justify-between items-center flex-wrap  py-4 gap-x-1 gap-y-5"
-        >
-          <InputField
-            label="Title Office"
-            name="titleOffice"
-            control={control}
-            type="text"
-            placeholder="Enter your title Office"
-            error={errors.titleOffice?.message}
-            className="w-[24%]"
-          />
-          <SelectField
-            label="Agent"
-            name="titleRep"
-            control={control}
-            options={roleOption}
-            placeholder="Select..."
-            error={errors.titleRep?.message}
-            required={false}
-            className="w-[24%] "
-          />
-          <CustomDatePicker
-            name="openDate"
-            control={control}
-            label="Open Date"
-            placeholder="8-21-15"
-            // rules={{ required: "Date is required" }}
-            className="w-[24%]"
-          />
-          <CustomDatePicker
-            name="estimatedClosingDate"
-            control={control}
-            label="Estimated Closing Date"
-            placeholder="8-21-15"
-            // rules={{ required: "Date is required" }}
-            className="w-[24%]"
-          />
-          <CustomDatePicker
-            name="closedDate"
-            control={control}
-            label="Closing Date"
-            placeholder="8-21-15"
-            // rules={{ required: "Date is required" }}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Title Officer"
-            name="titleOfficer"
-            control={control}
-            type="text"
-            placeholder="Enter title officer"
-            error={errors.titleOfficer?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Order Number"
-            name="orderNumber"
-            control={control}
-            type="text"
-            placeholder="Enter your order number"
-            error={errors.orderNumber?.message}
-            className="w-[24%]"
-          />
-          <SelectField
-            label="File Status"
-            name="fileStatus"
-            control={control}
-            options={fileStatusOption}
-            placeholder="Select..."
-            error={errors.fileStatus?.message}
-            required={false}
-            className="w-[24%] "
-          />
-          <SelectField
-            label="File Type"
-            name="fileType"
-            control={control}
-            options={fileTypeOptions}
-            placeholder="Select..."
-            error={errors.fileType?.message}
-            required={false}
-            className="w-[24%] "
-          />
-          <InputField
-            label="Sale Price"
-            name="salePrice"
-            control={control}
-            type="number"
-            placeholder="Enter sale price"
-            error={errors.salePrice?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Title RepPct"
-            name="titleRepPct"
-            control={control}
-            type="number"
-            placeholder="Enter your value"
-            error={errors.titleRepPct?.message}
-            className="w-[24%]"
-          />
-
-          <InputField
-            label="Loan Amount"
-            name="loanAmount"
-            control={control}
-            type="number"
-            placeholder="Enter loan amount"
-            error={errors.loanAmount?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Property Address"
-            name="propertyAddress"
-            control={control}
-            type="text"
-            placeholder="Enter property address"
-            error={errors.propertyAddress?.message}
-            className="w-[24%]"
-          />
-          <SelectField
-            label="Property County"
-            name="propertyCounty"
-            control={control}
-            options={countyOptions}
-            placeholder="Select..."
-            error={errors.propertyCounty?.message}
-            required={false}
-            className="w-[24%] "
-          />
-          <InputField
-            label="Property State"
-            name="propertyState"
-            control={control}
-            type="text"
-            placeholder="Enter property state"
-            error={errors.propertyState?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Escrow Officer"
-            name="escrowOfficer"
-            control={control}
-            type="text"
-            placeholder="Enter escrow officer"
-            error={errors.escrowOfficer?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Listing Agent Company"
-            name="listingAgentCompany"
-            control={control}
-            type="text"
-            placeholder="Enter listing agent company"
-            error={errors.listingAgentCompany?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Listing Agent Contact Name"
-            name="listingAgentContactName"
-            control={control}
-            type="text"
-            placeholder="Enter listing agent contact name"
-            error={errors.listingAgentContactName?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Listing Agent Contact Email"
-            name="listingAgentContactEmail"
-            control={control}
-            type="email"
-            placeholder="Enter listing agent contact email"
-            error={errors.listingAgentContactEmail?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Listing Agent Phone"
-            name="listingAgentPhone"
-            control={control}
-            type="text"
-            placeholder="Enter listing agent phone"
-            error={errors.listingAgentPhone?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Selling Agent Company"
-            name="sellingAgentCompany"
-            control={control}
-            type="text"
-            placeholder="Enter selling agent company"
-            error={errors.sellingAgentCompany?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Selling Agent Contact Name"
-            name="sellingAgentContactName"
-            control={control}
-            type="text"
-            placeholder="Enter selling agent contact name"
-            error={errors.sellingAgentContactName?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Selling Agent Contact Email"
-            name="sellingAgentContactEmail"
-            control={control}
-            type="email"
-            placeholder="Enter selling agent contact email"
-            error={errors.sellingAgentContactEmail?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Selling Agent Phone"
-            name="sellingAgentPhone"
-            control={control}
-            type="text"
-            placeholder="Enter selling agent phone"
-            error={errors.sellingAgentPhone?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Mortgage Broker Company"
-            name="mortgageBrokerCompany"
-            control={control}
-            type="text"
-            placeholder="Enter mortgage broker company"
-            error={errors.mortgageBrokerCompany?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Mortgage Broker Contact"
-            name="mortgageBrokerContact"
-            control={control}
-            type="text"
-            placeholder="Enter mortgage broker contact"
-            error={errors.mortgageBrokerContact?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Mortgage Broker Contact Email"
-            name="mortgageBrokerContactEmail"
-            control={control}
-            type="email"
-            placeholder="Enter mortgage broker contact email"
-            error={errors.mortgageBrokerContactEmail?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Mortgage Broker Phone"
-            name="mortgageBrokerPhone"
-            control={control}
-            type="text"
-            placeholder="Enter mortgage broker phone"
-            error={errors.mortgageBrokerPhone?.message}
-            className="w-[24%]"
-          />
-          <InputField
-            label="Underwriter"
-            name="underwriter"
-            control={control}
-            type="text"
-            placeholder="Enter underwriter"
-            error={errors.underwriter?.message}
-            className="w-[24%]"
-          />
-        </form>
-      </CardLayout>
-      <CardLayout>
-        <MainTitle title="Fee Details" />
-        <div className="w-full flex  items-center flex-wrap py-4 gap-4">
-          <InputField
-            label="Description"
-            name="titleOffice"
-            control={control}
-            type="number"
-            placeholder="Enter contact"
-            error={errors.titleOffice?.message}
-            className="w-[24%]"
-          />
-          <SelectField
-            label="Account"
-            name="titleRep"
-            control={control}
-            options={roleOption}
-            placeholder="Select..."
-            error={errors.titleRep?.message}
-            required={false}
-            className="w-[24%] "
-          />
-          <SelectField
-            label="Fee Category"
-            name="titleRep"
-            control={control}
-            options={roleOption}
-            placeholder="Select..."
-            error={errors.titleRep?.message}
-            required={false}
-            className="w-[24%] "
-          />
-          <InputField
-            label="Amount"
-            name="titleOffice"
-            control={control}
-            type="number"
-            placeholder="Enter contact"
-            error={errors.titleOffice?.message}
-            className="w-[24%]"
-          />
-        </div>
-      </CardLayout>
-
-      <div className="flex justify-end w-full my-3">
-        <PrimaryButton
-          text="Create Order"
-          type="submit"
-          isLoading={isLoading}
-        />
-      </div>
+      </form>
     </div>
   );
 };
