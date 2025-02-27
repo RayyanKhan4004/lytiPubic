@@ -38,12 +38,8 @@ export interface OrderDataType {
   cancelDate?: string;
   transactionType?: string;
   orderStatus?: string;
-}
-
-export interface OrderTableType {
-  propertyCounty: string;
-  fileStatus: string;
-  fileType: string;
+  aeLeadStage?: string;
+  contact?: number;
 }
 
 export interface UserDataType {

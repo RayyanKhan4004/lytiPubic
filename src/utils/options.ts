@@ -36,16 +36,11 @@ export const countyOptions = [
   { value: "Ventura", label: "Ventura" },
 ];
 export const fileTypeOptions = [
-  { value: "Title Only - REFI", label: "Title Only - REFI" },
-  { value: "Title Only - SALE", label: "Title Only - SALE" },
-  { value: "Prelim/Commitment", label: "Prelim/Commitment" },
-  { value: "Escrow Only - Sale", label: "Escrow Only - Sale" },
-  { value: "Escrow Only - REFI", label: "Escrow Only - REFI" },
-  { value: "Title and Escrow - SALE", label: "Title and Escrow - SALE" },
-  { value: "Title and Escrow - REFI", label: "Title and Escrow - REFI" },
-  { value: "Commercial Escrow - REFI", label: "Commercial Escrow - REFI" },
-  { value: "Commercial Title - REFI", label: "Commercial Title - REFI" },
-  { value: "Commercial Title - SALE", label: "Commercial Title - SALE" },
+  { value: "Title Only", label: "Title Only" },
+  { value: "Escrow Only", label: "Escrow Only" },
+  { value: "Title and Escrow", label: "Title and Escrow" },
+  { value: "Commercial Escrow", label: "Commercial Escrow" },
+  { value: "Commercial Title", label: "Commercial Title" },
   { value: "LCP", label: "LCP" },
   { value: "Other", label: "Other" },
 ];
@@ -55,6 +50,25 @@ export const roleOption = [
   { value: "ISA", label: "ISA" },
   { value: "Sales Manager", label: "Sales Manager" },
   { value: "Account Executive", label: "Account Executive" },
+];
+export const transactionOption = [
+  { value: "Sale", label: "Sale" },
+  { value: "Refi", label: "Refi" },
+];
+
+export const aeLeadStageOptions = [
+  { value: "Pipeline", label: "Pipeline" },
+  { value: "App Set", label: "App Set" },
+  { value: "App Met", label: "App Met" },
+  { value: "Signed", label: "Signed" },
+  { value: "1st Time Showing", label: "1st Time Showing" },
+  { value: "1st Time Offer", label: "1st Time Offer" },
+  { value: "Live Listing", label: "Live Listing" },
+  { value: "Listing Expired", label: "Listing Expired" },
+  { value: "Buyer Agreement Expired", label: "Buyer Agreement Expired" },
+  { value: "Pending", label: "Pending" },
+  { value: "Closed", label: "Closed" },
+  { value: "Lost", label: "Lost" },
 ];
 
 export const filterOption = [
