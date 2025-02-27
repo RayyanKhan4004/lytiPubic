@@ -1,11 +1,4 @@
-<<<<<<< HEAD
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
-=======
-import { Suspense } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-import DashboardLayout from "../components/layouts/DashboardLayout";
->>>>>>> fc77864 (resolve merge)
 import NotFoundPage from "../pages/NotFoundPage";
 import Login from "../pages/onboarding/Login";
 import LeaderBoards from "../pages/LeaderBoards";
@@ -47,11 +40,6 @@ import Goals from "../pages/account/Goals";
 // Challenges
 import Challenges from "../pages/challenges/Challenges";
 import CreateChallenge from "../pages/challenges/CreateChallenge";
-<<<<<<< HEAD
-=======
-import FeeDetail from "../pages/order/FeeDetail";
-import CreateNewOrder from "../pages/order/CreateNewOrder";
->>>>>>> fc77864 (resolve merge)
 
 import ProtectedLayout from "./ProtectedLayout";
 import PublicRoute from "./PublicRoute";
@@ -101,7 +89,7 @@ export const router = createBrowserRouter([
     path: "/login",
     element: (
       <DashboardLayout>
-        <UsersTable />
+        <OrdersTable />
       </DashboardLayout>
     ),
   },

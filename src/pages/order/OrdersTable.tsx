@@ -26,19 +26,20 @@ import upload from "../../assets/icons/UploadSimple.svg";
 import filter from "../../assets/icons/AlignLeft.svg";
 import add from "../../assets/icons/Add.svg";
 import menu from "../../assets/icons/Menu.svg";
-import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
+// import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
 import Spinner from "../../components/common/Spinner";
 import PopoverMenu from "../../components/ui/popup/PopupMenu";
 import toast from "react-hot-toast";
 import { OrderTableType } from "../../utils/types";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import CardLayout from "../../components/layouts/CardLayout";
-
+import FilterPopup from "../../components/ui/FilterPopup";
+// import { useState } from "react";
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loading, setLoading] = useState("");
   const [page, setPage] = useState(1);
-
+  const [isModelOpen , setIsModelOpen] = useState(false)
   const navigate = useNavigate();
 
   const {
@@ -96,6 +97,9 @@ const OrdersTable = () => {
     refetch();
   }, []);
   return (
+    <>
+     {  <FilterPopup isModelOpen={isModelOpen} setIsModelOpen={setIsModelOpen}/>}
+    
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Orders", "Orders"]} />
       <div className="w-full flex gap-4 mt-2">
@@ -164,7 +168,10 @@ const OrdersTable = () => {
               height="44px"
             />
 
-            <button className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white">
+            <button className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white "
+            onClick={(e)=>{ e.preventDefault()
+              setIsModelOpen(true)}}
+            >
               <img src={filter} alt="" />
             </button>
             <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
@@ -285,6 +292,7 @@ const OrdersTable = () => {
         />
       </div>
     </div>
+    </>
   );
 };
 
