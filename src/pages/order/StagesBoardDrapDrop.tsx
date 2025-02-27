@@ -38,6 +38,30 @@ const initialBuyers = [
     agentImage: dummyImage,
     role: "Buyer",
   },
+  {
+    id: "4",
+    name: "Ronald Richards",
+    address: "3891 Ranchview Dr. Richardson, California 62639",
+    agent: "Eleanor Pena",
+    agentImage: dummyImage,
+    role: "Buyer",
+  },
+  {
+    id: "5",
+    name: "Savannah Nguyen",
+    address: "2715 Ash Dr. San Jose, South Dakota 83475",
+    agent: "Eleanor Pena",
+    agentImage: dummyImage,
+    role: "Buyer",
+  },
+  {
+    id: "6",
+    name: "Cody Fisher",
+    address: "4517 Washington Ave. Manchester, Kentucky 39495",
+    agent: "Eleanor Pena",
+    agentImage: dummyImage,
+    role: "Buyer",
+  },
 ];
 
 const StagesBoardDragDrop: React.FC = () => {
