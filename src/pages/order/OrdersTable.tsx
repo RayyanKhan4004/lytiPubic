@@ -98,7 +98,7 @@ const OrdersTable = () => {
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Orders", "Orders"]} />
-      <div className="w-full flex gap-4 mt-6">
+      <div className="w-full flex gap-4 mt-2">
         <StatsCard
           heading="Orders"
           stats={[
@@ -206,7 +206,7 @@ const OrdersTable = () => {
                         (e: any, i: number) => (
                           <tr
                             key={i}
-                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
+                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[65px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
                             bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out
                             "
                           >
