@@ -10,9 +10,9 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
       {items.map((item, index) => (
         <React.Fragment key={index}>
           <span
-            className={
-              index === items.length - 1 ? "font-medium text-black" : ""
-            }
+            className={` font-poppin font-medium  leading-[21px] text-[14px]
+             ${ index === items.length - 1 ? "font-medium text-black" : "text-(--greyText)"}
+            `}
           >
             {item}
           </span>

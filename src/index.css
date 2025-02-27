@@ -10,7 +10,7 @@
   --red: #ea4335;
 
   /* fonts  */
-  --font-poppin: "Poppins", serif;
+  --font-poppin: "Poppins";
   --font-jakarta: "Plus Jakarta Sans", serif;
 
   /* shadow  */
@@ -70,4 +70,13 @@
 }
 .react-datepicker__navigation {
   top: 8px !important;
+}
+ /* hide scroll bar classes */
+ .scroll-container::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.scroll-container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
