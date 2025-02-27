@@ -255,6 +255,9 @@ const OrdersTable = () => {
                             <td>{e.openDate}</td>
                             <td>{e.estimatedClosingDate}</td>
                             <td>{e.closedDate}</td>
+                            <td>{e.contact}</td>
+                            <td>{e.aeLeadStage}</td>
+                            <td>{e.transactionType}</td>
                             <td>{e.fileType}</td>
                             <td>{e.orderNumber}</td>
                             <td>{e.fileStatus}</td>
