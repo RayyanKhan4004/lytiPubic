@@ -38,30 +38,6 @@ const initialBuyers = [
     agentImage: dummyImage,
     role: "Buyer",
   },
-  {
-    id: "4",
-    name: "Ronald Richards",
-    address: "3891 Ranchview Dr. Richardson, California 62639",
-    agent: "Eleanor Pena",
-    agentImage: dummyImage,
-    role: "Buyer",
-  },
-  {
-    id: "5",
-    name: "Savannah Nguyen",
-    address: "2715 Ash Dr. San Jose, South Dakota 83475",
-    agent: "Eleanor Pena",
-    agentImage: dummyImage,
-    role: "Buyer",
-  },
-  {
-    id: "6",
-    name: "Cody Fisher",
-    address: "4517 Washington Ave. Manchester, Kentucky 39495",
-    agent: "Eleanor Pena",
-    agentImage: dummyImage,
-    role: "Buyer",
-  },
 ];
 
 const StagesBoardDragDrop: React.FC = () => {
@@ -102,7 +78,13 @@ const StagesBoardDragDrop: React.FC = () => {
       columns[col as ColumnKey]?.some((item) => item.id === active.id)
     ) as ColumnKey | undefined;
 
-    const destinationColumn = over.id as ColumnKey;
+    let destinationColumn = over.id as ColumnKey | undefined;
+
+    if (destinationColumn && !columns[destinationColumn]) {
+      destinationColumn = Object.keys(columns).find((col) =>
+        columns[col as ColumnKey]?.some((item) => item.id === over.id)
+      ) as ColumnKey | undefined;
+    }
 
     if (
       !sourceColumn ||
@@ -121,7 +103,7 @@ const StagesBoardDragDrop: React.FC = () => {
       [sourceColumn]: prev[sourceColumn].filter(
         (item) => item.id !== active.id
       ),
-      [destinationColumn]: [...(prev[destinationColumn] || []), movedItem],
+      [destinationColumn]: [...prev[destinationColumn], movedItem],
     }));
   };
 
