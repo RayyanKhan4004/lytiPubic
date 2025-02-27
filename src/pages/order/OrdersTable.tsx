@@ -11,6 +11,7 @@ import {
   countyOptions,
   fileStatusOption,
   fileTypeOptions,
+  transactionOption,
 } from "../../utils/options";
 
 import Breadcrumb from "../../components/common/BreadCrumb";
@@ -30,7 +31,7 @@ import menu from "../../assets/icons/Menu.svg";
 import Spinner from "../../components/common/Spinner";
 import PopoverMenu from "../../components/ui/popup/PopupMenu";
 import toast from "react-hot-toast";
-import { OrderTableType } from "../../utils/types";
+import { OrderDataType } from "../../utils/types";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import CardLayout from "../../components/layouts/CardLayout";
 import FilterPopup from "../../components/ui/FilterPopup";
@@ -47,17 +48,19 @@ const OrdersTable = () => {
     setValue,
     watch,
     control,
-  } = useForm<OrderTableType>();
+  } = useForm<OrderDataType>();
 
   const selectedPropertyCounty = watch("propertyCounty") || "";
   const selectedFileStatus = watch("fileStatus") || "";
   const selectedFileType = watch("fileType") || "";
+  const selectTransactionType = watch("transactionType") || "";
 
   const [deleteOrder] = useDeleteOrderMutation();
   const { data, isLoading, refetch } = useGetOrdersQuery({
     status: selectedFileStatus,
     type: selectedFileType,
     propertyCounty: selectedPropertyCounty,
+    transactionType: selectTransactionType,
     page,
     limit: 10,
     keyword: searchTerm,
@@ -129,7 +132,7 @@ const OrdersTable = () => {
         />
       </div>
       <CardLayout>
-        <form className="font-Poppins flex justify-between items-center w-full pt-3 gap-2">
+        <form className="font-Poppins flex justify-between items-center w-full  gap-2">
           <SearchInput
             debounceTimeout={500}
             placeholder="Search Keyword"
@@ -161,10 +164,20 @@ const OrdersTable = () => {
               name="fileType"
               control={control}
               options={fileTypeOptions}
-              placeholder="Type"
+              placeholder="File type"
               error={errors.fileType?.message}
               required={false}
               className="w-[180px]"
+              height="44px"
+            />
+            <SelectField
+              name="transactionType"
+              control={control}
+              options={transactionOption}
+              placeholder="Type"
+              error={errors.transactionType?.message}
+              required={false}
+              className="w-[90px]"
               height="44px"
             />
 
@@ -213,7 +226,7 @@ const OrdersTable = () => {
                         (e: any, i: number) => (
                           <tr
                             key={i}
-                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[65px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
+                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
                             bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out
                             "
                           >
@@ -249,6 +262,9 @@ const OrdersTable = () => {
                             <td>{e.openDate}</td>
                             <td>{e.estimatedClosingDate}</td>
                             <td>{e.closedDate}</td>
+                            <td>{e.contact}</td>
+                            <td>{e.aeLeadStage}</td>
+                            <td>{e.transactionType}</td>
                             <td>{e.fileType}</td>
                             <td>{e.orderNumber}</td>
                             <td>{e.fileStatus}</td>

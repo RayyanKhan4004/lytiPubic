@@ -10,10 +10,12 @@ import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 import { useCreateOrderMutation } from "../../lib/rtkQuery/orderApi";
 
 import {
+  aeLeadStageOptions,
   countyOptions,
   fileStatusOption,
   fileTypeOptions,
   roleOption,
+  transactionOption,
 } from "../../utils/options";
 import { OrderDataType } from "../../utils/types";
 import MainTitle from "../../components/ui/typography/MainTitle";
@@ -30,6 +32,7 @@ const CreateNewOrder = () => {
     setValue,
     watch,
     control,
+    reset,
   } = useForm<OrderDataType>();
 
   const onSubmit: SubmitHandler<OrderDataType> = async (data) => {
@@ -39,9 +42,12 @@ const CreateNewOrder = () => {
       ...data,
     };
     try {
-      //   const res = await createOrder(formattedData).unwrap();
-      //   navigate("/orders/orders");
+      const res = await createOrder(formattedData).unwrap();
+      console.log(res, "==res==");
+
+      navigate("/orders/orders");
       toast.success("Order Created Successfully");
+      reset();
     } catch (err: any) {
       toast.error(err?.data?.message || "Order creation failed");
     }
@@ -56,21 +62,21 @@ const CreateNewOrder = () => {
           <div className="w-full flex  items-center flex-wrap py-4 gap-4">
             <SelectField
               label="Transaction Type"
-              name="titleRep"
+              name="transactionType"
               control={control}
-              options={roleOption}
-              placeholder="Select..."
-              error={errors.titleRep?.message}
+              options={transactionOption}
+              placeholder="Select transaction type"
+              error={errors.transactionType?.message}
               required={false}
               className="w-[34%] "
             />
             <InputField
               label="Add contact"
-              name="titleOffice"
+              name="contact"
               control={control}
               type="number"
               placeholder="Enter contact"
-              error={errors.titleOffice?.message}
+              error={errors.contact?.message}
               className="w-[34%]"
             />
           </div>
@@ -83,7 +89,7 @@ const CreateNewOrder = () => {
             removing fields here will affect the columns you see in the
             "transactions" screen and also the order you see them in.
           </p>
-          <div className="w-full flex justify-between items-center flex-wrap  py-4 gap-x-1 gap-y-5">
+          <div className="w-full grid grid-cols-4 gap-x-2.5 gap-y-5 py-4">
             <InputField
               label="Title Office"
               name="titleOffice"
@@ -91,7 +97,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter your title Office"
               error={errors.titleOffice?.message}
-              className="w-[24%]"
             />
             <SelectField
               label="Agent"
@@ -101,7 +106,6 @@ const CreateNewOrder = () => {
               placeholder="Select..."
               error={errors.titleRep?.message}
               required={false}
-              className="w-[24%] "
             />
             <CustomDatePicker
               name="openDate"
@@ -109,7 +113,6 @@ const CreateNewOrder = () => {
               label="Open Date"
               placeholder="8-21-15"
               // rules={{ required: "Date is required" }}
-              className="w-[24%]"
             />
             <CustomDatePicker
               name="estimatedClosingDate"
@@ -117,7 +120,6 @@ const CreateNewOrder = () => {
               label="Estimated Closing Date"
               placeholder="8-21-15"
               // rules={{ required: "Date is required" }}
-              className="w-[24%]"
             />
             <CustomDatePicker
               name="closedDate"
@@ -125,7 +127,6 @@ const CreateNewOrder = () => {
               label="Closing Date"
               placeholder="8-21-15"
               // rules={{ required: "Date is required" }}
-              className="w-[24%]"
             />
             <InputField
               label="Title Officer"
@@ -134,7 +135,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter title officer"
               error={errors.titleOfficer?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Order Number"
@@ -143,7 +143,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter your order number"
               error={errors.orderNumber?.message}
-              className="w-[24%]"
             />
             <SelectField
               label="File Status"
@@ -153,18 +152,26 @@ const CreateNewOrder = () => {
               placeholder="Select..."
               error={errors.fileStatus?.message}
               required={false}
-              className="w-[24%] "
             />
             <SelectField
               label="File Type"
               name="fileType"
               control={control}
               options={fileTypeOptions}
-              placeholder="Select..."
+              placeholder="Select type"
               error={errors.fileType?.message}
               required={false}
-              className="w-[24%] "
             />
+            <SelectField
+              label="Ae Lead Stage"
+              name="aeLeadStage"
+              control={control}
+              options={aeLeadStageOptions}
+              placeholder="Select stage"
+              error={errors.aeLeadStage?.message}
+              required={false}
+            />
+            {/* aeLeadStage */}
             <InputField
               label="Sale Price"
               name="salePrice"
@@ -172,7 +179,6 @@ const CreateNewOrder = () => {
               type="number"
               placeholder="Enter sale price"
               error={errors.salePrice?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Title RepPct"
@@ -181,9 +187,7 @@ const CreateNewOrder = () => {
               type="number"
               placeholder="Enter your value"
               error={errors.titleRepPct?.message}
-              className="w-[24%]"
             />
-
             <InputField
               label="Loan Amount"
               name="loanAmount"
@@ -191,7 +195,6 @@ const CreateNewOrder = () => {
               type="number"
               placeholder="Enter loan amount"
               error={errors.loanAmount?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Property Address"
@@ -200,7 +203,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter property address"
               error={errors.propertyAddress?.message}
-              className="w-[24%]"
             />
             <SelectField
               label="Property County"
@@ -210,7 +212,6 @@ const CreateNewOrder = () => {
               placeholder="Select..."
               error={errors.propertyCounty?.message}
               required={false}
-              className="w-[24%] "
             />
             <InputField
               label="Property State"
@@ -219,7 +220,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter property state"
               error={errors.propertyState?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Escrow Officer"
@@ -228,7 +228,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter escrow officer"
               error={errors.escrowOfficer?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Listing Agent Company"
@@ -237,7 +236,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter listing agent company"
               error={errors.listingAgentCompany?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Listing Agent Contact Name"
@@ -246,7 +244,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter listing agent contact name"
               error={errors.listingAgentContactName?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Listing Agent Contact Email"
@@ -255,7 +252,6 @@ const CreateNewOrder = () => {
               type="email"
               placeholder="Enter listing agent contact email"
               error={errors.listingAgentContactEmail?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Listing Agent Phone"
@@ -264,7 +260,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter listing agent phone"
               error={errors.listingAgentPhone?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Selling Agent Company"
@@ -273,7 +268,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter selling agent company"
               error={errors.sellingAgentCompany?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Selling Agent Contact Name"
@@ -282,7 +276,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter selling agent contact name"
               error={errors.sellingAgentContactName?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Selling Agent Contact Email"
@@ -291,7 +284,6 @@ const CreateNewOrder = () => {
               type="email"
               placeholder="Enter selling agent contact email"
               error={errors.sellingAgentContactEmail?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Selling Agent Phone"
@@ -300,7 +292,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter selling agent phone"
               error={errors.sellingAgentPhone?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Mortgage Broker Company"
@@ -309,7 +300,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter mortgage broker company"
               error={errors.mortgageBrokerCompany?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Mortgage Broker Contact"
@@ -318,7 +308,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter mortgage broker contact"
               error={errors.mortgageBrokerContact?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Mortgage Broker Contact Email"
@@ -327,7 +316,6 @@ const CreateNewOrder = () => {
               type="email"
               placeholder="Enter mortgage broker contact email"
               error={errors.mortgageBrokerContactEmail?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Mortgage Broker Phone"
@@ -336,7 +324,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter mortgage broker phone"
               error={errors.mortgageBrokerPhone?.message}
-              className="w-[24%]"
             />
             <InputField
               label="Underwriter"
@@ -345,14 +332,13 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter underwriter"
               error={errors.underwriter?.message}
-              className="w-[24%]"
             />
           </div>
         </CardLayout>
-        <CardLayout>
+        {/* <CardLayout>
           <MainTitle title="Fee Details" />
 
-          <div className="w-full flex justify-between items-center flex-wrap  py-4 gap-x-1 gap-y-5">
+          <div className="w-full grid grid-cols-4 gap-x-2.5 gap-y-5 py-4">
             <InputField
               label="Description"
               name="titleOffice"
@@ -360,7 +346,6 @@ const CreateNewOrder = () => {
               type="number"
               placeholder="Enter contact"
               error={errors.titleOffice?.message}
-              className="w-[24%]"
             />
             <SelectField
               label="Account"
@@ -370,7 +355,6 @@ const CreateNewOrder = () => {
               placeholder="Select..."
               error={errors.titleRep?.message}
               required={false}
-              className="w-[24%] "
             />
             <SelectField
               label="Fee Category"
@@ -380,7 +364,6 @@ const CreateNewOrder = () => {
               placeholder="Select..."
               error={errors.titleRep?.message}
               required={false}
-              className="w-[24%] "
             />
             <InputField
               label="Amount"
@@ -389,10 +372,9 @@ const CreateNewOrder = () => {
               type="number"
               placeholder="Enter contact"
               error={errors.titleOffice?.message}
-              className="w-[24%]"
             />
           </div>
-        </CardLayout>
+        </CardLayout> */}
 
         <div className="flex justify-end w-full my-3">
           <PrimaryButton
