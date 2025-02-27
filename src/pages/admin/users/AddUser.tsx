@@ -14,6 +14,9 @@ import { useSignUpMutation } from "../../../lib/rtkQuery/authApi";
 import { formatDate } from "../../../utils/formatDate";
 import { roleOption } from "../../../utils/options";
 import { UserDataType } from "../../../utils/types";
+import MainTitle from "../../../components/ui/typography/MainTitle";
+import CardLayout from "../../../components/layouts/CardLayout";
+import PrimaryButton from "../../../components/ui/button/PrimaryButton";
 
 const AddUser = () => {
   const [isChallenge, setIsChallenge] = useState<boolean>(false);
@@ -70,10 +73,8 @@ const AddUser = () => {
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Admin", "User", "Add User"]} />
-      <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-screen my-6">
-        <h2 className="text-lg text-(--primary) font-semibold pt-3">
-          Add User
-        </h2>
+      <CardLayout>
+        <MainTitle title="Add User" />
 
         <div className="w-full flex flex-col  items-center">
           {/* {profileImagePreview ? (
@@ -356,16 +357,15 @@ const AddUser = () => {
             </div>
 
             <div className="flex justify-end">
-              <button
+              <PrimaryButton
+                text="Add User"
+                isLoading={isLoading}
                 type="submit"
-                className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] w-fit px-8  rounded-xl text-white"
-              >
-                {isLoading ? <Spinner /> : "Add User"}
-              </button>
+              />
             </div>
           </form>
         </div>
-      </div>
+      </CardLayout>
     </div>
   );
 };
