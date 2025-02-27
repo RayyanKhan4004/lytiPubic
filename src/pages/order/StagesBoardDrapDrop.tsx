@@ -102,7 +102,13 @@ const StagesBoardDragDrop: React.FC = () => {
       columns[col as ColumnKey]?.some((item) => item.id === active.id)
     ) as ColumnKey | undefined;
 
-    const destinationColumn = over.id as ColumnKey;
+    let destinationColumn = over.id as ColumnKey | undefined;
+
+    if (destinationColumn && !columns[destinationColumn]) {
+      destinationColumn = Object.keys(columns).find((col) =>
+        columns[col as ColumnKey]?.some((item) => item.id === over.id)
+      ) as ColumnKey | undefined;
+    }
 
     if (
       !sourceColumn ||
@@ -121,7 +127,7 @@ const StagesBoardDragDrop: React.FC = () => {
       [sourceColumn]: prev[sourceColumn].filter(
         (item) => item.id !== active.id
       ),
-      [destinationColumn]: [...(prev[destinationColumn] || []), movedItem],
+      [destinationColumn]: [...prev[destinationColumn], movedItem],
     }));
   };
 
