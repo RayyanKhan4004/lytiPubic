@@ -263,3 +263,54 @@ export const userTableHeaders = [
   { text: "Start Date", arrowIcon: false },
   { text: "Created At", arrowIcon: false },
 ];
+
+export const initialBuyers = [
+  {
+    id: "1",
+    name: "Annette Black",
+    address: "4517 Washington Ave. Manchester, Kentucky 39495",
+    agent: "Eleanor Pena",
+    agentImage: dummy,
+    role: "Buyer",
+  },
+  {
+    id: "2",
+    name: "Theresa Webb",
+    address: "2972 Westheimer Rd. Santa Ana, Illinois 85486",
+    agent: "Eleanor Pena",
+    agentImage: dummy,
+    role: "Buyer",
+  },
+  {
+    id: "3",
+    name: "Jane Cooper",
+    address: "3517 W. Gray St. Utica, Pennsylvania 57867",
+    agent: "Eleanor Pena",
+    agentImage: dummy,
+    role: "Buyer",
+  },
+  {
+    id: "4",
+    name: "Ronald Richards",
+    address: "3891 Ranchview Dr. Richardson, California 62639",
+    agent: "Eleanor Pena",
+    agentImage: dummy,
+    role: "Buyer",
+  },
+  {
+    id: "5",
+    name: "Savannah Nguyen",
+    address: "2715 Ash Dr. San Jose, South Dakota 83475",
+    agent: "Eleanor Pena",
+    agentImage: dummy,
+    role: "Buyer",
+  },
+  {
+    id: "6",
+    name: "Cody Fisher",
+    address: "4517 Washington Ave. Manchester, Kentucky 39495",
+    agent: "Eleanor Pena",
+    agentImage: dummy,
+    role: "Buyer",
+  },
+];

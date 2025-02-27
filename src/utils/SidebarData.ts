@@ -52,18 +52,19 @@ export const sidebarData = () => {
       subMenu: [
         { id: 201, title: "Orders", path: "/orders/orders" },
         { id: 203, title: "Stages Board", path: "/orders/stages-board" },
+        { id: 204, title: "Statuses Board", path: "orders/statuses-board" },
         {
-          id: 204,
+          id: 205,
           title: "Underwriter Borad",
           path: "/orders/underwriter-board",
         },
         {
-          id: 205,
+          id: 206,
           title: "Accounting Fee Details",
           path: "/orders/fee-detail",
         },
         {
-          id: 206,
+          id: 207,
           title: "Create New Order",
           path: "/orders/create-order",
         },

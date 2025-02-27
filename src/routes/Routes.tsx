@@ -43,6 +43,7 @@ import CreateChallenge from "../pages/challenges/CreateChallenge";
 
 import ProtectedLayout from "./ProtectedLayout";
 import PublicRoute from "./PublicRoute";
+import StatusesBoard from "../pages/order/StatusesBoard";
 
 export const router = createBrowserRouter([
   {
@@ -72,6 +73,7 @@ export const router = createBrowserRouter([
       { path: "orders/order-detail", element: <OrderDetail /> },
       { path: "orders/underwriter-board", element: <UnderwriterBoard /> },
       { path: "orders/stages-board", element: <StagesBoardDragDrop /> },
+      { path: "orders/statuses-board", element: <StatusesBoard /> },
       { path: "orders/fee-detail", element: <FeeDetail /> },
       { path: "account/change-password", element: <ChangePassword /> },
       { path: "account/profile", element: <Profile /> },
