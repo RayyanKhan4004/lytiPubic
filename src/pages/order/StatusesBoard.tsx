@@ -13,7 +13,7 @@ import SelectField from "../../components/inputs/SelectField";
 import SearchInput from "../../components/inputs/SearchInput";
 
 import { initialBuyers } from "../../utils/DummyData";
-import { StagesBoardColumnKeys, OrderTableType } from "../../utils/types";
+import { DragAndDropColumnKey, OrderTableType } from "../../utils/types";
 
 import {
   countyOptions,
@@ -24,24 +24,18 @@ import {
 import filter from "../../assets/icons/AlignLeft.svg";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
 
-const StagesBoardDragDrop: React.FC = () => {
+const StatusesBoard: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [activeItem, setActiveItem] = useState<any | null>(null);
   const [columns, setColumns] = useState<
-    Record<StagesBoardColumnKeys, typeof initialBuyers>
+    Record<DragAndDropColumnKey, typeof initialBuyers>
   >({
-    Pipeline: [...initialBuyers],
-    AppSet: [],
-    AppMet: [],
-    Signed: [],
-    FirstTimeShowing: [],
-    FirstTimeOffer: [],
-    LiveListing: [],
-    ListingExpired: [],
-    BuyerAgreementExpired: [],
-    Pending: [],
-    Closed: [],
-    Lost: [],
+    verbalCommitments: [...initialBuyers],
+    apptSet: [],
+    appMet: [],
+    openingToDisclosure: [],
+    postToDisclosures: [],
+    fullCrToCde: [],
   });
 
   const {
@@ -54,10 +48,8 @@ const StagesBoardDragDrop: React.FC = () => {
   const handleDragStart = (event: any) => {
     const { active } = event;
     const sourceColumn = Object.keys(columns).find((col) =>
-      columns[col as StagesBoardColumnKeys].some(
-        (item) => item.id === active.id
-      )
-    ) as StagesBoardColumnKeys | undefined;
+      columns[col as DragAndDropColumnKey].some((item) => item.id === active.id)
+    ) as DragAndDropColumnKey | undefined;
 
     if (sourceColumn) {
       const draggedItem = columns[sourceColumn].find(
@@ -74,19 +66,19 @@ const StagesBoardDragDrop: React.FC = () => {
     if (!over) return;
 
     const sourceColumn = Object.keys(columns).find((col) =>
-      columns[col as StagesBoardColumnKeys]?.some(
+      columns[col as DragAndDropColumnKey]?.some(
         (item) => item.id === active.id
       )
-    ) as StagesBoardColumnKeys | undefined;
+    ) as DragAndDropColumnKey | undefined;
 
-    let destinationColumn = over.id as StagesBoardColumnKeys | undefined;
+    let destinationColumn = over.id as DragAndDropColumnKey | undefined;
 
     if (destinationColumn && !columns[destinationColumn]) {
       destinationColumn = Object.keys(columns).find((col) =>
-        columns[col as StagesBoardColumnKeys]?.some(
+        columns[col as DragAndDropColumnKey]?.some(
           (item) => item.id === over.id
         )
-      ) as StagesBoardColumnKeys | undefined;
+      ) as DragAndDropColumnKey | undefined;
     }
 
     if (
@@ -109,17 +101,17 @@ const StagesBoardDragDrop: React.FC = () => {
       [destinationColumn]: [...prev[destinationColumn], movedItem],
     }));
   };
-
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm.toLowerCase());
   };
-
   return (
     <div className="w-full overflow-auto px-4 my-8">
-      <Breadcrumb items={["Orders", "Stages Board"]} />
+      <Breadcrumb items={["Orders", "Statuses Board"]} />
+
       <CardLayout>
         <form className="font-Poppins flex justify-between items-center w-full gap-2">
-          <MainTitle title="Stages Board" />
+          <MainTitle title="Statuses Board" />
+
           <div className="flex items-center gap-1 justify-between">
             <SearchInput
               debounceTimeout={500}
@@ -156,23 +148,52 @@ const StagesBoardDragDrop: React.FC = () => {
               className="w-[180px]"
               height="44px"
             />
+
             <PrimaryButton image={filter} />
           </div>
         </form>
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
           <div className="overflow-x-auto overflow-y-auto">
             <div className="flex space-x-4 p-4 whitespace-nowrap min-w-max">
-              {Object.keys(columns).map((key) => (
-                <DroppableColumn
-                  key={key}
-                  id={key}
-                  title={key}
-                  items={columns[key as StagesBoardColumnKeys]}
-                  onDragEnd={handleDragEnd}
-                />
-              ))}
+              <DroppableColumn
+                id="verbalCommitments"
+                title="Verbal Commitments"
+                items={columns.verbalCommitments}
+                onDragEnd={handleDragEnd}
+              />
+              <DroppableColumn
+                id="apptSet"
+                title="Appt Set"
+                items={columns.apptSet}
+                onDragEnd={handleDragEnd}
+              />
+              <DroppableColumn
+                id="appMet"
+                title="App Met"
+                items={columns.appMet}
+                onDragEnd={handleDragEnd}
+              />
+              <DroppableColumn
+                id="openingToDisclosure"
+                title="Opening To Disclosure"
+                items={columns.openingToDisclosure}
+                onDragEnd={handleDragEnd}
+              />
+              <DroppableColumn
+                id="postToDisclosures"
+                title="Post To Disclosures"
+                items={columns.postToDisclosures}
+                onDragEnd={handleDragEnd}
+              />
+              <DroppableColumn
+                id="fullCrToCde"
+                title="Full CR To CDE"
+                items={columns.fullCrToCde}
+                onDragEnd={handleDragEnd}
+              />
             </div>
           </div>
+
           <DragOverlay>
             {activeItem ? (
               <DraggableItem id={activeItem.id} buyer={activeItem} />
@@ -184,4 +205,4 @@ const StagesBoardDragDrop: React.FC = () => {
   );
 };
 
-export default StagesBoardDragDrop;
+export default StatusesBoard;

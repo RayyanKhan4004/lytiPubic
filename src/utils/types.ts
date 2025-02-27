@@ -76,3 +76,25 @@ export interface UserTableType {
   filter: string;
   type: string;
 }
+
+export type DragAndDropColumnKey =
+  | "verbalCommitments"
+  | "apptSet"
+  | "appMet"
+  | "openingToDisclosure"
+  | "postToDisclosures"
+  | "fullCrToCde";
+
+export type StagesBoardColumnKeys =
+  | "Pipeline"
+  | "AppSet"
+  | "AppMet"
+  | "Signed"
+  | "FirstTimeShowing"
+  | "FirstTimeOffer"
+  | "LiveListing"
+  | "ListingExpired"
+  | "BuyerAgreementExpired"
+  | "Pending"
+  | "Closed"
+  | "Lost";
