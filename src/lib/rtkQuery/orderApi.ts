@@ -37,8 +37,16 @@ export const orderApi = createApi({
   }),
   endpoints: (builder) => ({
     getOrders: builder.query<any, OrderDataType>({
-      query: ({ status, page, limit, type, propertyCounty, keyword }) =>
-        `orders/?page=${page}&limit=${10}&fileStatus=${status}&fileType=${type}&propertyCounty=${propertyCounty}&keyword=${keyword}`,
+      query: ({
+        status,
+        page,
+        limit,
+        type,
+        propertyCounty,
+        keyword,
+        transactionType,
+      }) =>
+        `orders/?page=${page}&limit=${10}&fileStatus=${status}&fileType=${type}&propertyCounty=${propertyCounty}&keyword=${keyword}&transactionType=${transactionType}`,
     }),
 
     createOrder: builder.mutation<any, OrderDataType>({
