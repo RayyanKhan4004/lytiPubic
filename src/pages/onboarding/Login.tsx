@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../lib/store/slices/authSlice";
 import Spinner from "../../components/common/Spinner";
+import PrimaryButton from "../../components/ui/button/PrimaryButton";
 
 type FormValues = {
   email: string;

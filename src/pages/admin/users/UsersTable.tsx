@@ -141,7 +141,7 @@ const UsersTable = () => {
                         (e: any, i: number) => (
                           <tr
                             key={i}
-                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9] cursor-pointer 
+                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[70px] border-b-[1px] border-[#F4EFE9] cursor-pointer 
                             bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out"
                           >
                             <td>
