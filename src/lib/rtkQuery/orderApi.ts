@@ -56,6 +56,13 @@ export const orderApi = createApi({
         body,
       }),
     }),
+    updateOrder: builder.mutation<any, { id: string; data: OrderDataType }>({
+      query: ({ id, data }) => ({
+        url: `orders/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
     deleteOrder: builder.mutation<any, string>({
       query: (id) => ({
         url: `orders/${id}`,
@@ -68,5 +75,6 @@ export const orderApi = createApi({
 export const {
   useGetOrdersQuery,
   useCreateOrderMutation,
+  useUpdateOrderMutation,
   useDeleteOrderMutation,
 } = orderApi;
