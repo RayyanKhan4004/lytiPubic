@@ -188,7 +188,7 @@ const OrdersTable = () => {
               onClick={() => navigate("/orders/add-order")}
             >
               <img src={add} alt="" />
-              Add Order
+              {/* Add Order */}
             </div>
           </div>
         </form>
