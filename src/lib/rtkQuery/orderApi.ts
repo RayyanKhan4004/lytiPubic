@@ -69,6 +69,9 @@ export const orderApi = createApi({
         method: "DELETE",
       }),
     }),
+    fetchAeLeadStagesBoard: builder.query<any, void>({
+      query: () => `orders/ae-lead-stages-board`,
+    }),
   }),
 });
 
@@ -77,4 +80,5 @@ export const {
   useCreateOrderMutation,
   useUpdateOrderMutation,
   useDeleteOrderMutation,
+  useFetchAeLeadStagesBoardQuery,
 } = orderApi;

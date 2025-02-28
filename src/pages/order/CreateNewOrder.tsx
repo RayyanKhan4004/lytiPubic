@@ -30,9 +30,17 @@ import { OrderDataType } from "../../utils/types";
 import MainTitle from "../../components/ui/typography/MainTitle";
 import CardLayout from "../../components/layouts/CardLayout";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
+import { useFetchUsersWithoutLimitQuery } from "../../lib/rtkQuery/userApi";
 
 const CreateNewOrder = () => {
   const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const { data } = useFetchUsersWithoutLimitQuery();
+  const agentsOption =
+    data?.users?.map((user: { firstname: string }) => ({
+      value: user.firstname,
+      label: user.firstname,
+    })) || [];
+
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -80,7 +88,7 @@ const CreateNewOrder = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardLayout>
           <MainTitle title="Create New Order" />
-          <div className="w-full flex  items-center flex-wrap py-4 gap-4">
+          <div className="w-full grid grid-cols-4 gap-x-2.5 gap-y-5 py-4">
             <SelectField
               label="Transaction Type"
               name="transactionType"
@@ -89,7 +97,22 @@ const CreateNewOrder = () => {
               placeholder="Select transaction type"
               error={errors.transactionType?.message}
               required={false}
-              className="w-[34%] "
+            />
+            <InputField
+              label="First name"
+              name="firstname"
+              control={control}
+              type="text"
+              placeholder="John"
+              error={errors.firstname?.message}
+            />
+            <InputField
+              label="Last name"
+              name="lastname"
+              control={control}
+              type="text"
+              placeholder="Doe"
+              error={errors.lastname?.message}
             />
             <InputField
               label="Add contact"
@@ -98,7 +121,6 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Enter contact"
               error={errors.contact?.message}
-              className="w-[34%]"
             />
           </div>
         </CardLayout>
@@ -123,7 +145,7 @@ const CreateNewOrder = () => {
               label="Agent"
               name="titleRep"
               control={control}
-              options={roleOption}
+              options={agentsOption}
               placeholder="Select..."
               error={errors.titleRep?.message}
               required={false}
@@ -358,44 +380,6 @@ const CreateNewOrder = () => {
         </CardLayout>
         <CardLayout>
           <MainTitle title="Fee Details" />
-
-          {/* <div className="w-full grid grid-cols-4 gap-x-2.5 gap-y-5 py-4">
-            <InputField
-              label="Fee Description"
-              name={`fees.${0}.feeDescription`}
-              control={control}
-              type="text"
-              placeholder="Enter fee description"
-              error={errors.fees?.[0]?.feeDescription?.message}
-            />
-
-            <SelectField
-              label="Account"
-              name={`fees.${0}.account`}
-              control={control}
-              options={accountOptions}
-              placeholder="Select account"
-              error={errors.fees?.[0]?.account?.message}
-              required={false}
-            />
-            <SelectField
-              label="Fee Category"
-              name={`fees.${0}.feeCategory`}
-              control={control}
-              options={feeCategoryOptions}
-              placeholder="fee category"
-              error={errors.fees?.[0]?.feeCategory?.message}
-              required={false}
-            />
-            <InputField
-              label="Fee Amount"
-              name={`fees.${0}.feeAmount`}
-              control={control}
-              type="number"
-              placeholder="Enter fee Amount"
-              error={errors.fees?.[0]?.feeAmount?.message}
-            />
-          </div> */}
 
           {fields.map((field, index) => (
             <div
