@@ -355,7 +355,7 @@ const StagesBoardDragDrop: React.FC = () => {
       <Breadcrumb items={["Orders", "Stages Board"]} />
       <CardLayout>
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-          <div className="overflow-x-auto overflow-y-auto">
+          <div className="overflow-x-auto overflow-y-hidden h-full relative">
             <div className="flex space-x-4 p-4 whitespace-nowrap min-w-max">
               {Object.keys(columns).map((key) => (
                 <DroppableColumn
