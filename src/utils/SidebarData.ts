@@ -51,7 +51,11 @@ export const sidebarData = () => {
       path: "/orders/orders",
       subMenu: [
         { id: 201, title: "Orders", path: "/orders/orders" },
-        { id: 203, title: "Stages Board", path: "/orders/stages-board" },
+        {
+          id: 203,
+          title: "Ae Lead Stages Board",
+          path: "/orders/stages-board",
+        },
         { id: 204, title: "Statuses Board", path: "orders/statuses-board" },
         {
           id: 205,
