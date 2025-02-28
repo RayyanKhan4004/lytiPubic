@@ -18,11 +18,15 @@ const DroppableColumn: React.FC<DroppableColumnProps> = ({
   const { setNodeRef } = useDroppable({ id });
 
   return (
-    <div className="bg-gray-100 p-4 rounded-lg w-[320px] ">
+    <div className="bg-gray-100 p-4 rounded-lg w-[320px]">
       <div className="text-base px-3 font-semibold h-[70px] flex items-center mb-4 bg-(--primary) rounded-xl text-white justify-between">
         {title} <span>{items.length}</span>
       </div>
-      <div ref={setNodeRef} className="min-h-full p-2 space-y-2">
+
+      <div
+        ref={setNodeRef}
+        className="p-2 space-y-2 max-h-[70vh] overflow-y-auto"
+      >
         {items.map((buyer) => (
           <DraggableItem key={buyer.id} id={buyer.id} buyer={buyer} />
         ))}
