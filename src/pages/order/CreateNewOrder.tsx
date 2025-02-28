@@ -95,7 +95,7 @@ const CreateNewOrder = () => {
               label="Add contact"
               name="contact"
               control={control}
-              type="number"
+              type="text"
               placeholder="Enter contact"
               error={errors.contact?.message}
               className="w-[34%]"

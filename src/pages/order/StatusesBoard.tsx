@@ -13,7 +13,7 @@ import SelectField from "../../components/inputs/SelectField";
 import SearchInput from "../../components/inputs/SearchInput";
 
 import { initialBuyers } from "../../utils/DummyData";
-import { DragAndDropColumnKey, OrderTableType } from "../../utils/types";
+import { DragAndDropColumnKey, OrderDataType } from "../../utils/types";
 
 import {
   countyOptions,
@@ -43,7 +43,7 @@ const StatusesBoard: React.FC = () => {
     setValue,
     watch,
     control,
-  } = useForm<OrderTableType>();
+  } = useForm<OrderDataType>();
 
   const handleDragStart = (event: any) => {
     const { active } = event;

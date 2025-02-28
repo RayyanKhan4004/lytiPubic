@@ -39,7 +39,7 @@ export interface OrderDataType {
   orderStatus?: string;
   transactionType?: string;
   aeLeadStage?: string;
-  contact?: number;
+  contact?: string;
   fees?: Fee[];
 }
 
