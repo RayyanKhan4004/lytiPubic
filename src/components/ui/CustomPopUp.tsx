@@ -23,21 +23,25 @@ function CustomPopUp({setOpenModel , openModel , data , children , styles ,posit
         }
     }
     return (
-      <div>         
-      <div
-        className={`fixed  inset-0 backdrop-brightness-90 cursor-pointer w-[100vw] h-[100vh] flex items-center z-50 ${getPosition()}`}
-        onClick={() => setOpenModel(false)}
-      >
+      <div>
         <div
-          className={` absolute  ${styles ? styles : "bg-white rounded-[16px] max-w-[700px] w-[90%] h-[100vh] overflow-y-auto width-less-scroll"}`}
-          
+          className={`fixed  inset-0 backdrop-brightness-90 cursor-pointer w-[100vw] h-[100vh] flex items-center z-50 ${getPosition()}`}
+          onClick={() => setOpenModel(false)}
         >
-         {/* content  */} 
-        { children}
-          {/* content end */}
+          <div
+            className={` absolute  ${
+              styles
+                ? styles
+                : "bg-white rounded-[16px] max-w-[700px] w-[90%] h-[100vh] overflow-y-auto width-less-scroll"
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* content  */}
+            {children}
+            {/* content end */}
+          </div>
         </div>
       </div>
-    </div>
-  )
+    );
 }
 export default CustomPopUp
