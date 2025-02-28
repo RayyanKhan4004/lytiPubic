@@ -1,6 +1,13 @@
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import {
+  Controller,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
+import add from "../../assets/icons/Add.svg";
 
 import Breadcrumb from "../../components/common/BreadCrumb";
 import InputField from "../../components/inputs/InputFields";
@@ -10,8 +17,10 @@ import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 import { useCreateOrderMutation } from "../../lib/rtkQuery/orderApi";
 
 import {
+  accountOptions,
   aeLeadStageOptions,
   countyOptions,
+  feeCategoryOptions,
   fileStatusOption,
   fileTypeOptions,
   roleOption,
@@ -26,14 +35,27 @@ const CreateNewOrder = () => {
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const navigate = useNavigate();
   const {
-    register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    watch,
     control,
     reset,
-  } = useForm<OrderDataType>();
+  } = useForm<OrderDataType>({
+    defaultValues: {
+      fees: [
+        {
+          feeDescription: "",
+          account: "",
+          feeCategory: "",
+          feeAmount: undefined,
+        },
+      ],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "fees",
+  });
 
   const onSubmit: SubmitHandler<OrderDataType> = async (data) => {
     console.log(data, "==formData===");
@@ -44,7 +66,6 @@ const CreateNewOrder = () => {
     try {
       const res = await createOrder(formattedData).unwrap();
       console.log(res, "==res==");
-
       navigate("/orders/orders");
       toast.success("Order Created Successfully");
       reset();
@@ -335,46 +356,122 @@ const CreateNewOrder = () => {
             />
           </div>
         </CardLayout>
-        {/* <CardLayout>
+        <CardLayout>
           <MainTitle title="Fee Details" />
 
-          <div className="w-full grid grid-cols-4 gap-x-2.5 gap-y-5 py-4">
+          {/* <div className="w-full grid grid-cols-4 gap-x-2.5 gap-y-5 py-4">
             <InputField
-              label="Description"
-              name="titleOffice"
+              label="Fee Description"
+              name={`fees.${0}.feeDescription`}
               control={control}
-              type="number"
-              placeholder="Enter contact"
-              error={errors.titleOffice?.message}
+              type="text"
+              placeholder="Enter fee description"
+              error={errors.fees?.[0]?.feeDescription?.message}
             />
+
             <SelectField
               label="Account"
-              name="titleRep"
+              name={`fees.${0}.account`}
               control={control}
-              options={roleOption}
-              placeholder="Select..."
-              error={errors.titleRep?.message}
+              options={accountOptions}
+              placeholder="Select account"
+              error={errors.fees?.[0]?.account?.message}
               required={false}
             />
             <SelectField
               label="Fee Category"
-              name="titleRep"
+              name={`fees.${0}.feeCategory`}
               control={control}
-              options={roleOption}
-              placeholder="Select..."
-              error={errors.titleRep?.message}
+              options={feeCategoryOptions}
+              placeholder="fee category"
+              error={errors.fees?.[0]?.feeCategory?.message}
               required={false}
             />
             <InputField
-              label="Amount"
-              name="titleOffice"
+              label="Fee Amount"
+              name={`fees.${0}.feeAmount`}
               control={control}
               type="number"
-              placeholder="Enter contact"
-              error={errors.titleOffice?.message}
+              placeholder="Enter fee Amount"
+              error={errors.fees?.[0]?.feeAmount?.message}
             />
+          </div> */}
+
+          {fields.map((field, index) => (
+            <div
+              key={field.id}
+              className="w-full grid grid-cols-5 gap-x-2.5 gap-y-5 py-4"
+            >
+              <InputField
+                label="Fee Description"
+                name={`fees.${index}.feeDescription`}
+                control={control}
+                type="text"
+                placeholder="Enter fee description"
+                error={errors.fees?.[index]?.feeDescription?.message}
+              />
+
+              <SelectField
+                label="Account"
+                name={`fees.${index}.account`}
+                control={control}
+                options={accountOptions}
+                placeholder="Select account"
+                error={errors.fees?.[index]?.account?.message}
+                required={false}
+              />
+
+              <SelectField
+                label="Fee Category"
+                name={`fees.${index}.feeCategory`}
+                control={control}
+                options={feeCategoryOptions}
+                placeholder="Fee category"
+                error={errors.fees?.[index]?.feeCategory?.message}
+                required={false}
+              />
+
+              <InputField
+                label="Fee Amount"
+                name={`fees.${index}.feeAmount`}
+                control={control}
+                type="number"
+                placeholder="Enter fee amount"
+                error={errors.fees?.[index]?.feeAmount?.message}
+              />
+
+              <div className="flex justify-end items-end w-full">
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  className="bg-red-500 text-white px-4  h-[55px] w-full rounded-[10px]"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+
+          <div className="w-full justify-end flex ">
+            <button
+              type="button"
+              onClick={() =>
+                append({
+                  feeDescription: "",
+                  account: "",
+                  feeCategory: "",
+                  feeAmount: 0,
+                })
+              }
+              className=" text-(--secondary) font-medium mt-4 flex  gap-2 items-center text-xs "
+            >
+              <div className="bg-(--secondary)  rounded-full p-[2px]">
+                <img src={add} alt="" className="h-[15px] w-[15px]" />
+              </div>
+              Add More
+            </button>
           </div>
-        </CardLayout> */}
+        </CardLayout>
 
         <div className="flex justify-end w-full my-3">
           <PrimaryButton
