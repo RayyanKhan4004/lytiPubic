@@ -44,7 +44,7 @@ const OrdersTable = () => {
 
   const {
     formState: { errors },
-    setValue,
+    reset,
     watch,
     control,
   } = useForm<OrderDataType>();
@@ -177,7 +177,11 @@ const OrdersTable = () => {
               height="44px"
             />
 
-            <button className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white">
+            <button
+              type="button"
+              onClick={() => reset()}
+              className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
+            >
               <img src={filter} alt="" />
             </button>
             <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
