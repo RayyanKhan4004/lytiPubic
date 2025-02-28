@@ -352,7 +352,7 @@ const StagesBoardDragDrop: React.FC = () => {
 
   return (
     <div className="w-full overflow-auto px-4 my-8">
-      <Breadcrumb items={["Orders", "Stages Board"]} />
+      <Breadcrumb items={["Orders", "Ae Leads Stages Board"]} />
       <CardLayout>
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
           <div className="overflow-x-auto overflow-y-hidden h-full relative">
