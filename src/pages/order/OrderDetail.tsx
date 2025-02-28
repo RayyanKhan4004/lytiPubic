@@ -72,25 +72,7 @@ const OrderDetail = () => {
     name: "fees",
   });
 
-  const onSubmit: SubmitHandler<OrderDataType> = async (data) => {
-    console.log(data, "==formData===");
-
-    const formattedData = {
-      ...data,
-    };
-    try {
-      const res = await updateOrder({
-        id: orderData?.id,
-        data: formattedData,
-      }).unwrap();
-      // console.log(res, "==res==");
-      navigate("/orders/orders");
-      toast.success("Order Created Successfully");
-      // reset();
-    } catch (err: any) {
-      toast.error(err?.data?.message || "Order creation failed");
-    }
-  };
+  const onSubmit: SubmitHandler<OrderDataType> = async (data) => {};
 
   useEffect(() => {
     if (orderData) {
@@ -154,10 +136,10 @@ const OrderDetail = () => {
 
   return (
     <div className="w-full px-4 my-8 font-Poppins">
-      <Breadcrumb items={["Orders", "Edit Order"]} />
+      <Breadcrumb items={["Orders", "Order Detail"]} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardLayout>
-          <MainTitle title="Edit Order" />
+          <MainTitle title=" Order Detail" />
           <div className="w-full grid grid-cols-4 gap-x-2.5 gap-y-5 py-4">
             <SelectField
               label="Transaction Type"
@@ -454,7 +436,7 @@ const OrderDetail = () => {
           {fields.map((field, index) => (
             <div
               key={field.id}
-              className="w-full grid grid-cols-5 gap-x-2.5 gap-y-5 py-4"
+              className="w-full grid grid-cols-4 gap-x-2.5 gap-y-5 py-4"
             >
               <InputField
                 label="Fee Description"
@@ -493,47 +475,9 @@ const OrderDetail = () => {
                 placeholder="Enter fee amount"
                 error={errors.fees?.[index]?.feeAmount?.message}
               />
-
-              <div className="flex justify-end items-end w-full">
-                <button
-                  type="button"
-                  onClick={() => remove(index)}
-                  className="bg-red-500 text-white px-4  h-[55px] w-full rounded-[10px]"
-                >
-                  Remove
-                </button>
-              </div>
             </div>
           ))}
-
-          <div className="w-full justify-end flex ">
-            <button
-              type="button"
-              onClick={() =>
-                append({
-                  feeDescription: "",
-                  account: "",
-                  feeCategory: "",
-                  feeAmount: 0,
-                })
-              }
-              className=" text-(--secondary) font-medium mt-4 flex  gap-2 items-center text-xs "
-            >
-              <div className="bg-(--secondary)  rounded-full p-[2px]">
-                <img src={add} alt="" className="h-[15px] w-[15px]" />
-              </div>
-              Add More
-            </button>
-          </div>
         </CardLayout>
-
-        <div className="flex justify-end w-full my-3">
-          <PrimaryButton
-            text="Update Order"
-            type="submit"
-            isLoading={isLoading}
-          />
-        </div>
       </form>
     </div>
   );

@@ -80,9 +80,11 @@ const OrdersTable = () => {
 
   const handleAction = async (action: string, orderData?: any) => {
     if (action === "edit" && orderData) {
-      navigate(`/orders/order-detail`, { state: { orderData } });
+      navigate(`/orders/edit-order`, { state: { orderData } });
     }
-
+    if (action == "detail" && orderData) {
+      navigate("/orders/order-detail", { state: { orderData } });
+    }
     if (action === "delete" && orderData) {
       setLoading(orderData?.id);
       try {
@@ -352,7 +354,11 @@ const OrdersTable = () => {
                                         label: "Edit order",
                                         onClick: () => handleAction("edit", e),
                                       },
-
+                                      {
+                                        label: "Detail",
+                                        onClick: () =>
+                                          handleAction("detail", e),
+                                      },
                                       {
                                         label: "Delete",
                                         onClick: () =>
