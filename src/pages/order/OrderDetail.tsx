@@ -34,9 +34,16 @@ import MainTitle from "../../components/ui/typography/MainTitle";
 import CardLayout from "../../components/layouts/CardLayout";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import { useEffect } from "react";
+import { useFetchUsersWithoutLimitQuery } from "../../lib/rtkQuery/userApi";
 
 const OrderDetail = () => {
   const [updateOrder, { isLoading }] = useUpdateOrderMutation();
+  const { data: agentData } = useFetchUsersWithoutLimitQuery();
+  const agentsOption =
+    agentData?.users?.map((user: { firstname: string }) => ({
+      value: user.firstname,
+      label: user.firstname,
+    })) || [];
   const data = useLocation();
 
   const { orderData } = data.state || {};
@@ -134,6 +141,8 @@ const OrderDetail = () => {
       setValue("fileType", orderData.fileType || "");
       setValue("transactionType", orderData.transactionType || "");
       setValue("aeLeadStage", orderData.aeLeadStage || "");
+      setValue("firstname", orderData.firstname || "");
+      setValue("lastname", orderData.lastname || "");
       setValue("fees", orderData.fees || []);
 
       setValue("contact", orderData.contact ?? 0);
@@ -149,7 +158,7 @@ const OrderDetail = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardLayout>
           <MainTitle title="Edit Order" />
-          <div className="w-full flex  items-center flex-wrap py-4 gap-4">
+          <div className="w-full grid grid-cols-4 gap-x-2.5 gap-y-5 py-4">
             <SelectField
               label="Transaction Type"
               name="transactionType"
@@ -158,7 +167,22 @@ const OrderDetail = () => {
               placeholder="Select transaction type"
               error={errors.transactionType?.message}
               required={false}
-              className="w-[34%] "
+            />
+            <InputField
+              label="First name"
+              name="firstname"
+              control={control}
+              type="text"
+              placeholder="John"
+              error={errors.firstname?.message}
+            />
+            <InputField
+              label="Last name"
+              name="lastname"
+              control={control}
+              type="text"
+              placeholder="Doe"
+              error={errors.lastname?.message}
             />
             <InputField
               label="Add contact"
@@ -167,7 +191,6 @@ const OrderDetail = () => {
               type="text"
               placeholder="Enter contact"
               error={errors.contact?.message}
-              className="w-[34%]"
             />
           </div>
         </CardLayout>
@@ -192,7 +215,7 @@ const OrderDetail = () => {
               label="Agent"
               name="titleRep"
               control={control}
-              options={roleOption}
+              options={agentsOption}
               placeholder="Select..."
               error={errors.titleRep?.message}
               required={false}

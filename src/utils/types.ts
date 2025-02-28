@@ -41,6 +41,8 @@ export interface OrderDataType {
   aeLeadStage?: string;
   contact?: string;
   fees?: Fee[];
+  firstname?: string;
+  lastname?: string;
 }
 
 export interface Fee {
