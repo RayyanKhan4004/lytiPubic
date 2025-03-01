@@ -210,16 +210,30 @@ import {
 } from "../../lib/rtkQuery/orderApi";
 import toast from "react-hot-toast";
 
+// type StagesBoardColumnKeys =
+//   | "Pipeline"
+//   | "AppSet"
+//   | "AppMet"
+//   | "Signed"
+//   | "FirstTimeShowing"
+//   | "FirstTimeOffer"
+//   | "LiveListing"
+//   | "ListingExpired"
+//   | "BuyerAgreementExpired"
+//   | "Pending"
+//   | "Closed"
+//   | "Lost";
+
 type StagesBoardColumnKeys =
   | "Pipeline"
-  | "AppSet"
-  | "AppMet"
+  | "App Set"
+  | "App Met"
   | "Signed"
-  | "FirstTimeShowing"
-  | "FirstTimeOffer"
-  | "LiveListing"
-  | "ListingExpired"
-  | "BuyerAgreementExpired"
+  | "1st Time Showing"
+  | "1st Time Offer"
+  | "Live Listing"
+  | "Listing Expired"
+  | "Buyer Agreement Expired"
   | "Pending"
   | "Closed"
   | "Lost";
@@ -227,7 +241,7 @@ type StagesBoardColumnKeys =
 const StagesBoardDragDrop: React.FC = () => {
   const [activeItem, setActiveItem] = useState<any | null>(null);
   const { data, refetch } = useFetchAeLeadStagesBoardQuery({
-    limit: 5,
+    limit: 20,
     pipelinePage: 1,
     appSetPage: 1,
     appMetPage: 1,
@@ -243,33 +257,83 @@ const StagesBoardDragDrop: React.FC = () => {
   });
   const [updateOrder, { isLoading }] = useUpdateOrderMutation();
 
+  // const [columns, setColumns] = useState<Record<StagesBoardColumnKeys, any[]>>({
+  //   Pipeline: [],
+  //   AppSet: [],
+  //   AppMet: [],
+  //   Signed: [],
+  //   FirstTimeShowing: [],
+  //   FirstTimeOffer: [],
+  //   LiveListing: [],
+  //   ListingExpired: [],
+  //   BuyerAgreementExpired: [],
+  //   Pending: [],
+  //   Closed: [],
+  //   Lost: [],
+  // });
   const [columns, setColumns] = useState<Record<StagesBoardColumnKeys, any[]>>({
     Pipeline: [],
-    AppSet: [],
-    AppMet: [],
+    "App Set": [],
+    "App Met": [],
     Signed: [],
-    FirstTimeShowing: [],
-    FirstTimeOffer: [],
-    LiveListing: [],
-    ListingExpired: [],
-    BuyerAgreementExpired: [],
+    "1st Time Showing": [],
+    "1st Time Offer": [],
+    "Live Listing": [],
+    "Listing Expired": [],
+    "Buyer Agreement Expired": [],
     Pending: [],
     Closed: [],
     Lost: [],
   });
 
+  // useEffect(() => {
+  //   if (data?.result) {
+  //     const newColumns: Record<StagesBoardColumnKeys, any[]> = {
+  //       Pipeline: [],
+  //       AppSet: [],
+  //       AppMet: [],
+  //       Signed: [],
+  //       FirstTimeShowing: [],
+  //       FirstTimeOffer: [],
+  //       LiveListing: [],
+  //       ListingExpired: [],
+  //       BuyerAgreementExpired: [],
+  //       Pending: [],
+  //       Closed: [],
+  //       Lost: [],
+  //     };
+
+  //     data.result.forEach((stage: any) => {
+  //       if (newColumns.hasOwnProperty(stage.key)) {
+  //         newColumns[stage.key as StagesBoardColumnKeys] = stage.orders.map(
+  //           (order: any) => ({
+  //             id: order.id || Math.random().toString(),
+  //             name: order.firstname || "Unknown Buyer",
+  //             address: order.propertyAddress || "No Address",
+  //             agent: order.titleRep || "Unknown Agent",
+  //             agentImage: dummy,
+  //             role: order?.transactionType,
+  //           })
+  //         );
+  //       }
+  //     });
+
+  //     setColumns(newColumns);
+  //   }
+  // }, [data]);
+
   useEffect(() => {
     if (data?.result) {
       const newColumns: Record<StagesBoardColumnKeys, any[]> = {
         Pipeline: [],
-        AppSet: [],
-        AppMet: [],
+        "App Set": [],
+        "App Met": [],
         Signed: [],
-        FirstTimeShowing: [],
-        FirstTimeOffer: [],
-        LiveListing: [],
-        ListingExpired: [],
-        BuyerAgreementExpired: [],
+        "1st Time Showing": [],
+        "1st Time Offer": [],
+        "Live Listing": [],
+        "Listing Expired": [],
+        "Buyer Agreement Expired": [],
         Pending: [],
         Closed: [],
         Lost: [],
@@ -309,6 +373,61 @@ const StagesBoardDragDrop: React.FC = () => {
       setActiveItem(draggedItem);
     }
   };
+
+  // const handleDragEnd = async (event: any) => {
+  //   const { active, over } = event;
+  //   setActiveItem(null);
+
+  //   if (!over) return;
+
+  //   const sourceColumn = Object.keys(columns).find((col) =>
+  //     columns[col as StagesBoardColumnKeys]?.some(
+  //       (item) => item.id === active.id
+  //     )
+  //   ) as StagesBoardColumnKeys | undefined;
+
+  //   let destinationColumn = over.id as StagesBoardColumnKeys | undefined;
+
+  //   if (destinationColumn && !columns[destinationColumn]) {
+  //     destinationColumn = Object.keys(columns).find((col) =>
+  //       columns[col as StagesBoardColumnKeys]?.some(
+  //         (item) => item.id === over.id
+  //       )
+  //     ) as StagesBoardColumnKeys | undefined;
+  //   }
+
+  //   if (
+  //     !sourceColumn ||
+  //     !destinationColumn ||
+  //     sourceColumn === destinationColumn
+  //   )
+  //     return;
+
+  //   const movedItem = columns[sourceColumn]?.find(
+  //     (item) => item.id === active.id
+  //   );
+  //   if (!movedItem) return;
+
+  //   setColumns((prev) => ({
+  //     ...prev,
+  //     [sourceColumn]: prev[sourceColumn].filter(
+  //       (item) => item.id !== active.id
+  //     ),
+  //     [destinationColumn]: [...prev[destinationColumn], movedItem],
+  //   }));
+
+  //   try {
+  //     await updateOrder({
+  //       id: movedItem.id,
+  //       data: { aeLeadStage: destinationColumn },
+  //     }).unwrap();
+  //     refetch();
+  //     console.log(`Order updated successfully to ${destinationColumn}`);
+  //     toast.success(`Order updated successfully to ${destinationColumn}`);
+  //   } catch (error) {
+  //     console.error("Failed to update order:", error);
+  //   }
+  // };
 
   const handleDragEnd = async (event: any) => {
     const { active, over } = event;
@@ -364,7 +483,6 @@ const StagesBoardDragDrop: React.FC = () => {
       console.error("Failed to update order:", error);
     }
   };
-
   return (
     <div className="w-full overflow-auto px-4 my-8">
       <Breadcrumb items={["Orders", "Ae Leads Stages Board"]} />
