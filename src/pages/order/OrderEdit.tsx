@@ -83,7 +83,7 @@ const OrderEdit = () => {
       }).unwrap();
       // console.log(res, "==res==");
       navigate("/orders/orders");
-      toast.success("Order Created Successfully");
+      toast.success("Order updated Successfully");
       // reset();
     } catch (err: any) {
       toast.error(err?.data?.message || "Order creation failed");
