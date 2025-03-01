@@ -226,7 +226,7 @@ type StagesBoardColumnKeys =
 
 const StagesBoardDragDrop: React.FC = () => {
   const [activeItem, setActiveItem] = useState<any | null>(null);
-  const { data } = useFetchAeLeadStagesBoardQuery({
+  const { data, refetch } = useFetchAeLeadStagesBoardQuery({
     limit: 5,
     pipelinePage: 1,
     appSetPage: 1,
@@ -357,6 +357,7 @@ const StagesBoardDragDrop: React.FC = () => {
         id: movedItem.id,
         data: { aeLeadStage: destinationColumn },
       }).unwrap();
+      refetch();
       console.log(`Order updated successfully to ${destinationColumn}`);
       toast.success(`Order updated successfully to ${destinationColumn}`);
     } catch (error) {
@@ -401,3 +402,218 @@ const StagesBoardDragDrop: React.FC = () => {
 };
 
 export default StagesBoardDragDrop;
+
+// import React, { useState, useEffect } from "react";
+// import { DndContext, DragOverlay } from "@dnd-kit/core";
+// import { useForm } from "react-hook-form";
+
+// import Breadcrumb from "../../components/common/BreadCrumb";
+// import MainTitle from "../../components/ui/typography/MainTitle";
+// import CardLayout from "../../components/layouts/CardLayout";
+
+// import DroppableColumn from "../../components/orders/DropabbleColumn";
+// import DraggableItem from "../../components/orders/DraggableItem";
+
+// import dummy from "../../assets/images/Dummy.jpg";
+
+// import { OrderDataType } from "../../utils/types";
+// import {
+//   useFetchAeLeadStagesBoardQuery,
+//   useUpdateOrderMutation,
+// } from "../../lib/rtkQuery/orderApi";
+// import toast from "react-hot-toast";
+
+// type StagesBoardColumnKeys =
+//   | "Pipeline"
+//   | "AppSet"
+//   | "AppMet"
+//   | "Signed"
+//   | "FirstTimeShowing"
+//   | "FirstTimeOffer"
+//   | "LiveListing"
+//   | "ListingExpired"
+//   | "BuyerAgreementExpired"
+//   | "Pending"
+//   | "Closed"
+//   | "Lost";
+
+// const StagesBoardDragDrop: React.FC = () => {
+//   const [activeItem, setActiveItem] = useState<any | null>(null);
+//   const { data } = useFetchAeLeadStagesBoardQuery({
+//     limit: 5,
+//     pipelinePage: 1,
+//     appSetPage: 1,
+//     appMetPage: 1,
+//     signedPage: 1,
+//     firstTimeShowingPage: 1,
+//     firstTimeOfferPage: 1,
+//     liveListingPage: 1,
+//     listingExpiredPage: 1,
+//     buyerAgreementExpiredPage: 1,
+//     pendingPage: 1,
+//     closedPage: 1,
+//     lostPage: 1,
+//   });
+//   const [updateOrder, { isLoading }] = useUpdateOrderMutation();
+
+//   const [columns, setColumns] = useState<Record<StagesBoardColumnKeys, any[]>>({
+//     Pipeline: [],
+//     AppSet: [],
+//     AppMet: [],
+//     Signed: [],
+//     FirstTimeShowing: [],
+//     FirstTimeOffer: [],
+//     LiveListing: [],
+//     ListingExpired: [],
+//     BuyerAgreementExpired: [],
+//     Pending: [],
+//     Closed: [],
+//     Lost: [],
+//   });
+
+//   useEffect(() => {
+//     if (data?.result) {
+//       const newColumns: Record<StagesBoardColumnKeys, any[]> = {
+//         Pipeline: [],
+//         AppSet: [],
+//         AppMet: [],
+//         Signed: [],
+//         FirstTimeShowing: [],
+//         FirstTimeOffer: [],
+//         LiveListing: [],
+//         ListingExpired: [],
+//         BuyerAgreementExpired: [],
+//         Pending: [],
+//         Closed: [],
+//         Lost: [],
+//       };
+
+//       data.result.forEach((stage: any) => {
+//         if (newColumns.hasOwnProperty(stage.key)) {
+//           newColumns[stage.key as StagesBoardColumnKeys] = stage.orders.map(
+//             (order: any) => ({
+//               id: order.id || Math.random().toString(),
+//               name: order.firstname || "Unknown Buyer",
+//               address: order.propertyAddress || "No Address",
+//               agent: order.titleRep || "Unknown Agent",
+//               agentImage: dummy,
+//               role: order?.transactionType,
+//             })
+//           );
+//         }
+//       });
+
+//       setColumns(newColumns);
+//     }
+//   }, [data]);
+
+//   const handleDragStart = (event: any) => {
+//     const { active } = event;
+//     const sourceColumn = Object.keys(columns).find((col) =>
+//       columns[col as StagesBoardColumnKeys].some(
+//         (item) => item.id === active.id
+//       )
+//     ) as StagesBoardColumnKeys | undefined;
+
+//     if (sourceColumn) {
+//       const draggedItem = columns[sourceColumn].find(
+//         (item) => item.id === active.id
+//       );
+//       setActiveItem(draggedItem);
+
+//       // Remove item from source column temporarily
+//       setColumns((prev) => ({
+//         ...prev,
+//         [sourceColumn]: prev[sourceColumn].filter(
+//           (item) => item.id !== active.id
+//         ),
+//       }));
+//     }
+//   };
+
+//   const handleDragEnd = async (event: any) => {
+//     const { active, over } = event;
+//     setActiveItem(null);
+
+//     if (!over) return;
+
+//     const sourceColumn = Object.keys(columns).find((col) =>
+//       columns[col as StagesBoardColumnKeys]?.some(
+//         (item) => item.id === active.id
+//       )
+//     ) as StagesBoardColumnKeys | undefined;
+
+//     let destinationColumn = over.id as StagesBoardColumnKeys | undefined;
+
+//     if (destinationColumn && !columns[destinationColumn]) {
+//       destinationColumn = Object.keys(columns).find((col) =>
+//         columns[col as StagesBoardColumnKeys]?.some(
+//           (item) => item.id === over.id
+//         )
+//       ) as StagesBoardColumnKeys | undefined;
+//     }
+
+//     if (
+//       !sourceColumn ||
+//       !destinationColumn ||
+//       sourceColumn === destinationColumn
+//     )
+//       return;
+
+//     const movedItem = activeItem;
+//     if (!movedItem) return;
+
+//     setColumns((prev) => ({
+//       ...prev,
+//       [destinationColumn]: [...prev[destinationColumn], movedItem],
+//     }));
+
+//     try {
+//       await updateOrder({
+//         id: movedItem.id,
+//         data: { aeLeadStage: destinationColumn },
+//       }).unwrap();
+//       console.log(`Order updated successfully to ${destinationColumn}`);
+//       toast.success(`Order updated successfully to ${destinationColumn}`);
+//     } catch (error) {
+//       console.error("Failed to update order:", error);
+//     }
+//   };
+
+//   return (
+//     <div className="w-full overflow-auto px-4 my-8">
+//       <Breadcrumb items={["Orders", "Ae Leads Stages Board"]} />
+//       <CardLayout>
+//         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+//           <div className="overflow-x-auto overflow-y-hidden h-full relative">
+//             <div className="flex space-x-4 p-4 whitespace-nowrap min-w-max">
+//               {Object.keys(columns).map((key) => {
+//                 const stageKey = key as StagesBoardColumnKeys;
+//                 const stageData = data?.result.find(
+//                   (stage: any) => stage.key === key
+//                 );
+//                 return (
+//                   <DroppableColumn
+//                     key={key}
+//                     id={key}
+//                     title={key}
+//                     items={columns[stageKey]}
+//                     count={stageData?.count || 0}
+//                     onDragEnd={handleDragEnd}
+//                   />
+//                 );
+//               })}
+//             </div>
+//           </div>
+//           <DragOverlay>
+//             {activeItem ? (
+//               <DraggableItem id={activeItem.id} buyer={activeItem} />
+//             ) : null}
+//           </DragOverlay>
+//         </DndContext>
+//       </CardLayout>
+//     </div>
+//   );
+// };
+
+// export default StagesBoardDragDrop;
