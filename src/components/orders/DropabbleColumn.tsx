@@ -6,7 +6,7 @@ interface DroppableColumnProps {
   id: string;
   title: string;
   items: any[];
-  count: number;
+  count?: number;
   onDragEnd: (itemId: string, newColumnId: string) => void;
 }
 
