@@ -41,6 +41,10 @@ const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loading, setLoading] = useState("");
   const [page, setPage] = useState(1);
+  const [selectedFilters, setSelectedFilters] = useState<
+    Record<string, string>
+  >({});
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   const navigate = useNavigate();
 
@@ -48,6 +52,7 @@ const OrdersTable = () => {
     formState: { errors },
     reset,
     watch,
+    setValue,
     control,
   } = useForm<OrderDataType>();
 
@@ -102,8 +107,6 @@ const OrdersTable = () => {
   useEffect(() => {
     refetch();
   }, []);
-
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   const handleCheckboxChange = (id: number) => {
     setSelectedRows((prev) =>
@@ -190,6 +193,31 @@ const OrdersTable = () => {
     });
 
     doc.save("exported-orders.pdf");
+  };
+
+  useEffect(() => {
+    setSelectedFilters({
+      propertyCounty: selectedPropertyCounty,
+      fileStatus: selectedFileStatus,
+      fileType: selectedFileType,
+      transactionType: selectTransactionType,
+    });
+  }, [
+    selectedPropertyCounty,
+    selectedFileStatus,
+    selectedFileType,
+    selectTransactionType,
+  ]);
+
+  const removeFilter = (
+    key: "propertyCounty" | "fileStatus" | "fileType" | "transactionType"
+  ) => {
+    setValue(key, "");
+    setSelectedFilters((prev) => {
+      const updatedFilters = { ...prev };
+      delete updatedFilters[key];
+      return updatedFilters;
+    });
   };
 
   return (
@@ -293,9 +321,35 @@ const OrdersTable = () => {
             </div>
           </div>
         </form>
+        <div className="flex gap-2 mt-2">
+          {Object.entries(selectedFilters).map(([key, value]) =>
+            value ? (
+              <div
+                key={key}
+                className="flex items-center bg-[#E5E5E5] px-4 py-1 rounded-[27px] text-sm h-[40px]"
+              >
+                <button
+                  onClick={() =>
+                    removeFilter(
+                      key as
+                        | "propertyCounty"
+                        | "transactionType"
+                        | "fileType"
+                        | "fileStatus"
+                    )
+                  }
+                  className="mr-2 text-(--secondary)"
+                >
+                  ✖
+                </button>
+                {value}
+              </div>
+            ) : null
+          )}
+        </div>
 
         <div className="w-full overflow-x-auto">
-          <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-6">
+          <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-1">
             <thead className="text-sm font-normal text-start">
               <tr className="border-b-[1px] border-[#F4EFE9] ">
                 <th className="px-4"></th>
