@@ -226,7 +226,21 @@ type StagesBoardColumnKeys =
 
 const StagesBoardDragDrop: React.FC = () => {
   const [activeItem, setActiveItem] = useState<any | null>(null);
-  const { data } = useFetchAeLeadStagesBoardQuery();
+  const { data } = useFetchAeLeadStagesBoardQuery({
+    limit: 5,
+    pipelinePage: 1,
+    appSetPage: 1,
+    appMetPage: 1,
+    signedPage: 1,
+    firstTimeShowingPage: 1,
+    firstTimeOfferPage: 1,
+    liveListingPage: 1,
+    listingExpiredPage: 1,
+    buyerAgreementExpiredPage: 1,
+    pendingPage: 1,
+    closedPage: 1,
+    lostPage: 1,
+  });
   const [updateOrder, { isLoading }] = useUpdateOrderMutation();
 
   const [columns, setColumns] = useState<Record<StagesBoardColumnKeys, any[]>>({
@@ -245,7 +259,7 @@ const StagesBoardDragDrop: React.FC = () => {
   });
 
   useEffect(() => {
-    if (data?.orders) {
+    if (data?.result) {
       const newColumns: Record<StagesBoardColumnKeys, any[]> = {
         Pipeline: [],
         AppSet: [],
@@ -261,7 +275,7 @@ const StagesBoardDragDrop: React.FC = () => {
         Lost: [],
       };
 
-      data.orders.forEach((stage: any) => {
+      data.result.forEach((stage: any) => {
         if (newColumns.hasOwnProperty(stage.key)) {
           newColumns[stage.key as StagesBoardColumnKeys] = stage.orders.map(
             (order: any) => ({
@@ -357,15 +371,22 @@ const StagesBoardDragDrop: React.FC = () => {
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
           <div className="overflow-x-auto overflow-y-hidden h-full relative">
             <div className="flex space-x-4 p-4 whitespace-nowrap min-w-max">
-              {Object.keys(columns).map((key) => (
-                <DroppableColumn
-                  key={key}
-                  id={key}
-                  title={key}
-                  items={columns[key as StagesBoardColumnKeys]}
-                  onDragEnd={handleDragEnd}
-                />
-              ))}
+              {Object.keys(columns).map((key) => {
+                const stageKey = key as StagesBoardColumnKeys;
+                const stageData = data?.result.find(
+                  (stage: any) => stage.key === key
+                );
+                return (
+                  <DroppableColumn
+                    key={key}
+                    id={key}
+                    title={key}
+                    items={columns[stageKey]}
+                    count={stageData?.count || 0}
+                    onDragEnd={handleDragEnd}
+                  />
+                );
+              })}
             </div>
           </div>
           <DragOverlay>
