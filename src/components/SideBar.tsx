@@ -7,11 +7,14 @@ import ArrowBlack from "../assets/icons/ArrowBlack.svg";
 import ArrowLeft from "../assets/icons/ArrowLineLeft.svg";
 
 import { sidebarData } from "../utils/SidebarData";
-
-const Sidebar: React.FC = () => {
+interface SideBarProps {
+  setIsSideBarExpanded: any;
+  isSideBarExpanded :boolean
+}
+const Sidebar = ({ setIsSideBarExpanded, isSideBarExpanded } : SideBarProps) => {
   const sidebarItems = sidebarData();
   const navigate = useNavigate();
-
+  
   const [selectedItem, setSelectedItem] = useState<number | null>(() => {
     const storedItem = localStorage.getItem("selectedItem");
     return storedItem ? JSON.parse(storedItem) : null;
@@ -51,18 +54,36 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-h-screen h-full font-Poppins bg-[#F6F6F6] flex items-center flex-col text-sm mb-48">
-      <img src={logo} alt="Logo" className="mt-6" />
-      {/* <div className="w-full justify-center relative ">
-        <div className=" absolute rounded-lg flex justify-center items-center bg-(--primary) h-[32px] w-[32px] ">
-          <img src={ArrowLeft} alt="" />
-        </div>
-      </div> */}
+    <div
+      className={`w-full min-h-screen h-full font-Poppins bg-[#F6F6F6] flex items-center flex-col text-sm mb-48 relative ${
+        isSideBarExpanded && "p-2"
+      }`}
+    >
+      <img
+        src={logo}
+        alt="Logo"
+        className={`${isSideBarExpanded ? "mt-[81px]" : "mt-6"}`}
+      />
+      <div
+        className={` absolute rounded-lg flex justify-center items-center bg-(--primary) h-[32px] w-[32px]  ${
+          isSideBarExpanded
+            ? " rotate-180 duration-300 ease-in-out transform translate-x-[50%] right-[50%] top-6 "
+            : "right-4 top-6"
+        } `}
+        onClick={() => {
+          setIsSideBarExpanded((prep: boolean) => !prep);
+        }}
+      >
+        <img src={ArrowLeft} alt="" />
+      </div>
+      <div className="w-full justify-center relative "></div>
       <div className="h-full w-[86%] flex flex-col gap-3 mt-10">
         {sidebarItems.map((e: any, i: number) => (
           <div key={i}>
             <div
-              className={`h-[50px] flex items-center justify-between rounded-[10px] px-4 hover:cursor-pointer ${
+              className={`h-[50px] flex items-center ${
+                isSideBarExpanded ? "justify-center" : "justify-between"
+              } rounded-[10px] px-4 hover:cursor-pointer ${
                 selectedItem === i || openDropdown === i
                   ? "bg-(--primary) text-white"
                   : "text-black"
@@ -70,10 +91,20 @@ const Sidebar: React.FC = () => {
               onClick={() => handleItemClick(e, i)}
             >
               <div className="flex items-center gap-3">
-                <img src={selectedItem === i ? e.icon2 : e.icon1} alt="" />
-                <p className="font-Jakarta text-sm font-semibold">{e.title}</p>
+                <img
+                  src={selectedItem === i ? e.icon2 : e.icon1}
+                  alt=""
+                  className="w-6 h-6"
+                />
+                <p
+                  className={`font-Jakarta text-sm font-semibold  ${
+                    isSideBarExpanded && "hidden "
+                  }`}
+                >
+                  {e.title}
+                </p>
               </div>
-              {e.subMenu && (
+              {e.subMenu && !isSideBarExpanded && (
                 <img
                   src={`${openDropdown === i ? ArrowWhite : ArrowBlack}`}
                   alt=""
@@ -82,7 +113,7 @@ const Sidebar: React.FC = () => {
             </div>
 
             {/* Dropdown Menu */}
-            {openDropdown === i && e.subMenu && (
+            {openDropdown === i && e.subMenu && !isSideBarExpanded && (
               <div className="ml-2 border-l-2 border-(--primary) flex flex-col gap-2 mt-2 relative">
                 {e.subMenu.map((subItem: any) => (
                   <div className="relative" key={subItem.id}>
