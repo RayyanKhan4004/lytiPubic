@@ -29,18 +29,20 @@ import upload from "../../assets/icons/UploadSimple.svg";
 import filter from "../../assets/icons/AlignLeft.svg";
 import add from "../../assets/icons/Add.svg";
 import menu from "../../assets/icons/Menu.svg";
-import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
+// import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
 import Spinner from "../../components/common/Spinner";
 import PopoverMenu from "../../components/ui/popup/PopupMenu";
 import toast from "react-hot-toast";
 import { OrderDataType } from "../../utils/types";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import CardLayout from "../../components/layouts/CardLayout";
-
+import FilterPopup from "../../components/ui/FilterPopup";
+// import { useState } from "react";
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loading, setLoading] = useState("");
   const [page, setPage] = useState(1);
+  const [isModelOpen , setIsModelOpen] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string>
   >({});
@@ -221,7 +223,10 @@ const OrdersTable = () => {
   };
 
   return (
-    <div className="w-full px-4 my-8 font-poppin">
+    <>
+     {  <FilterPopup isModelOpen={isModelOpen} setIsModelOpen={setIsModelOpen}/>}
+    
+    <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Orders", "Orders"]} />
       <div className="w-full flex gap-4 mt-2">
         <StatsCard
@@ -299,10 +304,12 @@ const OrdersTable = () => {
               height="44px"
             />
 
-            <button
-              type="button"
-              onClick={() => reset()}
-              className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
+            <button className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white "
+            onClick={(e)=>{ e.preventDefault()
+            reset()
+              setIsModelOpen(true)
+            }
+            }
             >
               <img src={filter} alt="" />
             </button>
@@ -486,6 +493,7 @@ const OrdersTable = () => {
         />
       </div>
     </div>
+    </>
   );
 };
 
