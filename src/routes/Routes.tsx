@@ -89,7 +89,7 @@ export const router = createBrowserRouter([
     path: "/login",
     element: (
       <DashboardLayout>
-        <OrdersTable />
+        <Login />
       </DashboardLayout>
     ),
   },

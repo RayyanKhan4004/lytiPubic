@@ -1,7 +1,6 @@
 import CustomizableDropdown from "../common/CustomizableDropdown";
 import PrimaryButton from "./button/PrimaryButton";
 import CustomPopUp from "./CustomPopUp";
-import { useState } from "react";
 interface FilterPopupProps {
   isModelOpen: boolean;
   setIsModelOpen : any
