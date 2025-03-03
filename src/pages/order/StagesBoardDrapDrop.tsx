@@ -487,21 +487,24 @@ const StagesBoardDragDrop: React.FC = () => {
     Lost: [],
   });
 
-  const handleDragStart = (event: any) => {
-    const { active } = event;
-    const sourceColumn = Object.keys(columns).find((col) =>
-      columns[col as StagesBoardColumnKeys].some(
-        (item) => item.id === active.id
-      )
-    ) as StagesBoardColumnKeys | undefined;
+  const handleDragStart = React.useCallback(
+    (event: any) => {
+      const { active } = event;
+      const sourceColumn = Object.keys(columns).find((col) =>
+        columns[col as StagesBoardColumnKeys].some(
+          (item) => item.id === active.id
+        )
+      ) as StagesBoardColumnKeys | undefined;
 
-    if (sourceColumn) {
-      const draggedItem = columns[sourceColumn].find(
-        (item) => item.id === active.id
-      );
-      setActiveItem(draggedItem);
-    }
-  };
+      if (sourceColumn) {
+        const draggedItem = columns[sourceColumn].find(
+          (item) => item.id === active.id
+        );
+        setActiveItem(draggedItem);
+      }
+    },
+    [columns]
+  );
 
   const handleDragEnd = async (event: any) => {
     const { active, over } = event;
@@ -551,7 +554,6 @@ const StagesBoardDragDrop: React.FC = () => {
         data: { aeLeadStage: destinationColumn },
       }).unwrap();
 
-      // Ensure only affected column page numbers update
       setPageNumbers((prev) => {
         const updatedPages = { ...prev };
         Object.keys(updatedPages).forEach((key) => {
@@ -584,16 +586,26 @@ const StagesBoardDragDrop: React.FC = () => {
 
       data.result.forEach((stage: any) => {
         if (newColumns.hasOwnProperty(stage.key)) {
-          newColumns[stage.key as StagesBoardColumnKeys] = stage.orders.map(
-            (order: any) => ({
-              id: order.id || Math.random().toString(),
-              name: order.firstname || "Unknown Buyer",
-              address: order.propertyAddress || "No Address",
-              agent: order.titleRep || "Unknown Agent",
-              agentImage: dummy,
-              role: order?.transactionType,
-            })
-          );
+          const newOrders = stage.orders.map((order: any) => ({
+            id: order.id || Math.random().toString(),
+            name: order.firstname || "Unknown Buyer",
+            address: order.propertyAddress || "No Address",
+            agent: order.titleRep || "Unknown Agent",
+            agentImage: dummy,
+            role: order?.transactionType,
+          }));
+
+          const mergedOrders = [
+            ...newColumns[stage.key as StagesBoardColumnKeys],
+            ...newOrders,
+          ].reduce((acc, item) => {
+            if (!acc.some((existing: any) => existing.id === item.id)) {
+              acc.push(item);
+            }
+            return acc;
+          }, [] as any[]);
+
+          newColumns[stage.key as StagesBoardColumnKeys] = mergedOrders;
         }
       });
 
