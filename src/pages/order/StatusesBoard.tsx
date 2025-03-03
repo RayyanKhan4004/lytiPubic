@@ -154,7 +154,7 @@ const StatusesBoard: React.FC = () => {
         </form>
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
           <div className="overflow-x-auto overflow-y-auto">
-            <div className="flex space-x-4 p-4 whitespace-nowrap min-w-max">
+            {/* <div className="flex space-x-4 p-4 whitespace-nowrap min-w-max">
               <DroppableColumn
                 id="verbalCommitments"
                 title="Verbal Commitments"
@@ -191,7 +191,7 @@ const StatusesBoard: React.FC = () => {
                 items={columns.fullCrToCde}
                 onDragEnd={handleDragEnd}
               />
-            </div>
+            </div> */}
           </div>
 
           <DragOverlay>
