@@ -24,7 +24,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             setIsSideBarExpanded={setIsSideBarExpanded}
           />
         </div>
-        <span className="grow">{children}</span>
+        <span className="w-[80%]">{children}</span>
       </div>
     </div>
   );
