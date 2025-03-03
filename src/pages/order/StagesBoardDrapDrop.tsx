@@ -402,7 +402,7 @@
 
 // export default StagesBoardDragDrop;
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useForm } from "react-hook-form";
 
@@ -454,10 +454,9 @@ const StagesBoardDragDrop: React.FC = () => {
     Closed: 1,
     Lost: 1,
   });
-  console.log(pageNumbers, "===number===");
 
   const { data, refetch } = useFetchAeLeadStagesBoardQuery({
-    limit: 4,
+    limit: 10,
     pipelinePage: pageNumbers.Pipeline,
     appSetPage: pageNumbers["App Set"],
     appMetPage: pageNumbers["App Met"],
@@ -551,15 +550,25 @@ const StagesBoardDragDrop: React.FC = () => {
         id: movedItem.id,
         data: { aeLeadStage: destinationColumn },
       }).unwrap();
+
+      // Ensure only affected column page numbers update
+      setPageNumbers((prev) => {
+        const updatedPages = { ...prev };
+        Object.keys(updatedPages).forEach((key) => {
+          if (updatedPages[key as StagesBoardColumnKeys] > 1) {
+            updatedPages[key as StagesBoardColumnKeys] += 1;
+          }
+        });
+        return updatedPages;
+      });
+
       refetch();
-      console.log(`Order updated successfully to ${destinationColumn}`);
       toast.success(`Order updated successfully to ${destinationColumn}`);
     } catch (error) {
       console.error("Failed to update order:", error);
     }
   };
 
-  // Function to increase the page number for a specific column
   const handleLoadMore = (columnKey: StagesBoardColumnKeys) => {
     setPageNumbers((prev) => ({
       ...prev,
@@ -567,23 +576,11 @@ const StagesBoardDragDrop: React.FC = () => {
     }));
   };
 
-  // Process API data
   useEffect(() => {
-    if (data?.result) {
-      const newColumns: Record<StagesBoardColumnKeys, any[]> = {
-        Pipeline: [],
-        "App Set": [],
-        "App Met": [],
-        Signed: [],
-        "1st Time Showing": [],
-        "1st Time Offer": [],
-        "Live Listing": [],
-        "Listing Expired": [],
-        "Buyer Agreement Expired": [],
-        Pending: [],
-        Closed: [],
-        Lost: [],
-      };
+    if (!data?.result) return;
+
+    setColumns((prev) => {
+      const newColumns = { ...prev };
 
       data.result.forEach((stage: any) => {
         if (newColumns.hasOwnProperty(stage.key)) {
@@ -600,8 +597,8 @@ const StagesBoardDragDrop: React.FC = () => {
         }
       });
 
-      setColumns(newColumns);
-    }
+      return newColumns;
+    });
   }, [data]);
 
   return (
