@@ -36,6 +36,7 @@ import toast from "react-hot-toast";
 import { OrderDataType } from "../../utils/types";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import CardLayout from "../../components/layouts/CardLayout";
+import FilterPopup from "../../components/ui/FilterPopup";
 
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -219,273 +220,285 @@ const OrdersTable = () => {
       return updatedFilters;
     });
   };
-
+  const [isModelOpen, setIsModelOpen] = useState(false);
   return (
-    <div className="w-full px-4 my-8 font-poppin">
-      <Breadcrumb items={["Orders", "Orders"]} />
-      <div className="w-full flex gap-4 mt-2">
-        <StatsCard
-          heading="Orders"
-          stats={[
-            { value: "20.7k", text: "Total Orders" },
-            { value: "3k", text: "Total Amount" },
-            { value: "57k", text: "Avg /Order" },
-          ]}
+    <>
+      {
+        <FilterPopup
+          isModelOpen={isModelOpen}
+          setIsModelOpen={setIsModelOpen}
         />
-        <StatsCard
-          heading="Title"
-          stats={[
-            { value: "9k", text: "Total Units" },
-            { value: "2k", text: "Title charges" },
-            { value: "27k", text: "Avg Title " },
-          ]}
-        />
-        <StatsCard
-          heading="Escrow"
-          stats={[
-            { value: "98k", text: "Escrow Units" },
-            { value: "78k", text: "Escrow charges" },
-            { value: "9k", text: "Avg Escrow" },
-          ]}
-        />
-      </div>
-      <CardLayout>
-        <form className="font-Poppins flex justify-between items-center w-full  gap-2">
-          <SearchInput
-            debounceTimeout={500}
-            placeholder="Search Keyword"
-            onChange={handleSearch}
-            className="w-[27%]"
+      }
+      <div className="w-full px-4 my-8 font-poppin">
+        <Breadcrumb items={["Orders", "Orders"]} />
+        <div className="w-full flex gap-4 mt-2">
+          <StatsCard
+            heading="Orders"
+            stats={[
+              { value: "20.7k", text: "Total Orders" },
+              { value: "3k", text: "Total Amount" },
+              { value: "57k", text: "Avg /Order" },
+            ]}
           />
-          <div className="flex items-center gap-1.5">
-            <SelectField
-              name="propertyCounty"
-              control={control}
-              options={countyOptions}
-              placeholder="County"
-              error={errors.propertyCounty?.message}
-              required={false}
-              className="w-[113px]"
-              height="44px"
-            />
-            <SelectField
-              name="fileStatus"
-              control={control}
-              options={fileStatusOption}
-              placeholder="Status"
-              error={errors.fileStatus?.message}
-              required={false}
-              className="w-[90px]"
-              height="44px"
-            />
-            <SelectField
-              name="fileType"
-              control={control}
-              options={fileTypeOptions}
-              placeholder="File type"
-              error={errors.fileType?.message}
-              required={false}
-              className="w-[180px]"
-              height="44px"
-            />
-            <SelectField
-              name="transactionType"
-              control={control}
-              options={transactionOption}
-              placeholder="Type"
-              error={errors.transactionType?.message}
-              required={false}
-              className="w-[90px]"
-              height="44px"
-            />
-
-            <button
-              type="button"
-              onClick={() => reset()}
-              className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
-            >
-              <img src={filter} alt="" />
-            </button>
-            <div
-              onClick={handleExportPDF}
-              className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]"
-            >
-              <img src={upload} alt="" />
-            </div>
-            <div
-              className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
-              onClick={() => navigate("/orders/add-order")}
-            >
-              <img src={add} alt="" />
-              {/* Add Order */}
-            </div>
-          </div>
-        </form>
-        <div className="flex gap-2 mt-2">
-          {Object.entries(selectedFilters).map(([key, value]) =>
-            value ? (
-              <div
-                key={key}
-                className="flex items-center bg-[#E5E5E5] px-4 py-1 rounded-[27px] text-sm h-[40px]"
-              >
-                <button
-                  onClick={() =>
-                    removeFilter(
-                      key as
-                        | "propertyCounty"
-                        | "transactionType"
-                        | "fileType"
-                        | "fileStatus"
-                    )
-                  }
-                  className="mr-2 text-(--secondary)"
-                >
-                  ✖
-                </button>
-                {value}
-              </div>
-            ) : null
-          )}
+          <StatsCard
+            heading="Title"
+            stats={[
+              { value: "9k", text: "Total Units" },
+              { value: "2k", text: "Title charges" },
+              { value: "27k", text: "Avg Title " },
+            ]}
+          />
+          <StatsCard
+            heading="Escrow"
+            stats={[
+              { value: "98k", text: "Escrow Units" },
+              { value: "78k", text: "Escrow charges" },
+              { value: "9k", text: "Avg Escrow" },
+            ]}
+          />
         </div>
+        <CardLayout>
+          <form className="font-Poppins flex justify-between items-center w-full  gap-2">
+            <SearchInput
+              debounceTimeout={500}
+              placeholder="Search Keyword"
+              onChange={handleSearch}
+              className="w-[27%]"
+            />
+            <div className="flex items-center gap-1.5">
+              <SelectField
+                name="propertyCounty"
+                control={control}
+                options={countyOptions}
+                placeholder="County"
+                error={errors.propertyCounty?.message}
+                required={false}
+                className="w-[113px]"
+                height="44px"
+              />
+              <SelectField
+                name="fileStatus"
+                control={control}
+                options={fileStatusOption}
+                placeholder="Status"
+                error={errors.fileStatus?.message}
+                required={false}
+                className="w-[90px]"
+                height="44px"
+              />
+              <SelectField
+                name="fileType"
+                control={control}
+                options={fileTypeOptions}
+                placeholder="File type"
+                error={errors.fileType?.message}
+                required={false}
+                className="w-[180px]"
+                height="44px"
+              />
+              <SelectField
+                name="transactionType"
+                control={control}
+                options={transactionOption}
+                placeholder="Type"
+                error={errors.transactionType?.message}
+                required={false}
+                className="w-[90px]"
+                height="44px"
+              />
 
-        <div className="w-full overflow-x-auto">
-          <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-1">
-            <thead className="text-sm font-normal text-start">
-              <tr className="border-b-[1px] border-[#F4EFE9] ">
-                <th className="px-4"></th>
-                <th className=" pr-6">
-                  <input
-                    type="checkbox"
-                    className="h-3 w-3 accent-(--secondary)"
-                    onChange={(e) => {
-                      const isChecked = e.target.checked;
-                      setSelectedRows(
-                        isChecked
-                          ? data?.orders?.map((order: any) => order.id)
-                          : []
-                      );
-                    }}
-                    checked={
-                      selectedRows.length === data?.orders?.length &&
-                      data?.orders?.length > 0
+              <button
+                type="button"
+                onClick={(e) =>{
+                    e.preventDefault();
+                    setIsModelOpen(true);
+                  reset()}}
+                className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
+              >
+                <img src={filter} alt="" />
+              </button>
+              <div
+                onClick={handleExportPDF}
+                className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]"
+              >
+                <img src={upload} alt="" />
+              </div>
+              <div
+                className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
+                onClick={() => navigate("/orders/add-order")}
+              >
+                <img src={add} alt="" />
+                {/* Add Order */}
+              </div>
+            </div>
+          </form>
+          <div className="flex gap-2 mt-2">
+            {Object.entries(selectedFilters).map(([key, value]) =>
+              value ? (
+                <div
+                  key={key}
+                  className="flex items-center bg-[#E5E5E5] px-4 py-1 rounded-[27px] text-sm h-[40px]"
+                >
+                  <button
+                    onClick={() =>
+                      removeFilter(
+                        key as
+                          | "propertyCounty"
+                          | "transactionType"
+                          | "fileType"
+                          | "fileStatus"
+                      )
                     }
-                  />
-                </th>
+                    className="mr-2 text-(--secondary)"
+                  >
+                    ✖
+                  </button>
+                  {value}
+                </div>
+              ) : null
+            )}
+          </div>
 
-                <th className="text-start font-medium min-w-[100px]">Id</th>
+          <div className="w-full overflow-x-auto scroll-container ">
+            <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-1">
+              <thead className="text-sm font-normal text-start">
+                <tr className="border-b-[1px] border-[#F4EFE9] ">
+                  <th className="px-4"></th>
+                  <th className=" pr-6">
+                    <input
+                      type="checkbox"
+                      className="h-3 w-3 accent-(--secondary)"
+                      onChange={(e) => {
+                        const isChecked = e.target.checked;
+                        setSelectedRows(
+                          isChecked
+                            ? data?.orders?.map((order: any) => order.id)
+                            : []
+                        );
+                      }}
+                      checked={
+                        selectedRows.length === data?.orders?.length &&
+                        data?.orders?.length > 0
+                      }
+                    />
+                  </th>
 
-                {tableHeaders.map(({ text, arrowIcon }) => (
-                  <TableHeader key={text} text={text} arrowIcon={arrowIcon} />
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {isLoading ? (
-                <TableSkeleton columns={30} />
-              ) : (
-                <>
-                  {data?.orders?.length === 0 ? (
-                    <NoDataRow colSpan={4} />
-                  ) : (
-                    <>
-                      {data?.orders?.map(
-                        (e: any, i: number) => (
-                          <tr
-                            key={i}
-                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
+                  <th className="text-start font-medium min-w-[100px]">Id</th>
+
+                  {tableHeaders.map(({ text, arrowIcon }) => (
+                    <TableHeader key={text} text={text} arrowIcon={arrowIcon} />
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {isLoading ? (
+                  <TableSkeleton columns={30} />
+                ) : (
+                  <>
+                    {data?.orders?.length === 0 ? (
+                      <NoDataRow colSpan={4} />
+                    ) : (
+                      <>
+                        {data?.orders?.map(
+                          (e: any, i: number) => (
+                            <tr
+                              key={i}
+                              className="font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
                             bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out
                             "
-                          >
-                            <td>
-                              {loading == e?.id ? (
-                                <Spinner />
-                              ) : (
-                                <>
-                                  <PopoverMenu
-                                    triggerImage={menu}
-                                    options={[
-                                      {
-                                        label: "Edit order",
-                                        onClick: () => handleAction("edit", e),
-                                      },
-                                      {
-                                        label: "Detail",
-                                        onClick: () =>
-                                          handleAction("detail", e),
-                                      },
-                                      {
-                                        label: "Delete",
-                                        onClick: () =>
-                                          handleAction("delete", e),
-                                      },
-                                    ]}
-                                  />
-                                </>
-                              )}
-                            </td>
-                            <td>
-                              <input
-                                type="checkbox"
-                                checked={selectedRows.includes(e.id)}
-                                onChange={() => handleCheckboxChange(e.id)}
-                                className="h-3 w-3 accent-(--secondary)"
-                              />
-                            </td>
+                            >
+                              <td>
+                                {loading == e?.id ? (
+                                  <Spinner />
+                                ) : (
+                                  <>
+                                    <PopoverMenu
+                                      triggerImage={menu}
+                                      options={[
+                                        {
+                                          label: "Edit order",
+                                          onClick: () =>
+                                            handleAction("edit", e),
+                                        },
+                                        {
+                                          label: "Detail",
+                                          onClick: () =>
+                                            handleAction("detail", e),
+                                        },
+                                        {
+                                          label: "Delete",
+                                          onClick: () =>
+                                            handleAction("delete", e),
+                                        },
+                                      ]}
+                                    />
+                                  </>
+                                )}
+                              </td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  checked={selectedRows.includes(e.id)}
+                                  onChange={() => handleCheckboxChange(e.id)}
+                                  className="h-3 w-3 accent-(--secondary)"
+                                />
+                              </td>
 
-                            <td>{e.id}</td>
-                            <td>{e.titleOfficer}</td>
-                            <td>{e.titleOffice}</td>
-                            <td>{e.titleRep}</td>
-                            <td>{e.titleRepPct}</td>
-                            <td>{e.openDate}</td>
-                            <td>{e.estimatedClosingDate}</td>
-                            <td>{e.closedDate}</td>
-                            <td>{e.contact}</td>
-                            <td>{e.aeLeadStage}</td>
-                            <td>{e.transactionType}</td>
-                            <td>{e.fileType}</td>
-                            <td>{e.orderNumber}</td>
-                            <td>{e.fileStatus}</td>
-                            <td>{e.salePrice}</td>
-                            <td>{e.loanAmount}</td>
-                            <td>{e.propertyAddress}</td>
-                            <td>{e.propertyCounty}</td>
-                            <td>{e.propertyState}</td>
-                            <td>{e.escrowOfficer}</td>
-                            <td>{e.listingAgentCompany}</td>
-                            <td>{e.listingAgentContactName}</td>
-                            <td>{e.listingAgentContactEmail}</td>
-                            <td>{e.listingAgentPhone}</td>
-                            <td>{e.sellingAgentCompany}</td>
-                            <td>{e.sellingAgentContactName}</td>
-                            <td>{e.sellingAgentContactEmail}</td>
-                            <td>{e.sellingAgentPhone}</td>
-                            <td>{e.mortgageBrokerCompany}</td>
-                            <td>{e.mortgageBrokerContact}</td>
-                            <td>{e.mortgageBrokerContactEmail}</td>
-                            <td>{e.mortgageBrokerPhone}</td>
-                            <td>{e.underwriter}</td>
-                            <td>{e.createdAt}</td>
-                          </tr>
-                        ),
-                        []
-                      )}
-                    </>
-                  )}
-                </>
-              )}
-            </tbody>
-          </table>
+                              <td>{e.id}</td>
+                              <td>{e.titleOfficer}</td>
+                              <td>{e.titleOffice}</td>
+                              <td>{e.titleRep}</td>
+                              <td>{e.titleRepPct}</td>
+                              <td>{e.openDate}</td>
+                              <td>{e.estimatedClosingDate}</td>
+                              <td>{e.closedDate}</td>
+                              <td>{e.contact}</td>
+                              <td>{e.aeLeadStage}</td>
+                              <td>{e.transactionType}</td>
+                              <td>{e.fileType}</td>
+                              <td>{e.orderNumber}</td>
+                              <td>{e.fileStatus}</td>
+                              <td>{e.salePrice}</td>
+                              <td>{e.loanAmount}</td>
+                              <td>{e.propertyAddress}</td>
+                              <td>{e.propertyCounty}</td>
+                              <td>{e.propertyState}</td>
+                              <td>{e.escrowOfficer}</td>
+                              <td>{e.listingAgentCompany}</td>
+                              <td>{e.listingAgentContactName}</td>
+                              <td>{e.listingAgentContactEmail}</td>
+                              <td>{e.listingAgentPhone}</td>
+                              <td>{e.sellingAgentCompany}</td>
+                              <td>{e.sellingAgentContactName}</td>
+                              <td>{e.sellingAgentContactEmail}</td>
+                              <td>{e.sellingAgentPhone}</td>
+                              <td>{e.mortgageBrokerCompany}</td>
+                              <td>{e.mortgageBrokerContact}</td>
+                              <td>{e.mortgageBrokerContactEmail}</td>
+                              <td>{e.mortgageBrokerPhone}</td>
+                              <td>{e.underwriter}</td>
+                              <td>{e.createdAt}</td>
+                            </tr>
+                          ),
+                          []
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </CardLayout>
+
+        <div className="w-full flex justify-end gap-5 items-center">
+          <Pagination
+            onPageChange={handlePageChange}
+            pageCount={data?.totalPages}
+          />
         </div>
-      </CardLayout>
-
-      <div className="w-full flex justify-end gap-5 items-center">
-        <Pagination
-          onPageChange={handlePageChange}
-          pageCount={data?.totalPages}
-        />
       </div>
-    </div>
+    </>
   );
 };
 
