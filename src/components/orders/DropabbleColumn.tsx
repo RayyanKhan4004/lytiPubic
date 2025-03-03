@@ -48,9 +48,10 @@ interface DroppableColumnProps {
   title: string;
   items: any[];
   count?: number;
+  onDragEnd ?: any,
   totalPages?: number;
   currentPage?: number;
-  onLoadMore: () => void;
+  onLoadMore ?: () => void;
 }
 
 const DroppableColumn: React.FC<DroppableColumnProps> = ({
@@ -60,6 +61,7 @@ const DroppableColumn: React.FC<DroppableColumnProps> = ({
   count,
   totalPages,
   currentPage,
+  onDragEnd,
   onLoadMore,
 }) => {
   const { setNodeRef } = useDroppable({ id });
@@ -73,7 +75,7 @@ const DroppableColumn: React.FC<DroppableColumnProps> = ({
 
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && currentPage! < totalPages!) {
-        onLoadMore();
+      onLoadMore &&   onLoadMore();
       }
     });
 
