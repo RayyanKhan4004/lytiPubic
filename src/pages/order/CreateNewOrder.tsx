@@ -1,6 +1,13 @@
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import {
+  Controller,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
+import add from "../../assets/icons/Add.svg";
 
 import Breadcrumb from "../../components/common/BreadCrumb";
 import InputField from "../../components/inputs/InputFields";
@@ -10,8 +17,10 @@ import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 import { useCreateOrderMutation } from "../../lib/rtkQuery/orderApi";
 
 import {
+  accountOptions,
   aeLeadStageOptions,
   countyOptions,
+  feeCategoryOptions,
   fileStatusOption,
   fileTypeOptions,
   roleOption,
@@ -21,19 +30,40 @@ import { OrderDataType } from "../../utils/types";
 import MainTitle from "../../components/ui/typography/MainTitle";
 import CardLayout from "../../components/layouts/CardLayout";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
+import { useFetchUsersWithoutLimitQuery } from "../../lib/rtkQuery/userApi";
 
 const CreateNewOrder = () => {
   const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const { data } = useFetchUsersWithoutLimitQuery();
+  const agentsOption =
+    data?.users?.map((user: { firstname: string }) => ({
+      value: user.firstname,
+      label: user.firstname,
+    })) || [];
+
   const navigate = useNavigate();
   const {
-    register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    watch,
     control,
     reset,
-  } = useForm<OrderDataType>();
+  } = useForm<OrderDataType>({
+    defaultValues: {
+      fees: [
+        {
+          feeDescription: "",
+          account: "",
+          feeCategory: "",
+          feeAmount: undefined,
+        },
+      ],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "fees",
+  });
 
   const onSubmit: SubmitHandler<OrderDataType> = async (data) => {
     console.log(data, "==formData===");
@@ -44,7 +74,6 @@ const CreateNewOrder = () => {
     try {
       const res = await createOrder(formattedData).unwrap();
       console.log(res, "==res==");
-
       navigate("/orders/orders");
       toast.success("Order Created Successfully");
       reset();
@@ -59,7 +88,7 @@ const CreateNewOrder = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardLayout>
           <MainTitle title="Create New Order" />
-          <div className="w-full flex  items-center flex-wrap py-4 gap-4">
+          <div className="w-full grid grid-cols-4 gap-x-2.5 gap-y-5 py-4">
             <SelectField
               label="Transaction Type"
               name="transactionType"
@@ -68,16 +97,30 @@ const CreateNewOrder = () => {
               placeholder="Select transaction type"
               error={errors.transactionType?.message}
               required={false}
-              className="w-[34%] "
+            />
+            <InputField
+              label="First name"
+              name="firstname"
+              control={control}
+              type="text"
+              placeholder="John"
+              error={errors.firstname?.message}
+            />
+            <InputField
+              label="Last name"
+              name="lastname"
+              control={control}
+              type="text"
+              placeholder="Doe"
+              error={errors.lastname?.message}
             />
             <InputField
               label="Add contact"
               name="contact"
               control={control}
-              type="number"
+              type="text"
               placeholder="Enter contact"
               error={errors.contact?.message}
-              className="w-[34%]"
             />
           </div>
         </CardLayout>
@@ -102,7 +145,7 @@ const CreateNewOrder = () => {
               label="Agent"
               name="titleRep"
               control={control}
-              options={roleOption}
+              options={agentsOption}
               placeholder="Select..."
               error={errors.titleRep?.message}
               required={false}
@@ -335,46 +378,84 @@ const CreateNewOrder = () => {
             />
           </div>
         </CardLayout>
-        {/* <CardLayout>
+        <CardLayout>
           <MainTitle title="Fee Details" />
 
-          <div className="w-full grid grid-cols-4 gap-x-2.5 gap-y-5 py-4">
-            <InputField
-              label="Description"
-              name="titleOffice"
-              control={control}
-              type="number"
-              placeholder="Enter contact"
-              error={errors.titleOffice?.message}
-            />
-            <SelectField
-              label="Account"
-              name="titleRep"
-              control={control}
-              options={roleOption}
-              placeholder="Select..."
-              error={errors.titleRep?.message}
-              required={false}
-            />
-            <SelectField
-              label="Fee Category"
-              name="titleRep"
-              control={control}
-              options={roleOption}
-              placeholder="Select..."
-              error={errors.titleRep?.message}
-              required={false}
-            />
-            <InputField
-              label="Amount"
-              name="titleOffice"
-              control={control}
-              type="number"
-              placeholder="Enter contact"
-              error={errors.titleOffice?.message}
-            />
+          {fields.map((field, index) => (
+            <div
+              key={field.id}
+              className="w-full grid grid-cols-5 gap-x-2.5 gap-y-5 py-4"
+            >
+              <InputField
+                label="Fee Description"
+                name={`fees.${index}.feeDescription`}
+                control={control}
+                type="text"
+                placeholder="Enter fee description"
+                error={errors.fees?.[index]?.feeDescription?.message}
+              />
+
+              <SelectField
+                label="Account"
+                name={`fees.${index}.account`}
+                control={control}
+                options={accountOptions}
+                placeholder="Select account"
+                error={errors.fees?.[index]?.account?.message}
+                required={false}
+              />
+
+              <SelectField
+                label="Fee Category"
+                name={`fees.${index}.feeCategory`}
+                control={control}
+                options={feeCategoryOptions}
+                placeholder="Fee category"
+                error={errors.fees?.[index]?.feeCategory?.message}
+                required={false}
+              />
+
+              <InputField
+                label="Fee Amount"
+                name={`fees.${index}.feeAmount`}
+                control={control}
+                type="number"
+                placeholder="Enter fee amount"
+                error={errors.fees?.[index]?.feeAmount?.message}
+              />
+
+              <div className="flex justify-end items-end w-full">
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  className="bg-red-500 text-white px-4  h-[55px] w-full rounded-[10px]"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+
+          <div className="w-full justify-end flex ">
+            <button
+              type="button"
+              onClick={() =>
+                append({
+                  feeDescription: "",
+                  account: "",
+                  feeCategory: "",
+                  feeAmount: 0,
+                })
+              }
+              className=" text-(--secondary) font-medium mt-4 flex  gap-2 items-center text-xs "
+            >
+              <div className="bg-(--secondary)  rounded-full p-[2px]">
+                <img src={add} alt="" className="h-[15px] w-[15px]" />
+              </div>
+              Add More
+            </button>
           </div>
-        </CardLayout> */}
+        </CardLayout>
 
         <div className="flex justify-end w-full my-3">
           <PrimaryButton

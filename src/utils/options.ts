@@ -77,3 +77,19 @@ export const filterOption = [
   { value: "inactive", label: "Inactive" },
   { value: "excluded", label: "Excluded" },
 ];
+
+export const accountOptions = [
+  { value: "Account", label: "Account" },
+  { value: "Escrow Fee Income", label: "Escrow Fee Income" },
+  { value: "Title Fee Income", label: "Title Fee Income" },
+  {
+    value: "Other Receivable-Pass Through Fees",
+    label: "Other Receivable-Pass Through Fees",
+  },
+  { value: "Fees In Transit", label: "Fees In Transit" },
+];
+
+export const feeCategoryOptions = [
+  { value: "Title Charges", label: "Title Charges" },
+  { value: "Escrow Charges", label: "Escrow Charges" },
+];

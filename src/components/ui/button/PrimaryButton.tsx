@@ -2,8 +2,9 @@ import React from "react";
 import Spinner from "../loader/Spinner";
 
 interface ButtonProps {
-  text: string;
+  text ?: string;
   isLoading?: boolean;
+  image ?: string
   type?: "button" | "submit" | "reset";
 }
 
@@ -11,6 +12,7 @@ const PrimaryButton: React.FC<ButtonProps> = ({
   text,
   isLoading = false,
   type = "button",
+  image ,
 }) => {
   return (
     <button

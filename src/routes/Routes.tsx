@@ -69,7 +69,7 @@ export const router = createBrowserRouter([
       { path: "admin/commissions", element: <Commission /> },
       { path: "orders/orders", element: <OrdersTable /> },
       { path: "orders/create-order", element: <CreateNewOrder /> },
-      { path: "orders/add-order", element: <CreateOrder /> },
+      { path: "orders/add-order", element: <CreateNewOrder /> },
       { path: "orders/edit-order", element: <OrderEdit /> },
       { path: "orders/order-detail", element: <OrderDetail /> },
       { path: "orders/underwriter-board", element: <UnderwriterBoard /> },

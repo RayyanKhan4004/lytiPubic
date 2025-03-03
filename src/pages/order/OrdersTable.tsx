@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 import {
   useDeleteOrderMutation,
@@ -41,12 +43,18 @@ const OrdersTable = () => {
   const [loading, setLoading] = useState("");
   const [page, setPage] = useState(1);
   const [isModelOpen , setIsModelOpen] = useState(false)
+  const [selectedFilters, setSelectedFilters] = useState<
+    Record<string, string>
+  >({});
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+
   const navigate = useNavigate();
 
   const {
     formState: { errors },
-    setValue,
+    reset,
     watch,
+    setValue,
     control,
   } = useForm<OrderDataType>();
 
@@ -79,9 +87,11 @@ const OrdersTable = () => {
 
   const handleAction = async (action: string, orderData?: any) => {
     if (action === "edit" && orderData) {
-      navigate(`/orders/order-detail`, { state: { orderData } });
+      navigate(`/orders/edit-order`, { state: { orderData } });
     }
-
+    if (action == "detail" && orderData) {
+      navigate("/orders/order-detail", { state: { orderData } });
+    }
     if (action === "delete" && orderData) {
       setLoading(orderData?.id);
       try {
@@ -99,6 +109,119 @@ const OrdersTable = () => {
   useEffect(() => {
     refetch();
   }, []);
+
+  const handleCheckboxChange = (id: number) => {
+    setSelectedRows((prev) =>
+      prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
+    );
+  };
+
+  const handleExportPDF = () => {
+    if (selectedRows.length === 0) {
+      alert("Please select at least one row!");
+      return;
+    }
+
+    const doc = new jsPDF();
+    let yPos = 10;
+
+    doc.text("Exported Order Data", 10, yPos);
+    yPos += 10;
+
+    selectedRows.forEach((rowId, index) => {
+      const order = data?.orders?.find((order: any) => order.id === rowId);
+      if (!order) return;
+
+      doc.text(`Order #${index + 1}`, 10, yPos);
+      yPos += 5;
+
+      const orderDetails = [
+        ["Contact", order.contact],
+        ["First Name", order.firstname],
+        ["Last Name", order.lastname],
+        ["Title Office", order.titleOffice],
+        ["Title Rep", order.titleRep],
+        ["Title Rep %", order.titleRepPct],
+        ["Open Date", order.openDate],
+        ["Estimated Closing Date", order.estimatedClosingDate],
+        ["Closed Date", order.closedDate || "N/A"],
+        ["File Type", order.fileType],
+        ["Transaction Type", order.transactionType],
+        ["Order Number", order.orderNumber],
+        ["File Status", order.fileStatus],
+        ["AE Lead Stage", order.aeLeadStage],
+        ["Sale Price", order.salePrice],
+        ["Loan Amount", order.loanAmount],
+        ["Property Address", order.propertyAddress],
+        ["County", order.propertyCounty],
+        ["State", order.propertyState],
+        ["Title Officer", order.titleOfficer],
+        ["Escrow Officer", order.escrowOfficer],
+        ["Underwriter", order.underwriter],
+      ];
+
+      orderDetails.forEach((detail) => {
+        doc.text(`${detail[0]}: ${detail[1]}`, 10, yPos);
+        yPos += 6;
+        if (yPos > 280) {
+          doc.addPage();
+          yPos = 10;
+        }
+      });
+
+      if (order.fees && order.fees.length > 0) {
+        doc.text("Fees:", 10, yPos);
+        yPos += 6;
+
+        autoTable(doc, {
+          startY: yPos,
+          head: [["Fee Description", "Account", "Category", "Amount"]],
+          body: order.fees.map((fee: any) => [
+            fee.feeDescription,
+            fee.account,
+            fee.feeCategory,
+            `$${fee.feeAmount}`,
+          ]),
+        });
+
+        yPos = (doc as any).lastAutoTable?.finalY + 10 || yPos;
+      }
+
+      yPos += 10;
+      if (yPos > 280) {
+        doc.addPage();
+        yPos = 10;
+      }
+    });
+
+    doc.save("exported-orders.pdf");
+  };
+
+  useEffect(() => {
+    setSelectedFilters({
+      propertyCounty: selectedPropertyCounty,
+      fileStatus: selectedFileStatus,
+      fileType: selectedFileType,
+      transactionType: selectTransactionType,
+    });
+  }, [
+    selectedPropertyCounty,
+    selectedFileStatus,
+    selectedFileType,
+    selectTransactionType,
+  ]);
+
+  const removeFilter = (
+    key: "propertyCounty" | "fileStatus" | "fileType" | "transactionType"
+  ) => {
+    setValue(key, "");
+    setSelectedFilters((prev) => {
+      const updatedFilters = { ...prev };
+      delete updatedFilters[key];
+      return updatedFilters;
+    });
+  };
+
   return (
     <>
      {  <FilterPopup isModelOpen={isModelOpen} setIsModelOpen={setIsModelOpen}/>}
@@ -183,11 +306,17 @@ const OrdersTable = () => {
 
             <button className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white "
             onClick={(e)=>{ e.preventDefault()
-              setIsModelOpen(true)}}
+            reset()
+              setIsModelOpen(true)
+            }
+            }
             >
               <img src={filter} alt="" />
             </button>
-            <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
+            <div
+              onClick={handleExportPDF}
+              className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]"
+            >
               <img src={upload} alt="" />
             </div>
             <div
@@ -195,16 +324,60 @@ const OrdersTable = () => {
               onClick={() => navigate("/orders/add-order")}
             >
               <img src={add} alt="" />
-              Add Order
+              {/* Add Order */}
             </div>
           </div>
         </form>
+        <div className="flex gap-2 mt-2">
+          {Object.entries(selectedFilters).map(([key, value]) =>
+            value ? (
+              <div
+                key={key}
+                className="flex items-center bg-[#E5E5E5] px-4 py-1 rounded-[27px] text-sm h-[40px]"
+              >
+                <button
+                  onClick={() =>
+                    removeFilter(
+                      key as
+                        | "propertyCounty"
+                        | "transactionType"
+                        | "fileType"
+                        | "fileStatus"
+                    )
+                  }
+                  className="mr-2 text-(--secondary)"
+                >
+                  ✖
+                </button>
+                {value}
+              </div>
+            ) : null
+          )}
+        </div>
 
         <div className="w-full overflow-x-auto">
-          <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-6">
+          <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-1">
             <thead className="text-sm font-normal text-start">
               <tr className="border-b-[1px] border-[#F4EFE9] ">
-                <th className="px-6"></th>
+                <th className="px-4"></th>
+                <th className=" pr-6">
+                  <input
+                    type="checkbox"
+                    className="h-3 w-3 accent-(--secondary)"
+                    onChange={(e) => {
+                      const isChecked = e.target.checked;
+                      setSelectedRows(
+                        isChecked
+                          ? data?.orders?.map((order: any) => order.id)
+                          : []
+                      );
+                    }}
+                    checked={
+                      selectedRows.length === data?.orders?.length &&
+                      data?.orders?.length > 0
+                    }
+                  />
+                </th>
 
                 <th className="text-start font-medium min-w-[100px]">Id</th>
 
@@ -242,7 +415,11 @@ const OrdersTable = () => {
                                         label: "Edit order",
                                         onClick: () => handleAction("edit", e),
                                       },
-
+                                      {
+                                        label: "Detail",
+                                        onClick: () =>
+                                          handleAction("detail", e),
+                                      },
                                       {
                                         label: "Delete",
                                         onClick: () =>
@@ -252,6 +429,14 @@ const OrdersTable = () => {
                                   />
                                 </>
                               )}
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                checked={selectedRows.includes(e.id)}
+                                onChange={() => handleCheckboxChange(e.id)}
+                                className="h-3 w-3 accent-(--secondary)"
+                              />
                             </td>
 
                             <td>{e.id}</td>

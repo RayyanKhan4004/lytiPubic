@@ -56,11 +56,60 @@ export const orderApi = createApi({
         body,
       }),
     }),
+    updateOrder: builder.mutation<any, { id: string; data: OrderDataType }>({
+      query: ({ id, data }) => ({
+        url: `orders/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
     deleteOrder: builder.mutation<any, string>({
       query: (id) => ({
         url: `orders/${id}`,
         method: "DELETE",
       }),
+    }),
+    // fetchAeLeadStagesBoard: builder.query<
+    //   any,
+    //   { limit?: number; pipelinePage?: number }
+    // >({
+    //   query: ({ limit, pipelinePage }) =>
+    //     `orders/ae-lead-stages-board/?pipelineLimit=${limit}&pipelinePage=${pipelinePage}`,
+    // }),
+    fetchAeLeadStagesBoard: builder.query<
+      any,
+      {
+        limit?: number;
+        pipelinePage?: number;
+        appSetPage?: number;
+        appMetPage?: number;
+        signedPage?: number;
+        firstTimeShowingPage?: number;
+        firstTimeOfferPage?: number;
+        liveListingPage?: number;
+        listingExpiredPage?: number;
+        buyerAgreementExpiredPage?: number;
+        pendingPage?: number;
+        closedPage?: number;
+        lostPage?: number;
+      }
+    >({
+      query: ({
+        limit,
+        pipelinePage,
+        appSetPage,
+        appMetPage,
+        signedPage,
+        firstTimeShowingPage,
+        firstTimeOfferPage,
+        liveListingPage,
+        listingExpiredPage,
+        buyerAgreementExpiredPage,
+        pendingPage,
+        closedPage,
+        lostPage,
+      }) =>
+        `orders/ae-lead-stages-board/?pipelineLimit=${limit}&pipelinePage=${pipelinePage}&appSetLimit=${limit}&appSetPage=${appSetPage}&appMetLimit=${limit}&appMetPage=${appMetPage}&signedLimit=${limit}&signedPage=${signedPage}&firstTimeShowingLimit=${limit}&firstTimeShowingPage=${firstTimeShowingPage}&firstTimeOfferLimit=${limit}&firstTimeOfferPage=${firstTimeOfferPage}&liveListingLimit=${limit}&liveListingPage=${liveListingPage}&listingExpiredLimit=${limit}&listingExpiredPage=${listingExpiredPage}&buyerAgreementExpiredLimit=${limit}&buyerAgreementExpiredPage=${buyerAgreementExpiredPage}&pendingLimit=${limit}&pendingPage=${pendingPage}&closedLimit=${limit}&closedPage=${closedPage}&lostLimit=${limit}&lostPage=${lostPage}`,
     }),
   }),
 });
@@ -68,5 +117,7 @@ export const orderApi = createApi({
 export const {
   useGetOrdersQuery,
   useCreateOrderMutation,
+  useUpdateOrderMutation,
   useDeleteOrderMutation,
+  useFetchAeLeadStagesBoardQuery,
 } = orderApi;

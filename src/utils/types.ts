@@ -36,10 +36,20 @@ export interface OrderDataType {
   type?: string;
   keyword?: string;
   cancelDate?: string;
-  transactionType?: string;
   orderStatus?: string;
+  transactionType?: string;
   aeLeadStage?: string;
-  contact?: number;
+  contact?: string;
+  fees?: Fee[];
+  firstname?: string;
+  lastname?: string;
+}
+
+export interface Fee {
+  feeDescription?: string;
+  account?: string;
+  feeCategory?: string;
+  feeAmount?: number;
 }
 
 export interface UserDataType {
