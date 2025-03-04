@@ -232,9 +232,8 @@ const FeeDetail = () => {
       }
       <div className="w-full h-full gap-6 p-6">
         <div className="flex justify-between w-full">
-          <Breadcrumb items={["Orders", "My Orders"]} />
+          <Breadcrumb items={["Orders", "Fee Details"]} />
           <div className=" flex  justify-end gap-4">
-            {" "}
             <CustomizableDropdown
               options={["1", "2", "3", "4", "5", "6"]}
               selected="06 Columns"

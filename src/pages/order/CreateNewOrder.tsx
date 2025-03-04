@@ -13,7 +13,7 @@ import Breadcrumb from "../../components/common/BreadCrumb";
 import InputField from "../../components/inputs/InputFields";
 import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
-
+import ArrowBlack from "../../assets/icons/ArrowBlack.svg";
 import { useCreateOrderMutation } from "../../lib/rtkQuery/orderApi";
 
 import {
@@ -31,8 +31,10 @@ import MainTitle from "../../components/ui/typography/MainTitle";
 import CardLayout from "../../components/layouts/CardLayout";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import { useFetchUsersWithoutLimitQuery } from "../../lib/rtkQuery/userApi";
+import { useState } from "react";
 
 const CreateNewOrder = () => {
+  const [activeTab, setActiveTab] = useState('transactionDetails');
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const { data } = useFetchUsersWithoutLimitQuery();
   const agentsOption =
@@ -87,7 +89,17 @@ const CreateNewOrder = () => {
       <Breadcrumb items={["Orders", "Create New Order"]} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardLayout>
-          <MainTitle title="Create New Order" />
+          <div className="w-full flex justify-between">
+            <MainTitle title="Create New Order" />
+            <img
+              src={ArrowBlack}
+              alt=""
+              className=""
+              onClick={() => {
+                setActiveTab("CreateNewOrder");
+              }}
+            />
+          </div>
           <div className="w-full grid grid-cols-4 gap-x-2.5 gap-y-5 py-4">
             <SelectField
               label="Transaction Type"
@@ -125,7 +137,17 @@ const CreateNewOrder = () => {
           </div>
         </CardLayout>
         <CardLayout>
-          <MainTitle title="Transaction Details" />
+          <div className="flex w-full justify-between">
+            <MainTitle title="Transaction Details" />
+            <img
+              src={ArrowBlack}
+              alt=""
+              className=""
+              onClick={() => {
+                setActiveTab("transactionDetails");
+              }}
+            />
+          </div>
           <p className="text-(--greyText) text-sm ">
             This is the main form in the system that you see in a spreadsheet
             style view when you go into transactions. Rearranging, adding or
@@ -379,7 +401,17 @@ const CreateNewOrder = () => {
           </div>
         </CardLayout>
         <CardLayout>
-          <MainTitle title="Fee Details" />
+          <div className="flex w-full justify-between">
+            <MainTitle title="Fee Details" />
+            <img
+              src={ArrowBlack}
+              alt=""
+              className=""
+              onClick={() => {
+                setActiveTab("feeDetails");
+              }}
+            />
+          </div>
 
           {fields.map((field, index) => (
             <div

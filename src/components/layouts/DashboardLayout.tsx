@@ -9,11 +9,11 @@ interface DashboardLayoutProps {
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       const [isSideBarExpanded, setIsSideBarExpanded] = useState(false);
   return (
-    <div className="flex relative w-full h-auto min-h-screen flex-col">
+    <div className="flex relative w-full h-auto min-h-screen flex-col overflow-hidden ">
       <Navbar />
-      <div className="w-full flex ">
+      <div className="w-full flex  scroll-container overflow-hidden h-screen ">
         <div
-          className={` ${
+          className={` overflow-y-scroll scroll-container  ${
             isSideBarExpanded
               ? "w-[96px] duration-300 ease-in-out"
               : "w-[20%] duration-300 ease-in-out"
@@ -24,7 +24,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             setIsSideBarExpanded={setIsSideBarExpanded}
           />
         </div>
-        <span className="w-[80%]">{children}</span>
+        <span className={` ${!isSideBarExpanded ? 'w-[80%]' : "grow" } w-[80%] overflow-y-auto h-screen  scroll-container`}>
+          {children}
+        </span>
       </div>
     </div>
   );

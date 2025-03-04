@@ -24,6 +24,10 @@ const Sidebar = ({ setIsSideBarExpanded, isSideBarExpanded } : SideBarProps) => 
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 
   useEffect(() => {
+    if(selectedItem === null){
+      setSelectedItem(0)
+       localStorage.setItem("selectedItem", JSON.stringify(0));
+    }
     if (selectedItem !== null) {
       localStorage.setItem("selectedItem", JSON.stringify(selectedItem));
     }
@@ -84,7 +88,7 @@ const Sidebar = ({ setIsSideBarExpanded, isSideBarExpanded } : SideBarProps) => 
               className={`h-[50px] flex items-center ${
                 isSideBarExpanded ? "justify-center" : "justify-between"
               } rounded-[10px] px-4 hover:cursor-pointer ${
-                selectedItem === i || openDropdown === i
+                selectedItem === i || openDropdown === i 
                   ? "bg-(--primary) text-white"
                   : "text-black"
               }`}
@@ -111,7 +115,6 @@ const Sidebar = ({ setIsSideBarExpanded, isSideBarExpanded } : SideBarProps) => 
                 />
               )}
             </div>
-
             {/* Dropdown Menu */}
             {openDropdown === i && e.subMenu && !isSideBarExpanded && (
               <div className="ml-2 border-l-2 border-(--primary) flex flex-col gap-2 mt-2 relative">
