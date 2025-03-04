@@ -56,19 +56,28 @@ export const transactionOption = [
   { value: "Refi", label: "Refi" },
 ];
 
+// export const aeLeadStageOptions = [
+//   { value: "Pipeline", label: "Pipeline" },
+//   { value: "App Set", label: "App Set" },
+//   { value: "App Met", label: "App Met" },
+//   { value: "Signed", label: "Signed" },
+//   { value: "1st Time Showing", label: "1st Time Showing" },
+//   { value: "1st Time Offer", label: "1st Time Offer" },
+//   { value: "Live Listing", label: "Live Listing" },
+//   { value: "Listing Expired", label: "Listing Expired" },
+//   { value: "Buyer Agreement Expired", label: "Buyer Agreement Expired" },
+//   { value: "Pending", label: "Pending" },
+//   { value: "Closed", label: "Closed" },
+//   { value: "Lost", label: "Lost" },
+// ];
 export const aeLeadStageOptions = [
-  { value: "Pipeline", label: "Pipeline" },
   { value: "App Set", label: "App Set" },
   { value: "App Met", label: "App Met" },
-  { value: "Signed", label: "Signed" },
-  { value: "1st Time Showing", label: "1st Time Showing" },
-  { value: "1st Time Offer", label: "1st Time Offer" },
-  { value: "Live Listing", label: "Live Listing" },
-  { value: "Listing Expired", label: "Listing Expired" },
-  { value: "Buyer Agreement Expired", label: "Buyer Agreement Expired" },
-  { value: "Pending", label: "Pending" },
+  { value: "Verbal Commitments", label: "Verbal Commitments" },
   { value: "Closed", label: "Closed" },
   { value: "Lost", label: "Lost" },
+  { value: "Cancelled", label: "Cancelled" },
+  { value: "Prelim Commitments", label: "Prelim Commitments" },
 ];
 
 export const filterOption = [

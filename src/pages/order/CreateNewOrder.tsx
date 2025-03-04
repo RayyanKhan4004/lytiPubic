@@ -34,7 +34,7 @@ import { useFetchUsersWithoutLimitQuery } from "../../lib/rtkQuery/userApi";
 import { useState } from "react";
 
 const CreateNewOrder = () => {
-  const [activeTab, setActiveTab] = useState('transactionDetails');
+  const [activeTab, setActiveTab] = useState("transactionDetails");
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const { data } = useFetchUsersWithoutLimitQuery();
   const agentsOption =
@@ -228,7 +228,7 @@ const CreateNewOrder = () => {
               required={false}
             />
             <SelectField
-              label="Ae Lead Stage"
+              label="Statuses"
               name="aeLeadStage"
               control={control}
               options={aeLeadStageOptions}
