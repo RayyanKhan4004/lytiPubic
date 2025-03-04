@@ -16,6 +16,7 @@ import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 
 import {
   useCreateOrderMutation,
+  useGetListingOfficesQuery,
   useUpdateOrderMutation,
 } from "../../lib/rtkQuery/orderApi";
 
@@ -39,6 +40,15 @@ import { useFetchUsersWithoutLimitQuery } from "../../lib/rtkQuery/userApi";
 const OrderEdit = () => {
   const [updateOrder, { isLoading }] = useUpdateOrderMutation();
   const { data: agentData } = useFetchUsersWithoutLimitQuery();
+
+  const { data: listingOfficeData } = useGetListingOfficesQuery();
+
+  const listingOfficeOption =
+    listingOfficeData?.listingOffices?.map((user: { name: string }) => ({
+      value: user.name,
+      label: user.name,
+    })) || [];
+
   const agentsOption =
     agentData?.users?.map((user: { firstname: string }) => ({
       value: user.firstname,
@@ -340,13 +350,15 @@ const OrderEdit = () => {
               placeholder="Enter escrow officer"
               error={errors.escrowOfficer?.message}
             />
-            <InputField
+
+            <SelectField
               label="Listing Agent Company"
               name="listingAgentCompany"
               control={control}
-              type="text"
-              placeholder="Enter listing agent company"
+              options={listingOfficeOption}
+              placeholder="Select..."
               error={errors.listingAgentCompany?.message}
+              required={false}
             />
             <InputField
               label="Listing Agent Contact Name"
