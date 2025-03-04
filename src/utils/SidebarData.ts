@@ -53,10 +53,10 @@ export const sidebarData = () => {
         { id: 201, title: "Orders", path: "/orders/orders" },
         {
           id: 203,
-          title: "Ae Lead Stages Board",
+          title: "Order Statuses board",
           path: "/orders/stages-board",
         },
-        { id: 204, title: "Statuses Board", path: "orders/statuses-board" },
+        // { id: 204, title: "Statuses Board", path: "orders/statuses-board" },
         {
           id: 205,
           title: "Underwriter Borad",

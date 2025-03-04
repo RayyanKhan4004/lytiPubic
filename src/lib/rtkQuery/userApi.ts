@@ -46,7 +46,7 @@ export const userApi = createApi({
         `users?keyword=${keyword}&page=${page}&limit=${10}`,
     }),
     fetchUsersWithoutLimit: builder.query<any, void>({
-      query: () => `users?limit=${100000}`,
+      query: () => `users?limit=${100000}&role=Account Executive`,
     }),
   }),
 });

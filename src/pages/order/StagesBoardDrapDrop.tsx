@@ -414,7 +414,6 @@ import DroppableColumn from "../../components/orders/DropabbleColumn";
 import DraggableItem from "../../components/orders/DraggableItem";
 
 import dummy from "../../assets/images/Dummy.jpg";
-
 import { OrderDataType } from "../../utils/types";
 import {
   useFetchAeLeadStagesBoardQuery,
@@ -615,7 +614,7 @@ const StagesBoardDragDrop: React.FC = () => {
 
   return (
     <div className="w-full overflow-auto px-4 my-8">
-      <Breadcrumb items={["Orders", "Ae Leads Stages Board"]} />
+      <Breadcrumb items={["Orders", "Order Statuses board"]} />
       <CardLayout>
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
           <div className="overflow-x-auto overflow-y-hidden h-full relative">
