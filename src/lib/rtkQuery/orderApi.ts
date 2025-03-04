@@ -69,13 +69,6 @@ export const orderApi = createApi({
         method: "DELETE",
       }),
     }),
-    // fetchAeLeadStagesBoard: builder.query<
-    //   any,
-    //   { limit?: number; pipelinePage?: number }
-    // >({
-    //   query: ({ limit, pipelinePage }) =>
-    //     `orders/ae-lead-stages-board/?pipelineLimit=${limit}&pipelinePage=${pipelinePage}`,
-    // }),
     fetchAeLeadStagesBoard: builder.query<
       any,
       {
@@ -111,6 +104,13 @@ export const orderApi = createApi({
       }) =>
         `orders/ae-lead-stages-board/?pipelineLimit=${limit}&pipelinePage=${pipelinePage}&appSetLimit=${limit}&appSetPage=${appSetPage}&appMetLimit=${limit}&appMetPage=${appMetPage}&signedLimit=${limit}&signedPage=${signedPage}&firstTimeShowingLimit=${limit}&firstTimeShowingPage=${firstTimeShowingPage}&firstTimeOfferLimit=${limit}&firstTimeOfferPage=${firstTimeOfferPage}&liveListingLimit=${limit}&liveListingPage=${liveListingPage}&listingExpiredLimit=${limit}&listingExpiredPage=${listingExpiredPage}&buyerAgreementExpiredLimit=${limit}&buyerAgreementExpiredPage=${buyerAgreementExpiredPage}&pendingLimit=${limit}&pendingPage=${pendingPage}&closedLimit=${limit}&closedPage=${closedPage}&lostLimit=${limit}&lostPage=${lostPage}`,
     }),
+
+    getListingOffices: builder.query<any, void>({
+      query: () => ({
+        url: "orders/listing-offices",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -120,4 +120,5 @@ export const {
   useUpdateOrderMutation,
   useDeleteOrderMutation,
   useFetchAeLeadStagesBoardQuery,
+  useGetListingOfficesQuery,
 } = orderApi;

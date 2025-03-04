@@ -14,7 +14,10 @@ import InputField from "../../components/inputs/InputFields";
 import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 import ArrowBlack from "../../assets/icons/ArrowBlack.svg";
-import { useCreateOrderMutation } from "../../lib/rtkQuery/orderApi";
+import {
+  useCreateOrderMutation,
+  useGetListingOfficesQuery,
+} from "../../lib/rtkQuery/orderApi";
 
 import {
   accountOptions,
@@ -37,6 +40,14 @@ const CreateNewOrder = () => {
   const [activeTab, setActiveTab] = useState("transactionDetails");
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const { data } = useFetchUsersWithoutLimitQuery();
+  const { data: listingOfficeData } = useGetListingOfficesQuery();
+
+  const listingOfficeOption =
+    listingOfficeData?.listingOffices?.map((user: { name: string }) => ({
+      value: user.name,
+      label: user.name,
+    })) || [];
+
   const agentsOption =
     data?.users?.map((user: { firstname: string }) => ({
       value: user.firstname,
@@ -294,13 +305,15 @@ const CreateNewOrder = () => {
               placeholder="Enter escrow officer"
               error={errors.escrowOfficer?.message}
             />
-            <InputField
+
+            <SelectField
               label="Listing Agent Company"
               name="listingAgentCompany"
               control={control}
-              type="text"
-              placeholder="Enter listing agent company"
+              options={listingOfficeOption}
+              placeholder="Select..."
               error={errors.listingAgentCompany?.message}
+              required={false}
             />
             <InputField
               label="Listing Agent Contact Name"
