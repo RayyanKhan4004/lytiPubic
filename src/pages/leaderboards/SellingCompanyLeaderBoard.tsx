@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import Breadcrumb from "../components/common/BreadCrumb";
-import CustomizableDropdown from "../components/common/CustomizableDropdown";
-import LeaderboardsDashboardUserCard from "../components/dashboard/teamDashboard/leaderboardsDashboard/LeaderboardsDashboardUserCard";
-import dummyImage from "../assets/images/Dummy.jpg";
+import Breadcrumb from "../../components/common/BreadCrumb";
+import CustomizableDropdown from "../../components/common/CustomizableDropdown";
+import LeaderboardsDashboardUserCard from "../../components/dashboard/teamDashboard/leaderboardsDashboard/LeaderboardsDashboardUserCard";
+import dummyImage from "../../assets/images/Dummy.jpg";
 import { PieChart, Pie, Cell } from "recharts";
-import arrowUpDown from "../assets/icons/ArrowsDownUp.svg";
-import { DummyData } from "../utils/DummyData";
-import SearchInput from "../components/common/SearchInput";
+import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
+import { DummyData } from "../../utils/DummyData";
+import SearchInput from "../../components/common/SearchInput";
 
 interface ChartData {
   name: string;
   value: number;
   color: string;
 }
-const LeaderBoards = () => {
+const SellingCompanyLeaderBoard = () => {
   const [selectedFilter, setSelectedFilter] = useState("Devclan");
   const [searchValue, setSearchValue] = useState("");
 
@@ -35,12 +35,12 @@ const LeaderBoards = () => {
 
   return (
     <div className="w-full px-4 my-8 font-Poppins">
-      <Breadcrumb items={["Leaderboards"]} />
+      <Breadcrumb items={["Leaderboards", "Selling Company LeaderBoard"]} />
       <div className="w-full flex flex-col gap-4 my-7">
         <div className="shadow-(--cardShadow) rounded-2xl bg-white p-4 w-full ">
           <div className="flex justify-between items-center">
             <h1 className="font-semibold text-lg text-(--primary)">
-              Leaderboards
+              Selling Company LeaderBoard
             </h1>
             <div>
               <CustomizableDropdown
@@ -172,4 +172,4 @@ const LeaderBoards = () => {
   );
 };
 
-export default LeaderBoards;
+export default SellingCompanyLeaderBoard;
