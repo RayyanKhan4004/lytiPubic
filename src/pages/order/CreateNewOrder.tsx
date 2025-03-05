@@ -14,10 +14,7 @@ import InputField from "../../components/inputs/InputFields";
 import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 import ArrowBlack from "../../assets/icons/ArrowBlack.svg";
-import {
-  useCreateOrderMutation,
-  useGetListingOfficesQuery,
-} from "../../lib/rtkQuery/orderApi";
+import { useCreateOrderMutation } from "../../lib/rtkQuery/orderApi";
 
 import {
   accountOptions,
@@ -28,31 +25,19 @@ import {
   fileTypeOptions,
   roleOption,
   transactionOption,
+  useOptions,
 } from "../../utils/options";
 import { OrderDataType } from "../../utils/types";
 import MainTitle from "../../components/ui/typography/MainTitle";
 import CardLayout from "../../components/layouts/CardLayout";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
-import { useFetchUsersWithoutLimitQuery } from "../../lib/rtkQuery/userApi";
 import { useState } from "react";
 
 const CreateNewOrder = () => {
   const [activeTab, setActiveTab] = useState("transactionDetails");
   const [createOrder, { isLoading }] = useCreateOrderMutation();
-  const { data } = useFetchUsersWithoutLimitQuery();
-  const { data: listingOfficeData } = useGetListingOfficesQuery();
-
-  const listingOfficeOption =
-    listingOfficeData?.listingOffices?.map((user: { name: string }) => ({
-      value: user.name,
-      label: user.name,
-    })) || [];
-
-  const agentsOption =
-    data?.users?.map((user: { firstname: string }) => ({
-      value: user.firstname,
-      label: user.firstname,
-    })) || [];
+  const { agentsOption, listingOfficeOption, sellingOfficesOption } =
+    useOptions();
 
   const navigate = useNavigate();
   const {
@@ -79,8 +64,6 @@ const CreateNewOrder = () => {
   });
 
   const onSubmit: SubmitHandler<OrderDataType> = async (data) => {
-    console.log(data, "==formData===");
-
     const formattedData = {
       ...data,
     };
@@ -339,13 +322,15 @@ const CreateNewOrder = () => {
               placeholder="Enter listing agent phone"
               error={errors.listingAgentPhone?.message}
             />
-            <InputField
+
+            <SelectField
               label="Selling Agent Company"
               name="sellingAgentCompany"
               control={control}
-              type="text"
-              placeholder="Enter selling agent company"
+              options={sellingOfficesOption}
+              placeholder="Select selling office"
               error={errors.sellingAgentCompany?.message}
+              required={false}
             />
             <InputField
               label="Selling Agent Contact Name"
