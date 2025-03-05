@@ -5,8 +5,14 @@ import LeaderboardsDashboardUserCard from "../../components/dashboard/teamDashbo
 import dummyImage from "../../assets/images/Dummy.jpg";
 import { PieChart, Pie, Cell } from "recharts";
 import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
-import { DummyData } from "../../utils/DummyData";
-import SearchInput from "../../components/common/SearchInput";
+import { DummyData, users } from "../../utils/DummyData";
+import MainTitle from "../../components/ui/typography/MainTitle";
+import SelectField from "../../components/inputs/SelectField";
+import SearchInput from "../../components/inputs/SearchInput";
+import { countyOptions } from "../../utils/options";
+import { OrderDataType } from "../../utils/types";
+import { useForm } from "react-hook-form";
+import Pagination from "../../components/common/Pagination";
 
 interface ChartData {
   name: string;
@@ -15,15 +21,15 @@ interface ChartData {
 }
 const ListingCompanyLeaderBoard = () => {
   const [selectedFilter, setSelectedFilter] = useState("Devclan");
-  const [searchValue, setSearchValue] = useState("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const users = [
-    { rank: 1, name: "Wade Warren", count: 34 },
-    { rank: 2, name: "John Doe", count: 28 },
-    { rank: 3, name: "Jane Smith", count: 25 },
-    { rank: 4, name: "Robert Brown", count: 22 },
-    { rank: 5, name: "Emily Davis", count: 21 },
-  ];
+  const {
+    formState: { errors },
+    reset,
+    watch,
+    setValue,
+    control,
+  } = useForm<OrderDataType>();
   const data: ChartData[] = [
     { name: "Segment 1", value: 25, color: "#EC662A" },
     { name: "Segment 2", value: 15, color: "#3B3B3B" },
@@ -34,15 +40,14 @@ const ListingCompanyLeaderBoard = () => {
   const dummyData = DummyData();
 
   return (
-    <div className="w-full px-4 my-8 font-Poppins">
+    <div className="w-full px-4 my-8 font-Poppins min-h-full">
       <Breadcrumb items={["Leaderboards", "Listing Company LeaderBoard"]} />
 
-      <div className="w-full flex flex-col gap-4 my-7">
+      <div className="w-full flex flex-col gap-4 my-4">
         <div className="shadow-(--cardShadow) rounded-2xl bg-white p-4 w-full ">
           <div className="flex justify-between items-center">
-            <h1 className="font-semibold text-lg text-(--primary)">
-              Listing Company LeaderBoard
-            </h1>
+            <MainTitle title="Listing Company LeaderBoard" />
+
             <div>
               <CustomizableDropdown
                 height="h-[44px]"
@@ -101,38 +106,69 @@ const ListingCompanyLeaderBoard = () => {
           </div>
         </div>
 
-        <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-screen my-6">
+        <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-full my-6 overflow-auto ">
           <div className="font-Poppins flex justify-between items-center w-full pt-3 ">
-            <h2 className="text-lg text-(--primary) font-semibold">
-              Appointment Set
-            </h2>
-            <SearchInput
-              value={searchValue}
-              onChange={(e: any) => setSearchValue(e.target.value)}
-            />
+            <form className="font-Poppins flex justify-between items-center w-full  gap-2">
+              <SearchInput
+                debounceTimeout={500}
+                placeholder="Search Keyword"
+                onChange={(e) => setSearchTerm(e)}
+                className="w-[27%]"
+              />
+              <div className="flex items-center gap-1.5">
+                <SelectField
+                  name="propertyCounty"
+                  control={control}
+                  options={countyOptions}
+                  placeholder="County"
+                  error={errors.propertyCounty?.message}
+                  required={false}
+                  className="w-[113px]"
+                  height="44px"
+                />
+                <SelectField
+                  name="propertyCounty"
+                  control={control}
+                  options={countyOptions}
+                  placeholder="County"
+                  error={errors.propertyCounty?.message}
+                  required={false}
+                  className="w-[113px]"
+                  height="44px"
+                />
+                <SelectField
+                  name="propertyCounty"
+                  control={control}
+                  options={countyOptions}
+                  placeholder="County"
+                  error={errors.propertyCounty?.message}
+                  required={false}
+                  className="w-[113px]"
+                  height="44px"
+                />
+              </div>
+            </form>
           </div>
 
-          <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-3">
+          <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-7">
             <thead className="text-sm font-normal text-start ">
               <tr className="border-b-[1px] border-[#F4EFE9] ">
+                <th className="text-start font-medium ">Listing Office</th>
+                <th className="text-start font-medium ">Orders</th>
                 <th className="text-start font-medium ">
                   <div className="flex  gap-2 items-center">
-                    Rank <img src={arrowUpDown} alt="" />
+                    Orders <span>%</span>
+                  </div>
+                </th>
+                <th className="text-start font-medium ">Fees</th>
+                <th className="text-start font-medium ">
+                  <div className="flex  gap-2 items-center">
+                    Fees <span>%</span>
                   </div>
                 </th>
                 <th className="text-start font-medium ">
                   <div className="flex  gap-2 items-center">
-                    Name <img src={arrowUpDown} alt="" />
-                  </div>
-                </th>
-                <th className="text-start font-medium ">
-                  <div className="flex  gap-2 items-center">
-                    Total Count <img src={arrowUpDown} alt="" />
-                  </div>
-                </th>
-                <th className="text-start font-medium ">
-                  <div className="flex  gap-2 items-center">
-                    % of total <img src={arrowUpDown} alt="" />
+                    Avg <span>$</span> Order
                   </div>
                 </th>
               </tr>
@@ -143,7 +179,9 @@ const ListingCompanyLeaderBoard = () => {
                 (e: any, i: number) => (
                   <tr
                     key={i}
-                    className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9]"
+                    className="font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
+                            bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out
+                            "
                   >
                     <td
                       className="cursor-pointer px-3 "
@@ -161,6 +199,8 @@ const ListingCompanyLeaderBoard = () => {
                     <td>{e.phone}</td>
                     <td>{e.added}</td>
                     <td>{e.lastAccess}</td>
+                    <td>{e.lastAccess}</td>
+                    <td>{e.lastAccess}</td>
                   </tr>
                 ),
                 []
@@ -168,6 +208,10 @@ const ListingCompanyLeaderBoard = () => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="w-full flex justify-end gap-5 items-center">
+        <Pagination onPageChange={() => ""} pageCount={5} />
       </div>
     </div>
   );

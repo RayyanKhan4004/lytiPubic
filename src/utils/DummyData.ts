@@ -317,3 +317,11 @@ export const initialBuyers = [
     role: "Buyer",
   },
 ];
+
+export const users = [
+  { rank: 1, name: "Wade Warren", count: 34 },
+  { rank: 2, name: "John Doe", count: 28 },
+  { rank: 3, name: "Jane Smith", count: 25 },
+  { rank: 4, name: "Robert Brown", count: 22 },
+  { rank: 5, name: "Emily Davis", count: 21 },
+];
