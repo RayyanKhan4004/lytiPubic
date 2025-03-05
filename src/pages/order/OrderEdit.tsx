@@ -14,11 +14,7 @@ import InputField from "../../components/inputs/InputFields";
 import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 
-import {
-  useCreateOrderMutation,
-  useGetListingOfficesQuery,
-  useUpdateOrderMutation,
-} from "../../lib/rtkQuery/orderApi";
+import { useUpdateOrderMutation } from "../../lib/rtkQuery/orderApi";
 
 import {
   accountOptions,
@@ -27,37 +23,23 @@ import {
   feeCategoryOptions,
   fileStatusOption,
   fileTypeOptions,
-  roleOption,
   transactionOption,
+  useOptions,
 } from "../../utils/options";
 import { OrderDataType } from "../../utils/types";
 import MainTitle from "../../components/ui/typography/MainTitle";
 import CardLayout from "../../components/layouts/CardLayout";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import { useEffect } from "react";
-import { useFetchUsersWithoutLimitQuery } from "../../lib/rtkQuery/userApi";
 
 const OrderEdit = () => {
   const [updateOrder, { isLoading }] = useUpdateOrderMutation();
-  const { data: agentData } = useFetchUsersWithoutLimitQuery();
-
-  const { data: listingOfficeData } = useGetListingOfficesQuery();
-
-  const listingOfficeOption =
-    listingOfficeData?.listingOffices?.map((user: { name: string }) => ({
-      value: user.name,
-      label: user.name,
-    })) || [];
-
-  const agentsOption =
-    agentData?.users?.map((user: { firstname: string }) => ({
-      value: user.firstname,
-      label: user.firstname,
-    })) || [];
   const data = useLocation();
-
   const { orderData } = data.state || {};
   const navigate = useNavigate();
+  const { agentsOption, listingOfficeOption, sellingOfficesOption } =
+    useOptions();
+
   const {
     handleSubmit,
     formState: { errors },
@@ -91,7 +73,6 @@ const OrderEdit = () => {
         id: orderData?.id,
         data: formattedData,
       }).unwrap();
-      // console.log(res, "==res==");
       navigate("/orders/orders");
       toast.success("Order updated Successfully");
       // reset();
@@ -384,13 +365,14 @@ const OrderEdit = () => {
               placeholder="Enter listing agent phone"
               error={errors.listingAgentPhone?.message}
             />
-            <InputField
+            <SelectField
               label="Selling Agent Company"
               name="sellingAgentCompany"
               control={control}
-              type="text"
-              placeholder="Enter selling agent company"
+              options={sellingOfficesOption}
+              placeholder="Select selling office"
               error={errors.sellingAgentCompany?.message}
+              required={false}
             />
             <InputField
               label="Selling Agent Contact Name"

@@ -111,6 +111,12 @@ export const orderApi = createApi({
         method: "GET",
       }),
     }),
+    getSellingOffice: builder.query<any, void>({
+      query: () => ({
+        url: "orders/selling-offices",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -121,4 +127,5 @@ export const {
   useDeleteOrderMutation,
   useFetchAeLeadStagesBoardQuery,
   useGetListingOfficesQuery,
+  useGetSellingOfficeQuery,
 } = orderApi;

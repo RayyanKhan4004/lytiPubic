@@ -1,9 +1,10 @@
-interface optionType {
-  value: string;
-  label: string;
-}
+import {
+  useGetListingOfficesQuery,
+  useGetSellingOfficeQuery,
+} from "../lib/rtkQuery/orderApi";
+import { useFetchUsersWithoutLimitQuery } from "../lib/rtkQuery/userApi";
 
-export const fileStatusOption: optionType[] = [
+export const fileStatusOption = [
   { value: "Open", label: "Open" },
   { value: "Closed", label: "Closed" },
   { value: "On Hold", label: "On Hold" },
@@ -102,3 +103,29 @@ export const feeCategoryOptions = [
   { value: "Title Charges", label: "Title Charges" },
   { value: "Escrow Charges", label: "Escrow Charges" },
 ];
+
+export const useOptions = () => {
+  const { data } = useFetchUsersWithoutLimitQuery();
+  const { data: listingOfficeData } = useGetListingOfficesQuery();
+  const { data: SellingOfficeData } = useGetSellingOfficeQuery();
+
+  const agentsOption =
+    data?.users?.map((user: { firstname: string }) => ({
+      value: user.firstname,
+      label: user.firstname,
+    })) || [];
+
+  const listingOfficeOption =
+    listingOfficeData?.listingOffices?.map((user: { name: string }) => ({
+      value: user.name,
+      label: user.name,
+    })) || [];
+
+  const sellingOfficesOption =
+    SellingOfficeData?.SellingOffices?.map((user: { name: string }) => ({
+      value: user.name,
+      label: user.name,
+    })) || [];
+
+  return { agentsOption, listingOfficeOption, sellingOfficesOption };
+};

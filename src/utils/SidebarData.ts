@@ -80,6 +80,19 @@ export const sidebarData = () => {
       icon1: icon5,
       icon2: icon6,
       path: "/leader-board",
+      subMenu: [
+        { id: 301, title: "Leaderboards", path: "/leader-board" },
+        {
+          id: 302,
+          title: "Listing Company",
+          path: "/leader-board/listing-company",
+        },
+        {
+          id: 303,
+          title: "Selling Company",
+          path: "/leader-board/selling-company",
+        },
+      ],
     },
     {
       id: 4,
