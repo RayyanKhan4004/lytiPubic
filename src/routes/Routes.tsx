@@ -1,7 +1,9 @@
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import NotFoundPage from "../pages/NotFoundPage";
 import Login from "../pages/onboarding/Login";
-import LeaderBoards from "../pages/LeaderBoards";
+
+//leaderboard
+import LeaderBoards from "../pages/leaderboards/LeaderBoards";
 
 // Dashboards
 import SnapShot from "../pages/dashboard/SnapShot";
@@ -44,6 +46,8 @@ import CreateChallenge from "../pages/challenges/CreateChallenge";
 import ProtectedLayout from "./ProtectedLayout";
 import PublicRoute from "./PublicRoute";
 import StatusesBoard from "../pages/order/StatusesBoard";
+import ListingCompanyLeaderBoard from "../pages/leaderboards/ListingCompanyLeaderboard";
+import SellingCompanyLeaderBoard from "../pages/leaderboards/SellingCompanyLeaderBoard";
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +60,14 @@ export const router = createBrowserRouter([
       { path: "dashboard/personal-dashboard", element: <PersonalDashboard /> },
       { path: "dashboard/team-dashboard", element: <TeamDashboard /> },
       { path: "leader-board", element: <LeaderBoards /> },
+      {
+        path: "/leader-board/listing-company",
+        element: <ListingCompanyLeaderBoard />,
+      },
+      {
+        path: "/leader-board/selling-company",
+        element: <SellingCompanyLeaderBoard />,
+      },
       { path: "admin/dashboard", element: <AdminDashboard /> },
       { path: "admin/users-table", element: <UsersTable /> },
       { path: "admin/add-user", element: <AddUser /> },
