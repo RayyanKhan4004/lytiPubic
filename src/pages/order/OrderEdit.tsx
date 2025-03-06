@@ -80,6 +80,7 @@ const OrderEdit = () => {
       toast.error(err?.data?.message || "Order creation failed");
     }
   };
+  console.log(orderData, "==data===");
 
   useEffect(() => {
     if (orderData) {
@@ -109,7 +110,10 @@ const OrderEdit = () => {
         orderData.listingAgentContactEmail || ""
       );
       setValue("listingAgentPhone", orderData.listingAgentPhone || "");
+      setValue("listingOfficeId", orderData.listingOffice?.id || "");
+
       setValue("sellingAgentCompany", orderData.sellingAgentCompany || "");
+      setValue("sellingOfficeId", orderData.sellingOffice?.id || "");
       setValue(
         "sellingAgentContactName",
         orderData.sellingAgentContactName || ""
@@ -332,9 +336,18 @@ const OrderEdit = () => {
               error={errors.escrowOfficer?.message}
             />
 
-            <SelectField
+            {/* <SelectField
               label="Listing Agent Company"
               name="listingAgentCompany"
+              control={control}
+              options={listingOfficeOption}
+              placeholder="Select..."
+              error={errors.listingAgentCompany?.message}
+              required={false}
+            /> */}
+            <SelectField
+              label="Listing Agent Company"
+              name="listingOfficeId"
               control={control}
               options={listingOfficeOption}
               placeholder="Select..."
@@ -365,9 +378,18 @@ const OrderEdit = () => {
               placeholder="Enter listing agent phone"
               error={errors.listingAgentPhone?.message}
             />
-            <SelectField
+            {/* <SelectField
               label="Selling Agent Company"
               name="sellingAgentCompany"
+              control={control}
+              options={sellingOfficesOption}
+              placeholder="Select selling office"
+              error={errors.sellingAgentCompany?.message}
+              required={false}
+            /> */}
+            <SelectField
+              label="Selling Agent Company"
+              name="sellingOfficeId"
               control={control}
               options={sellingOfficesOption}
               placeholder="Select selling office"
