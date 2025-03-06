@@ -73,36 +73,26 @@ export const orderApi = createApi({
       any,
       {
         limit?: number;
-        pipelinePage?: number;
         appSetPage?: number;
         appMetPage?: number;
-        signedPage?: number;
-        firstTimeShowingPage?: number;
-        firstTimeOfferPage?: number;
-        liveListingPage?: number;
-        listingExpiredPage?: number;
-        buyerAgreementExpiredPage?: number;
-        pendingPage?: number;
+        prelimCommitmentPage?: number;
+        verbalCommitmentPage?: number;
         closedPage?: number;
         lostPage?: number;
+        cancelledPage?: number;
       }
     >({
       query: ({
         limit,
-        pipelinePage,
         appSetPage,
         appMetPage,
-        signedPage,
-        firstTimeShowingPage,
-        firstTimeOfferPage,
-        liveListingPage,
-        listingExpiredPage,
-        buyerAgreementExpiredPage,
-        pendingPage,
+        prelimCommitmentPage,
+        verbalCommitmentPage,
         closedPage,
         lostPage,
+        cancelledPage,
       }) =>
-        `orders/ae-lead-stages-board/?pipelineLimit=${limit}&pipelinePage=${pipelinePage}&appSetLimit=${limit}&appSetPage=${appSetPage}&appMetLimit=${limit}&appMetPage=${appMetPage}&signedLimit=${limit}&signedPage=${signedPage}&firstTimeShowingLimit=${limit}&firstTimeShowingPage=${firstTimeShowingPage}&firstTimeOfferLimit=${limit}&firstTimeOfferPage=${firstTimeOfferPage}&liveListingLimit=${limit}&liveListingPage=${liveListingPage}&listingExpiredLimit=${limit}&listingExpiredPage=${listingExpiredPage}&buyerAgreementExpiredLimit=${limit}&buyerAgreementExpiredPage=${buyerAgreementExpiredPage}&pendingLimit=${limit}&pendingPage=${pendingPage}&closedLimit=${limit}&closedPage=${closedPage}&lostLimit=${limit}&lostPage=${lostPage}`,
+        `orders/ae-lead-stages-board/?appSetLimit=${limit}&appSetPage=${appSetPage}&appMetLimit=${limit}&appMetPage=${appMetPage}&prelimCommitmentLimit=${limit}&prelimCommitmentPage=${prelimCommitmentPage}&verbalCommitmentLimit=${limit}&verbalCommitmentPage=${verbalCommitmentPage}&closedLimit=${limit}&closedPage=${closedPage}&lostLimit=${limit}&lostPage=${lostPage}&cancelledLimit=${limit}&cancelledPage=${cancelledPage}`,
     }),
 
     getListingOffices: builder.query<any, void>({

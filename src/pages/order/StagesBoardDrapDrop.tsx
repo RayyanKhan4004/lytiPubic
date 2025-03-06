@@ -422,68 +422,48 @@ import {
 import toast from "react-hot-toast";
 
 type StagesBoardColumnKeys =
-  | "Pipeline"
   | "App Set"
   | "App Met"
-  | "Signed"
-  | "1st Time Showing"
-  | "1st Time Offer"
-  | "Live Listing"
-  | "Listing Expired"
-  | "Buyer Agreement Expired"
-  | "Pending"
+  | "Prelim Commitment"
+  | "Verbal Commitment"
   | "Closed"
-  | "Lost";
+  | "Lost"
+  | "Cancelled";
 
 const StagesBoardDragDrop: React.FC = () => {
   const [activeItem, setActiveItem] = useState<any | null>(null);
   const [pageNumbers, setPageNumbers] = useState<
     Record<StagesBoardColumnKeys, number>
   >({
-    Pipeline: 1,
     "App Set": 1,
     "App Met": 1,
-    Signed: 1,
-    "1st Time Showing": 1,
-    "1st Time Offer": 1,
-    "Live Listing": 1,
-    "Listing Expired": 1,
-    "Buyer Agreement Expired": 1,
-    Pending: 1,
+    "Prelim Commitment": 1,
+    "Verbal Commitment": 1,
     Closed: 1,
     Lost: 1,
+    Cancelled: 1,
   });
 
   const { data, refetch } = useFetchAeLeadStagesBoardQuery({
     limit: 10,
-    pipelinePage: pageNumbers.Pipeline,
     appSetPage: pageNumbers["App Set"],
     appMetPage: pageNumbers["App Met"],
-    signedPage: pageNumbers.Signed,
-    firstTimeShowingPage: pageNumbers["1st Time Showing"],
-    firstTimeOfferPage: pageNumbers["1st Time Offer"],
-    liveListingPage: pageNumbers["Live Listing"],
-    listingExpiredPage: pageNumbers["Listing Expired"],
-    buyerAgreementExpiredPage: pageNumbers["Buyer Agreement Expired"],
-    pendingPage: pageNumbers.Pending,
+    prelimCommitmentPage: pageNumbers["Prelim Commitment"],
+    verbalCommitmentPage: pageNumbers["Verbal Commitment"],
     closedPage: pageNumbers.Closed,
     lostPage: pageNumbers.Lost,
+    cancelledPage: pageNumbers.Cancelled,
   });
   const [updateOrder, { isLoading }] = useUpdateOrderMutation();
 
   const [columns, setColumns] = useState<Record<StagesBoardColumnKeys, any[]>>({
-    Pipeline: [],
     "App Set": [],
     "App Met": [],
-    Signed: [],
-    "1st Time Showing": [],
-    "1st Time Offer": [],
-    "Live Listing": [],
-    "Listing Expired": [],
-    "Buyer Agreement Expired": [],
-    Pending: [],
+    "Prelim Commitment": [],
+    "Verbal Commitment": [],
     Closed: [],
     Lost: [],
+    Cancelled: [],
   });
 
   const handleDragStart = React.useCallback(

@@ -57,7 +57,7 @@ const DroppableColumn: React.FC<DroppableColumnProps> = ({
 
       <div
         ref={setNodeRef}
-        className="p-2 space-y-2 max-h-[70vh] overflow-y-auto"
+        className="p-2 space-y-2 max-h-[70vh] overflow-y-auto  min-h-[830px]"
       >
         {items.map((buyer, index) => {
           const isLastItem = index === items.length - 1;
