@@ -70,7 +70,7 @@ const CreateNewOrder = () => {
     try {
       const res = await createOrder(formattedData).unwrap();
       console.log(res, "==res==");
-      navigate("/orders/orders");
+      // navigate("/orders/orders");
       toast.success("Order Created Successfully");
       reset();
     } catch (err: any) {
@@ -289,9 +289,18 @@ const CreateNewOrder = () => {
               error={errors.escrowOfficer?.message}
             />
 
-            <SelectField
+            {/* <SelectField
               label="Listing Agent Company"
               name="listingAgentCompany"
+              control={control}
+              options={listingOfficeOption}
+              placeholder="Select..."
+              error={errors.listingAgentCompany?.message}
+              required={false}
+            /> */}
+            <SelectField
+              label="Listing Agent Company"
+              name="listingOfficeId"
               control={control}
               options={listingOfficeOption}
               placeholder="Select..."
@@ -323,9 +332,18 @@ const CreateNewOrder = () => {
               error={errors.listingAgentPhone?.message}
             />
 
-            <SelectField
+            {/* <SelectField
               label="Selling Agent Company"
               name="sellingAgentCompany"
+              control={control}
+              options={sellingOfficesOption}
+              placeholder="Select selling office"
+              error={errors.sellingAgentCompany?.message}
+              required={false}
+            /> */}
+            <SelectField
+              label="Selling Agent Company"
+              name="sellingOfficeId"
               control={control}
               options={sellingOfficesOption}
               placeholder="Select selling office"

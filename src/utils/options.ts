@@ -116,16 +116,20 @@ export const useOptions = () => {
     })) || [];
 
   const listingOfficeOption =
-    listingOfficeData?.listingOffices?.map((user: { name: string }) => ({
-      value: user.name,
-      label: user.name,
-    })) || [];
+    listingOfficeData?.listingOffices?.map(
+      (user: { name: string; id: number }) => ({
+        value: user.id,
+        label: user.name,
+      })
+    ) || [];
 
   const sellingOfficesOption =
-    SellingOfficeData?.SellingOffices?.map((user: { name: string }) => ({
-      value: user.name,
-      label: user.name,
-    })) || [];
+    SellingOfficeData?.SellingOffices?.map(
+      (user: { name: string; id: number }) => ({
+        value: user.id,
+        label: user.name,
+      })
+    ) || [];
 
   return { agentsOption, listingOfficeOption, sellingOfficesOption };
 };
