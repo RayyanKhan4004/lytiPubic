@@ -5,19 +5,11 @@ import {
   useForm,
 } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-
-import add from "../../assets/icons/Add.svg";
 
 import Breadcrumb from "../../components/common/BreadCrumb";
 import InputField from "../../components/inputs/InputFields";
 import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
-
-import {
-  useCreateOrderMutation,
-  useUpdateOrderMutation,
-} from "../../lib/rtkQuery/orderApi";
 
 import {
   accountOptions,
@@ -28,22 +20,16 @@ import {
   fileTypeOptions,
   roleOption,
   transactionOption,
+  useOptions,
 } from "../../utils/options";
 import { OrderDataType } from "../../utils/types";
 import MainTitle from "../../components/ui/typography/MainTitle";
 import CardLayout from "../../components/layouts/CardLayout";
-import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import { useEffect } from "react";
-import { useFetchUsersWithoutLimitQuery } from "../../lib/rtkQuery/userApi";
 
 const OrderDetail = () => {
-  const [updateOrder, { isLoading }] = useUpdateOrderMutation();
-  const { data: agentData } = useFetchUsersWithoutLimitQuery();
-  const agentsOption =
-    agentData?.users?.map((user: { firstname: string }) => ({
-      value: user.firstname,
-      label: user.firstname,
-    })) || [];
+  const { agentsOption, listingOfficeOption, sellingOfficesOption } =
+    useOptions();
   const data = useLocation();
 
   const { orderData } = data.state || {};
@@ -324,13 +310,23 @@ const OrderDetail = () => {
               placeholder="Enter escrow officer"
               error={errors.escrowOfficer?.message}
             />
-            <InputField
+            {/* <SelectField
               label="Listing Agent Company"
               name="listingAgentCompany"
               control={control}
-              type="text"
-              placeholder="Enter listing agent company"
+              options={listingOfficeOption}
+              placeholder="Select..."
               error={errors.listingAgentCompany?.message}
+              required={false}
+            /> */}
+            <SelectField
+              label="Listing Agent Company"
+              name="listingOfficeId"
+              control={control}
+              options={listingOfficeOption}
+              placeholder="Select..."
+              error={errors.listingAgentCompany?.message}
+              required={false}
             />
             <InputField
               label="Listing Agent Contact Name"
@@ -356,13 +352,23 @@ const OrderDetail = () => {
               placeholder="Enter listing agent phone"
               error={errors.listingAgentPhone?.message}
             />
-            <InputField
+            {/* <SelectField
               label="Selling Agent Company"
               name="sellingAgentCompany"
               control={control}
-              type="text"
-              placeholder="Enter selling agent company"
+              options={sellingOfficesOption}
+              placeholder="Select selling office"
               error={errors.sellingAgentCompany?.message}
+              required={false}
+            /> */}
+            <SelectField
+              label="Selling Agent Company"
+              name="sellingOfficeId"
+              control={control}
+              options={sellingOfficesOption}
+              placeholder="Select selling office"
+              error={errors.sellingAgentCompany?.message}
+              required={false}
             />
             <InputField
               label="Selling Agent Contact Name"

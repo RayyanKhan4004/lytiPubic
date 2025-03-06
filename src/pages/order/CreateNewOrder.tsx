@@ -70,7 +70,7 @@ const CreateNewOrder = () => {
     try {
       const res = await createOrder(formattedData).unwrap();
       console.log(res, "==res==");
-      // navigate("/orders/orders");
+      navigate("/orders/orders");
       toast.success("Order Created Successfully");
       reset();
     } catch (err: any) {
