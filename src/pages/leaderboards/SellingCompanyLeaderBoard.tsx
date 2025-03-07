@@ -304,6 +304,7 @@ import Pagination from "../../components/common/Pagination";
 import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
 import NoDataRow from "../../components/ui/NoDataRow";
 import add from "../../assets/icons/Add.svg";
+import minus from "../../assets/icons/Minus.svg";
 
 import {
   useGetListingOfficesWithAgentQuery,
@@ -529,9 +530,17 @@ const SellingCompanyLeaderBoard = () => {
                               {/* {expandedRows[e.id] ? "-" : "+"} */}
                               <div
                                 onClick={() => toggleRow(e.id)}
-                                className="bg-(--primary) flex items-center cursor-pointer  text-sm h-[24px] w-[24px] justify-center rounded-md text-white"
+                                className={` ${
+                                  expandedRows[e.id]
+                                    ? "bg-white border border-(--secondary)"
+                                    : "bg-(--primary)"
+                                } flex items-center cursor-pointer  text-sm h-[24px] w-[24px] justify-center rounded-md text-white`}
                               >
-                                <img src={add} alt="" className="w-4 h-4" />
+                                {expandedRows[e.id] ? (
+                                  <img src={minus} alt="" />
+                                ) : (
+                                  <img src={add} alt="" className="w-4 h-4" />
+                                )}
                               </div>
                             </td>
                             <td
