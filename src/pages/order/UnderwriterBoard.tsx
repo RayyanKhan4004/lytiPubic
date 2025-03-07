@@ -13,6 +13,7 @@ import {
   useGetUnderwritersQuery,
 } from "../../lib/rtkQuery/orderApi";
 import Pagination from "../../components/common/Pagination";
+import StatsCard from "../../components/orders/StatsCard";
 
 const UnderwriterBoard = () => {
   const [page, setPage] = useState(1);
@@ -92,29 +93,14 @@ const UnderwriterBoard = () => {
       <Breadcrumb items={["Orders", "Underwiter Board"]} />
 
       <div className="flex w-full">
-        <div className="shadow-(--cardShadow) rounded-lg flex flex-col gap-4 min-w-[24%] w-auto  px-4 py-5 my-5">
-          <h2 className="text-lg text-(--secondary) font-semibold">Title</h2>
-          <div className="flex gap-3 ">
-            <div className="text-(--secondary) font-semibold text-2xl flex flex-col gap-2.5">
-              20.7k{" "}
-              <span className="font-normal text-black text-xs">
-                Title Units
-              </span>
-            </div>
-            <div className="text-(--secondary) font-semibold text-2xl flex flex-col gap-2.5">
-              20.7k{" "}
-              <span className="font-normal text-black text-xs">
-                Title Revenue
-              </span>
-            </div>
-            <div className="text-(--secondary) font-semibold text-2xl flex flex-col gap-2.5">
-              20.7k{" "}
-              <span className="font-normal text-black text-xs">
-                Avg Title Revenue
-              </span>
-            </div>
-          </div>
-        </div>
+        <StatsCard
+          heading="Orders"
+          stats={[
+            { value: "20.7k", text: "Total Orders" },
+            { value: "3k", text: "Total Amount" },
+            { value: "57k", text: "Avg /Order" },
+          ]}
+        />
       </div>
 
       <div className="w-full flex justify-between flex-col">
