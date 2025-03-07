@@ -126,7 +126,7 @@ const SellingCompanyLeaderBoard = () => {
 
         <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-full my-6 overflow-auto ">
           <div className="font-Poppins flex justify-between items-center w-full pt-3 ">
-            <form className="font-Poppins flex justify-between items-center w-full  gap-2">
+            {/* <form className="font-Poppins flex justify-between items-center w-full  gap-2">
               <SearchInput
                 debounceTimeout={500}
                 placeholder="Search Keyword"
@@ -165,7 +165,8 @@ const SellingCompanyLeaderBoard = () => {
                   height="44px"
                 />
               </div>
-            </form>
+            </form> */}
+            <MainTitle title="Selling Offices" />
           </div>
 
           <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-7">
@@ -173,7 +174,7 @@ const SellingCompanyLeaderBoard = () => {
               <tr>
                 <th></th>
                 <th className="text-start font-medium  ">Id</th>
-                <th className="text-start font-medium  ">Listing Office</th>
+                <th className="text-start font-medium  ">Selling Office</th>
                 <th className="text-start font-medium ">Orders</th>
                 <th className="text-start font-medium ">
                   <div className="flex  gap-2 items-center">
