@@ -45,8 +45,10 @@ export const orderApi = createApi({
         propertyCounty,
         keyword,
         transactionType,
+        titleOffice,
+        underwriter,
       }) =>
-        `orders/?page=${page}&limit=${10}&fileStatus=${status}&fileType=${type}&propertyCounty=${propertyCounty}&keyword=${keyword}&transactionType=${transactionType}`,
+        `orders/?page=${page}&limit=${10}&fileStatus=${status}&fileType=${type}&propertyCounty=${propertyCounty}&keyword=${keyword}&transactionType=${transactionType}&titleOffice=${titleOffice}&underwriter=${underwriter}`,
     }),
 
     createOrder: builder.mutation<any, OrderDataType>({
@@ -116,10 +118,26 @@ export const orderApi = createApi({
         method: "GET",
       }),
     }),
-    getUnderwriters: builder.query<any, void>({
-      query: () => ({
+
+    getUnderwriters: builder.query<any, { orderId: string }>({
+      query: ({ orderId }) => ({
         url: "orders/underwriters",
         method: "GET",
+        params: { orderId },
+      }),
+    }),
+    getTitleOffices: builder.query<any, { orderId: string }>({
+      query: ({ orderId }) => ({
+        url: "orders/titleOffices",
+        method: "GET",
+        params: { orderId },
+      }),
+    }),
+    getPropertyCounties: builder.query<any, { orderId: string }>({
+      query: ({ orderId }) => ({
+        url: "orders/property-counties",
+        method: "GET",
+        params: { orderId },
       }),
     }),
   }),
@@ -135,4 +153,6 @@ export const {
   useGetSellingOfficeQuery,
   useGetListingOfficesWithAgentQuery,
   useGetUnderwritersQuery,
+  useGetTitleOfficesQuery,
+  useGetPropertyCountiesQuery,
 } = orderApi;

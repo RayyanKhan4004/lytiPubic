@@ -8,13 +8,48 @@ import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
 import NoDataRow from "../../components/ui/NoDataRow";
 import {
   useGetOrdersQuery,
+  useGetPropertyCountiesQuery,
+  useGetTitleOfficesQuery,
   useGetUnderwritersQuery,
 } from "../../lib/rtkQuery/orderApi";
 import Pagination from "../../components/common/Pagination";
 
 const UnderwriterBoard = () => {
   const [page, setPage] = useState(1);
-  const { data: underwriterData } = useGetUnderwritersQuery();
+  const [selectedOrderId, setSelectedOrderId] = useState<string>("");
+  const [selectedTitleOffice, setSelectedTitleOffice] = useState<string>("");
+  const [selectedUnderwriterId, setSelectedUnderwriterId] = useState<
+    number | null
+  >(null);
+  const [selectedPropertyCounty, setSelectedPropertyCounty] =
+    useState<string>("");
+  const [selectedTitleOfficeId, setSelectedTitleOfficeId] = useState<
+    number | null
+  >(null);
+  const [selectedPropertyCountyId, setSelectedPropertyCountyId] = useState<
+    number | null
+  >(null);
+  const [selectedUnderwriter, setSelectedUnderwriter] = useState<string>("");
+
+  console.log(selectedTitleOfficeId, selectedPropertyCountyId);
+
+  const handleRowClick = (orderId: string) => {
+    if (selectedOrderId !== orderId) {
+      setSelectedOrderId(orderId);
+    }
+  };
+
+  const { data: underwriterData, isLoading: underwriterDataLoading } =
+    useGetUnderwritersQuery({ orderId: selectedOrderId });
+
+  const { data: titleOfficeData, isLoading: titleOfficeDataLoading } =
+    useGetTitleOfficesQuery({ orderId: selectedOrderId });
+
+  const { data: propertyCountyData, isLoading: propertyCountyDataLoading } =
+    useGetPropertyCountiesQuery({
+      orderId: selectedOrderId,
+    });
+
   const {
     data: orderData,
     isLoading,
@@ -24,41 +59,27 @@ const UnderwriterBoard = () => {
     limit: 10,
     status: "",
     type: "",
-    propertyCounty: "",
     transactionType: "",
     keyword: "",
+    propertyCounty: selectedPropertyCounty,
+    titleOffice: selectedTitleOffice,
+    underwriter: selectedUnderwriter,
   });
 
-  const data: any[] = [
-    {
-      name: "WFG Title Insurance Co...",
-      orders: 400,
-      orderPercentage: "35.16%",
-      fees: 400,
-      feePercentage: "66%",
-    },
-    {
-      name: "Westcor Land Title In ...",
-      orders: 35,
-      orderPercentage: "68.20%",
-      fees: 35,
-      feePercentage: "18.9%",
-    },
-    {
-      name: "Work Share",
-      orders: 280,
-      orderPercentage: "75%",
-      fees: 280,
-      feePercentage: "22.07%",
-    },
-    {
-      name: "PCT-Westcor",
-      orders: 200,
-      orderPercentage: "23.05%",
-      fees: 200,
-      feePercentage: "50%",
-    },
-  ];
+  const handleTitleOfficeClick = (i: number, titleOffice: string) => {
+    setSelectedTitleOfficeId(i);
+    setSelectedTitleOffice(titleOffice);
+  };
+
+  const handlePropertyCountyClick = (i: number, propertyCounty: string) => {
+    setSelectedPropertyCountyId(i);
+    setSelectedPropertyCounty(propertyCounty);
+  };
+
+  const handleUnderwriterClick = (index: number, underwriter: string) => {
+    setSelectedUnderwriterId(index);
+    setSelectedUnderwriter(underwriter);
+  };
 
   const handlePageChange = ({ selected }: { selected: number }) => {
     const newPage = selected + 1;
@@ -105,15 +126,15 @@ const UnderwriterBoard = () => {
                 <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] bg-white sticky top-0 z-10">
                   <tr>
                     <th className="text-start font-medium">Underwriter</th>
-                    <th className="text-start font-medium">Orders</th>
-                    <th className="text-start font-medium">
-                      <div className="flex gap-2 items-center">
+                    <th className="text-start font-medium pr-2">Orders</th>
+                    <th className="text-start font-medium px-2">
+                      <div className="flex gap-0.5 items-center">
                         Orders <span>%</span>
                       </div>
                     </th>
                     <th className="text-start font-medium">Fees</th>
-                    <th className="text-start font-medium">
-                      <div className="flex gap-2 items-center">
+                    <th className="text-start font-medium  pr-2">
+                      <div className="flex gap-0.5 items-center">
                         Fees <span>%</span>
                       </div>
                     </th>
@@ -121,7 +142,7 @@ const UnderwriterBoard = () => {
                 </thead>
 
                 <tbody>
-                  {isLoading ? (
+                  {underwriterDataLoading ? (
                     <TableSkeleton columns={8} />
                   ) : (
                     <>
@@ -132,12 +153,22 @@ const UnderwriterBoard = () => {
                           {underwriterData?.data?.underwriters?.map(
                             (e: any, i: number) => (
                               <tr
-                                key={e.id}
-                                className="font-Jakarta text-sm font-normal text-[#15120F] h-[55px] border-b-[1px] border-[#F4EFE9] cursor-pointer bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out"
+                                key={i}
+                                onClick={() =>
+                                  handleUnderwriterClick(i, e.underwriter)
+                                }
+                                className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
+            transition-colors duration-500 ease-in-out ${
+              selectedUnderwriterId === i
+                ? "bg-gray-300"
+                : "bg-white hover:bg-gray-100"
+            }`}
                               >
                                 <td>{e.underwriter}</td>
                                 <td>{e.orderCount}</td>
-                                <td>{Number(e.orderPercentage).toFixed(2)}</td>
+                                <td className="px-2">
+                                  {Number(e.orderPercentage).toFixed(2)}
+                                </td>
                                 <td>{e.orderFeeTotal}</td>
                                 <td>{Number(e.feePercentage).toFixed(2)}</td>
                                 <td>{e.lastAccess}</td>
@@ -149,95 +180,201 @@ const UnderwriterBoard = () => {
                     </>
                   )}
                 </tbody>
+
+                <tfoot>
+                  <tr className="bg-[#F3F3F3]">
+                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
+                      Total
+                    </td>
+                    <td className="py-3  font-medium text-sm text-[#15120F]">
+                      {underwriterData?.data?.totalOrderCount || ""}
+                    </td>
+                    <td className="py-3 px-2 font-medium text-sm text-[#15120F]">
+                      {underwriterData?.data?.totalOrderPercentage || ""}
+                    </td>
+                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
+                      {underwriterData?.data?.totalFeeCount || ""}
+                    </td>
+                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
+                      {underwriterData?.data?.totalFeePercentage || ""}
+                    </td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
           </CardLayout>
 
-          <div className="font-sm shadow-(--cardShadow) p-3 rounded-xl w-[49%]">
-            <h1 className="text-lg font-semibold leading-[27px] px-2">
-              Office
-            </h1>
-            <table className="w-full">
-              <thead className=" font-medium ">
-                <th className="font-medium text-sm text-start p-2.5">Office</th>
-                <th className="font-medium text-sm text-start">Office</th>
-                <th className="font-medium text-sm text-start">Order</th>
-                <th className="font-medium text-sm text-start">Orders%</th>
-                <th className="font-medium text-sm text-start">Fees%</th>
-              </thead>
-              <tbody>
-                {data.map((item, index) => (
-                  <tr key={index} className=" border-t ">
-                    <td className="font-normal text-sm text-start p-3">
-                      {item.name}
-                    </td>
-                    <td>
-                      <ProgressBar maxValue={400} currentValue={item.orders} />
-                    </td>
-                    <td className="font-normal text-sm text-start">
-                      {item.orderPercentage}
-                    </td>
-                    <td>
-                      <ProgressBar maxValue={400} currentValue={item.fees} />
-                    </td>
-                    <td className="font-normal text-sm text-start">
-                      {item.feePercentage}
-                    </td>
+          <CardLayout className="w-[48%]">
+            <MainTitle title="Office" />
+            <div className="w-full overflow-y-auto max-h-[300px]">
+              <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F]">
+                <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] bg-white sticky top-0 z-10">
+                  <tr>
+                    <th className="text-start font-medium">Office</th>
+                    <th className="text-start font-medium pr-2">Orders</th>
+                    <th className="text-start font-medium px-2">
+                      <div className="flex gap-0.5 items-center">
+                        Orders <span>%</span>
+                      </div>
+                    </th>
+                    <th className="text-start font-medium">Fees</th>
+                    <th className="text-start font-medium  pr-2">
+                      <div className="flex gap-0.5 items-center">
+                        Fees <span>%</span>
+                      </div>
+                    </th>
                   </tr>
-                ))}
-                <tr className=" bg-gray-100 font-semibold text-sm">
-                  <td className="p-2.5">Total</td>
-                  <td className="p-2.5">900</td>
-                  <td className="p-2.5">100%</td>
-                  <td className="p-2.5">900</td>
-                  <td className="p-2.5">100%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                </thead>
 
-          <div className="font-sm shadow-(--cardShadow) p-3 rounded-xl w-[49%]">
-            <h1 className="text-lg font-semibold leading-[27px] px-2">
-              County
-            </h1>
-            <table className="w-full">
-              <thead className=" font-medium ">
-                <th className="font-medium text-sm text-start p-2.5">County</th>
-                <th className="font-medium text-sm text-start">Orders</th>
-                <th className="font-medium text-sm text-start">Orders%</th>
-                <th className="font-medium text-sm text-start">Fees</th>
-                <th className="font-medium text-sm text-start">Fees%</th>
-              </thead>
-              <tbody>
-                {data.map((item, index) => (
-                  <tr key={index} className=" border-t ">
-                    <td className="font-normal text-sm text-start p-3">
-                      {item.name}
+                <tbody>
+                  {titleOfficeDataLoading ? (
+                    <TableSkeleton columns={8} />
+                  ) : (
+                    <>
+                      {titleOfficeData?.data?.titleOffices?.length === 0 ? (
+                        <NoDataRow colSpan={8} />
+                      ) : (
+                        <>
+                          {titleOfficeData?.data?.titleOffices?.map(
+                            (e: any, i: number) => (
+                              <tr
+                                key={e.id}
+                                onClick={() =>
+                                  handleTitleOfficeClick(i, e.titleOffice)
+                                }
+                                className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
+            transition-colors duration-500 ease-in-out ${
+              selectedTitleOfficeId === i
+                ? "bg-gray-300"
+                : "bg-white hover:bg-gray-100"
+            }`}
+                              >
+                                <td>{e.titleOffice}</td>
+                                <td>{e.orderCount}</td>
+                                <td className="px-2">
+                                  {Number(e.orderPercentage).toFixed(2)}
+                                </td>
+                                <td>{e.orderFeeTotal}</td>
+                                <td>{Number(e.feePercentage).toFixed(2)}</td>
+                                <td>{e.lastAccess}</td>
+                              </tr>
+                            )
+                          )}
+                        </>
+                      )}
+                    </>
+                  )}
+                </tbody>
+
+                <tfoot>
+                  <tr className="bg-[#F3F3F3]">
+                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
+                      Total
                     </td>
-                    <td>
-                      <ProgressBar maxValue={400} currentValue={item.orders} />
+                    <td className="py-3  font-medium text-sm text-[#15120F]">
+                      {titleOfficeData?.data?.totalOrderCount || ""}
                     </td>
-                    <td className="font-normal text-sm text-start">
-                      {item.orderPercentage}
+                    <td className="py-3 px-2 font-medium text-sm text-[#15120F]">
+                      {titleOfficeData?.data?.totalOrderPercentage || ""}
                     </td>
-                    <td>
-                      <ProgressBar maxValue={400} currentValue={item.fees} />
+                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
+                      {titleOfficeData?.data?.totalFeeCount || ""}
                     </td>
-                    <td className="font-normal text-sm text-start">
-                      {item.feePercentage}
+                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
+                      {titleOfficeData?.data?.totalFeePercentage || ""}
                     </td>
                   </tr>
-                ))}
-                <tr className=" bg-gray-100 font-semibold text-sm">
-                  <td className="p-2.5">Total</td>
-                  <td className="p-2.5">900</td>
-                  <td className="p-2.5">100%</td>
-                  <td className="p-2.5">900</td>
-                  <td className="p-2.5">100%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                </tfoot>
+              </table>
+            </div>
+          </CardLayout>
+          <CardLayout className="w-[48%]">
+            <MainTitle title="County" />
+            <div className="w-full overflow-y-auto max-h-[300px]">
+              <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F]">
+                <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] bg-white sticky top-0 z-10">
+                  <tr>
+                    <th className="text-start font-medium">County</th>
+                    <th className="text-start font-medium pr-2">Orders</th>
+                    <th className="text-start font-medium px-2">
+                      <div className="flex gap-0.5 items-center">
+                        Orders <span>%</span>
+                      </div>
+                    </th>
+                    <th className="text-start font-medium">Fees</th>
+                    <th className="text-start font-medium  pr-2">
+                      <div className="flex gap-0.5 items-center">
+                        Fees <span>%</span>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {propertyCountyDataLoading ? (
+                    <TableSkeleton columns={8} />
+                  ) : (
+                    <>
+                      {propertyCountyData?.data?.propertyCounties?.length ===
+                      0 ? (
+                        <NoDataRow colSpan={8} />
+                      ) : (
+                        <>
+                          {propertyCountyData?.data?.propertyCounties?.map(
+                            (e: any, i: number) => (
+                              <tr
+                                key={e.id}
+                                onClick={() =>
+                                  handlePropertyCountyClick(i, e.propertyCounty)
+                                }
+                                className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
+            transition-colors duration-500 ease-in-out 
+            ${
+              selectedPropertyCountyId === i
+                ? "bg-gray-300"
+                : "bg-white hover:bg-gray-100"
+            }
+            `}
+                              >
+                                <td>{e.propertyCounty}</td>
+                                <td>{e.orderCount}</td>
+                                <td className="px-2">
+                                  {Number(e.orderPercentage).toFixed(2)}
+                                </td>
+                                <td>{e.orderFeeTotal}</td>
+                                <td>{Number(e.feePercentage).toFixed(2)}</td>
+                                <td>{e.lastAccess}</td>
+                              </tr>
+                            )
+                          )}
+                        </>
+                      )}
+                    </>
+                  )}
+                </tbody>
+
+                <tfoot>
+                  <tr className="bg-[#F3F3F3]">
+                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
+                      Total
+                    </td>
+                    <td className="py-3  font-medium text-sm text-[#15120F]">
+                      {titleOfficeData?.data?.totalOrderCount || ""}
+                    </td>
+                    <td className="py-3 px-2 font-medium text-sm text-[#15120F]">
+                      {titleOfficeData?.data?.totalOrderPercentage || ""}
+                    </td>
+                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
+                      {titleOfficeData?.data?.totalFeeCount || ""}
+                    </td>
+                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
+                      {titleOfficeData?.data?.totalFeePercentage || ""}
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </CardLayout>
         </div>
 
         <div className="font-sm shadow-(--cardShadow) p-3 rounded-xl w-full my-7">
@@ -248,13 +385,19 @@ const UnderwriterBoard = () => {
             <thead className="text-sm font-normal text-start  border-b-[1px] border-[#F4EFE9] ">
               <tr>
                 <th className="text-start font-medium  ">Id</th>
-                <th className="text-start font-medium  ">Closed Date</th>
-                <th className="text-start font-medium ">Status</th>
-                <th className="text-start font-medium ">Property Address</th>
-                <th className="text-start font-medium ">Transaction type</th>
-                <th className="text-start font-medium ">Order type</th>
-                <th className="text-start font-medium ">Fees</th>
-                <th className="text-start font-medium ">County</th>
+                <th className="text-start font-medium px-4 w-[120px]">
+                  Closed Date
+                </th>
+                <th className="text-start font-medium px-4">Status</th>
+                <th className="text-start font-medium px-4">
+                  Property Address
+                </th>
+                <th className="text-start font-medium px-4 w-[170px]">
+                  Transaction type
+                </th>
+                <th className="text-start font-medium px-4">Order type</th>
+                <th className="text-start font-medium px-4">Fees</th>
+                <th className="text-start font-medium px-4">County</th>
                 {/* <TableCell content={"Id"} maxWidth="40px" />
                 <TableCell content={"Closed Date"} maxWidth="80px" />
                 <TableCell content={"Status"} maxWidth="80px" />
@@ -278,8 +421,13 @@ const UnderwriterBoard = () => {
                         <>
                           <tr
                             key={e.id}
-                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[55px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
-                    bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out"
+                            onClick={() => handleRowClick(e.id)}
+                            className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
+            transition-colors duration-500 ease-in-out ${
+              selectedOrderId === e.id
+                ? "bg-gray-100"
+                : "bg-white hover:bg-gray-100"
+            }`}
                           >
                             <td
                               className="cursor-pointer"
@@ -293,13 +441,13 @@ const UnderwriterBoard = () => {
                             >
                               {e.id}
                             </td>
-                            <td>{e.closedDate}</td>
-                            <td>{e.fileStatus}</td>
-                            <td>{e.propertyAddress}</td>
-                            <td>{e.transactionType}</td>
-                            <td>{e.fileType}</td>
-                            <td>fees</td>
-                            <td>{e.propertyCounty}</td>
+                            <td className="px-4">{e.closedDate}</td>
+                            <td className="px-4">{e.fileStatus}</td>
+                            <td className="px-4">{e.propertyAddress}</td>
+                            <td className="px-4">{e.transactionType}</td>
+                            <td className="px-4">{e.fileType}</td>
+                            <td className="px-4">fees</td>
+                            <td className="px-4">{e.propertyCounty}</td>
                           </tr>
                         </>
                       ))}
