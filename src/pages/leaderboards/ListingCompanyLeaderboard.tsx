@@ -210,11 +210,6 @@ const ListingCompanyLeaderBoard = () => {
                     Fees <span>%</span>
                   </div>
                 </th>
-                <th className="text-start font-medium ">
-                  <div className="flex  gap-2 items-center">
-                    Avg <span>$</span> Order
-                  </div>
-                </th>
               </tr>
             </thead>
 
@@ -257,9 +252,12 @@ const ListingCompanyLeaderBoard = () => {
                             </td>
                             <td>{e.name}</td>
                             <td>{e.orderCount}</td>
-                            <td>{e.orderPercentage}</td>
+                            <td>{parseFloat(e.orderPercentage).toFixed(2)}</td>
+
                             <td>{e.orderFeeTotal}</td>
-                            <td>{e.feePercentage}</td>
+
+                            <td>{parseFloat(e.feePercentage).toFixed(2)}</td>
+
                             <td>{e.lastAccess}</td>
                           </tr>
 

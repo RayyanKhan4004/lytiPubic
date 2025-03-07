@@ -112,6 +112,15 @@ export const orderApi = createApi({
         method: "GET",
       }),
     }),
+    getSellingOfficesWithAgent: builder.query<
+      any,
+      { page?: number; limit?: number }
+    >({
+      query: ({ page, limit }) => ({
+        url: `selling-office/?page=${page}&limit=${limit}`,
+        method: "GET",
+      }),
+    }),
     getSellingOffice: builder.query<any, void>({
       query: () => ({
         url: "orders/selling-offices",
@@ -155,4 +164,5 @@ export const {
   useGetUnderwritersQuery,
   useGetTitleOfficesQuery,
   useGetPropertyCountiesQuery,
+  useGetSellingOfficesWithAgentQuery,
 } = orderApi;
