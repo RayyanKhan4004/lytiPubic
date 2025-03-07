@@ -116,6 +116,12 @@ export const orderApi = createApi({
         method: "GET",
       }),
     }),
+    getUnderwriters: builder.query<any, void>({
+      query: () => ({
+        url: "orders/underwriters",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -128,4 +134,5 @@ export const {
   useGetListingOfficesQuery,
   useGetSellingOfficeQuery,
   useGetListingOfficesWithAgentQuery,
+  useGetUnderwritersQuery,
 } = orderApi;
