@@ -101,6 +101,15 @@ export const orderApi = createApi({
         method: "GET",
       }),
     }),
+    getListingOfficesWithAgent: builder.query<
+      any,
+      { page?: number; limit?: number }
+    >({
+      query: ({ page, limit }) => ({
+        url: `listing-office/?page=${page}&limit=${limit}`,
+        method: "GET",
+      }),
+    }),
     getSellingOffice: builder.query<any, void>({
       query: () => ({
         url: "orders/selling-offices",
@@ -118,4 +127,5 @@ export const {
   useFetchAeLeadStagesBoardQuery,
   useGetListingOfficesQuery,
   useGetSellingOfficeQuery,
+  useGetListingOfficesWithAgentQuery,
 } = orderApi;

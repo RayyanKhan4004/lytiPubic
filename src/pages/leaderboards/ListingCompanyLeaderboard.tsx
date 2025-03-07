@@ -1,27 +1,39 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { PieChart, Pie, Cell } from "recharts";
+
 import Breadcrumb from "../../components/common/BreadCrumb";
 import CustomizableDropdown from "../../components/common/CustomizableDropdown";
 import LeaderboardsDashboardUserCard from "../../components/dashboard/teamDashboard/leaderboardsDashboard/LeaderboardsDashboardUserCard";
-import dummyImage from "../../assets/images/Dummy.jpg";
-import { PieChart, Pie, Cell } from "recharts";
-import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
-import { DummyData, users } from "../../utils/DummyData";
 import MainTitle from "../../components/ui/typography/MainTitle";
 import SelectField from "../../components/inputs/SelectField";
 import SearchInput from "../../components/inputs/SearchInput";
-import { countyOptions } from "../../utils/options";
-import { OrderDataType } from "../../utils/types";
-import { useForm } from "react-hook-form";
 import Pagination from "../../components/common/Pagination";
+import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
+import NoDataRow from "../../components/ui/NoDataRow";
 
-interface ChartData {
-  name: string;
-  value: number;
-  color: string;
-}
+import { useGetListingOfficesWithAgentQuery } from "../../lib/rtkQuery/orderApi";
+
+import { DummyData, ListingGraphData, users } from "../../utils/DummyData";
+import { countyOptions } from "../../utils/options";
+import { ChartData, OrderDataType } from "../../utils/types";
+
+import dummyImage from "../../assets/images/Dummy.jpg";
+import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
+
 const ListingCompanyLeaderBoard = () => {
   const [selectedFilter, setSelectedFilter] = useState("Devclan");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [page, setPage] = useState(1);
+  const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>(
+    {}
+  );
+
+  const { data: listingOfficeData, isLoading } =
+    useGetListingOfficesWithAgentQuery({
+      page,
+      limit: 10,
+    });
 
   const {
     formState: { errors },
@@ -30,14 +42,20 @@ const ListingCompanyLeaderBoard = () => {
     setValue,
     control,
   } = useForm<OrderDataType>();
-  const data: ChartData[] = [
-    { name: "Segment 1", value: 25, color: "#EC662A" },
-    { name: "Segment 2", value: 15, color: "#3B3B3B" },
-    { name: "Segment 3", value: 15, color: "#0EA5E9" },
-    { name: "Segment 4", value: 20, color: "#F4A51C" },
-    { name: "Segment 5", value: 25, color: "#8B6DF2" },
-  ];
-  const dummyData = DummyData();
+
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    const newPage = selected + 1;
+    if (newPage >= 1 && newPage <= listingOfficeData?.totalPages) {
+      setPage(newPage);
+    }
+  };
+
+  const toggleRow = (id: number) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   return (
     <div className="w-full px-4 my-8 font-Poppins min-h-full">
@@ -78,7 +96,7 @@ const ListingCompanyLeaderBoard = () => {
               <PieChart width={400} height={400}>
                 {" "}
                 <Pie
-                  data={data}
+                  data={ListingGraphData}
                   dataKey="value"
                   cx="50%"
                   cy="50%"
@@ -90,7 +108,7 @@ const ListingCompanyLeaderBoard = () => {
                   stroke="white"
                   cornerRadius={7}
                 >
-                  {data.map((entry, index) => (
+                  {ListingGraphData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
@@ -151,9 +169,11 @@ const ListingCompanyLeaderBoard = () => {
           </div>
 
           <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-7">
-            <thead className="text-sm font-normal text-start ">
-              <tr className="border-b-[1px] border-[#F4EFE9] ">
-                <th className="text-start font-medium ">Listing Office</th>
+            <thead className="text-sm font-normal text-start  border-b-[1px] border-[#F4EFE9] ">
+              <tr>
+                <th></th>
+                <th className="text-start font-medium  ">Id</th>
+                <th className="text-start font-medium  ">Listing Office</th>
                 <th className="text-start font-medium ">Orders</th>
                 <th className="text-start font-medium ">
                   <div className="flex  gap-2 items-center">
@@ -175,35 +195,84 @@ const ListingCompanyLeaderBoard = () => {
             </thead>
 
             <tbody>
-              {dummyData?.map(
-                (e: any, i: number) => (
-                  <tr
-                    key={i}
-                    className="font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
-                            bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out
-                            "
-                  >
-                    <td
-                      className="cursor-pointer px-3 "
-                      style={{
-                        maxWidth: "50px",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis",
-                      }}
-                      title={e.id}
-                    >
-                      {e.id}
-                    </td>
+              {isLoading ? (
+                <TableSkeleton columns={8} />
+              ) : (
+                <>
+                  {listingOfficeData?.data?.length === 0 ? (
+                    <NoDataRow colSpan={8} />
+                  ) : (
+                    <>
+                      {listingOfficeData?.data?.map((e: any, i: number) => (
+                        <>
+                          <tr
+                            key={e.id}
+                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[55px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
+                    bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out"
+                          >
+                            <td className="px-3">
+                              <button
+                                onClick={() => toggleRow(e.id)}
+                                className="w-5 h-5 flex items-center justify-center border rounded-full bg-green-500 text-white"
+                              >
+                                {expandedRows[e.id] ? "-" : "+"}
+                              </button>
+                            </td>
+                            <td
+                              className="cursor-pointer px-3 "
+                              style={{
+                                maxWidth: "50px",
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
+                              }}
+                              title={e.id}
+                            >
+                              {e.id}
+                            </td>
+                            <td>{e.name}</td>
+                            <td>{e.orderCount}</td>
+                            <td>{e.orderPercentage}</td>
+                            <td>{e.orderFeeTotal}</td>
+                            <td>{e.feePercentage}</td>
+                            <td>{e.lastAccess}</td>
+                          </tr>
 
-                    <td>{e.phone}</td>
-                    <td>{e.added}</td>
-                    <td>{e.lastAccess}</td>
-                    <td>{e.lastAccess}</td>
-                    <td>{e.lastAccess}</td>
-                  </tr>
-                ),
-                []
+                          {/* Render listing agents if expanded */}
+                          {expandedRows[e.id] &&
+                            e.listingAgents?.length > 0 && (
+                              <tr>
+                                <td colSpan={8} className="bg-gray-50 p-3">
+                                  <table className="w-full border-t border-gray-300">
+                                    <thead>
+                                      <tr className="bg-gray-200 text-gray-700">
+                                        <th className="p-2 text-left">
+                                          Agent ID
+                                        </th>
+                                        <th className="p-2 text-left">
+                                          Agent Name
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {e.listingAgents.map((agent: any) => (
+                                        <tr key={agent.id} className="border-t">
+                                          <td className="p-2">{agent.id}</td>
+                                          <td className="p-2">
+                                            {agent.contactName}
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            )}
+                        </>
+                      ))}
+                    </>
+                  )}
+                </>
               )}
             </tbody>
           </table>
@@ -211,7 +280,10 @@ const ListingCompanyLeaderBoard = () => {
       </div>
 
       <div className="w-full flex justify-end gap-5 items-center">
-        <Pagination onPageChange={() => ""} pageCount={5} />
+        <Pagination
+          onPageChange={handlePageChange}
+          pageCount={listingOfficeData?.totalPages}
+        />
       </div>
     </div>
   );
