@@ -23,7 +23,6 @@ import {
   feeCategoryOptions,
   fileStatusOption,
   fileTypeOptions,
-  roleOption,
   transactionOption,
   useOptions,
 } from "../../utils/options";
@@ -52,7 +51,7 @@ const CreateNewOrder = () => {
           feeDescription: "",
           account: "",
           feeCategory: "",
-          feeAmount: undefined,
+          feeAmount: 0,
         },
       ],
     },
@@ -439,6 +438,7 @@ const CreateNewOrder = () => {
                 name={`fees.${index}.feeDescription`}
                 control={control}
                 type="text"
+                required={true}
                 placeholder="Enter fee description"
                 error={errors.fees?.[index]?.feeDescription?.message}
               />
@@ -450,7 +450,7 @@ const CreateNewOrder = () => {
                 options={accountOptions}
                 placeholder="Select account"
                 error={errors.fees?.[index]?.account?.message}
-                required={false}
+                required={true}
               />
 
               <SelectField
@@ -460,7 +460,7 @@ const CreateNewOrder = () => {
                 options={feeCategoryOptions}
                 placeholder="Fee category"
                 error={errors.fees?.[index]?.feeCategory?.message}
-                required={false}
+                required={true}
               />
 
               <InputField
@@ -468,6 +468,7 @@ const CreateNewOrder = () => {
                 name={`fees.${index}.feeAmount`}
                 control={control}
                 type="number"
+                required={true}
                 placeholder="Enter fee amount"
                 error={errors.fees?.[index]?.feeAmount?.message}
               />

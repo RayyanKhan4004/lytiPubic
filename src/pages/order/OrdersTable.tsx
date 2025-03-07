@@ -309,10 +309,11 @@ const OrdersTable = () => {
 
               <button
                 type="button"
-                onClick={(e) =>{
-                    e.preventDefault();
-                    setIsModelOpen(true);
-                  reset()}}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsModelOpen(true);
+                  reset();
+                }}
                 className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
               >
                 <img src={filter} alt="" />
@@ -464,11 +465,11 @@ const OrdersTable = () => {
                               <td>{e.propertyCounty}</td>
                               <td>{e.propertyState}</td>
                               <td>{e.escrowOfficer}</td>
-                              <td>{e.listingAgentCompany}</td>
+                              <td>{e.listingOffice?.name}</td>
                               <td>{e.listingAgentContactName}</td>
                               <td>{e.listingAgentContactEmail}</td>
                               <td>{e.listingAgentPhone}</td>
-                              <td>{e.sellingAgentCompany}</td>
+                              <td>{e.sellingOffice?.name}</td>
                               <td>{e.sellingAgentContactName}</td>
                               <td>{e.sellingAgentContactEmail}</td>
                               <td>{e.sellingAgentPhone}</td>
