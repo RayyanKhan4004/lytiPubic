@@ -8,6 +8,7 @@ import SearchInput from "../../components/inputs/SearchInput";
 import Pagination from "../../components/common/Pagination";
 import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
 import NoDataRow from "../../components/ui/NoDataRow";
+import add from "../../assets/icons/Add.svg";
 
 import {
   useGetListingOfficesWithAgentQuery,
@@ -62,14 +63,14 @@ const ListingCompanyLeaderBoard = () => {
       <Breadcrumb items={["Leaderboards", "Listing Company LeaderBoard"]} />
 
       <div className="w-full justify-between items-center  gap-3 flex ">
-        <CardLayout>
+        <CardLayout className="w-[48%]">
           <MainTitle title="All Sales Orders" />
           <DummyChart />
         </CardLayout>
-        {/* <CardLayout className="w-[48%]">
+        <CardLayout className="w-[48%]">
           <MainTitle title="Office" />
-          <div className="w-full overflow-y-auto max-h-[300px]">
-            <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F]">
+          <div className="w-full overflow-y-auto max-h-[300px] ">
+            <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] min-h-[299px]">
               <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] bg-white sticky top-0 z-10">
                 <tr>
                   <th className="text-start font-medium">Office</th>
@@ -143,7 +144,7 @@ const ListingCompanyLeaderBoard = () => {
               </tfoot>
             </table>
           </div>
-        </CardLayout> */}
+        </CardLayout>
       </div>
       <div className="w-full flex flex-col gap-4 my-4">
         <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-full my-6 overflow-auto ">
@@ -234,12 +235,13 @@ const ListingCompanyLeaderBoard = () => {
                     bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out"
                           >
                             <td className="px-3">
-                              <button
+                              {/* {expandedRows[e.id] ? "-" : "+"} */}
+                              <div
                                 onClick={() => toggleRow(e.id)}
-                                className="w-5 h-5 flex items-center justify-center border rounded-full bg-green-500 text-white"
+                                className="bg-(--primary) flex items-center cursor-pointer  text-sm h-[24px] w-[24px] justify-center rounded-md text-white"
                               >
-                                {expandedRows[e.id] ? "-" : "+"}
-                              </button>
+                                <img src={add} alt="" className="w-4 h-4" />
+                              </div>
                             </td>
                             <td
                               className="cursor-pointer px-3 "
