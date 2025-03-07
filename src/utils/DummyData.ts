@@ -1,4 +1,5 @@
 import dummy from "../../src/assets/images/Dummy.jpg";
+import { ChartData } from "./types";
 
 export const DummyData = () => {
   return [
@@ -324,4 +325,12 @@ export const users = [
   { rank: 3, name: "Jane Smith", count: 25 },
   { rank: 4, name: "Robert Brown", count: 22 },
   { rank: 5, name: "Emily Davis", count: 21 },
+];
+
+export const ListingGraphData: ChartData[] = [
+  { name: "Segment 1", value: 25, color: "#EC662A" },
+  { name: "Segment 2", value: 15, color: "#3B3B3B" },
+  { name: "Segment 3", value: 15, color: "#0EA5E9" },
+  { name: "Segment 4", value: 20, color: "#F4A51C" },
+  { name: "Segment 5", value: 25, color: "#8B6DF2" },
 ];

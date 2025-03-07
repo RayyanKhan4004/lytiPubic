@@ -106,3 +106,9 @@ export type StagesBoardColumnKeys =
   | "Pending"
   | "Closed"
   | "Lost";
+
+export interface ChartData {
+  name: string;
+  value: number;
+  color: string;
+}
