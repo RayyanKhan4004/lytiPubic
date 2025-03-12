@@ -45,6 +45,8 @@ export interface OrderDataType {
   lastname?: string;
   listingOfficeId?: number;
   sellingOfficeId?: number;
+  listingAgentId?: number;
+  sellingAgentId?: number;
 }
 
 export interface Fee {
