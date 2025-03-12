@@ -14,7 +14,11 @@ import InputField from "../../components/inputs/InputFields";
 import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 
-import { useUpdateOrderMutation } from "../../lib/rtkQuery/orderApi";
+import {
+  useGetListingOfficeByIdQuery,
+  useGetSellingOfficeByIdQuery,
+  useUpdateOrderMutation,
+} from "../../lib/rtkQuery/orderApi";
 
 import {
   accountOptions,
@@ -46,6 +50,7 @@ const OrderEdit = () => {
     control,
     setValue,
     reset,
+    watch,
   } = useForm<OrderDataType>({
     defaultValues: {
       fees: [
@@ -59,6 +64,36 @@ const OrderEdit = () => {
     },
   });
 
+  const selectedListingOfficeId = watch("listingOfficeId");
+  const selectedSellingOfficeId = watch("sellingOfficeId");
+
+  const { data: listingData } = useGetListingOfficeByIdQuery(
+    selectedListingOfficeId as number,
+    {
+      skip: !selectedListingOfficeId,
+    }
+  );
+  const { data: sellingData } = useGetSellingOfficeByIdQuery(
+    selectedSellingOfficeId as number,
+    {
+      skip: !selectedSellingOfficeId,
+    }
+  );
+
+  const listingAgentNameOption =
+    listingData?.listingAgents?.map(
+      (agent: { contactName: string; id: number }) => ({
+        value: agent.id,
+        label: agent.contactName,
+      })
+    ) || [];
+  const sellingAgentNameOption =
+    sellingData?.sellingAgents?.map(
+      (agent: { contactName: string; id: number }) => ({
+        value: agent.id,
+        label: agent.contactName,
+      })
+    ) || [];
   const { fields, append, remove } = useFieldArray({
     control,
     name: "fees",
@@ -142,6 +177,7 @@ const OrderEdit = () => {
       setValue("titleRepPct", orderData.titleRepPct ?? 0);
       setValue("salePrice", orderData.salePrice ?? 0);
       setValue("loanAmount", orderData.loanAmount ?? 0);
+      setValue("listingAgentId", orderData?.listingOffice?.name ?? 0);
     }
   }, [orderData, setValue]);
 
@@ -354,6 +390,15 @@ const OrderEdit = () => {
               error={errors.listingAgentCompany?.message}
               required={false}
             />
+            <SelectField
+              label="Listing Agent "
+              name="listingAgentId"
+              control={control}
+              options={listingAgentNameOption}
+              placeholder="Select..."
+              error={errors.listingAgentId?.message}
+              required={false}
+            />
             <InputField
               label="Listing Agent Contact Name"
               name="listingAgentContactName"
@@ -394,6 +439,15 @@ const OrderEdit = () => {
               options={sellingOfficesOption}
               placeholder="Select selling office"
               error={errors.sellingAgentCompany?.message}
+              required={false}
+            />
+            <SelectField
+              label="Selling Agent name"
+              name="sellingAgentId"
+              control={control}
+              options={sellingAgentNameOption}
+              placeholder="Select agent name"
+              error={errors.sellingAgentId?.message}
               required={false}
             />
             <InputField

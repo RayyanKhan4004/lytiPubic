@@ -14,7 +14,11 @@ import InputField from "../../components/inputs/InputFields";
 import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 import ArrowBlack from "../../assets/icons/ArrowBlack.svg";
-import { useCreateOrderMutation } from "../../lib/rtkQuery/orderApi";
+import {
+  useCreateOrderMutation,
+  useGetListingOfficeByIdQuery,
+  useGetSellingOfficeByIdQuery,
+} from "../../lib/rtkQuery/orderApi";
 
 import {
   accountOptions,
@@ -44,6 +48,7 @@ const CreateNewOrder = () => {
     formState: { errors },
     control,
     reset,
+    watch,
   } = useForm<OrderDataType>({
     defaultValues: {
       fees: [
@@ -56,6 +61,37 @@ const CreateNewOrder = () => {
       ],
     },
   });
+
+  const selectedListingOfficeId = watch("listingOfficeId");
+  const selectedSellingOfficeId = watch("sellingOfficeId");
+
+  const { data: listingData } = useGetListingOfficeByIdQuery(
+    selectedListingOfficeId as number,
+    {
+      skip: !selectedListingOfficeId,
+    }
+  );
+  const { data: sellingData } = useGetSellingOfficeByIdQuery(
+    selectedSellingOfficeId as number,
+    {
+      skip: !selectedSellingOfficeId,
+    }
+  );
+
+  const listingAgentNameOption =
+    listingData?.listingAgents?.map(
+      (agent: { contactName: string; id: number }) => ({
+        value: agent.id,
+        label: agent.contactName,
+      })
+    ) || [];
+  const sellingAgentNameOption =
+    sellingData?.sellingAgents?.map(
+      (agent: { contactName: string; id: number }) => ({
+        value: agent.id,
+        label: agent.contactName,
+      })
+    ) || [];
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -306,6 +342,15 @@ const CreateNewOrder = () => {
               error={errors.listingAgentCompany?.message}
               required={false}
             />
+            <SelectField
+              label="Listing Agent "
+              name="listingAgentId"
+              control={control}
+              options={listingAgentNameOption}
+              placeholder="Select..."
+              error={errors.listingAgentId?.message}
+              required={false}
+            />
             <InputField
               label="Listing Agent Contact Name"
               name="listingAgentContactName"
@@ -347,6 +392,15 @@ const CreateNewOrder = () => {
               options={sellingOfficesOption}
               placeholder="Select selling office"
               error={errors.sellingAgentCompany?.message}
+              required={false}
+            />
+            <SelectField
+              label="Selling Agent name"
+              name="sellingAgentId"
+              control={control}
+              options={sellingAgentNameOption}
+              placeholder="Select agent name"
+              error={errors.sellingAgentId?.message}
               required={false}
             />
             <InputField
