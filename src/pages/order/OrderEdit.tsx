@@ -68,7 +68,10 @@ const OrderEdit = () => {
   const selectedSellingOfficeId = watch("sellingOfficeId");
 
   const { data: listingData } = useGetListingOfficeByIdQuery(
-    selectedListingOfficeId || 0
+    selectedListingOfficeId as number,
+    {
+      skip: !selectedSellingOfficeId,
+    }
   );
   const { data: sellingData } = useGetSellingOfficeByIdQuery(
     selectedSellingOfficeId as number,
@@ -108,7 +111,6 @@ const OrderEdit = () => {
       }).unwrap();
       navigate("/orders/orders");
       toast.success("Order updated Successfully");
-      // reset();
     } catch (err: any) {
       toast.error(err?.data?.message || "Order creation failed");
     }
@@ -143,8 +145,8 @@ const OrderEdit = () => {
       );
       setValue("listingAgentPhone", orderData.listingAgentPhone || "");
       setValue("listingOfficeId", orderData.listingOffice?.id || "");
-      setValue("listingAgentId", orderData.listingAgent?.id || "");
-      setValue("sellingAgentId", orderData?.sellingAgent?.id || "");
+      setValue("listingAgentId", orderData.listingAgent?.id);
+      setValue("sellingAgentId", orderData?.sellingAgent?.id);
       setValue("sellingAgentCompany", orderData.sellingAgentCompany || "");
       setValue("sellingOfficeId", orderData.sellingOffice?.id || "");
       setValue(

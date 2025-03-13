@@ -1,4 +1,3 @@
-
 import React from "react";
 
 export interface Order {
@@ -13,7 +12,7 @@ interface OrderTableProps {
   hasFooter?: boolean;
   data: Order[];
   tableFooter?: any;
-  tableOnClick?: (order: Order) => void; // Pass the order to the click handler
+  tableOnClick?: (order: Order) => void;
   tableStyles?: string;
 }
 
@@ -28,7 +27,6 @@ const OrderTable: React.FC<OrderTableProps> = ({
   hasFooter,
   hasHeader,
 }) => {
-  // Get unique keys from the data to create table headers
   const keys = Array.from(new Set(data.flatMap(Object.keys)));
 
   return (

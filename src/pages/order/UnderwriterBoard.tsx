@@ -135,9 +135,95 @@ const UnderwriterBoard = () => {
         />
       </div>
 
-      <div className="w-full flex justify-between flex-col">
-        <div className="w-full flex justify-between flex-wrap gap-2">
-          <CardLayout className="w-[48%]">
+      <div className="w-full flex justify-between ">
+        <CardLayout className="w-[49%] max-h-[810px] h-auto">
+          <MainTitle title="Orders" />
+          <div className="w-full overflow-y-auto max-h-[700px] ">
+            <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-7">
+              <thead className="text-sm font-normal text-start  border-b-[1px] border-[#F4EFE9] ">
+                <tr>
+                  <th className="text-start font-medium min-w-[43px]">Id</th>
+                  <th className="text-start font-medium px-4 min-w-[120px]">
+                    Closed Date
+                  </th>
+                  <th className="text-start font-medium px-4 min-w-[100px]">
+                    Status
+                  </th>
+                  <th className="text-start font-medium px-4 min-w-[300px]">
+                    Property Address
+                  </th>
+                  <th className="text-start font-medium px-4 min-w-[155px]">
+                    Transaction type
+                  </th>
+                  <th className="text-start font-medium px-4 min-w-[150px]">
+                    Order type
+                  </th>
+                  <th className="text-start font-medium px-4 min-w-[70px]">
+                    Fees
+                  </th>
+                  <th className="text-start font-medium px-4 min-w-[200px]">
+                    County
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {isLoading ? (
+                  <TableSkeleton columns={8} />
+                ) : (
+                  <>
+                    {orderData?.orders?.length === 0 ? (
+                      <NoDataRow colSpan={8} />
+                    ) : (
+                      <>
+                        {orderData?.orders?.map((e: any, i: number) => (
+                          <>
+                            <tr
+                              key={e.id}
+                              onClick={() => handleRowClick(e.id)}
+                              className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
+            transition-colors duration-500 ease-in-out ${
+              selectedOrderId === e.id
+                ? "bg-gray-100"
+                : "bg-white hover:bg-gray-100"
+            }`}
+                            >
+                              <td
+                                className="cursor-pointer"
+                                style={{
+                                  maxWidth: "50px",
+                                  overflow: "hidden",
+                                  whiteSpace: "nowrap",
+                                  textOverflow: "ellipsis",
+                                }}
+                                title={e.id}
+                              >
+                                {e.id}
+                              </td>
+                              <td className="px-4">{e.closedDate}</td>
+                              <td className="px-4">{e.fileStatus}</td>
+                              <td className="px-4">{e.propertyAddress}</td>
+                              <td className="px-4">{e.transactionType}</td>
+                              <td className="px-4">{e.fileType}</td>
+                              <td className="px-4">fees</td>
+                              <td className="px-4">{e.propertyCounty}</td>
+                            </tr>
+                          </>
+                        ))}
+                      </>
+                    )}
+                  </>
+                )}
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            onPageChange={handlePageChange}
+            pageCount={orderData?.totalPages}
+          />
+        </CardLayout>
+        <div className="w-[49%] gap-4 flex flex-col">
+          <CardLayout className="w-full">
             <MainTitle title="Underwriter" />
             <div className="w-full overflow-y-auto max-h-[300px]">
               <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F]">
@@ -222,7 +308,7 @@ const UnderwriterBoard = () => {
             </div>
           </CardLayout>
 
-          <CardLayout className="w-[48%]">
+          <CardLayout className="w-full">
             <MainTitle title="Office" />
             <div className="w-full overflow-y-auto max-h-[300px]">
               <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F]">
@@ -306,7 +392,7 @@ const UnderwriterBoard = () => {
               </table>
             </div>
           </CardLayout>
-          <CardLayout className="w-[48%]">
+          <CardLayout className="w-full">
             <MainTitle title="County" />
             <div className="w-full overflow-y-auto max-h-[300px]">
               <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F]">
@@ -393,95 +479,6 @@ const UnderwriterBoard = () => {
               </table>
             </div>
           </CardLayout>
-        </div>
-
-        <div className="font-sm shadow-(--cardShadow) p-3 rounded-xl w-full my-7">
-          <div className="flex justify-between items-center">
-            <MainTitle title="Orders" />
-          </div>
-          <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-7">
-            <thead className="text-sm font-normal text-start  border-b-[1px] border-[#F4EFE9] ">
-              <tr>
-                <th className="text-start font-medium  ">Id</th>
-                <th className="text-start font-medium px-4 w-[120px]">
-                  Closed Date
-                </th>
-                <th className="text-start font-medium px-4">Status</th>
-                <th className="text-start font-medium px-4">
-                  Property Address
-                </th>
-                <th className="text-start font-medium px-4 w-[170px]">
-                  Transaction type
-                </th>
-                <th className="text-start font-medium px-4">Order type</th>
-                <th className="text-start font-medium px-4">Fees</th>
-                <th className="text-start font-medium px-4">County</th>
-                {/* <TableCell content={"Id"} maxWidth="40px" />
-                <TableCell content={"Closed Date"} maxWidth="80px" />
-                <TableCell content={"Status"} maxWidth="80px" />
-                <TableCell content={"Property Address"} maxWidth="80px" />
-                <TableCell content={"Transaction type"} maxWidth="80px" />
-                <TableCell content={"Order type"} maxWidth="70px" />
-                <TableCell content={"County"} maxWidth="80px" /> */}
-              </tr>
-            </thead>
-
-            <tbody>
-              {isLoading ? (
-                <TableSkeleton columns={8} />
-              ) : (
-                <>
-                  {orderData?.orders?.length === 0 ? (
-                    <NoDataRow colSpan={8} />
-                  ) : (
-                    <>
-                      {orderData?.orders?.map((e: any, i: number) => (
-                        <>
-                          <tr
-                            key={e.id}
-                            onClick={() => handleRowClick(e.id)}
-                            className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
-            transition-colors duration-500 ease-in-out ${
-              selectedOrderId === e.id
-                ? "bg-gray-100"
-                : "bg-white hover:bg-gray-100"
-            }`}
-                          >
-                            <td
-                              className="cursor-pointer"
-                              style={{
-                                maxWidth: "50px",
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                textOverflow: "ellipsis",
-                              }}
-                              title={e.id}
-                            >
-                              {e.id}
-                            </td>
-                            <td className="px-4">{e.closedDate}</td>
-                            <td className="px-4">{e.fileStatus}</td>
-                            <td className="px-4">{e.propertyAddress}</td>
-                            <td className="px-4">{e.transactionType}</td>
-                            <td className="px-4">{e.fileType}</td>
-                            <td className="px-4">fees</td>
-                            <td className="px-4">{e.propertyCounty}</td>
-                          </tr>
-                        </>
-                      ))}
-                    </>
-                  )}
-                </>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="w-full flex justify-end gap-5 items-center">
-          <Pagination
-            onPageChange={handlePageChange}
-            pageCount={orderData?.totalPages}
-          />
         </div>
       </div>
     </div>
