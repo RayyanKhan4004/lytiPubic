@@ -1,4 +1,6 @@
 import { useState } from "react";
+
+// Components
 import Breadcrumb from "../../components/common/BreadCrumb";
 import ProgressBar from "../../components/orders/ProgressBar";
 import CustomizableDropdown from "../../components/common/CustomizableDropdown";
@@ -6,16 +8,19 @@ import CardLayout from "../../components/layouts/CardLayout";
 import MainTitle from "../../components/ui/typography/MainTitle";
 import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
 import NoDataRow from "../../components/ui/NoDataRow";
+import Pagination from "../../components/common/Pagination";
+import StatsCard from "../../components/orders/StatsCard";
+
+// RTK Queries
 import {
   useGetOrdersQuery,
   useGetPropertyCountiesQuery,
   useGetTitleOfficesQuery,
   useGetUnderwritersQuery,
 } from "../../lib/rtkQuery/orderApi";
-import Pagination from "../../components/common/Pagination";
-import StatsCard from "../../components/orders/StatsCard";
 
 const UnderwriterBoard = () => {
+  // State management
   const [page, setPage] = useState(1);
   const [selectedOrderId, setSelectedOrderId] = useState<string>("");
   const [selectedTitleOffice, setSelectedTitleOffice] = useState<string>("");
@@ -32,23 +37,13 @@ const UnderwriterBoard = () => {
   >(null);
   const [selectedUnderwriter, setSelectedUnderwriter] = useState<string>("");
 
-  const handleRowClick = (orderId: string) => {
-    if (selectedOrderId !== orderId) {
-      setSelectedOrderId(orderId);
-    }
-  };
-
+  // API queries
   const { data: underwriterData, isLoading: underwriterDataLoading } =
     useGetUnderwritersQuery({ orderId: selectedOrderId });
-
   const { data: titleOfficeData, isLoading: titleOfficeDataLoading } =
     useGetTitleOfficesQuery({ orderId: selectedOrderId });
-
   const { data: propertyCountyData, isLoading: propertyCountyDataLoading } =
-    useGetPropertyCountiesQuery({
-      orderId: selectedOrderId,
-    });
-
+    useGetPropertyCountiesQuery({ orderId: selectedOrderId });
   const {
     data: orderData,
     isLoading,
@@ -65,18 +60,25 @@ const UnderwriterBoard = () => {
     underwriter: selectedUnderwriter,
   });
 
-  const handleTitleOfficeClick = (i: number, titleOffice: string) => {
-    setSelectedTitleOfficeId(i);
+  // Handlers
+  const handleRowClick = (orderId: string) => {
+    if (selectedOrderId !== orderId) {
+      setSelectedOrderId(orderId);
+    }
+  };
+
+  const handleTitleOfficeClick = (id: number, titleOffice: string) => {
+    setSelectedTitleOfficeId(id);
     setSelectedTitleOffice(titleOffice);
   };
 
-  const handlePropertyCountyClick = (i: number, propertyCounty: string) => {
-    setSelectedPropertyCountyId(i);
+  const handlePropertyCountyClick = (id: number, propertyCounty: string) => {
+    setSelectedPropertyCountyId(id);
     setSelectedPropertyCounty(propertyCounty);
   };
 
-  const handleUnderwriterClick = (index: number, underwriter: string) => {
-    setSelectedUnderwriterId(index);
+  const handleUnderwriterClick = (id: number, underwriter: string) => {
+    setSelectedUnderwriterId(id);
     setSelectedUnderwriter(underwriter);
   };
 
@@ -86,20 +88,38 @@ const UnderwriterBoard = () => {
       setPage(newPage);
     }
   };
+
+  const handleReset = () => {
+    setSelectedOrderId("");
+    setSelectedTitleOffice("");
+    setSelectedUnderwriterId(null);
+    setSelectedPropertyCounty("");
+    setSelectedTitleOfficeId(null);
+    setSelectedPropertyCountyId(null);
+    setSelectedUnderwriter("");
+  };
   return (
     <div className="w-full px-4 my-8 font-Poppins">
-      <Breadcrumb items={["Orders", "Underwiter Board"]} />
+      <div className="flex  justify-between">
+        <Breadcrumb items={["Orders", "Underwiter Board"]} />
+        <button
+          onClick={handleReset}
+          className="px-4 py-2 bg-red-500 text-white rounded-2xl hover:bg-red-600 active:scale-95 transition"
+        >
+          Reset
+        </button>
+      </div>
 
-      <div className="w-full flex gap-4 mt-2">
+      <div className="w-full flex gap-4 mt-2 justify-between">
         <StatsCard
           heading="Orders"
           stats={[
             {
-              value: `${orderData?.totalOrderCount}`,
+              value: `${orderData?.totalOrderCount || 0}`,
               text: "Total Orders",
             },
             {
-              value: `${orderData?.totalFee}`,
+              value: `${orderData?.totalFee || 0}`,
               text: "Total Amount",
             },
             { value: "57k", text: "Avg /Order" },
@@ -109,11 +129,11 @@ const UnderwriterBoard = () => {
           heading="Title"
           stats={[
             {
-              value: `${orderData?.titleChargesOrderCount}`,
+              value: `${orderData?.titleChargesOrderCount || 0}`,
               text: "Total Units",
             },
             {
-              value: `${orderData?.titleChargesTotalFee}`,
+              value: `${orderData?.titleChargesTotalFee || 0}`,
               text: "Title charges",
             },
             { value: "27k", text: "Avg Title " },
@@ -123,11 +143,11 @@ const UnderwriterBoard = () => {
           heading="Escrow"
           stats={[
             {
-              value: `${orderData?.escrowChargesOrderCount}`,
+              value: `${orderData?.escrowChargesOrderCount || 0}`,
               text: "Escrow Units",
             },
             {
-              value: `${orderData?.escrowChargesTotalFee}`,
+              value: `${orderData?.escrowChargesTotalFee || 0}`,
               text: "Escrow charges",
             },
             { value: "9k", text: "Avg Escrow" },
