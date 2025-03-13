@@ -68,10 +68,7 @@ const OrderEdit = () => {
   const selectedSellingOfficeId = watch("sellingOfficeId");
 
   const { data: listingData } = useGetListingOfficeByIdQuery(
-    selectedListingOfficeId as number,
-    {
-      skip: !selectedListingOfficeId,
-    }
+    selectedListingOfficeId || 0
   );
   const { data: sellingData } = useGetSellingOfficeByIdQuery(
     selectedSellingOfficeId as number,
@@ -94,6 +91,7 @@ const OrderEdit = () => {
         label: agent.contactName,
       })
     ) || [];
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "fees",
@@ -115,7 +113,6 @@ const OrderEdit = () => {
       toast.error(err?.data?.message || "Order creation failed");
     }
   };
-  console.log(orderData, "==data===");
 
   useEffect(() => {
     if (orderData) {
@@ -146,7 +143,8 @@ const OrderEdit = () => {
       );
       setValue("listingAgentPhone", orderData.listingAgentPhone || "");
       setValue("listingOfficeId", orderData.listingOffice?.id || "");
-
+      setValue("listingAgentId", orderData.listingAgent?.id || "");
+      setValue("sellingAgentId", orderData?.sellingAgent?.id || "");
       setValue("sellingAgentCompany", orderData.sellingAgentCompany || "");
       setValue("sellingOfficeId", orderData.sellingOffice?.id || "");
       setValue(
@@ -177,9 +175,14 @@ const OrderEdit = () => {
       setValue("titleRepPct", orderData.titleRepPct ?? 0);
       setValue("salePrice", orderData.salePrice ?? 0);
       setValue("loanAmount", orderData.loanAmount ?? 0);
-      setValue("listingAgentId", orderData?.listingOffice?.name ?? 0);
     }
   }, [orderData, setValue]);
+
+  useEffect(() => {
+    if (orderData?.listingAgent?.id && watch("listingOfficeId")) {
+      setValue("listingAgentId", orderData.listingAgent.id);
+    }
+  }, [orderData, setValue, watch("listingOfficeId")]);
 
   return (
     <div className="w-full px-4 my-8 font-Poppins">
@@ -372,15 +375,6 @@ const OrderEdit = () => {
               error={errors.escrowOfficer?.message}
             />
 
-            {/* <SelectField
-              label="Listing Agent Company"
-              name="listingAgentCompany"
-              control={control}
-              options={listingOfficeOption}
-              placeholder="Select..."
-              error={errors.listingAgentCompany?.message}
-              required={false}
-            /> */}
             <SelectField
               label="Listing Agent Company"
               name="listingOfficeId"

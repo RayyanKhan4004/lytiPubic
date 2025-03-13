@@ -37,11 +37,14 @@ import { OrderDataType } from "../../utils/types";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import CardLayout from "../../components/layouts/CardLayout";
 import FilterPopup from "../../components/ui/FilterPopup";
+import { formatNumber } from "../../utils/functions";
 
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loading, setLoading] = useState("");
   const [page, setPage] = useState(1);
+  const [isModelOpen, setIsModelOpen] = useState(false);
+
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string>
   >({});
@@ -119,7 +122,7 @@ const OrdersTable = () => {
 
   const handleExportPDF = () => {
     if (selectedRows.length === 0) {
-      alert("Please select at least one row!");
+      toast.error("Please select at least one row!");
       return;
     }
 
@@ -222,7 +225,7 @@ const OrdersTable = () => {
       return updatedFilters;
     });
   };
-  const [isModelOpen, setIsModelOpen] = useState(false);
+
   return (
     <>
       {
@@ -237,24 +240,42 @@ const OrdersTable = () => {
           <StatsCard
             heading="Orders"
             stats={[
-              { value: "20.7k", text: "Total Orders" },
-              { value: "3k", text: "Total Amount" },
+              {
+                value: `${data?.totalOrderCount}`,
+                text: "Total Orders",
+              },
+              {
+                value: `${data?.totalFee}`,
+                text: "Total Amount",
+              },
               { value: "57k", text: "Avg /Order" },
             ]}
           />
           <StatsCard
             heading="Title"
             stats={[
-              { value: "9k", text: "Total Units" },
-              { value: "2k", text: "Title charges" },
+              {
+                value: `${data?.titleChargesOrderCount}`,
+                text: "Total Units",
+              },
+              {
+                value: `${data?.titleChargesTotalFee}`,
+                text: "Title charges",
+              },
               { value: "27k", text: "Avg Title " },
             ]}
           />
           <StatsCard
             heading="Escrow"
             stats={[
-              { value: "98k", text: "Escrow Units" },
-              { value: "78k", text: "Escrow charges" },
+              {
+                value: `${data?.escrowChargesOrderCount}`,
+                text: "Escrow Units",
+              },
+              {
+                value: `${data?.escrowChargesTotalFee}`,
+                text: "Escrow charges",
+              },
               { value: "9k", text: "Avg Escrow" },
             ]}
           />
