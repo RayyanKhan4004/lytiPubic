@@ -15,8 +15,8 @@ const PopoverMenu: React.FC<PopoverMenuProps> = ({
   const [open, setOpen] = useState(false);
 
   const handleOptionClick = (onClick: () => void) => {
-    onClick(); // Trigger the provided function
-    setOpen(false); // Close popover
+    onClick();
+    setOpen(false);
   };
 
   return (

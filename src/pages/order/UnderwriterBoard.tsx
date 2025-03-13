@@ -32,8 +32,6 @@ const UnderwriterBoard = () => {
   >(null);
   const [selectedUnderwriter, setSelectedUnderwriter] = useState<string>("");
 
-  console.log(selectedTitleOfficeId, selectedPropertyCountyId);
-
   const handleRowClick = (orderId: string) => {
     if (selectedOrderId !== orderId) {
       setSelectedOrderId(orderId);
@@ -92,13 +90,47 @@ const UnderwriterBoard = () => {
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Orders", "Underwiter Board"]} />
 
-      <div className="flex w-full">
+      <div className="w-full flex gap-4 mt-2">
         <StatsCard
           heading="Orders"
           stats={[
-            { value: "20.7k", text: "Total Orders" },
-            { value: "3k", text: "Total Amount" },
+            {
+              value: `${orderData?.totalOrderCount}`,
+              text: "Total Orders",
+            },
+            {
+              value: `${orderData?.totalFee}`,
+              text: "Total Amount",
+            },
             { value: "57k", text: "Avg /Order" },
+          ]}
+        />
+        <StatsCard
+          heading="Title"
+          stats={[
+            {
+              value: `${orderData?.titleChargesOrderCount}`,
+              text: "Total Units",
+            },
+            {
+              value: `${orderData?.titleChargesTotalFee}`,
+              text: "Title charges",
+            },
+            { value: "27k", text: "Avg Title " },
+          ]}
+        />
+        <StatsCard
+          heading="Escrow"
+          stats={[
+            {
+              value: `${orderData?.escrowChargesOrderCount}`,
+              text: "Escrow Units",
+            },
+            {
+              value: `${orderData?.escrowChargesTotalFee}`,
+              text: "Escrow charges",
+            },
+            { value: "9k", text: "Avg Escrow" },
           ]}
         />
       </div>
