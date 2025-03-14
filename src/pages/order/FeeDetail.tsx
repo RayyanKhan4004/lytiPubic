@@ -516,6 +516,9 @@ const FeeDetail = () => {
       setPage(newPage);
     }
   };
+
+  console.log(orderData?.feeDescriptions, "==data===");
+
   return (
     <>
       {
@@ -687,43 +690,68 @@ const FeeDetail = () => {
               </div>
             </div>
             {/*  */}
-            <div className="shadow-(--cardShadow) pt-6 rounded-[10px] ">
-              <div className="px-6">
-                <TableTitle title="Fee Description" />
+            <CardLayout className="w-full">
+              <MainTitle title="Fee Description" />
+              <div className="w-full overflow-y-auto max-h-[300px]">
+                <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F]">
+                  <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] bg-white sticky top-0 z-10">
+                    <tr>
+                      <th className="text-start font-medium">Account</th>
+                      <th className="text-start font-medium px-2"> Amount</th>
+                      <th className="text-start font-medium px-2">Category</th>
+                      <th className="text-start font-medium"> Description</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {isLoading ? (
+                      <TableSkeleton columns={8} />
+                    ) : (
+                      <>
+                        {orderData?.feeDescriptions?.length === 0 ? (
+                          <NoDataRow colSpan={8} />
+                        ) : (
+                          <>
+                            {orderData?.feeDescriptions?.map(
+                              (e: any, i: number) => (
+                                <tr
+                                  key={i}
+                                  className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
+                        transition-colors duration-500 ease-in-out bg-gray-300"
+                           `}
+                                >
+                                  <td>{e.account}</td>
+                                  <td className="px-2">{e.feeAmount}</td>
+                                  <td className="px-2">{e.feeCategory}</td>
+                                  <td>{e.feeDescription}</td>
+                                </tr>
+                              )
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </tbody>
+
+                  <tfoot>
+                    <tr className="bg-[#F3F3F3]">
+                      <td className="py-3 px-2 font-medium text-sm text-[#15120F]">
+                        Total
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td
+                        className="py-3  font-medium text-sm text-[#15120F]"
+                        colSpan={4}
+                      >
+                        {orderData?.totalFee || ""}
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
               </div>
-              <div className=" rounded-b-[10px] overflow-scroll scroll-container">
-                {/* //// */}
-                <OrderTable
-                  hasHeader={true}
-                  hasFooter={true}
-                  tableFooter={[
-                    "total",
-                    "$948.55",
-                    "$450.54",
-                    "$275.43",
-                    "$406.27",
-                  ]}
-                  data={[
-                    {
-                      FeeCategory: "Title Charges",
-                      Amount: "$396.84",
-                      "Amount%": "$630.44",
-                      "OOC TFI": "$106.58",
-                      FeeDeposit: "$396.84",
-                    },
-                    {
-                      FeeCategory: "Title Fee Income",
-                      Amount: "$$475.84",
-                      "Amount%": "$630.44",
-                      "OOC TFI": "$106.58",
-                      FeeDeposit: "$396.84",
-                    },
-                  ]}
-                />
-                {/*  */}
-              </div>
-            </div>
-            {/*  */}
+            </CardLayout>
+
             <div className="shadow-(--cardShadow) pt-6 rounded-[10px] ">
               <div className="px-6 ">
                 <TableTitle title="PCT-Westcor Commissions " />
