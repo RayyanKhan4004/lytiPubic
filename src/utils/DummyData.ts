@@ -320,11 +320,11 @@ export const initialBuyers = [
 ];
 
 export const users = [
-  { rank: 1, name: "Wade Warren", count: 34 },
-  { rank: 2, name: "John Doe", count: 28 },
-  { rank: 3, name: "Jane Smith", count: 25 },
-  { rank: 4, name: "Robert Brown", count: 22 },
-  { rank: 5, name: "Emily Davis", count: 21 },
+  { rank: 1, name: "Wade Warren", count: 34, image: dummy, percentage: 34 },
+  { rank: 2, name: "John Doe", count: 28, image: dummy, percentage: 34 },
+  { rank: 3, name: "Jane Smith", count: 25, image: dummy, percentage: 34 },
+  { rank: 4, name: "Robert Brown", count: 22, image: dummy, percentage: 34 },
+  { rank: 5, name: "Emily Davis", count: 21, image: dummy, percentage: 34 },
 ];
 
 export const ListingGraphData: ChartData[] = [
@@ -504,4 +504,17 @@ export const sampleOrders: any[] = [
     status: "Closed",
     propertyAddress: "8502 Fredonia Rd, Inglewood",
   },
+];
+
+export const LeaderboardsData = [
+  { rank: 1, name: "Wade Warren", count: 34 },
+  { rank: 2, name: "John Doe", count: 28 },
+  { rank: 3, name: "Jane Smith", count: 25 },
+  { rank: 4, name: "Robert Brown", count: 22 },
+  { rank: 5, name: "Emily Davis", count: 21 },
+  { rank: 6, name: "Michael Miller", count: 19 },
+  { rank: 7, name: "Sarah Wilson", count: 18 },
+  { rank: 8, name: "James Taylor", count: 16 },
+  { rank: 9, name: "Olivia Lee", count: 14 },
+  { rank: 10, name: "William Harris", count: 12 },
 ];

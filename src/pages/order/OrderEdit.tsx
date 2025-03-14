@@ -40,6 +40,7 @@ const OrderEdit = () => {
   const [updateOrder, { isLoading }] = useUpdateOrderMutation();
   const data = useLocation();
   const { orderData } = data.state || {};
+  console.log(orderData, "==orderData==");
   const navigate = useNavigate();
   const { agentsOption, listingOfficeOption, sellingOfficesOption } =
     useOptions();
@@ -104,12 +105,16 @@ const OrderEdit = () => {
     const formattedData = {
       ...data,
     };
+    console.log(formattedData, "******form data*****");
+
     try {
       const res = await updateOrder({
         id: orderData?.id,
         data: formattedData,
       }).unwrap();
       navigate("/orders/orders");
+      console.log(res, "+++response++++");
+
       toast.success("Order updated Successfully");
     } catch (err: any) {
       toast.error(err?.data?.message || "Order creation failed");

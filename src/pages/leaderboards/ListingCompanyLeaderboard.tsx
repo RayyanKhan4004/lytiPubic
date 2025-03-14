@@ -21,6 +21,8 @@ import { ChartData, OrderDataType } from "../../utils/types";
 
 import CardLayout from "../../components/layouts/CardLayout";
 import DummyChart from "./DummyChart";
+import { users } from "../../utils/DummyData";
+import TopAgentCard from "../../components/ui/card/TopAgentCard";
 
 const ListingCompanyLeaderBoard = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -63,87 +65,25 @@ const ListingCompanyLeaderBoard = () => {
     <div className="w-full px-4 my-8 font-Poppins min-h-full">
       <Breadcrumb items={["Leaderboards", "Listing Company LeaderBoard"]} />
 
-      <div className="w-full justify-between items-center  gap-3 flex ">
-        <CardLayout className="w-[48%]">
+      <div className="w-full justify-between items-center  gap-3 flex  mt-3">
+        <CardLayout className="w-[49%]">
           <MainTitle title="All Sales Orders" />
           <DummyChart />
         </CardLayout>
-        <CardLayout className="w-[48%]">
-          <MainTitle title="Office" />
-          <div className="w-full overflow-y-auto max-h-[300px] ">
-            <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] min-h-[299px]">
-              <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] bg-white sticky top-0 z-10">
-                <tr>
-                  <th className="text-start font-medium">Office</th>
-                  <th className="text-start font-medium pr-2">Orders</th>
-                  <th className="text-start font-medium px-2">
-                    <div className="flex gap-0.5 items-center">
-                      Orders <span>%</span>
-                    </div>
-                  </th>
-                  <th className="text-start font-medium">Fees</th>
-                  <th className="text-start font-medium  pr-2">
-                    <div className="flex gap-0.5 items-center">
-                      Fees <span>%</span>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {titleOfficeDataLoading ? (
-                  <TableSkeleton columns={8} />
-                ) : (
-                  <>
-                    {titleOfficeData?.data?.titleOffices?.length === 0 ? (
-                      <NoDataRow colSpan={8} />
-                    ) : (
-                      <>
-                        {titleOfficeData?.data?.titleOffices?.map(
-                          (e: any, i: number) => (
-                            <tr
-                              key={e.id}
-                              className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
-            transition-colors duration-500 ease-in-out bg-white hover:bg-gray-100"
-            `}
-                            >
-                              <td>{e.titleOffice}</td>
-                              <td>{e.orderCount}</td>
-                              <td className="px-2">
-                                {Number(e.orderPercentage).toFixed(2)}
-                              </td>
-                              <td>{e.orderFeeTotal}</td>
-                              <td>{Number(e.feePercentage).toFixed(2)}</td>
-                              <td>{e.lastAccess}</td>
-                            </tr>
-                          )
-                        )}
-                      </>
-                    )}
-                  </>
-                )}
-              </tbody>
-
-              <tfoot>
-                <tr className="bg-[#F3F3F3]">
-                  <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                    Total
-                  </td>
-                  <td className="py-3  font-medium text-sm text-[#15120F]">
-                    {titleOfficeData?.data?.totalOrderCount || ""}
-                  </td>
-                  <td className="py-3 px-2 font-medium text-sm text-[#15120F]">
-                    {titleOfficeData?.data?.totalOrderPercentage || ""}
-                  </td>
-                  <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                    {titleOfficeData?.data?.totalFeeCount || ""}
-                  </td>
-                  <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                    {titleOfficeData?.data?.totalFeePercentage || ""}
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
+        <CardLayout className="w-[49%]">
+          <MainTitle title="Top 5 agents" />
+          <div className="flex flex-wrap w-full justify-between">
+            {users?.map((e, i) => (
+              <TopAgentCard
+                count={e.count}
+                image={e.image}
+                name={e.name}
+                key={i}
+                rank={e.rank}
+                percentage={e.percentage}
+                width="w-[48%]"
+              />
+            ))}
           </div>
         </CardLayout>
       </div>
