@@ -39,7 +39,7 @@ const TopAgentCard: React.FC<UserCardProps> = ({
         <h2 className="font-bold text-sm">{name}</h2>
         <h3 className="text-xs gap-2 flex ">Count: {count}</h3>
       </div>
-      <h2 className="font-bold text-sm">{percentage}</h2>
+      {/* <h2 className="font-bold text-sm">{percentage}</h2> */}
     </div>
   );
 };

@@ -305,11 +305,13 @@ import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
 import NoDataRow from "../../components/ui/NoDataRow";
 import add from "../../assets/icons/Add.svg";
 import minus from "../../assets/icons/Minus.svg";
+import dummyImage from "../../assets/images/Dummy.jpg";
 
 import {
   useGetListingOfficesWithAgentQuery,
   useGetSellingOfficesWithAgentQuery,
   useGetTitleOfficesQuery,
+  useGetTop5SellingAgentsQuery,
 } from "../../lib/rtkQuery/orderApi";
 
 import { countyOptions } from "../../utils/options";
@@ -317,6 +319,8 @@ import { ChartData, OrderDataType } from "../../utils/types";
 
 import CardLayout from "../../components/layouts/CardLayout";
 import DummyChart from "./DummyChart";
+import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
+import TopAgentCard from "../../components/ui/card/TopAgentCard";
 
 const SellingCompanyLeaderBoard = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -324,8 +328,6 @@ const SellingCompanyLeaderBoard = () => {
   const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>(
     {}
   );
-  const { data: titleOfficeData, isLoading: titleOfficeDataLoading } =
-    useGetTitleOfficesQuery({ orderId: "" });
 
   const { data: SellingOfficeData, isLoading } =
     useGetSellingOfficesWithAgentQuery({
@@ -333,6 +335,8 @@ const SellingCompanyLeaderBoard = () => {
       limit: 10,
     });
 
+  const { data: topSellingAgentData, isLoading: isLoadingSellingAgent } =
+    useGetTop5SellingAgentsQuery();
   const {
     formState: { errors },
     reset,
@@ -364,83 +368,29 @@ const SellingCompanyLeaderBoard = () => {
           <MainTitle title="All Sales Orders" />
           <DummyChart />
         </CardLayout>
-        <CardLayout className="w-[48%]">
-          <MainTitle title="Office" />
-          <div className="w-full overflow-y-auto max-h-[300px] ">
-            <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] min-h-[299px]">
-              <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] bg-white sticky top-0 z-10">
-                <tr>
-                  <th className="text-start font-medium">Office</th>
-                  <th className="text-start font-medium pr-2">Orders</th>
-                  <th className="text-start font-medium px-2">
-                    <div className="flex gap-0.5 items-center">
-                      Orders <span>%</span>
-                    </div>
-                  </th>
-                  <th className="text-start font-medium">Fees</th>
-                  <th className="text-start font-medium  pr-2">
-                    <div className="flex gap-0.5 items-center">
-                      Fees <span>%</span>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {titleOfficeDataLoading ? (
-                  <TableSkeleton columns={8} />
-                ) : (
-                  <>
-                    {titleOfficeData?.data?.titleOffices?.length === 0 ? (
-                      <NoDataRow colSpan={8} />
-                    ) : (
-                      <>
-                        {titleOfficeData?.data?.titleOffices?.map(
-                          (e: any, i: number) => (
-                            <tr
-                              key={e.id}
-                              className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
-            transition-colors duration-500 ease-in-out bg-white hover:bg-gray-100"
-            `}
-                            >
-                              <td>{e.titleOffice}</td>
-                              <td>{e.orderCount}</td>
-                              <td className="px-2">
-                                {Number(e.orderPercentage).toFixed(2)}
-                              </td>
-                              <td>{e.orderFeeTotal}</td>
-                              <td>{Number(e.feePercentage).toFixed(2)}</td>
-                              <td>{e.lastAccess}</td>
-                            </tr>
-                          )
-                        )}
-                      </>
-                    )}
-                  </>
-                )}
-              </tbody>
-
-              <tfoot>
-                <tr className="bg-[#F3F3F3]">
-                  <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                    Total
-                  </td>
-                  <td className="py-3  font-medium text-sm text-[#15120F]">
-                    {titleOfficeData?.data?.totalOrderCount || ""}
-                  </td>
-                  <td className="py-3 px-2 font-medium text-sm text-[#15120F]">
-                    {titleOfficeData?.data?.totalOrderPercentage || ""}
-                  </td>
-                  <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                    {titleOfficeData?.data?.totalFeeCount || ""}
-                  </td>
-                  <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                    {titleOfficeData?.data?.totalFeePercentage || ""}
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
+        <CardLayout className="w-[49%]">
+          <MainTitle title="Top 5 agents" />
+          {isLoadingSellingAgent ? (
+            <CustomizableSkeleton
+              width="w-full"
+              height={300}
+              borderRadius={30}
+            />
+          ) : (
+            <div className="flex flex-wrap w-full justify-between">
+              {topSellingAgentData?.data?.map((e: any, i: number) => (
+                <TopAgentCard
+                  count={e.orderCount}
+                  image={dummyImage}
+                  name={e.contactName}
+                  key={i}
+                  rank={i + 1}
+                  // percentage={e.percentage}
+                  width="w-[48%]"
+                />
+              ))}
+            </div>
+          )}
         </CardLayout>
       </div>
       <div className="w-full flex flex-col gap-4 my-4">

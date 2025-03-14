@@ -161,6 +161,18 @@ export const orderApi = createApi({
         params: { orderId },
       }),
     }),
+    getTop5ListingAgents: builder.query<any, void>({
+      query: () => ({
+        url: "listing-office/top-5",
+        method: "GET",
+      }),
+    }),
+    getTop5SellingAgents: builder.query<any, void>({
+      query: () => ({
+        url: "selling-office/top-5",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -179,4 +191,6 @@ export const {
   useGetSellingOfficesWithAgentQuery,
   useGetListingOfficeByIdQuery,
   useGetSellingOfficeByIdQuery,
+  useGetTop5ListingAgentsQuery,
+  useGetTop5SellingAgentsQuery,
 } = orderApi;
