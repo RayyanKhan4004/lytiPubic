@@ -293,7 +293,7 @@ const ListingTable = () => {
         </CardLayout>
       ) : (
         <CardLayout>
-          <div className="w-full flex flex-col gap-4 my-4">
+          <div className="w-full flex flex-col gap-4 ">
             <div className="flex justify-between items-center">
               <MainTitle title="Listing Detail" />
               <div
