@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
@@ -8,7 +8,7 @@ import {
   useDeleteOrderMutation,
   useGetOrdersQuery,
 } from "../../lib/rtkQuery/orderApi";
-import { DummyData, tableHeaders } from "../../utils/DummyData";
+import { tableHeaders } from "../../utils/DummyData";
 import {
   countyOptions,
   fileStatusOption,
@@ -29,15 +29,13 @@ import upload from "../../assets/icons/UploadSimple.svg";
 import filter from "../../assets/icons/AlignLeft.svg";
 import add from "../../assets/icons/Add.svg";
 import menu from "../../assets/icons/Menu.svg";
-import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
 import Spinner from "../../components/common/Spinner";
 import PopoverMenu from "../../components/ui/popup/PopupMenu";
 import toast from "react-hot-toast";
 import { OrderDataType } from "../../utils/types";
-import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import CardLayout from "../../components/layouts/CardLayout";
 import FilterPopup from "../../components/ui/FilterPopup";
-import { formatNumber } from "../../utils/functions";
+import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
 
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -236,50 +234,59 @@ const OrdersTable = () => {
       }
       <div className="w-full px-4 my-8 font-poppin">
         <Breadcrumb items={["Orders", "Orders"]} />
-        <div className="w-full flex gap-4 mt-2">
-          <StatsCard
-            heading="Orders"
-            stats={[
-              {
-                value: `${data?.totalOrderCount}`,
-                text: "Total Orders",
-              },
-              {
-                value: `${data?.totalFee}`,
-                text: "Total Amount",
-              },
-              { value: "57k", text: "Avg /Order" },
-            ]}
-          />
-          <StatsCard
-            heading="Title"
-            stats={[
-              {
-                value: `${data?.titleChargesOrderCount}`,
-                text: "Total Units",
-              },
-              {
-                value: `${data?.titleChargesTotalFee}`,
-                text: "Title charges",
-              },
-              { value: "27k", text: "Avg Title " },
-            ]}
-          />
-          <StatsCard
-            heading="Escrow"
-            stats={[
-              {
-                value: `${data?.escrowChargesOrderCount}`,
-                text: "Escrow Units",
-              },
-              {
-                value: `${data?.escrowChargesTotalFee}`,
-                text: "Escrow charges",
-              },
-              { value: "9k", text: "Avg Escrow" },
-            ]}
-          />
-        </div>
+        {isLoading ? (
+          <div className="w-full flex gap-4 mt-2">
+            <CustomizableSkeleton height={156} width="32%" />
+            <CustomizableSkeleton height={156} width="32%" />
+            <CustomizableSkeleton height={156} width="32%" />
+          </div>
+        ) : (
+          <div className="w-full flex gap-4 mt-2">
+            <StatsCard
+              heading="Orders"
+              stats={[
+                {
+                  value: `${data?.totalOrderCount}`,
+                  text: "Total Orders",
+                },
+                {
+                  value: `${data?.totalFee}`,
+                  text: "Total Amount",
+                },
+                { value: "57k", text: "Avg /Order" },
+              ]}
+            />
+            <StatsCard
+              heading="Title"
+              stats={[
+                {
+                  value: `${data?.titleChargesOrderCount}`,
+                  text: "Total Units",
+                },
+                {
+                  value: `${data?.titleChargesTotalFee}`,
+                  text: "Title charges",
+                },
+                { value: "27k", text: "Avg Title " },
+              ]}
+            />
+            <StatsCard
+              heading="Escrow"
+              stats={[
+                {
+                  value: `${data?.escrowChargesOrderCount}`,
+                  text: "Escrow Units",
+                },
+                {
+                  value: `${data?.escrowChargesTotalFee}`,
+                  text: "Escrow charges",
+                },
+                { value: "9k", text: "Avg Escrow" },
+              ]}
+            />
+          </div>
+        )}
+
         <CardLayout>
           <form className="font-Poppins flex justify-between items-center w-full  gap-2">
             <SearchInput
