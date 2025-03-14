@@ -187,6 +187,22 @@ export const orderApi = createApi({
         method: "DELETE",
       }),
     }),
+    createListingAgent: builder.mutation<
+      any,
+      { listingOfficeId: number; contactName: string }
+    >({
+      query: (body) => ({
+        url: "listing-agent",
+        method: "POST",
+        body,
+      }),
+    }),
+    deleteListingAgent: builder.mutation<any, { id: number }>({
+      query: ({ id }) => ({
+        url: `listing-agent/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -209,4 +225,6 @@ export const {
   useGetTop5SellingAgentsQuery,
   useCreateListingOfficeMutation,
   useDeleteListingOfficeMutation,
+  useCreateListingAgentMutation,
+  useDeleteListingAgentMutation,
 } = orderApi;
