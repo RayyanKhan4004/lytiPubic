@@ -482,6 +482,7 @@ import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
 import NoDataRow from "../../components/ui/NoDataRow";
 import CardLayout from "../../components/layouts/CardLayout";
 import Pagination from "../../components/common/Pagination";
+import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
 
 const FeeDetail = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -527,32 +528,40 @@ const FeeDetail = () => {
         <div className="flex justify-between w-full">
           <Breadcrumb items={["Orders", "Fee Details"]} />
         </div>
-        <div className="flex justify-between w-full">
-          <StatsCard
-            heading="Orders"
-            stats={[
-              { value: "20.7k", text: "Total Orders" },
-              { value: "3k", text: "Total Amount" },
-              { value: "57k", text: "Avg /Order" },
-            ]}
-          />
-          <StatsCard
-            heading="Title"
-            stats={[
-              { value: "20.7k", text: "Total Orders" },
-              { value: "3k", text: "Total Amount" },
-              { value: "57k", text: "Avg /Order" },
-            ]}
-          />
-          <StatsCard
-            heading="Escrow"
-            stats={[
-              { value: "20.7k", text: "Total Orders" },
-              { value: "3k", text: "Total Amount" },
-              { value: "57k", text: "Avg /Order" },
-            ]}
-          />
-        </div>
+        {isLoading ? (
+          <div className="w-full flex gap-4 mt-2">
+            <CustomizableSkeleton height={156} width="32%" />
+            <CustomizableSkeleton height={156} width="32%" />
+            <CustomizableSkeleton height={156} width="32%" />
+          </div>
+        ) : (
+          <div className="flex justify-between w-full">
+            <StatsCard
+              heading="Orders"
+              stats={[
+                { value: "20.7k", text: "Total Orders" },
+                { value: "3k", text: "Total Amount" },
+                { value: "57k", text: "Avg /Order" },
+              ]}
+            />
+            <StatsCard
+              heading="Title"
+              stats={[
+                { value: "20.7k", text: "Total Orders" },
+                { value: "3k", text: "Total Amount" },
+                { value: "57k", text: "Avg /Order" },
+              ]}
+            />
+            <StatsCard
+              heading="Escrow"
+              stats={[
+                { value: "20.7k", text: "Total Orders" },
+                { value: "3k", text: "Total Amount" },
+                { value: "57k", text: "Avg /Order" },
+              ]}
+            />
+          </div>
+        )}
         <div className="flex flex-row  justify-between w-full font-poppin">
           <CardLayout className="w-[49%] max-h-[810px] h-auto">
             <MainTitle title="Orders" />

@@ -446,46 +446,6 @@ const SellingCompanyLeaderBoard = () => {
       <div className="w-full flex flex-col gap-4 my-4">
         <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-full my-6 overflow-auto ">
           <div className="font-Poppins flex justify-between items-center w-full pt-3 ">
-            {/* <form className="font-Poppins flex justify-between items-center w-full  gap-2">
-              <SearchInput
-                debounceTimeout={500}
-                placeholder="Search Keyword"
-                onChange={(e) => setSearchTerm(e)}
-                className="w-[27%]"
-              />
-              <div className="flex items-center gap-1.5">
-                <SelectField
-                  name="propertyCounty"
-                  control={control}
-                  options={countyOptions}
-                  placeholder="County"
-                  error={errors.propertyCounty?.message}
-                  required={false}
-                  className="w-[113px]"
-                  height="44px"
-                />
-                <SelectField
-                  name="propertyCounty"
-                  control={control}
-                  options={countyOptions}
-                  placeholder="County"
-                  error={errors.propertyCounty?.message}
-                  required={false}
-                  className="w-[113px]"
-                  height="44px"
-                />
-                <SelectField
-                  name="propertyCounty"
-                  control={control}
-                  options={countyOptions}
-                  placeholder="County"
-                  error={errors.propertyCounty?.message}
-                  required={false}
-                  className="w-[113px]"
-                  height="44px"
-                />
-              </div>
-            </form> */}
             <MainTitle title="Selling Offices" />
           </div>
 
@@ -527,7 +487,6 @@ const SellingCompanyLeaderBoard = () => {
                     bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out"
                           >
                             <td className="px-3">
-                              {/* {expandedRows[e.id] ? "-" : "+"} */}
                               <div
                                 onClick={() => toggleRow(e.id)}
                                 className={` ${
@@ -570,20 +529,10 @@ const SellingCompanyLeaderBoard = () => {
                             e?.sellingAgents?.length > 0 && (
                               <tr>
                                 <td colSpan={8} className="bg-gray-50 p-3">
-                                  <table className="w-full border-t border-gray-300">
-                                    <thead>
-                                      <tr className="bg-gray-200 text-gray-700">
-                                        <th className="p-2 text-left">
-                                          Agent ID
-                                        </th>
-                                        <th className="p-2 text-left">
-                                          Agent Name
-                                        </th>
-                                      </tr>
-                                    </thead>
+                                  <table className="w-full ">
                                     <tbody>
                                       {e.sellingAgents.map((agent: any) => (
-                                        <tr key={agent.id} className="border-t">
+                                        <tr key={agent.id} className="">
                                           <td className="p-2">{agent.id}</td>
                                           <td className="p-2">
                                             {agent.contactName}

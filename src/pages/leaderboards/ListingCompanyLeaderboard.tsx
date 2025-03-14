@@ -275,20 +275,10 @@ const ListingCompanyLeaderBoard = () => {
                             e.listingAgents?.length > 0 && (
                               <tr>
                                 <td colSpan={8} className="bg-gray-50 p-3">
-                                  <table className="w-full border-t border-gray-300">
-                                    <thead>
-                                      <tr className="bg-gray-200 text-gray-700">
-                                        <th className="p-2 text-left">
-                                          Agent ID
-                                        </th>
-                                        <th className="p-2 text-left">
-                                          Agent Name
-                                        </th>
-                                      </tr>
-                                    </thead>
+                                  <table className="w-full ">
                                     <tbody>
                                       {e.listingAgents.map((agent: any) => (
-                                        <tr key={agent.id} className="border-t">
+                                        <tr key={agent.id} className="">
                                           <td className="p-2">{agent.id}</td>
                                           <td className="p-2">
                                             {agent.contactName}

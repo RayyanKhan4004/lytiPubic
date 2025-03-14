@@ -18,6 +18,7 @@ import {
   useGetTitleOfficesQuery,
   useGetUnderwritersQuery,
 } from "../../lib/rtkQuery/orderApi";
+import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
 
 const UnderwriterBoard = () => {
   // State management
@@ -110,50 +111,58 @@ const UnderwriterBoard = () => {
         </button>
       </div>
 
-      <div className="w-full flex gap-4 mt-2 justify-between">
-        <StatsCard
-          heading="Orders"
-          stats={[
-            {
-              value: `${orderData?.totalOrderCount || 0}`,
-              text: "Total Orders",
-            },
-            {
-              value: `${orderData?.totalFee || 0}`,
-              text: "Total Amount",
-            },
-            { value: "57k", text: "Avg /Order" },
-          ]}
-        />
-        <StatsCard
-          heading="Title"
-          stats={[
-            {
-              value: `${orderData?.titleChargesOrderCount || 0}`,
-              text: "Total Units",
-            },
-            {
-              value: `${orderData?.titleChargesTotalFee || 0}`,
-              text: "Title charges",
-            },
-            { value: "27k", text: "Avg Title " },
-          ]}
-        />
-        <StatsCard
-          heading="Escrow"
-          stats={[
-            {
-              value: `${orderData?.escrowChargesOrderCount || 0}`,
-              text: "Escrow Units",
-            },
-            {
-              value: `${orderData?.escrowChargesTotalFee || 0}`,
-              text: "Escrow charges",
-            },
-            { value: "9k", text: "Avg Escrow" },
-          ]}
-        />
-      </div>
+      {isLoading ? (
+        <div className="w-full flex gap-4 mt-2">
+          <CustomizableSkeleton height={156} width="32%" />
+          <CustomizableSkeleton height={156} width="32%" />
+          <CustomizableSkeleton height={156} width="32%" />
+        </div>
+      ) : (
+        <div className="w-full flex gap-4 mt-2 justify-between">
+          <StatsCard
+            heading="Orders"
+            stats={[
+              {
+                value: `${orderData?.totalOrderCount || 0}`,
+                text: "Total Orders",
+              },
+              {
+                value: `${orderData?.totalFee || 0}`,
+                text: "Total Amount",
+              },
+              { value: "57k", text: "Avg /Order" },
+            ]}
+          />
+          <StatsCard
+            heading="Title"
+            stats={[
+              {
+                value: `${orderData?.titleChargesOrderCount || 0}`,
+                text: "Total Units",
+              },
+              {
+                value: `${orderData?.titleChargesTotalFee || 0}`,
+                text: "Title charges",
+              },
+              { value: "27k", text: "Avg Title " },
+            ]}
+          />
+          <StatsCard
+            heading="Escrow"
+            stats={[
+              {
+                value: `${orderData?.escrowChargesOrderCount || 0}`,
+                text: "Escrow Units",
+              },
+              {
+                value: `${orderData?.escrowChargesTotalFee || 0}`,
+                text: "Escrow charges",
+              },
+              { value: "9k", text: "Avg Escrow" },
+            ]}
+          />
+        </div>
+      )}
 
       <div className="w-full flex justify-between ">
         <CardLayout className="w-[49%] max-h-[810px] h-auto">
