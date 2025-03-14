@@ -10,10 +10,11 @@ import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
 import NoDataRow from "../../components/ui/NoDataRow";
 import add from "../../assets/icons/Add.svg";
 import minus from "../../assets/icons/Minus.svg";
+import dummyImage from "../../assets/images/Dummy.jpg";
 
 import {
   useGetListingOfficesWithAgentQuery,
-  useGetTitleOfficesQuery,
+  useGetTop5ListingAgentsQuery,
 } from "../../lib/rtkQuery/orderApi";
 
 import { countyOptions } from "../../utils/options";
@@ -23,6 +24,7 @@ import CardLayout from "../../components/layouts/CardLayout";
 import DummyChart from "./DummyChart";
 import { users } from "../../utils/DummyData";
 import TopAgentCard from "../../components/ui/card/TopAgentCard";
+import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
 
 const ListingCompanyLeaderBoard = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -30,8 +32,8 @@ const ListingCompanyLeaderBoard = () => {
   const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>(
     {}
   );
-  const { data: titleOfficeData, isLoading: titleOfficeDataLoading } =
-    useGetTitleOfficesQuery({ orderId: "" });
+  const { data: topAgentData, isLoading: isLoadingListingAgent } =
+    useGetTop5ListingAgentsQuery();
 
   const { data: listingOfficeData, isLoading } =
     useGetListingOfficesWithAgentQuery({
@@ -41,10 +43,6 @@ const ListingCompanyLeaderBoard = () => {
 
   const {
     formState: { errors },
-    reset,
-    watch,
-    setValue,
-    control,
   } = useForm<OrderDataType>();
 
   const handlePageChange = ({ selected }: { selected: number }) => {
@@ -72,19 +70,27 @@ const ListingCompanyLeaderBoard = () => {
         </CardLayout>
         <CardLayout className="w-[49%]">
           <MainTitle title="Top 5 agents" />
-          <div className="flex flex-wrap w-full justify-between">
-            {users?.map((e, i) => (
-              <TopAgentCard
-                count={e.count}
-                image={e.image}
-                name={e.name}
-                key={i}
-                rank={e.rank}
-                percentage={e.percentage}
-                width="w-[48%]"
-              />
-            ))}
-          </div>
+          {isLoadingListingAgent ? (
+            <CustomizableSkeleton
+              width="w-full"
+              height={300}
+              borderRadius={30}
+            />
+          ) : (
+            <div className="flex flex-wrap w-full justify-between">
+              {topAgentData?.data?.map((e: any, i: number) => (
+                <TopAgentCard
+                  count={e.orderCount}
+                  image={dummyImage}
+                  name={e.contactName}
+                  key={i}
+                  rank={i + 1}
+                  // percentage={e.percentage}
+                  width="w-[48%]"
+                />
+              ))}
+            </div>
+          )}
         </CardLayout>
       </div>
       <div className="w-full flex flex-col gap-4 my-4">
