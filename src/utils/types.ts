@@ -49,6 +49,10 @@ export interface OrderDataType {
   sellingAgentId?: number;
 }
 
+export interface ListingOfficeDataType {
+  name?: string;
+}
+
 export interface Fee {
   feeDescription?: string;
   account?: string;

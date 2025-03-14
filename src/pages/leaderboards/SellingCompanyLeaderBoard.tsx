@@ -369,7 +369,7 @@ const SellingCompanyLeaderBoard = () => {
           <DummyChart />
         </CardLayout>
         <CardLayout className="w-[49%]">
-          <MainTitle title="Top 5 agents" />
+          <MainTitle title="Top  agents" />
           {isLoadingSellingAgent ? (
             <CustomizableSkeleton
               width="w-full"
