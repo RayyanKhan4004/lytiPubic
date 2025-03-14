@@ -61,8 +61,6 @@ const ListingTable = () => {
     (item: any) => item.id === expandedRowId
   );
 
-  console.log(selectedRow, "==selectedRow==");
-
   const handlePageChange = ({ selected }: { selected: number }) => {
     const newPage = selected + 1;
     if (newPage >= 1 && newPage <= listingOfficeData?.totalPages) {
@@ -78,8 +76,8 @@ const ListingTable = () => {
     if (action === "delete" && rowData) {
       setLoading(rowData?.id);
       try {
-        await deleteListingOffice({ id: rowData?.id }).unwrap();
-        toast.success("Order deleted successfully");
+        const res = await deleteListingOffice({ id: rowData?.id }).unwrap();
+        toast.success(res?.message || "Order deleted successfully");
         refetch();
       } catch (err: any) {
         toast.error(err?.data?.message || "Cannot delete user");
@@ -128,8 +126,9 @@ const ListingTable = () => {
 
   const handleDeleteAgent = async (agentId: number) => {
     try {
-      await deleteListingAgent({ id: agentId }).unwrap();
-      toast.success("Agent deleted successfully");
+      const res = await deleteListingAgent({ id: agentId }).unwrap();
+
+      toast.success(res?.message || "Agent deleted successfully");
       refetch();
     } catch (err: any) {
       toast.error(err?.data?.message || "Failed to delete agent");

@@ -141,18 +141,18 @@ export const sidebarData = () => {
         { id: 709, title: "Tasks", path: "/admin/tasks" },
         { id: 710, title: "Commissions", path: "/admin/commissions" },
         {
-          id: 709,
+          id: 711,
           title: "Expenses",
           path: "/Dashboard/Personal",
           image: Share,
         },
         {
-          id: 710,
+          id: 712,
           title: "Integration Hub",
           path: "/Dashboard/Personal",
           image: Share,
         },
-        { id: 711, title: "Vendor", path: "/Dashboard/Personal", image: Share },
+        { id: 713, title: "Vendor", path: "/Dashboard/Personal", image: Share },
       ],
     },
     {
