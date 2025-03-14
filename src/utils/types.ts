@@ -51,6 +51,8 @@ export interface OrderDataType {
 
 export interface ListingOfficeDataType {
   name?: string;
+  listingOfficeId?: number;
+  contactName?: string;
 }
 
 export interface Fee {

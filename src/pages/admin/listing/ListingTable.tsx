@@ -5,7 +5,9 @@ import MainTitle from "../../../components/ui/typography/MainTitle";
 import TableSkeleton from "../../../components/ui/skeleton/TableSkeleton";
 import NoDataRow from "../../../components/ui/NoDataRow";
 import {
+  useCreateListingAgentMutation,
   useCreateListingOfficeMutation,
+  useDeleteListingAgentMutation,
   useDeleteListingOfficeMutation,
   useGetListingOfficesWithAgentQuery,
 } from "../../../lib/rtkQuery/orderApi";
@@ -39,8 +41,13 @@ const ListingTable = () => {
   const [expandedRowId, setExpandedRowId] = useState<number | null>(null);
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
+  const [isAddAgentInListingPopupOpen, setIsAddAgentInListingPopupOpen] =
+    useState(false);
+  const [createListingAgent, { isLoading: createListingAgentLoading }] =
+    useCreateListingAgentMutation();
   const togglePopup = () => setIsPopupOpen((prev) => !prev);
+  const toggleAddAgentInListingPopup = () =>
+    setIsAddAgentInListingPopupOpen((prev) => !prev);
 
   const {
     data: listingOfficeData,
@@ -53,6 +60,9 @@ const ListingTable = () => {
   const selectedRow = listingOfficeData?.data?.find(
     (item: any) => item.id === expandedRowId
   );
+
+  console.log(selectedRow, "==selectedRow==");
+
   const handlePageChange = ({ selected }: { selected: number }) => {
     const newPage = selected + 1;
     if (newPage >= 1 && newPage <= listingOfficeData?.totalPages) {
@@ -95,6 +105,37 @@ const ListingTable = () => {
       toast.error(err?.data?.message || "Company creation failed");
     }
   };
+  const onListingAgentSubmit: SubmitHandler<ListingOfficeDataType> = async (
+    data
+  ) => {
+    const formattedData = {
+      listingOfficeId: selectedRow?.id || 0,
+      contactName: data.contactName || "",
+    };
+    try {
+      const res = await createListingAgent(formattedData).unwrap();
+      console.log(res, "==res==");
+      toast.success("Agent Added Successfully");
+      reset();
+      refetch();
+      toggleAddAgentInListingPopup();
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to add agent");
+    }
+  };
+  const [deleteListingAgent, { isLoading: deleteLoading }] =
+    useDeleteListingAgentMutation();
+
+  const handleDeleteAgent = async (agentId: number) => {
+    try {
+      await deleteListingAgent({ id: agentId }).unwrap();
+      toast.success("Agent deleted successfully");
+      refetch();
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to delete agent");
+    }
+  };
+
   return (
     <div className="w-full px-4 my-8 font-Poppins min-h-full">
       <Breadcrumb items={["Admin", "Listing "]} />
@@ -125,6 +166,41 @@ const ListingTable = () => {
               className="w-full bg-(--secondary) text-white py-2 rounded-md mt-5"
             >
               {createListingOfficeLoading ? <Spinner /> : "Send"}
+            </button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={isAddAgentInListingPopupOpen}
+        onOpenChange={setIsAddAgentInListingPopupOpen}
+      >
+        <DialogOverlay className="fixed inset-0 bg-black/50 z-[100]" />
+        <DialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg w-96 z-[100]">
+          <form
+            onSubmit={handleSubmit(onListingAgentSubmit)}
+            key={isAddAgentInListingPopupOpen ? "open" : "closed"}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <MainTitle title="Add Listing Office" />
+              <button onClick={toggleAddAgentInListingPopup}>
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+
+            <InputField
+              label="Contact Name"
+              name="contactName"
+              control={control}
+              type="text"
+              placeholder="Enter name"
+              error={errors.contactName?.message}
+            />
+            <button
+              type="submit"
+              className="w-full bg-(--secondary) text-white py-2 rounded-md mt-5"
+            >
+              {createListingAgentLoading ? <Spinner /> : "Send"}
             </button>
           </form>
         </DialogContent>
@@ -218,21 +294,41 @@ const ListingTable = () => {
       ) : (
         <CardLayout>
           <div className="w-full flex flex-col gap-4 my-4">
-            <MainTitle title="Listing Detail" />
+            <div className="flex justify-between items-center">
+              <MainTitle title="Listing Detail" />
+              <div
+                className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
+                onClick={toggleAddAgentInListingPopup}
+              >
+                <img src={add} alt="" />
+              </div>
+            </div>
 
             <table className="w-full text-sm font-normal text-[#15120F] mt-4">
               <thead className="text-start border-b-[1px] border-[#F4EFE9]">
                 <tr>
-                  <th className="p-2">Agent ID</th>
-                  <th className="p-2">Contact Name</th>
+                  <th className="p-2 text-start">Agent ID</th>
+                  <th className="p-2 text-start">Contact Name</th>
                 </tr>
               </thead>
 
               <tbody>
                 {selectedRow?.listingAgents.map((agent: any) => (
-                  <tr key={agent.id}>
+                  <tr
+                    key={agent.id}
+                    className="border-b-[1px] border-[#F4EFE9]"
+                  >
                     <td className="p-2">{agent.id}</td>
                     <td className="p-2">{agent.contactName}</td>
+                    <td className="p-2">
+                      <button
+                        className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                        onClick={() => handleDeleteAgent(agent.id)}
+                        disabled={deleteLoading}
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
