@@ -36,6 +36,7 @@ import { OrderDataType } from "../../utils/types";
 import CardLayout from "../../components/layouts/CardLayout";
 import FilterPopup from "../../components/ui/FilterPopup";
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
+import { formatNumber } from "../../utils/functions";
 
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -250,10 +251,10 @@ const OrdersTable = () => {
                   text: "Total Orders",
                 },
                 {
-                  value: `${data?.totalFee}`,
+                  value: `${formatNumber(data?.totalFee)}`,
                   text: "Total Amount",
                 },
-                { value: "57k", text: "Avg /Order" },
+                { value: "0", text: "Avg /Order" },
               ]}
             />
             <StatsCard
@@ -264,10 +265,10 @@ const OrdersTable = () => {
                   text: "Total Units",
                 },
                 {
-                  value: `${data?.titleChargesTotalFee}`,
+                  value: `${formatNumber(data?.titleChargesTotalFee)}`,
                   text: "Title charges",
                 },
-                { value: "27k", text: "Avg Title " },
+                { value: "0", text: "Avg Title " },
               ]}
             />
             <StatsCard
@@ -278,10 +279,10 @@ const OrdersTable = () => {
                   text: "Escrow Units",
                 },
                 {
-                  value: `${data?.escrowChargesTotalFee}`,
+                  value: `${formatNumber(data?.escrowChargesTotalFee)}`,
                   text: "Escrow charges",
                 },
-                { value: "9k", text: "Avg Escrow" },
+                { value: "0", text: "Avg Escrow" },
               ]}
             />
           </div>

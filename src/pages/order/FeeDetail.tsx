@@ -483,6 +483,7 @@ import NoDataRow from "../../components/ui/NoDataRow";
 import CardLayout from "../../components/layouts/CardLayout";
 import Pagination from "../../components/common/Pagination";
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
+import { formatNumber } from "../../utils/functions";
 
 const FeeDetail = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -538,29 +539,47 @@ const FeeDetail = () => {
             <CustomizableSkeleton height={156} width="32%" />
           </div>
         ) : (
-          <div className="flex justify-between w-full">
+          <div className="w-full flex gap-4 mt-2">
             <StatsCard
               heading="Orders"
               stats={[
-                { value: "20.7k", text: "Total Orders" },
-                { value: "3k", text: "Total Amount" },
-                { value: "57k", text: "Avg /Order" },
+                {
+                  value: `${orderData?.totalOrderCount}`,
+                  text: "Total Orders",
+                },
+                {
+                  value: `${formatNumber(orderData?.totalFee)}`,
+                  text: "Total Amount",
+                },
+                { value: "0", text: "Avg /Order" },
               ]}
             />
             <StatsCard
               heading="Title"
               stats={[
-                { value: "20.7k", text: "Total Orders" },
-                { value: "3k", text: "Total Amount" },
-                { value: "57k", text: "Avg /Order" },
+                {
+                  value: `${orderData?.titleChargesOrderCount}`,
+                  text: "Total Units",
+                },
+                {
+                  value: `${formatNumber(orderData?.titleChargesTotalFee)}`,
+                  text: "Title charges",
+                },
+                { value: "0", text: "Avg Title " },
               ]}
             />
             <StatsCard
               heading="Escrow"
               stats={[
-                { value: "20.7k", text: "Total Orders" },
-                { value: "3k", text: "Total Amount" },
-                { value: "57k", text: "Avg /Order" },
+                {
+                  value: `${orderData?.escrowChargesOrderCount}`,
+                  text: "Escrow Units",
+                },
+                {
+                  value: `${formatNumber(orderData?.escrowChargesTotalFee)}`,
+                  text: "Escrow charges",
+                },
+                { value: "0", text: "Avg Escrow" },
               ]}
             />
           </div>
