@@ -19,6 +19,7 @@ import {
   useGetUnderwritersQuery,
 } from "../../lib/rtkQuery/orderApi";
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
+import { formatNumber } from "../../utils/functions";
 
 const UnderwriterBoard = () => {
   // State management
@@ -118,47 +119,47 @@ const UnderwriterBoard = () => {
           <CustomizableSkeleton height={156} width="32%" />
         </div>
       ) : (
-        <div className="w-full flex gap-4 mt-2 justify-between">
+        <div className="w-full flex gap-4 mt-2">
           <StatsCard
             heading="Orders"
             stats={[
               {
-                value: `${orderData?.totalOrderCount || 0}`,
+                value: `${orderData?.totalOrderCount}`,
                 text: "Total Orders",
               },
               {
-                value: `${orderData?.totalFee || 0}`,
+                value: `${formatNumber(orderData?.totalFee)}`,
                 text: "Total Amount",
               },
-              { value: "57k", text: "Avg /Order" },
+              { value: "0", text: "Avg /Order" },
             ]}
           />
           <StatsCard
             heading="Title"
             stats={[
               {
-                value: `${orderData?.titleChargesOrderCount || 0}`,
+                value: `${orderData?.titleChargesOrderCount}`,
                 text: "Total Units",
               },
               {
-                value: `${orderData?.titleChargesTotalFee || 0}`,
+                value: `${formatNumber(orderData?.titleChargesTotalFee)}`,
                 text: "Title charges",
               },
-              { value: "27k", text: "Avg Title " },
+              { value: "0", text: "Avg Title " },
             ]}
           />
           <StatsCard
             heading="Escrow"
             stats={[
               {
-                value: `${orderData?.escrowChargesOrderCount || 0}`,
+                value: `${orderData?.escrowChargesOrderCount}`,
                 text: "Escrow Units",
               },
               {
-                value: `${orderData?.escrowChargesTotalFee || 0}`,
+                value: `${formatNumber(orderData?.escrowChargesTotalFee)}`,
                 text: "Escrow charges",
               },
-              { value: "9k", text: "Avg Escrow" },
+              { value: "0", text: "Avg Escrow" },
             ]}
           />
         </div>
