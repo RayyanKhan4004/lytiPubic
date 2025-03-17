@@ -2,8 +2,15 @@ export const formatNumber = (num: string | number) => {
   const numberValue = typeof num === "string" ? parseFloat(num) : num;
   if (isNaN(numberValue)) return "Invalid Number";
 
-  return numberValue.toFixed(2);
-  //   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  return numberValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+export const formatNumberWithoutDecimals = (num: string | number) => {
+  const numberValue = typeof num === "string" ? parseFloat(num) : num;
+  if (isNaN(numberValue)) return "Invalid Number";
+
+  return Math.trunc(numberValue)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 export const formatDate = (date: Date | string | null | undefined): string => {

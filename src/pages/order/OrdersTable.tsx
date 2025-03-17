@@ -36,7 +36,10 @@ import { OrderDataType } from "../../utils/types";
 import CardLayout from "../../components/layouts/CardLayout";
 import FilterPopup from "../../components/ui/FilterPopup";
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
-import { formatNumber } from "../../utils/functions";
+import {
+  formatNumber,
+  formatNumberWithoutDecimals,
+} from "../../utils/functions";
 
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -247,11 +250,13 @@ const OrdersTable = () => {
               heading="Orders"
               stats={[
                 {
-                  value: `${data?.totalOrderCount}`,
+                  value: `${formatNumberWithoutDecimals(
+                    data?.totalOrderCount
+                  )}`,
                   text: "Total Orders",
                 },
                 {
-                  value: `${formatNumber(data?.totalFee)}`,
+                  value: `$${formatNumber(data?.totalFee)}`,
                   text: "Total Amount",
                 },
                 { value: "0", text: "Avg /Order" },
@@ -261,11 +266,13 @@ const OrdersTable = () => {
               heading="Title"
               stats={[
                 {
-                  value: `${data?.titleChargesOrderCount}`,
+                  value: `${formatNumberWithoutDecimals(
+                    data?.titleChargesOrderCount
+                  )}`,
                   text: "Total Units",
                 },
                 {
-                  value: `${formatNumber(data?.titleChargesTotalFee)}`,
+                  value: `$${formatNumber(data?.titleChargesTotalFee)}`,
                   text: "Title charges",
                 },
                 { value: "0", text: "Avg Title " },
@@ -275,11 +282,13 @@ const OrdersTable = () => {
               heading="Escrow"
               stats={[
                 {
-                  value: `${data?.escrowChargesOrderCount}`,
+                  value: `${formatNumberWithoutDecimals(
+                    data?.escrowChargesOrderCount
+                  )}`,
                   text: "Escrow Units",
                 },
                 {
-                  value: `${formatNumber(data?.escrowChargesTotalFee)}`,
+                  value: `$${formatNumber(data?.escrowChargesTotalFee)}`,
                   text: "Escrow charges",
                 },
                 { value: "0", text: "Avg Escrow" },

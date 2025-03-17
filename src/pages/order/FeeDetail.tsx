@@ -483,7 +483,10 @@ import NoDataRow from "../../components/ui/NoDataRow";
 import CardLayout from "../../components/layouts/CardLayout";
 import Pagination from "../../components/common/Pagination";
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
-import { formatNumber } from "../../utils/functions";
+import {
+  formatNumber,
+  formatNumberWithoutDecimals,
+} from "../../utils/functions";
 
 const FeeDetail = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -518,8 +521,6 @@ const FeeDetail = () => {
     }
   };
 
-  console.log(orderData?.feeDescriptions, "==data===");
-
   return (
     <>
       {
@@ -544,11 +545,13 @@ const FeeDetail = () => {
               heading="Orders"
               stats={[
                 {
-                  value: `${orderData?.totalOrderCount}`,
+                  value: `${formatNumberWithoutDecimals(
+                    orderData?.totalOrderCount
+                  )}`,
                   text: "Total Orders",
                 },
                 {
-                  value: `${formatNumber(orderData?.totalFee)}`,
+                  value: `$${formatNumber(orderData?.totalFee)}`,
                   text: "Total Amount",
                 },
                 { value: "0", text: "Avg /Order" },
@@ -558,11 +561,13 @@ const FeeDetail = () => {
               heading="Title"
               stats={[
                 {
-                  value: `${orderData?.titleChargesOrderCount}`,
+                  value: `${formatNumberWithoutDecimals(
+                    orderData?.titleChargesOrderCount
+                  )}`,
                   text: "Total Units",
                 },
                 {
-                  value: `${formatNumber(orderData?.titleChargesTotalFee)}`,
+                  value: `$${formatNumber(orderData?.titleChargesTotalFee)}`,
                   text: "Title charges",
                 },
                 { value: "0", text: "Avg Title " },
@@ -572,11 +577,13 @@ const FeeDetail = () => {
               heading="Escrow"
               stats={[
                 {
-                  value: `${orderData?.escrowChargesOrderCount}`,
+                  value: `${formatNumberWithoutDecimals(
+                    orderData?.escrowChargesOrderCount
+                  )}`,
                   text: "Escrow Units",
                 },
                 {
-                  value: `${formatNumber(orderData?.escrowChargesTotalFee)}`,
+                  value: `$${formatNumber(orderData?.escrowChargesTotalFee)}`,
                   text: "Escrow charges",
                 },
                 { value: "0", text: "Avg Escrow" },
