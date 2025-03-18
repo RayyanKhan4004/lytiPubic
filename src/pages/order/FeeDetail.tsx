@@ -486,6 +486,8 @@ import {
 } from "../../utils/functions";
 import DataTable from "react-data-table-component";
 import { TableColumn } from "react-data-table-component";
+import { table } from "console";
+import TablesSkeleton from "../../components/ui/skeleton/TablesSkeleton";
 
 const FeeDetail = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -804,12 +806,15 @@ const FeeDetail = () => {
           </div>
         )}
         <div className="flex flex-row  justify-between w-full font-poppin">
-          <CardLayout className="w-[49%] max-h-[810px] h-auto">
+          <CardLayout className="w-[49%] max-h-[710px] h-auto">
             <MainTitle title="Orders" />
 
             <div className="w-full overflow-y-auto max-h-[700px]">
               {isLoading ? (
-                <TableSkeleton columns={8} />
+                <TablesSkeleton
+                  columnCount={orderColumns.length}
+                  rowCount={10}
+                />
               ) : (
                 <div className="w-full">
                   <DataTable
@@ -844,7 +849,10 @@ const FeeDetail = () => {
               <MainTitle title="Fee Type" />
               <div className="w-full overflow-y-auto max-h-[300px]">
                 {isLoading ? (
-                  <TableSkeleton columns={3} />
+                  <TablesSkeleton
+                    columnCount={feeTypeColumn.length}
+                    rowCount={3}
+                  />
                 ) : (
                   <DataTable
                     columns={feeTypeColumn}
@@ -878,7 +886,10 @@ const FeeDetail = () => {
 
               <div className="w-full overflow-y-auto max-h-[300px]">
                 {isLoading ? (
-                  <TableSkeleton columns={4} />
+                  <TablesSkeleton
+                    columnCount={feeDescriptionColumn.length}
+                    rowCount={3}
+                  />
                 ) : (
                   <div className="w-full">
                     {" "}
