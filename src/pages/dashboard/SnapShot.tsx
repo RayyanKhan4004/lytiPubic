@@ -7,26 +7,29 @@ import LineChartComponent from "../../components/dashboard/snapShot/LineChartCom
 import StackedBarChart from "../../components/dashboard/snapShot/StackedBarChart";
 import SlimBarChart from "../../components/dashboard/snapShot/SlimBarChart";
 import StatsCard from "../../components/orders/StatsCard";
+import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
+import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
+import {
+  formatNumber,
+  formatNumberWithoutDecimals,
+} from "../../utils/functions";
 
 const SnapShot = () => {
   const [selectedFilter, setSelectedFilter] = useState("Active");
   const [selectedYear, setSelectedYear] = useState("2023");
   const [isMonthly, setIsMonthly] = useState(true);
 
-  const data = [
-    { name: "JAN", 2023: 10, 2024: 20, Goals: 5 },
-    { name: "FEB", 2023: 30, 2024: 50, Goals: 15 },
-    { name: "MAR", 2023: 50, 2024: 60, Goals: 10 },
-    { name: "APR", 2023: 70, 2024: 80, Goals: 40 },
-    { name: "MAY", 2023: 50, 2024: 60, Goals: 70 },
-    { name: "JUN", 2023: 40, 2024: 70, Goals: 60 },
-    { name: "JUL", 2023: 60, 2024: 90, Goals: 80 },
-    { name: "AUG", 2023: 80, 2024: 100, Goals: 70 },
-    { name: "SEP", 2023: 90, 2024: 95, Goals: 85 },
-    { name: "OCT", 2023: 100, 2024: 85, Goals: 90 },
-    { name: "NOV", 2023: 95, 2024: 70, Goals: 95 },
-    { name: "DEC", 2023: 90, 2024: 100, Goals: 98 },
-  ];
+  const { data, isLoading, refetch } = useGetOrdersQuery({
+    status: "",
+    type: "",
+    propertyCounty: "",
+    transactionType: "",
+    page: 1,
+    limit: 10,
+    keyword: "",
+    titleOffice: "",
+    underwriter: "",
+  });
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <div className="flex items-center justify-between">
@@ -60,30 +63,64 @@ const SnapShot = () => {
       </div>
 
       <div className="w-full flex gap-4 mt-6">
-        <StatsCard
-          heading="Orders"
-          stats={[
-            { value: "20.7k", text: "Total Orders" },
-            { value: "3k", text: "Total Amount" },
-            { value: "57k", text: "Avg /Order" },
-          ]}
-        />
-        <StatsCard
-          heading="Title"
-          stats={[
-            { value: "9k", text: "Total Units" },
-            { value: "2k", text: "Title charges" },
-            { value: "27k", text: "Avg Title " },
-          ]}
-        />
-        <StatsCard
-          heading="Escrow"
-          stats={[
-            { value: "98k", text: "Escrow Units" },
-            { value: "78k", text: "Escrow charges" },
-            { value: "9k", text: "Avg Escrow" },
-          ]}
-        />
+        {isLoading ? (
+          <div className="w-full flex gap-4 mt-2">
+            <CustomizableSkeleton height={156} width="32%" />
+            <CustomizableSkeleton height={156} width="32%" />
+            <CustomizableSkeleton height={156} width="32%" />
+          </div>
+        ) : (
+          <div className="w-full flex gap-4 mt-2">
+            <StatsCard
+              heading="Orders"
+              stats={[
+                {
+                  value: `${formatNumberWithoutDecimals(
+                    data?.totalOrderCount
+                  )}`,
+                  text: "Total Orders",
+                },
+                {
+                  value: `$${formatNumber(data?.totalFee)}`,
+                  text: "Total Amount",
+                },
+                { value: "0", text: "Avg /Order" },
+              ]}
+            />
+            <StatsCard
+              heading="Title"
+              stats={[
+                {
+                  value: `${formatNumberWithoutDecimals(
+                    data?.titleChargesOrderCount
+                  )}`,
+                  text: "Total Units",
+                },
+                {
+                  value: `$${formatNumber(data?.titleChargesTotalFee)}`,
+                  text: "Title charges",
+                },
+                { value: "0", text: "Avg Title " },
+              ]}
+            />
+            <StatsCard
+              heading="Escrow"
+              stats={[
+                {
+                  value: `${formatNumberWithoutDecimals(
+                    data?.escrowChargesOrderCount
+                  )}`,
+                  text: "Escrow Units",
+                },
+                {
+                  value: `$${formatNumber(data?.escrowChargesTotalFee)}`,
+                  text: "Escrow charges",
+                },
+                { value: "0", text: "Avg Escrow" },
+              ]}
+            />
+          </div>
+        )}
       </div>
       <div className="w-full flex justify-end mb-8">
         <div className="flex justify-between shadow-(--cardShadow) items-center bg-white rounded-lg w-[300px] h-[60px] px-2.5">
