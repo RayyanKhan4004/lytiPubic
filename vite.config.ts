@@ -7,6 +7,9 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [tailwindcss(), react()],
+    optimizeDeps: {
+      include: ["styled-components"],
+    },
     define: {
       "import.meta.env.REACT_APP_API_BASE_URL": JSON.stringify(
         env.VITE_API_BASE_URL

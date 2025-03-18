@@ -484,6 +484,8 @@ import {
   formatNumber,
   formatNumberWithoutDecimals,
 } from "../../utils/functions";
+import DataTable from "react-data-table-component";
+import { TableColumn } from "react-data-table-component";
 
 const FeeDetail = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -506,9 +508,10 @@ const FeeDetail = () => {
     underwriter: "",
     orderId: selectedOrderId,
   });
-  console.log(orderData, "==data==");
 
   const handleRowClick = (orderId: string) => {
+    console.log("==click==", orderId);
+
     if (selectedOrderId !== orderId) {
       setSelectedOrderId(orderId);
     }
@@ -519,7 +522,211 @@ const FeeDetail = () => {
       setPage(newPage);
     }
   };
+  const handleReset = () => {
+    setSelectedOrderId("");
+  };
 
+  const feeDescriptionColumn: TableColumn<any>[] = [
+    {
+      name: "Account",
+      selector: (row: any) => row.account,
+      cell: (row: any) => (
+        <div className="rowStyle w-[250px]" title={row.account}>
+          {row.account}
+        </div>
+      ),
+      sortable: false,
+    },
+    {
+      name: "Amount",
+      selector: (row: any) => row.feeAmount,
+      cell: (row: any) => (
+        <div className="rowStyle w-[100px]" title={row.feeAmount}>
+          {row.feeAmount}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "100px",
+    },
+    {
+      name: "Category",
+      selector: (row: any) => row.feeCategory,
+      cell: (row: any) => (
+        <div className="rowStyle w-[150px]" title={row.feeCategory}>
+          {row.feeCategory}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "150px",
+    },
+    {
+      name: "Description",
+      selector: (row: any) => row.feeDescription,
+      cell: (row: any) => (
+        <div className="rowStyle w-[150px]" title={row.feeDescription}>
+          {row.feeDescription}
+        </div>
+      ),
+      maxWidth: "150px",
+    },
+  ];
+
+  const orderColumns: TableColumn<any>[] = [
+    {
+      name: "Id",
+      selector: (row: any) => row.id,
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[30px]"
+          title={String(row.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row.id);
+          }}
+        >
+          {row.id}
+        </div>
+      ),
+      maxWidth: "30px",
+    },
+    {
+      name: "Closed Date",
+      selector: (row: any) => row.closedDate || "",
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[120px]"
+          title={row.closedDate || ""}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {row.closedDate}
+        </div>
+      ),
+      maxWidth: "120px",
+    },
+    {
+      name: "Status",
+      selector: (row: any) => row.fileStatus || "",
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[100px]"
+          title={row.fileStatus || ""}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row.id);
+          }}
+        >
+          {row.fileStatus}
+        </div>
+      ),
+      maxWidth: "100px",
+    },
+    {
+      name: "Property Address",
+      selector: (row: any) => row.propertyAddress || "",
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[300px]"
+          title={row.propertyAddress || ""}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row.id);
+          }}
+        >
+          {row.propertyAddress}
+        </div>
+      ),
+      maxWidth: "300px",
+    },
+    {
+      name: "Transaction Type",
+      selector: (row: any) => row.transactionType || "",
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[155px]"
+          title={row.transactionType || ""}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row.id);
+          }}
+        >
+          {row.transactionType}
+        </div>
+      ),
+      maxWidth: "155px",
+    },
+    {
+      name: "Order Type",
+      selector: (row: any) => row.fileType || "",
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[150px]"
+          title={row.fileType || ""}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row.id);
+          }}
+        >
+          {row.fileType}
+        </div>
+      ),
+      maxWidth: "150px",
+    },
+    {
+      name: "County",
+      selector: (row: any) => row.propertyCounty || "",
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[200px]"
+          title={row.propertyCounty || ""}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {row.propertyCounty}
+        </div>
+      ),
+      maxWidth: "200px",
+    },
+  ];
+  const feeTypeColumn: TableColumn<any>[] = [
+    {
+      name: "Fee Category",
+      selector: (row: any) => row.feeCategory,
+      cell: (row: any) => (
+        <div className="rowStyle w-[230px]" title={row.feeCategory}>
+          {row.feeCategory}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "230px",
+    },
+    {
+      name: "Amount",
+      selector: (row: any) => row.amount,
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[120px]"
+          title={formatNumberWithoutDecimals(row.amount)}
+        >
+          {formatNumberWithoutDecimals(row.amount)}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "120px",
+    },
+    {
+      name: "Amount %",
+      selector: (row: any) => row.amountPercentage,
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[100px]"
+          title={formatNumber(row.amountPercentage)}
+        >
+          {formatNumber(row.amountPercentage)}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "100px",
+    },
+  ];
   return (
     <div className="mb-9">
       {
@@ -531,6 +738,12 @@ const FeeDetail = () => {
       <div className="w-full h-full gap-6 p-6">
         <div className="flex justify-between w-full">
           <Breadcrumb items={["Orders", "Fee Details"]} />
+          <button
+            onClick={handleReset}
+            className="px-4 py-2 bg-red-500 text-white rounded-2xl hover:bg-red-600 active:scale-95 transition"
+          >
+            Reset
+          </button>
         </div>
         {isLoading ? (
           <div className="w-full flex gap-4 mt-2">
@@ -593,85 +806,33 @@ const FeeDetail = () => {
         <div className="flex flex-row  justify-between w-full font-poppin">
           <CardLayout className="w-[49%] max-h-[810px] h-auto">
             <MainTitle title="Orders" />
-            <div className="w-full overflow-y-auto max-h-[700px] ">
-              <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-7">
-                <thead className="text-sm font-normal text-start  border-b-[1px] border-[#F4EFE9] ">
-                  <tr>
-                    <th className="text-start font-medium min-w-[43px]">Id</th>
-                    <th className="text-start font-medium px-4 min-w-[120px]">
-                      Closed Date
-                    </th>
-                    <th className="text-start font-medium px-4 min-w-[100px]">
-                      Status
-                    </th>
-                    <th className="text-start font-medium px-4 min-w-[300px]">
-                      Property Address
-                    </th>
-                    <th className="text-start font-medium px-4 min-w-[155px]">
-                      Transaction type
-                    </th>
-                    <th className="text-start font-medium px-4 min-w-[150px]">
-                      Order type
-                    </th>
-                    <th className="text-start font-medium px-4 min-w-[70px]">
-                      Fees
-                    </th>
-                    <th className="text-start font-medium px-4 min-w-[200px]">
-                      County
-                    </th>
-                  </tr>
-                </thead>
 
-                <tbody>
-                  {isLoading ? (
-                    <TableSkeleton columns={8} />
-                  ) : (
-                    <>
-                      {orderData?.orders?.length === 0 ? (
-                        <NoDataRow colSpan={8} />
-                      ) : (
-                        <>
-                          {orderData?.orders?.map((e: any, i: number) => (
-                            <>
-                              <tr
-                                key={e.id}
-                                onClick={() => handleRowClick(e.id)}
-                                className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
-            transition-colors duration-500 ease-in-out ${
-              selectedOrderId === e.id
-                ? "bg-gray-100"
-                : "bg-white hover:bg-gray-100"
-            }`}
-                              >
-                                <td
-                                  className="cursor-pointer"
-                                  style={{
-                                    maxWidth: "50px",
-                                    overflow: "hidden",
-                                    whiteSpace: "nowrap",
-                                    textOverflow: "ellipsis",
-                                  }}
-                                  title={e.id}
-                                >
-                                  {e.id}
-                                </td>
-                                <td className="px-4">{e.closedDate}</td>
-                                <td className="px-4">{e.fileStatus}</td>
-                                <td className="px-4">{e.propertyAddress}</td>
-                                <td className="px-4">{e.transactionType}</td>
-                                <td className="px-4">{e.fileType}</td>
-                                <td className="px-4">fees</td>
-                                <td className="px-4">{e.propertyCounty}</td>
-                              </tr>
-                            </>
-                          ))}
-                        </>
-                      )}
-                    </>
-                  )}
-                </tbody>
-              </table>
+            <div className="w-full overflow-y-auto max-h-[700px]">
+              {isLoading ? (
+                <TableSkeleton columns={8} />
+              ) : (
+                <div className="w-full">
+                  <DataTable
+                    columns={orderColumns}
+                    data={orderData?.orders || []}
+                    highlightOnHover
+                    pointerOnHover
+                    striped
+                    className="head-row table-row"
+                    onRowClicked={(row) => {
+                      console.log("Row clicked:", row);
+                      handleRowClick(row.id);
+                    }}
+                    noDataComponent={
+                      <div className="w-full text-center py-6 px-6 text-gray-500 bg-gray-100 rounded">
+                        No data found
+                      </div>
+                    }
+                  />
+                </div>
+              )}
             </div>
+
             <Pagination
               onPageChange={handlePageChange}
               pageCount={orderData?.totalPages}
@@ -682,125 +843,70 @@ const FeeDetail = () => {
             <CardLayout className="w-full">
               <MainTitle title="Fee Type" />
               <div className="w-full overflow-y-auto max-h-[300px]">
-                <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F]">
-                  <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] bg-white sticky top-0 z-10">
-                    <tr>
-                      <th className="text-start font-medium">Fee Category</th>
-                      <th className="text-start font-medium px-2"> Amount</th>
-                      <th className="text-start font-medium px-2">Amount %</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {isLoading ? (
-                      <TableSkeleton columns={8} />
-                    ) : (
-                      <>
-                        {orderData?.feeType?.length === 0 ? (
-                          <NoDataRow colSpan={8} />
-                        ) : (
-                          <>
-                            {orderData?.feeType
-                              ?.filter((e: any) => e.feeCategory !== "Total")
-                              .map((e: any, i: number) => (
-                                <tr
-                                  key={i}
-                                  className="font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
-      transition-colors duration-300 ease-in-out hover:bg-gray-100"
-                                >
-                                  <td>{e.feeCategory}</td>
-                                  <td className="px-2">
-                                    {formatNumberWithoutDecimals(e.amount)}
-                                  </td>
-                                  <td className="px-2">
-                                    {formatNumber(e.amountPercentage)}
-                                  </td>
-                                </tr>
-                              ))}
-                          </>
-                        )}
-                      </>
-                    )}
-                  </tbody>
-
-                  <tfoot>
-                    <tr className="bg-[#F3F3F3]">
-                      <td className="py-3 px-2 font-medium text-sm text-[#15120F]">
-                        Total
-                      </td>
-                      <td></td>
-                      <td
-                        className="py-3  font-medium text-sm text-[#15120F]"
-                        colSpan={3}
-                      >
-                        {formatNumber(orderData?.totalFee) || ""}
-                      </td>
-                    </tr>
-                  </tfoot>
-                </table>
+                {isLoading ? (
+                  <TableSkeleton columns={3} />
+                ) : (
+                  <DataTable
+                    columns={feeTypeColumn}
+                    data={
+                      orderData?.feeType?.filter(
+                        (e: any) => e.feeCategory !== "Total"
+                      ) || []
+                    }
+                    highlightOnHover
+                    striped
+                    className="head-row table-row"
+                    noDataComponent={
+                      <div className="w-full text-center py-6 px-6 text-gray-500 bg-gray-100 rounded">
+                        No data found
+                      </div>
+                    }
+                  />
+                )}
+              </div>
+              <div className="bg-[#F3F3F3] py-3 px-2 font-medium text-sm text-[#15120F]">
+                <span>Total:</span>
+                <span className="float-right">
+                  {" "}
+                  {formatNumber(orderData?.totalFee) || ""}
+                </span>
               </div>
             </CardLayout>
 
-            {/*  */}
             <CardLayout className="w-full">
               <MainTitle title="Fee Description" />
+
               <div className="w-full overflow-y-auto max-h-[300px]">
-                <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F]">
-                  <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] bg-white sticky top-0 z-10">
-                    <tr>
-                      <th className="text-start font-medium">Account</th>
-                      <th className="text-start font-medium px-2"> Amount</th>
-                      <th className="text-start font-medium px-2">Category</th>
-                      <th className="text-start font-medium"> Description</th>
-                    </tr>
-                  </thead>
+                {isLoading ? (
+                  <TableSkeleton columns={4} />
+                ) : (
+                  <div className="w-full">
+                    {" "}
+                    <DataTable
+                      columns={feeDescriptionColumn}
+                      data={orderData?.feeDescriptions || []}
+                      highlightOnHover
+                      striped
+                      className="head-row table-row"
+                      noDataComponent={
+                        <div
+                          className="w-full text-center py-6 px-6 text-gray-500 bg-gray-100 rounded"
+                          style={{ minWidth: "100%", width: "100%" }}
+                        >
+                          No data found
+                        </div>
+                      }
+                    />
+                  </div>
+                )}
+              </div>
 
-                  <tbody>
-                    {isLoading ? (
-                      <TableSkeleton columns={8} />
-                    ) : (
-                      <>
-                        {orderData?.feeDescriptions?.length === 0 ? (
-                          <NoDataRow colSpan={8} />
-                        ) : (
-                          <>
-                            {orderData?.feeDescriptions?.map(
-                              (e: any, i: number) => (
-                                <tr
-                                  key={i}
-                                  className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
-                        transition-colors duration-500 ease-in-out bg-gray-300"
-                           `}
-                                >
-                                  <td>{e.account}</td>
-                                  <td className="px-2">{e.feeAmount}</td>
-                                  <td className="px-2">{e.feeCategory}</td>
-                                  <td>{e.feeDescription}</td>
-                                </tr>
-                              )
-                            )}
-                          </>
-                        )}
-                      </>
-                    )}
-                  </tbody>
-
-                  <tfoot>
-                    <tr className="bg-[#F3F3F3]">
-                      <td className="py-3 px-2 font-medium text-sm text-[#15120F]">
-                        Total
-                      </td>
-                      <td></td>
-                      <td></td>
-                      <td
-                        className="py-3  font-medium text-sm text-[#15120F]"
-                        colSpan={4}
-                      >
-                        {formatNumber(orderData?.totalFee) || ""}
-                      </td>
-                    </tr>
-                  </tfoot>
-                </table>
+              <div className="bg-[#F3F3F3] py-3 px-2 font-medium text-sm text-[#15120F]">
+                <span>Total:</span>
+                <span className="float-right">
+                  {" "}
+                  {formatNumber(orderData?.totalFee) || ""}
+                </span>
               </div>
             </CardLayout>
           </div>
