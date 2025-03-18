@@ -47,6 +47,7 @@ export interface OrderDataType {
   sellingOfficeId?: number;
   listingAgentId?: number;
   sellingAgentId?: number;
+  orderId?: string;
 }
 
 export interface ListingOfficeDataType {

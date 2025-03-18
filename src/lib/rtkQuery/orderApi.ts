@@ -47,8 +47,9 @@ export const orderApi = createApi({
         transactionType,
         titleOffice,
         underwriter,
+        orderId,
       }) =>
-        `orders/?page=${page}&limit=${10}&fileStatus=${status}&fileType=${type}&propertyCounty=${propertyCounty}&keyword=${keyword}&transactionType=${transactionType}&titleOffice=${titleOffice}&underwriter=${underwriter}`,
+        `orders/?page=${page}&limit=${10}&fileStatus=${status}&fileType=${type}&propertyCounty=${propertyCounty}&keyword=${keyword}&transactionType=${transactionType}&titleOffice=${titleOffice}&underwriter=${underwriter}&orderId=${orderId}`,
     }),
 
     createOrder: builder.mutation<any, OrderDataType>({

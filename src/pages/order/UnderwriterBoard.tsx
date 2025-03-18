@@ -63,6 +63,7 @@ const UnderwriterBoard = () => {
     propertyCounty: selectedPropertyCounty,
     titleOffice: selectedTitleOffice,
     underwriter: selectedUnderwriter,
+    orderId: "",
   });
 
   // Handlers

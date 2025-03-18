@@ -78,6 +78,7 @@ const OrdersTable = () => {
     keyword: searchTerm,
     titleOffice: "",
     underwriter: "",
+    orderId: "",
   });
 
   const handlePageChange = ({ selected }: { selected: number }) => {

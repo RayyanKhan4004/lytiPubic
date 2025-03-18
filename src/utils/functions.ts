@@ -1,10 +1,15 @@
-export const formatNumber = (num: string | number) => {
+export const formatNumber = (num: string | number | null | undefined) => {
+  if (num === null || num === undefined) return "0";
   const numberValue = typeof num === "string" ? parseFloat(num) : num;
   if (isNaN(numberValue)) return "Invalid Number";
 
   return numberValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
-export const formatNumberWithoutDecimals = (num: string | number) => {
+
+export const formatNumberWithoutDecimals = (
+  num: string | number | null | undefined
+) => {
+  if (num === null || num === undefined) return "0";
   const numberValue = typeof num === "string" ? parseFloat(num) : num;
   if (isNaN(numberValue)) return "Invalid Number";
 

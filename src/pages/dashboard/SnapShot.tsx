@@ -29,6 +29,7 @@ const SnapShot = () => {
     keyword: "",
     titleOffice: "",
     underwriter: "",
+    orderId: "",
   });
   return (
     <div className="w-full px-4 my-8 font-Poppins">
