@@ -71,12 +71,58 @@
 .react-datepicker__navigation {
   top: 8px !important;
 }
- /* hide scroll bar classes */
- .scroll-container::-webkit-scrollbar {
+/* hide scroll bar classes */
+.scroll-container::-webkit-scrollbar {
   display: none;
 }
 /* Hide scrollbar for IE, Edge and Firefox */
 .scroll-container {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+.head-row {
+  background-color: #ffffff;
+  font-weight: 600;
+  border-bottom: 1px solid #f4efe9;
+}
+
+.table-row {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  color: #15120f;
+  border-bottom: 1px solid #f4efe9;
+  cursor: pointer;
+}
+
+.head-row svg {
+  display: none !important;
+}
+
+.table-row td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: inherit;
+}
+
+/* Ensures tooltips appear above other content */
+.group-hover .absolute {
+  z-index: 50;
+}
+
+.rdt_TableRow {
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+}
+.rdt_Table {
+  width: 100% !important;
+}
+.rowStyle {
+  cursor: pointer;
+  width: 250px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
