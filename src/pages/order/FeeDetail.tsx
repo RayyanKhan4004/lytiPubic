@@ -583,6 +583,8 @@ const FeeDetail = () => {
                         No data found
                       </div>
                     }
+                    fixedHeader
+                    fixedHeaderScrollHeight="300px"
                     expandableRows
                     expandableRowDisabled={(row) => !row.accountSums?.length}
                     expandableRowsComponent={ExpandedComponentFeeType}
