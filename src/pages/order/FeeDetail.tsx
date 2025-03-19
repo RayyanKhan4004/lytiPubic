@@ -1,476 +1,7 @@
-// import StatsCard from "../../components/orders/StatsCard";
-// import OrderTable, { Order } from "../../components/orders/OrderTable";
-// import TableTitle from "../../components/ui/typography/TableTitle";
-// import CustomizableDropdown from "../../components/common/CustomizableDropdown";
-// import Breadcrumb from "../../components/common/BreadCrumb";
-// import FilterPopup from "../../components/ui/FilterPopup";
-// import filter from "../../assets/icons/AlignLeft.svg";
-// import { useState } from "react";
-// const sampleOrders: Order[] = [
-//   {
-//     closedDate: '9/1/10',
-//     order: '6409',
-//     status: 'Closed',
-//     propertyAddress: '4501 Elgin St, Cactus, Galveston TX',
-
-//   },
-//   {
-//     closedDate: '8/21/10',
-//     order: '6176',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '8/14/10',
-//     order: '6134',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '8/27/10',
-//     order: '6197',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '8/6/10',
-//     order: '6071',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '8/23/10',
-//     order: '6544',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '8/14/10',
-//     order: '6323',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '7/18/10',
-//     order: '6510',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/29/10',
-//     order: '6467',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/21/10',
-//     order: 'G58',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '7/18/10',
-//     order: '6510',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/29/10',
-//     order: '6467',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/21/10',
-//     order: 'G58',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '7/18/10',
-//     order: '6510',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/29/10',
-//     order: '6467',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/21/10',
-//     order: 'G58',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '7/18/10',
-//     order: '6510',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/29/10',
-//     order: '6467',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/21/10',
-//     order: 'G58',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '7/18/10',
-//     order: '6510',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/29/10',
-//     order: '6467',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/21/10',
-//     order: 'G58',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '7/18/10',
-//     order: '6510',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/29/10',
-//     order: '6467',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/21/10',
-//     order: 'G58',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '7/18/10',
-//     order: '6510',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/29/10',
-//     order: '6467',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-//   {
-//     closedDate: '4/21/10',
-//     order: 'G58',
-//     status: 'Closed',
-//     propertyAddress: '8502 Fredonia Rd, Inglewood',
-
-//   },
-// ];
-// const FeeDetail = () => {
-//     const [isModelOpen , setIsModelOpen] = useState(false)
-//   return (
-//     <>
-//       {
-//         <FilterPopup
-//           isModelOpen={isModelOpen}
-//           setIsModelOpen={setIsModelOpen}
-//         />
-//       }
-//       <div className="w-full h-full gap-6 p-6">
-//         <div className="flex justify-between w-full">
-//           <Breadcrumb items={["Orders", "Fee Details"]} />
-//           <div className=" flex  justify-end gap-4">
-//             <CustomizableDropdown
-//               options={["1", "2", "3", "4", "5", "6"]}
-//               selected="06 Columns"
-//               setSelected={() => {}}
-//               width="154px"
-//             />
-//             <CustomizableDropdown
-//               options={["1", "2", "3", "4", "5", "6"]}
-//               selected="06 Columns"
-//               setSelected={() => {}}
-//               width="154px"
-//             />
-//             <CustomizableDropdown
-//               options={["1", "2", "3", "4", "5", "6"]}
-//               selected="06 Columns"
-//               setSelected={() => {}}
-//               width="154px"
-//             />
-//             <CustomizableDropdown
-//               options={["1", "2", "3", "4", "5", "6"]}
-//               selected="06 Columns"
-//               setSelected={() => {}}
-//               width="154px"
-//             />
-//             <CustomizableDropdown
-//               options={["1", "2", "3", "4", "5", "6"]}
-//               selected="06 Columns"
-//               setSelected={() => {}}
-//               width="154px"
-//             />
-//             <button
-//               className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white "
-//               onClick={(e) => {
-//                 e.preventDefault();
-//                 setIsModelOpen(true);
-//               }}
-//             >
-//               <img src={filter} alt="" />
-//             </button>
-//           </div>
-//         </div>
-//         <div className="flex justify-between w-full">
-//           <StatsCard
-//             heading="Orders"
-//             stats={[
-//               { value: "20.7k", text: "Total Orders" },
-//               { value: "3k", text: "Total Amount" },
-//               { value: "57k", text: "Avg /Order" },
-//             ]}
-//           />
-//           <StatsCard
-//             heading="Title"
-//             stats={[
-//               { value: "20.7k", text: "Total Orders" },
-//               { value: "3k", text: "Total Amount" },
-//               { value: "57k", text: "Avg /Order" },
-//             ]}
-//           />
-//           <StatsCard
-//             heading="Escrow"
-//             stats={[
-//               { value: "20.7k", text: "Total Orders" },
-//               { value: "3k", text: "Total Amount" },
-//               { value: "57k", text: "Avg /Order" },
-//             ]}
-//           />
-//         </div>
-//         <div className="flex flex-row gap-6 font-poppin">
-//           <div className="shadow-(--cardShadow) pt-6 rounded-xl h-[900px]  w-[50%] grow">
-//             <div className="flex justify-between  p-6 pb-0">
-//               <TableTitle title="Orders" />
-//               <CustomizableDropdown
-//                 options={["1", "2", "3", "4", "5", "6"]}
-//                 selected="06 Columns"
-//                 setSelected={() => {}}
-//                 width="154px"
-//               />
-//             </div>
-
-//             <div className="overflow-scroll scroll-container h-[755px]">
-//               <OrderTable data={sampleOrders} hasHeader={true} />
-//             </div>
-//             <div className="w-full bg-[#F3F3F3] flex justify-between sticky rounded-b-[10px] px-[24px] py-[16px]">
-//               <span>Total</span>
-//               <span>$782.01</span>
-//             </div>
-//             {/*  */}
-//           </div>
-//           <div className=" w-[50%]  flex flex-col grow gap-6">
-//             <div className="shadow-(--cardShadow) pt-6 rounded-[10px] ">
-//               <div className="px-6">
-//                 <TableTitle title="Fee Type" />
-//               </div>
-//               <div className=" rounded-b-[10px] overflow-scroll scroll-container">
-
-//                 <OrderTable
-//                   hasHeader={true}
-//                   hasFooter={true}
-//                   tableFooter={[
-//                     "total",
-//                     "$948.55",
-//                     "$450.54",
-//                     "$275.43",
-//                     "$406.27",
-//                   ]}
-//                   data={[
-//                     {
-//                       FeeCategory: "Title Charges",
-//                       Amount: "$396.84",
-//                       "Amount%": "$630.44",
-//                       "OOC TFI": "$106.58",
-//                       FeeDeposit: "$396.84",
-//                     },
-//                     {
-//                       FeeCategory: "Title Fee Income",
-//                       Amount: "$$475.84",
-//                       "Amount%": "$630.44",
-//                       "OOC TFI": "$106.58",
-//                       FeeDeposit: "$396.84",
-//                     },
-//                   ]}
-//                 />
-//                 {/*  */}
-//               </div>
-//             </div>
-//             {/*  */}
-//             <div className="shadow-(--cardShadow) pt-6 rounded-[10px] ">
-//               <div className="px-6">
-//                 <TableTitle title="Fee Description" />
-//               </div>
-//               <div className=" rounded-b-[10px] overflow-scroll scroll-container">
-//                 {/* //// */}
-//                 <OrderTable
-//                   hasHeader={true}
-//                   hasFooter={true}
-//                   tableFooter={[
-//                     "total",
-//                     "$948.55",
-//                     "$450.54",
-//                     "$275.43",
-//                     "$406.27",
-//                   ]}
-//                   data={[
-//                     {
-//                       FeeCategory: "Title Charges",
-//                       Amount: "$396.84",
-//                       "Amount%": "$630.44",
-//                       "OOC TFI": "$106.58",
-//                       FeeDeposit: "$396.84",
-//                     },
-//                     {
-//                       FeeCategory: "Title Fee Income",
-//                       Amount: "$$475.84",
-//                       "Amount%": "$630.44",
-//                       "OOC TFI": "$106.58",
-//                       FeeDeposit: "$396.84",
-//                     },
-//                   ]}
-//                 />
-//                 {/*  */}
-//               </div>
-//             </div>
-//             {/*  */}
-//             <div className="shadow-(--cardShadow) pt-6 rounded-[10px] ">
-//               <div className="px-6 ">
-//                 <TableTitle title="PCT-Westcor Commissions " />
-//               </div>
-//               <div className=" rounded-b-[10px] overflow-scroll scroll-container">
-//                 {/* //// */}
-//                 <OrderTable
-//                   hasHeader={true}
-//                   data={[
-//                     {
-//                       Underwriter: "PCTW",
-//                       "Fee Income": "$351.02",
-//                       "Non-Com.": "$490.51",
-//                       "Net Fee In.": "$275.43",
-//                       "Com.": "$169.43",
-//                       "PCT Receiv.": "$351.02",
-//                     },
-//                   ]}
-//                 />
-//                 {/*  */}
-//               </div>
-//             </div>
-//             {/*  */}
-//             <div className="shadow-(--cardShadow) pt-6 rounded-[10px] ">
-//               <div className="px-6">
-//                 <TableTitle title="PCT-Westcor Commissions " />
-//               </div>
-//               <div className=" rounded-b-[10px] overflow-scroll scroll-container">
-//                 {/* //// */}
-//                 <OrderTable
-//                   hasHeader={true}
-//                   data={[
-//                     {
-//                       Underwriter: "PCTW",
-//                       "Fee Income": "$351.02",
-//                       "Non-Com.": "$490.51",
-//                       "Net Fee In.": "$275.43",
-//                       "Com.": "$169.43",
-//                       "PCT Receiv.": "$351.02",
-//                     },
-//                   ]}
-//                 />
-//                 {/*  */}
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//         <div className="shadow-(--cardShadow) mt-6 pt-6 rounded-xl w-full">
-//           {/* ////// */}
-//           <div className="px-6">
-
-//           <TableTitle title="Orders" />
-//           </div>
-
-//           <thead className="w-[100%] px-6">
-//             <tr className="flex flex-row justify-between">
-//               <tr className="text-start py-3 px-4 font-medium text-sm">
-//                 Closed Date
-//               </tr>
-//               <tr className="text-start py-3 px-4 font-medium text-sm">
-//                 Order
-//               </tr>
-//               <tr className="text-start py-3 px-4 font-medium text-sm">
-//                 Status
-//               </tr>
-//               <tr className="text-start py-3 px-4 font-medium text-sm">
-//                 Property Address
-//               </tr>
-//             </tr>
-//           </thead>
-
-//           <div className="overflow-scroll scroll-container h-[267px]">
-//             <OrderTable data={sampleOrders} />
-//           </div>
-//           <div className="w-full bg-[#F3F3F3] flex justify-between sticky rounded-b-[10px] px-[24px] py-[16px]">
-//             <span>Total</span>
-//             <span>$782.01</span>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default FeeDetail;
-
 import StatsCard from "../../components/orders/StatsCard";
 import Breadcrumb from "../../components/common/BreadCrumb";
 import FilterPopup from "../../components/ui/FilterPopup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
 import MainTitle from "../../components/ui/typography/MainTitle";
 import CardLayout from "../../components/layouts/CardLayout";
@@ -486,25 +17,52 @@ import TablesSkeleton from "../../components/ui/skeleton/TablesSkeleton";
 import add from "../../assets/icons/Add.svg";
 import minus from "../../assets/icons/Minus.svg";
 import { FiPlus, FiMinus } from "react-icons/fi";
+import ExpandedComponentFeeType from "../../components/orders/ExpandedComponentFeeType";
+import { useForm } from "react-hook-form";
+import { OrderDataType } from "../../utils/types";
+import SearchInput from "../../components/inputs/SearchInput";
+import SelectField from "../../components/inputs/SelectField";
+import {
+  countyOptions,
+  fileStatusOption,
+  fileTypeOptions,
+  transactionOption,
+} from "../../utils/options";
 
 const FeeDetail = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<string>("");
   const [page, setPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
+  const [selectedFilters, setSelectedFilters] = useState<
+    Record<string, string>
+  >({});
+  const {
+    formState: { errors },
+    reset,
+    watch,
+    setValue,
+    control,
+  } = useForm<OrderDataType>();
+
+  const selectedPropertyCounty = watch("propertyCounty") || "";
+  const selectedFileStatus = watch("fileStatus") || "";
+  const selectedFileType = watch("fileType") || "";
+  const selectTransactionType = watch("transactionType") || "";
   const {
     data: orderData,
     isLoading,
     refetch,
   } = useGetOrdersQuery({
-    status: "",
-    type: "",
-    propertyCounty: "",
-    transactionType: "",
-    page: 1,
+    status: selectedFileStatus,
+    type: selectedFileType,
+    propertyCounty: selectedPropertyCounty,
+    transactionType: selectTransactionType,
+    keyword: searchTerm,
+    page,
     limit: 10,
-    keyword: "",
     titleOffice: "",
     underwriter: "",
     orderId: selectedOrderId,
@@ -525,6 +83,19 @@ const FeeDetail = () => {
   };
   const handleReset = () => {
     setSelectedOrderId("");
+  };
+  const removeFilter = (
+    key: "propertyCounty" | "fileStatus" | "fileType" | "transactionType"
+  ) => {
+    setValue(key, "");
+    setSelectedFilters((prev) => {
+      const updatedFilters = { ...prev };
+      delete updatedFilters[key];
+      return updatedFilters;
+    });
+  };
+  const handleSearch = (searchTerm: string) => {
+    setSearchTerm(searchTerm.toLowerCase());
   };
 
   const feeDescriptionColumn: TableColumn<any>[] = [
@@ -762,33 +333,20 @@ const FeeDetail = () => {
       sortable: false,
     },
   ];
-  const ExpandedComponent = ({ data }: { data: any }) => (
-    <div className="p-4 bg-gray-100 rounded">
-      <h3 className="font-semibold text-gray-700 mb-2">Account Sums</h3>
-      <DataTable
-        columns={[
-          {
-            name: "Account",
-            selector: (row: any) => row.account,
-            sortable: false,
-          },
-          {
-            name: "Total Amount",
-            selector: (row: any) => row.totalAmount,
-            cell: (row: any) => formatNumberWithoutDecimals(row.totalAmount),
-            sortable: false,
-          },
-        ]}
-        data={data.accountSums}
-        noDataComponent={
-          <div className="text-gray-500">No accounts available</div>
-        }
-        striped
-        highlightOnHover
-      />
-    </div>
-  );
 
+  useEffect(() => {
+    setSelectedFilters({
+      propertyCounty: selectedPropertyCounty,
+      fileStatus: selectedFileStatus,
+      fileType: selectedFileType,
+      transactionType: selectTransactionType,
+    });
+  }, [
+    selectedPropertyCounty,
+    selectedFileStatus,
+    selectedFileType,
+    selectTransactionType,
+  ]);
   return (
     <div className="mb-9">
       {
@@ -800,12 +358,84 @@ const FeeDetail = () => {
       <div className="w-full h-full gap-6 p-6">
         <div className="flex justify-between w-full">
           <Breadcrumb items={["Orders", "Fee Details"]} />
-          <button
-            onClick={handleReset}
-            className="px-4 py-2 bg-red-500 text-white rounded-2xl hover:bg-red-600 active:scale-95 transition"
-          >
-            Reset
-          </button>
+        </div>
+        <div className="flex justify-between items-center flex-col gap-1 w-full mt-3">
+          <form className="font-Poppins flex justify-between items-center w-full  gap-2">
+            <SearchInput
+              debounceTimeout={500}
+              placeholder="Search Keyword"
+              onChange={handleSearch}
+              className="w-[27%]"
+            />
+            <div className="flex items-center gap-1.5">
+              <SelectField
+                name="propertyCounty"
+                control={control}
+                options={countyOptions}
+                placeholder="County"
+                error={errors.propertyCounty?.message}
+                required={false}
+                className="w-[113px]"
+                height="44px"
+              />
+              <SelectField
+                name="fileStatus"
+                control={control}
+                options={fileStatusOption}
+                placeholder="Status"
+                error={errors.fileStatus?.message}
+                required={false}
+                className="w-[100px]"
+                height="44px"
+              />
+              <SelectField
+                name="fileType"
+                control={control}
+                options={fileTypeOptions}
+                placeholder="File type"
+                error={errors.fileType?.message}
+                required={false}
+                className="w-[180px]"
+                height="44px"
+              />
+              <SelectField
+                name="transactionType"
+                control={control}
+                options={transactionOption}
+                placeholder="Type"
+                error={errors.transactionType?.message}
+                required={false}
+                className="w-[90px]"
+                height="44px"
+              />
+            </div>
+          </form>
+          <div className="flex gap-2 w-full">
+            {Object.entries(selectedFilters).map(([key, value]) =>
+              value ? (
+                <div
+                  key={key}
+                  className="flex items-center bg-[#E5E5E5] px-4 py-1 rounded-[27px] text-sm h-[40px]"
+                >
+                  <button
+                    onClick={() =>
+                      removeFilter(
+                        key as
+                          | "propertyCounty"
+                          | "transactionType"
+                          | "fileType"
+                          | "fileStatus"
+                      )
+                    }
+                    className="mr-2 text-(--secondary)"
+                  >
+                    ✖
+                  </button>
+                  {value}
+                </div>
+              ) : null
+            )}
+          </div>
         </div>
         {isLoading ? (
           <div className="w-full flex gap-4 mt-2">
@@ -865,9 +495,18 @@ const FeeDetail = () => {
             />
           </div>
         )}
+
         <div className="flex flex-row  justify-between w-full font-poppin">
           <CardLayout className="w-[49%] max-h-[710px] h-auto">
-            <MainTitle title="Orders" />
+            <div className="flex justify-between items-center w-full">
+              <MainTitle title="Orders" />
+              <button
+                onClick={handleReset}
+                className="px-4 py-2 bg-red-500 text-white rounded-2xl hover:bg-red-600 active:scale-95 transition"
+              >
+                Reset
+              </button>
+            </div>
 
             <div className="w-full overflow-y-auto max-h-[700px]">
               {isLoading ? (
@@ -933,11 +572,11 @@ const FeeDetail = () => {
                     }
                     expandableRows
                     expandableRowDisabled={(row) => !row.accountSums?.length}
-                    expandableRowsComponent={ExpandedComponent}
-                    expandableRowsHideExpander // Hides the default expand button
+                    expandableRowsComponent={ExpandedComponentFeeType}
+                    expandableRowsHideExpander
                     expandableRowExpanded={(row) =>
                       expandedRow === row.feeCategory
-                    } // Controls expansion manually
+                    }
                     onRowExpandToggled={(expanded, row) =>
                       setExpandedRow(expanded ? row.feeCategory : null)
                     }
@@ -963,7 +602,7 @@ const FeeDetail = () => {
                   />
                 ) : (
                   <div className="w-full">
-                    <DataTable
+                    {/* <DataTable
                       columns={feeDescriptionColumn}
                       data={orderData?.feeDescriptions || []}
                       highlightOnHover
@@ -979,7 +618,7 @@ const FeeDetail = () => {
                       }
                       fixedHeader
                       fixedHeaderScrollHeight="300px"
-                    />
+                    /> */}
                   </div>
                 )}
               </div>
