@@ -468,15 +468,11 @@
 // export default FeeDetail;
 
 import StatsCard from "../../components/orders/StatsCard";
-import OrderTable, { Order } from "../../components/orders/OrderTable";
-import TableTitle from "../../components/ui/typography/TableTitle";
 import Breadcrumb from "../../components/common/BreadCrumb";
 import FilterPopup from "../../components/ui/FilterPopup";
 import { useState } from "react";
 import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
 import MainTitle from "../../components/ui/typography/MainTitle";
-import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
-import NoDataRow from "../../components/ui/NoDataRow";
 import CardLayout from "../../components/layouts/CardLayout";
 import Pagination from "../../components/common/Pagination";
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
@@ -486,13 +482,16 @@ import {
 } from "../../utils/functions";
 import DataTable from "react-data-table-component";
 import { TableColumn } from "react-data-table-component";
-import { table } from "console";
 import TablesSkeleton from "../../components/ui/skeleton/TablesSkeleton";
+import add from "../../assets/icons/Add.svg";
+import minus from "../../assets/icons/Minus.svg";
+import { FiPlus, FiMinus } from "react-icons/fi";
 
 const FeeDetail = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<string>("");
   const [page, setPage] = useState(1);
+  const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
   const {
     data: orderData,
@@ -688,7 +687,31 @@ const FeeDetail = () => {
       maxWidth: "200px",
     },
   ];
+
   const feeTypeColumn: TableColumn<any>[] = [
+    {
+      name: "Sums",
+      cell: (row: any) => (
+        <button
+          className=" border border-secondary flex items-center cursor-pointer text-sm h-[24px] w-[24px] justify-center rounded-md text-gray-700 bg-(--secondary)"
+          onClick={() =>
+            setExpandedRow((prev) =>
+              prev === row.feeCategory ? null : row.feeCategory
+            )
+          }
+          disabled={!row.accountSums?.length}
+        >
+          {expandedRow === "Title Charges" ? (
+            <FiMinus size={16} color="red" />
+          ) : (
+            <FiPlus size={16} color="red" />
+          )}
+        </button>
+      ),
+      sortable: false,
+      maxWidth: "30px",
+    },
+
     {
       name: "Fee Category",
       selector: (row: any) => row.feeCategory,
@@ -698,7 +721,7 @@ const FeeDetail = () => {
         </div>
       ),
       sortable: false,
-      maxWidth: "230px",
+      maxWidth: "180px",
     },
     {
       name: "Amount",
@@ -726,9 +749,46 @@ const FeeDetail = () => {
         </div>
       ),
       sortable: false,
-      maxWidth: "100px",
+      maxWidth: "180px",
+    },
+    {
+      name: "OOC TFI",
+      selector: (row: any) => 0,
+      sortable: false,
+    },
+    {
+      name: "Fee Deposit",
+      selector: (row: any) => 0,
+      sortable: false,
     },
   ];
+  const ExpandedComponent = ({ data }: { data: any }) => (
+    <div className="p-4 bg-gray-100 rounded">
+      <h3 className="font-semibold text-gray-700 mb-2">Account Sums</h3>
+      <DataTable
+        columns={[
+          {
+            name: "Account",
+            selector: (row: any) => row.account,
+            sortable: false,
+          },
+          {
+            name: "Total Amount",
+            selector: (row: any) => row.totalAmount,
+            cell: (row: any) => formatNumberWithoutDecimals(row.totalAmount),
+            sortable: false,
+          },
+        ]}
+        data={data.accountSums}
+        noDataComponent={
+          <div className="text-gray-500">No accounts available</div>
+        }
+        striped
+        highlightOnHover
+      />
+    </div>
+  );
+
   return (
     <div className="mb-9">
       {
@@ -833,6 +893,8 @@ const FeeDetail = () => {
                         No data found
                       </div>
                     }
+                    fixedHeader
+                    fixedHeaderScrollHeight="300px"
                   />
                 </div>
               )}
@@ -869,13 +931,22 @@ const FeeDetail = () => {
                         No data found
                       </div>
                     }
+                    expandableRows
+                    expandableRowDisabled={(row) => !row.accountSums?.length}
+                    expandableRowsComponent={ExpandedComponent}
+                    expandableRowsHideExpander // Hides the default expand button
+                    expandableRowExpanded={(row) =>
+                      expandedRow === row.feeCategory
+                    } // Controls expansion manually
+                    onRowExpandToggled={(expanded, row) =>
+                      setExpandedRow(expanded ? row.feeCategory : null)
+                    }
                   />
                 )}
               </div>
               <div className="bg-[#F3F3F3] py-3 px-2 font-medium text-sm text-[#15120F]">
                 <span>Total:</span>
                 <span className="float-right">
-                  {" "}
                   {formatNumber(orderData?.totalFee) || ""}
                 </span>
               </div>
@@ -892,7 +963,6 @@ const FeeDetail = () => {
                   />
                 ) : (
                   <div className="w-full">
-                    {" "}
                     <DataTable
                       columns={feeDescriptionColumn}
                       data={orderData?.feeDescriptions || []}
@@ -907,6 +977,8 @@ const FeeDetail = () => {
                           No data found
                         </div>
                       }
+                      fixedHeader
+                      fixedHeaderScrollHeight="300px"
                     />
                   </div>
                 )}
