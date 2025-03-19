@@ -361,17 +361,9 @@ const FeeDetail = () => {
         />
       }
       <div className="w-full h-full gap-6 p-6">
-        <div className="flex justify-between w-full">
-          <Breadcrumb items={["Orders", "Fee Details"]} />
-        </div>
         <div className="flex justify-between items-center flex-col gap-1 w-full mt-3">
           <form className="font-Poppins flex justify-between items-center w-full  gap-2">
-            <SearchInput
-              debounceTimeout={500}
-              placeholder="Search Keyword"
-              onChange={handleSearch}
-              className="w-[27%]"
-            />
+            <Breadcrumb items={["Orders", "Fee Details"]} />
             <div className="flex items-center gap-1.5">
               <SelectField
                 name="propertyCounty"
@@ -415,12 +407,12 @@ const FeeDetail = () => {
               />
             </div>
           </form>
-          <div className="flex gap-2 w-full">
+          <div className="flex gap-2 w-full justify-end">
             {Object.entries(selectedFilters).map(([key, value]) =>
               value ? (
                 <div
                   key={key}
-                  className="flex items-center bg-[#E5E5E5] px-4 py-1 rounded-[27px] text-sm h-[40px]"
+                  className="flex cursor-pointer items-center bg-[#E5E5E5] px-4 py-1 rounded-[27px] text-sm h-[40px]"
                 >
                   <button
                     onClick={() =>
