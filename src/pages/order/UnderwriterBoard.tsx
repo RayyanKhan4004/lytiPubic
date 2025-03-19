@@ -1,17 +1,11 @@
 import { useState } from "react";
 
-// Components
 import Breadcrumb from "../../components/common/BreadCrumb";
-import ProgressBar from "../../components/orders/ProgressBar";
-import CustomizableDropdown from "../../components/common/CustomizableDropdown";
 import CardLayout from "../../components/layouts/CardLayout";
 import MainTitle from "../../components/ui/typography/MainTitle";
-import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
-import NoDataRow from "../../components/ui/NoDataRow";
 import Pagination from "../../components/common/Pagination";
 import StatsCard from "../../components/orders/StatsCard";
 
-// RTK Queries
 import {
   useGetOrdersQuery,
   useGetPropertyCountiesQuery,
@@ -27,7 +21,6 @@ import TablesSkeleton from "../../components/ui/skeleton/TablesSkeleton";
 import DataTable, { TableColumn } from "react-data-table-component";
 
 const UnderwriterBoard = () => {
-  // State management
   const [page, setPage] = useState(1);
   const [selectedOrderId, setSelectedOrderId] = useState<string>("");
   const [selectedTitleOffice, setSelectedTitleOffice] = useState<string>("");
@@ -44,7 +37,6 @@ const UnderwriterBoard = () => {
   >(null);
   const [selectedUnderwriter, setSelectedUnderwriter] = useState<string>("");
 
-  // API queries
   const { data: underwriterData, isLoading: underwriterDataLoading } =
     useGetUnderwritersQuery({ orderId: selectedOrderId });
   const { data: titleOfficeData, isLoading: titleOfficeDataLoading } =
@@ -68,7 +60,6 @@ const UnderwriterBoard = () => {
     orderId: "",
   });
 
-  // Handlers
   const handleRowClick = (orderId: string) => {
     if (selectedOrderId !== orderId) {
       setSelectedOrderId(orderId);
@@ -619,7 +610,6 @@ const UnderwriterBoard = () => {
                   striped
                   className="head-row table-row"
                   onRowClicked={(row) => {
-                    console.log("Row clicked:", row);
                     handleRowClick(row.id);
                   }}
                   noDataComponent={
@@ -669,7 +659,6 @@ const UnderwriterBoard = () => {
                     fixedHeader
                     fixedHeaderScrollHeight="300px"
                     onRowClicked={(row, event) => {
-                      console.log("Row clicked:", row);
                       handleUnderwriterClick(row.index, row.underwriter);
                     }}
                   />
@@ -758,7 +747,6 @@ const UnderwriterBoard = () => {
                     fixedHeader
                     fixedHeaderScrollHeight="300px"
                     onRowClicked={(row, _event) => {
-                      console.log("Row clicked:", row);
                       handlePropertyCountyClick(row.index, row.propertyCounty);
                     }}
                     conditionalRowStyles={[
@@ -766,7 +754,7 @@ const UnderwriterBoard = () => {
                         when: (_row, index?: number) =>
                           index !== undefined &&
                           selectedPropertyCountyId === index,
-                        classNames: ["bg-gray-300"], // Highlight selected row
+                        classNames: ["bg-gray-300"],
                       },
                     ]}
                   />

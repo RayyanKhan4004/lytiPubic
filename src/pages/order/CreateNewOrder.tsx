@@ -41,8 +41,8 @@ const CreateNewOrder = () => {
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const { agentsOption, listingOfficeOption, sellingOfficesOption } =
     useOptions();
-
   const navigate = useNavigate();
+
   const {
     handleSubmit,
     formState: { errors },
@@ -85,6 +85,7 @@ const CreateNewOrder = () => {
         label: agent.contactName,
       })
     ) || [];
+
   const sellingAgentNameOption =
     sellingData?.sellingAgents?.map(
       (agent: { contactName: string; id: number }) => ({
@@ -99,9 +100,8 @@ const CreateNewOrder = () => {
   });
 
   const onSubmit: SubmitHandler<OrderDataType> = async (data) => {
-    const formattedData = {
-      ...data,
-    };
+    const formattedData = { ...data };
+
     try {
       const res = await createOrder(formattedData).unwrap();
       console.log(res, "==res==");

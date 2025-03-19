@@ -46,7 +46,6 @@ const OrdersTable = () => {
   const [loading, setLoading] = useState("");
   const [page, setPage] = useState(1);
   const [isModelOpen, setIsModelOpen] = useState(false);
-
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string>
   >({});
@@ -121,6 +120,31 @@ const OrdersTable = () => {
     setSelectedRows((prev) =>
       prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
     );
+  };
+
+  useEffect(() => {
+    setSelectedFilters({
+      propertyCounty: selectedPropertyCounty,
+      fileStatus: selectedFileStatus,
+      fileType: selectedFileType,
+      transactionType: selectTransactionType,
+    });
+  }, [
+    selectedPropertyCounty,
+    selectedFileStatus,
+    selectedFileType,
+    selectTransactionType,
+  ]);
+
+  const removeFilter = (
+    key: "propertyCounty" | "fileStatus" | "fileType" | "transactionType"
+  ) => {
+    setValue(key, "");
+    setSelectedFilters((prev) => {
+      const updatedFilters = { ...prev };
+      delete updatedFilters[key];
+      return updatedFilters;
+    });
   };
 
   const handleExportPDF = () => {
@@ -202,31 +226,6 @@ const OrdersTable = () => {
     });
 
     doc.save("exported-orders.pdf");
-  };
-
-  useEffect(() => {
-    setSelectedFilters({
-      propertyCounty: selectedPropertyCounty,
-      fileStatus: selectedFileStatus,
-      fileType: selectedFileType,
-      transactionType: selectTransactionType,
-    });
-  }, [
-    selectedPropertyCounty,
-    selectedFileStatus,
-    selectedFileType,
-    selectTransactionType,
-  ]);
-
-  const removeFilter = (
-    key: "propertyCounty" | "fileStatus" | "fileType" | "transactionType"
-  ) => {
-    setValue(key, "");
-    setSelectedFilters((prev) => {
-      const updatedFilters = { ...prev };
-      delete updatedFilters[key];
-      return updatedFilters;
-    });
   };
 
   return (
