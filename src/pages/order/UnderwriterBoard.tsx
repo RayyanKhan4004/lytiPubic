@@ -23,6 +23,8 @@ import {
   formatNumber,
   formatNumberWithoutDecimals,
 } from "../../utils/functions";
+import TablesSkeleton from "../../components/ui/skeleton/TablesSkeleton";
+import DataTable, { TableColumn } from "react-data-table-component";
 
 const UnderwriterBoard = () => {
   // State management
@@ -104,16 +106,236 @@ const UnderwriterBoard = () => {
     setSelectedPropertyCountyId(null);
     setSelectedUnderwriter("");
   };
+  const orderColumns: TableColumn<any>[] = [
+    {
+      name: "Id",
+      selector: (row: any) => row.id,
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[30px]"
+          title={String(row.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row.id);
+          }}
+        >
+          {row.id}
+        </div>
+      ),
+      maxWidth: "30px",
+    },
+    {
+      name: "Closed Date",
+      selector: (row: any) => row.closedDate || "",
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[120px]"
+          title={row.closedDate || ""}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row.id);
+          }}
+        >
+          {row.closedDate}
+        </div>
+      ),
+      maxWidth: "120px",
+    },
+    {
+      name: "Status",
+      selector: (row: any) => row.fileStatus || "",
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[100px]"
+          title={row.fileStatus || ""}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row.id);
+          }}
+        >
+          {row.fileStatus}
+        </div>
+      ),
+      maxWidth: "100px",
+    },
+    {
+      name: "Property Address",
+      selector: (row: any) => row.propertyAddress || "",
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[300px]"
+          title={row.propertyAddress || ""}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row.id);
+          }}
+        >
+          {row.propertyAddress}
+        </div>
+      ),
+      maxWidth: "300px",
+    },
+    {
+      name: "Transaction Type",
+      selector: (row: any) => row.transactionType || "",
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[155px]"
+          title={row.transactionType || ""}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row.id);
+          }}
+        >
+          {row.transactionType}
+        </div>
+      ),
+      maxWidth: "155px",
+    },
+    {
+      name: "Order Type",
+      selector: (row: any) => row.fileType || "",
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[150px]"
+          title={row.fileType || ""}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row.id);
+          }}
+        >
+          {row.fileType}
+        </div>
+      ),
+      maxWidth: "150px",
+    },
+    {
+      name: "County",
+      selector: (row: any) => row.propertyCounty || "",
+      cell: (row: any) => (
+        <div
+          className="rowStyle w-[200px]"
+          title={row.propertyCounty || ""}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {row.propertyCounty}
+        </div>
+      ),
+      maxWidth: "200px",
+    },
+  ];
+  const underwriterColumns: TableColumn<any>[] = [
+    {
+      name: "Underwriter",
+      selector: (row: any) => row.underwriter,
+      cell: (row: any, index: number) => (
+        <div
+          className="rowStyle w-[200px] cursor-pointer"
+          title={row.underwriter}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleUnderwriterClick(index, row.underwriter);
+          }}
+        >
+          {row.underwriter}
+        </div>
+      ),
+      maxWidth: "200px",
+    },
+    {
+      name: "Orders",
+      selector: (row: any) => row.orderCount,
+      cell: (row: any, index: number) => (
+        <div
+          className="rowStyle w-[100px] cursor-pointer"
+          title={row.orderCount}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleUnderwriterClick(index, row.underwriter);
+          }}
+        >
+          {row.orderCount}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "100px",
+    },
+    {
+      name: "Orders %",
+      selector: (row: any) => row.orderPercentage,
+      cell: (row: any, index: number) => (
+        <div
+          className="rowStyle w-[100px] cursor-pointer"
+          title={row.orderPercentage}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleUnderwriterClick(index, row.underwriter);
+          }}
+        >
+          {Number(row.orderPercentage).toFixed(2)}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "100px",
+    },
+    {
+      name: "Fees",
+      selector: (row: any) => row.orderFeeTotal,
+      cell: (row: any, index: number) => (
+        <div
+          className="rowStyle w-[100px] cursor-pointer"
+          title={row.orderFeeTotal}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleUnderwriterClick(index, row.underwriter);
+          }}
+        >
+          {row.orderFeeTotal}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "100px",
+    },
+    {
+      name: "Fees %",
+      selector: (row: any) => row.feePercentage,
+      cell: (row: any, index: number) => (
+        <div
+          className="rowStyle w-[100px] cursor-pointer"
+          title={row.feePercentage}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleUnderwriterClick(index, row.underwriter);
+          }}
+        >
+          {Number(row.feePercentage).toFixed(2)}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "100px",
+    },
+    {
+      name: "Last Access",
+      selector: (row: any) => row.lastAccess,
+      cell: (row: any, index: number) => (
+        <div
+          className="rowStyle w-[150px] cursor-pointer"
+          title={row.lastAccess}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleUnderwriterClick(index, row.underwriter);
+          }}
+        >
+          {row.lastAccess}
+        </div>
+      ),
+      maxWidth: "150px",
+    },
+  ];
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <div className="flex  justify-between">
         <Breadcrumb items={["Orders", "Underwiter Board"]} />
-        <button
-          onClick={handleReset}
-          className="px-4 py-2 bg-red-500 text-white rounded-2xl hover:bg-red-600 active:scale-95 transition"
-        >
-          Reset
-        </button>
       </div>
 
       {isLoading ? (
@@ -176,175 +398,96 @@ const UnderwriterBoard = () => {
       )}
 
       <div className="w-full flex justify-between ">
-        <CardLayout className="w-[49%] max-h-[810px] h-auto">
-          <MainTitle title="Orders" />
-          <div className="w-full overflow-y-auto max-h-[700px] ">
-            <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-7">
-              <thead className="text-sm font-normal text-start  border-b-[1px] border-[#F4EFE9] ">
-                <tr>
-                  <th className="text-start font-medium min-w-[43px]">Id</th>
-                  <th className="text-start font-medium px-4 min-w-[120px]">
-                    Closed Date
-                  </th>
-                  <th className="text-start font-medium px-4 min-w-[100px]">
-                    Status
-                  </th>
-                  <th className="text-start font-medium px-4 min-w-[300px]">
-                    Property Address
-                  </th>
-                  <th className="text-start font-medium px-4 min-w-[155px]">
-                    Transaction type
-                  </th>
-                  <th className="text-start font-medium px-4 min-w-[150px]">
-                    Order type
-                  </th>
-                  <th className="text-start font-medium px-4 min-w-[70px]">
-                    Fees
-                  </th>
-                  <th className="text-start font-medium px-4 min-w-[200px]">
-                    County
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {isLoading ? (
-                  <TableSkeleton columns={8} />
-                ) : (
-                  <>
-                    {orderData?.orders?.length === 0 ? (
-                      <NoDataRow colSpan={8} />
-                    ) : (
-                      <>
-                        {orderData?.orders?.map((e: any, i: number) => (
-                          <>
-                            <tr
-                              key={e.id}
-                              onClick={() => handleRowClick(e.id)}
-                              className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
-            transition-colors duration-500 ease-in-out ${
-              selectedOrderId === e.id
-                ? "bg-gray-100"
-                : "bg-white hover:bg-gray-100"
-            }`}
-                            >
-                              <td
-                                className="cursor-pointer"
-                                style={{
-                                  maxWidth: "50px",
-                                  overflow: "hidden",
-                                  whiteSpace: "nowrap",
-                                  textOverflow: "ellipsis",
-                                }}
-                                title={e.id}
-                              >
-                                {e.id}
-                              </td>
-                              <td className="px-4">{e.closedDate}</td>
-                              <td className="px-4">{e.fileStatus}</td>
-                              <td className="px-4">{e.propertyAddress}</td>
-                              <td className="px-4">{e.transactionType}</td>
-                              <td className="px-4">{e.fileType}</td>
-                              <td className="px-4">fees</td>
-                              <td className="px-4">{e.propertyCounty}</td>
-                            </tr>
-                          </>
-                        ))}
-                      </>
-                    )}
-                  </>
-                )}
-              </tbody>
-            </table>
+        <CardLayout className="w-[49%] max-h-[710px] h-auto">
+          <div className="flex justify-between items-center w-full">
+            <MainTitle title="Orders" />
+            <div className="flex gap-2">
+              <button
+                onClick={handleReset}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 active:scale-95 transition"
+              >
+                Reset
+              </button>
+            </div>
           </div>
+
+          <div className="w-full overflow-y-auto max-h-[700px]">
+            {isLoading ? (
+              <TablesSkeleton columnCount={orderColumns.length} rowCount={10} />
+            ) : (
+              <div className="w-full">
+                <DataTable
+                  columns={orderColumns}
+                  data={orderData?.orders || []}
+                  highlightOnHover
+                  pointerOnHover
+                  striped
+                  className="head-row table-row"
+                  onRowClicked={(row) => {
+                    console.log("Row clicked:", row);
+                    handleRowClick(row.id);
+                  }}
+                  noDataComponent={
+                    <div className="w-full text-center py-6 px-6 text-gray-500 bg-gray-100 rounded">
+                      No data found
+                    </div>
+                  }
+                  fixedHeader
+                  fixedHeaderScrollHeight="300px"
+                />
+              </div>
+            )}
+          </div>
+
           <Pagination
             onPageChange={handlePageChange}
             pageCount={orderData?.totalPages}
           />
         </CardLayout>
+
         <div className="w-[49%] gap-4 flex flex-col">
           <CardLayout className="w-full">
             <MainTitle title="Underwriter" />
+
             <div className="w-full overflow-y-auto max-h-[300px]">
-              <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F]">
-                <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] bg-white sticky top-0 z-10">
-                  <tr>
-                    <th className="text-start font-medium">Underwriter</th>
-                    <th className="text-start font-medium pr-2">Orders</th>
-                    <th className="text-start font-medium px-2">
-                      <div className="flex gap-0.5 items-center">
-                        Orders <span>%</span>
+              {underwriterDataLoading ? (
+                <TablesSkeleton
+                  columnCount={underwriterColumns.length}
+                  rowCount={3}
+                />
+              ) : (
+                <div className="w-full">
+                  <DataTable
+                    columns={underwriterColumns}
+                    data={underwriterData?.data?.underwriters || []}
+                    highlightOnHover
+                    striped
+                    className="head-row table-row"
+                    noDataComponent={
+                      <div
+                        className="w-full text-center py-6 px-20 text-gray-500 bg-gray-100 rounded"
+                        style={{ minWidth: "100%", width: "100%" }}
+                      >
+                        No data found
                       </div>
-                    </th>
-                    <th className="text-start font-medium">Fees</th>
-                    <th className="text-start font-medium  pr-2">
-                      <div className="flex gap-0.5 items-center">
-                        Fees <span>%</span>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
+                    }
+                    fixedHeader
+                    fixedHeaderScrollHeight="300px"
+                    onRowClicked={(row, event) => {
+                      console.log("Row clicked:", row);
+                      handleUnderwriterClick(row.index, row.underwriter);
+                    }}
+                  />
+                </div>
+              )}
+            </div>
 
-                <tbody>
-                  {underwriterDataLoading ? (
-                    <TableSkeleton columns={8} />
-                  ) : (
-                    <>
-                      {underwriterData?.data?.underwriters?.length === 0 ? (
-                        <NoDataRow colSpan={8} />
-                      ) : (
-                        <>
-                          {underwriterData?.data?.underwriters?.map(
-                            (e: any, i: number) => (
-                              <tr
-                                key={i}
-                                onClick={() =>
-                                  handleUnderwriterClick(i, e.underwriter)
-                                }
-                                className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
-            transition-colors duration-500 ease-in-out ${
-              selectedUnderwriterId === i
-                ? "bg-gray-300"
-                : "bg-white hover:bg-gray-100"
-            }`}
-                              >
-                                <td>{e.underwriter}</td>
-                                <td>{e.orderCount}</td>
-                                <td className="px-2">
-                                  {Number(e.orderPercentage).toFixed(2)}
-                                </td>
-                                <td>{e.orderFeeTotal}</td>
-                                <td>{Number(e.feePercentage).toFixed(2)}</td>
-                                <td>{e.lastAccess}</td>
-                              </tr>
-                            )
-                          )}
-                        </>
-                      )}
-                    </>
-                  )}
-                </tbody>
-
-                <tfoot>
-                  <tr className="bg-[#F3F3F3]">
-                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                      Total
-                    </td>
-                    <td className="py-3  font-medium text-sm text-[#15120F]">
-                      {underwriterData?.data?.totalOrderCount || ""}
-                    </td>
-                    <td className="py-3 px-2 font-medium text-sm text-[#15120F]">
-                      {underwriterData?.data?.totalOrderPercentage || ""}
-                    </td>
-                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                      {underwriterData?.data?.totalFeeCount || ""}
-                    </td>
-                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                      {underwriterData?.data?.totalFeePercentage || ""}
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+            <div className="bg-[#F3F3F3] py-3 px-4 font-medium text-sm text-[#15120F] flex justify-between w-full">
+              <span>Total:</span>
+              <span>{underwriterData?.data?.totalOrderCount || ""}</span>
+              <span>{underwriterData?.data?.totalOrderPercentage || ""}</span>
+              <span>{underwriterData?.data?.totalFeeCount || ""}</span>
+              <span>{underwriterData?.data?.totalFeePercentage || ""}</span>
             </div>
           </CardLayout>
 

@@ -169,7 +169,10 @@ const FeeDetail = () => {
         <div
           className="rowStyle w-[120px]"
           title={row.closedDate || ""}
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRowClick(row.id);
+          }}
         >
           {row.closedDate}
         </div>
