@@ -100,6 +100,16 @@ const FeeDetail = () => {
 
   const feeDescriptionColumn: TableColumn<any>[] = [
     {
+      name: "Fee",
+      selector: (row: any) => row.feeDescription,
+      cell: (row: any) => (
+        <div className="rowStyle w-[150px]" title={row.feeDescription}>
+          {row.feeDescription}
+        </div>
+      ),
+      maxWidth: "150px",
+    },
+    {
       name: "Account",
       selector: (row: any) => row.account,
       cell: (row: any) => (
@@ -108,37 +118,28 @@ const FeeDetail = () => {
         </div>
       ),
       sortable: false,
+      maxWidth: "150px",
     },
     {
-      name: "Amount",
+      name: "Fee Category",
       selector: (row: any) => row.feeAmount,
       cell: (row: any) => (
-        <div className="rowStyle w-[100px]" title={row.feeAmount}>
-          {row.feeAmount}
-        </div>
-      ),
-      sortable: false,
-      maxWidth: "100px",
-    },
-    {
-      name: "Category",
-      selector: (row: any) => row.feeCategory,
-      cell: (row: any) => (
-        <div className="rowStyle w-[150px]" title={row.feeCategory}>
+        <div className="rowStyle w-[100px]" title={row.feeCategory}>
           {row.feeCategory}
         </div>
       ),
       sortable: false,
-      maxWidth: "150px",
+      maxWidth: "140px",
     },
     {
-      name: "Description",
-      selector: (row: any) => row.feeDescription,
+      name: "Amount",
+      selector: (row: any) => row.feeCategory,
       cell: (row: any) => (
-        <div className="rowStyle w-[150px]" title={row.feeDescription}>
-          {row.feeDescription}
+        <div className="rowStyle w-[150px]" title={row.feeAmount}>
+          {row.feeAmount}
         </div>
       ),
+      sortable: false,
       maxWidth: "150px",
     },
   ];
@@ -261,7 +262,7 @@ const FeeDetail = () => {
 
   const feeTypeColumn: TableColumn<any>[] = [
     {
-      name: "Sums",
+      name: "",
       cell: (row: any) => (
         <button
           className=" border border-secondary flex items-center cursor-pointer text-sm h-[24px] w-[24px] justify-center rounded-md text-gray-700 bg-(--secondary)"
@@ -347,6 +348,7 @@ const FeeDetail = () => {
     selectedFileType,
     selectTransactionType,
   ]);
+
   return (
     <div className="mb-9">
       {
@@ -437,6 +439,7 @@ const FeeDetail = () => {
             )}
           </div>
         </div>
+
         {isLoading ? (
           <div className="w-full flex gap-4 mt-2">
             <CustomizableSkeleton height={156} width="32%" />
@@ -500,12 +503,24 @@ const FeeDetail = () => {
           <CardLayout className="w-[49%] max-h-[710px] h-auto">
             <div className="flex justify-between items-center w-full">
               <MainTitle title="Orders" />
-              <button
-                onClick={handleReset}
-                className="px-4 py-2 bg-red-500 text-white rounded-2xl hover:bg-red-600 active:scale-95 transition"
-              >
-                Reset
-              </button>
+              <div className="flex gap-2">
+                {/* <SelectField
+                  name="fileStatus"
+                  control={control}
+                  options={fileStatusOption}
+                  placeholder="Status"
+                  error={errors.fileStatus?.message}
+                  required={false}
+                  className="w-[90px]"
+                  height="44px"
+                /> */}
+                <button
+                  onClick={handleReset}
+                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 active:scale-95 transition"
+                >
+                  Reset
+                </button>
+              </div>
             </div>
 
             <div className="w-full overflow-y-auto max-h-[700px]">
