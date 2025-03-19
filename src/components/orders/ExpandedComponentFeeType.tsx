@@ -2,8 +2,7 @@ import DataTable from "react-data-table-component";
 import { formatNumberWithoutDecimals } from "../../utils/functions";
 
 const ExpandedComponentFeeType = ({ data }: { data: any }) => (
-  <div className="p-4 bg-gray-100 rounded">
-    <h3 className="font-semibold text-gray-700 mb-2">Account Sums</h3>
+  <div>
     <DataTable
       columns={[
         {

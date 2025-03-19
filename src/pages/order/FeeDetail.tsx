@@ -615,7 +615,7 @@ const FeeDetail = () => {
                   />
                 ) : (
                   <div className="w-full">
-                    {/* <DataTable
+                    <DataTable
                       columns={feeDescriptionColumn}
                       data={orderData?.feeDescriptions || []}
                       highlightOnHover
@@ -631,7 +631,7 @@ const FeeDetail = () => {
                       }
                       fixedHeader
                       fixedHeaderScrollHeight="300px"
-                    /> */}
+                    />
                   </div>
                 )}
               </div>
