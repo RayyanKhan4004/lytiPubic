@@ -1,27 +1,27 @@
-import StatsCard from "../../components/orders/StatsCard";
-import Breadcrumb from "../../components/common/BreadCrumb";
-import FilterPopup from "../../components/ui/FilterPopup";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+
 import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
+
+import Breadcrumb from "../../components/common/BreadCrumb";
+import StatsCard from "../../components/orders/StatsCard";
+import FilterPopup from "../../components/ui/FilterPopup";
 import MainTitle from "../../components/ui/typography/MainTitle";
 import CardLayout from "../../components/layouts/CardLayout";
 import Pagination from "../../components/common/Pagination";
+import DataTable, { TableColumn } from "react-data-table-component";
+import ExpandedComponentFeeType from "../../components/orders/ExpandedComponentFeeType";
+import SelectField from "../../components/inputs/SelectField";
+
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
+import TablesSkeleton from "../../components/ui/skeleton/TablesSkeleton";
+
 import {
   formatNumber,
   formatNumberWithoutDecimals,
 } from "../../utils/functions";
-import DataTable from "react-data-table-component";
-import { TableColumn } from "react-data-table-component";
-import TablesSkeleton from "../../components/ui/skeleton/TablesSkeleton";
-import add from "../../assets/icons/Add.svg";
-import minus from "../../assets/icons/Minus.svg";
-import { FiPlus, FiMinus } from "react-icons/fi";
-import ExpandedComponentFeeType from "../../components/orders/ExpandedComponentFeeType";
-import { useForm } from "react-hook-form";
+
 import { OrderDataType } from "../../utils/types";
-import SearchInput from "../../components/inputs/SearchInput";
-import SelectField from "../../components/inputs/SelectField";
 import {
   countyOptions,
   fileStatusOption,
@@ -29,19 +29,21 @@ import {
   transactionOption,
 } from "../../utils/options";
 
+import { FiPlus, FiMinus } from "react-icons/fi";
+import add from "../../assets/icons/Add.svg";
+import minus from "../../assets/icons/Minus.svg";
+
 const FeeDetail = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<string>("");
   const [page, setPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string>
   >({});
+
   const {
     formState: { errors },
-    reset,
     watch,
     setValue,
     control,
@@ -51,6 +53,7 @@ const FeeDetail = () => {
   const selectedFileStatus = watch("fileStatus") || "";
   const selectedFileType = watch("fileType") || "";
   const selectTransactionType = watch("transactionType") || "";
+
   const {
     data: orderData,
     isLoading,
@@ -60,7 +63,7 @@ const FeeDetail = () => {
     type: selectedFileType,
     propertyCounty: selectedPropertyCounty,
     transactionType: selectTransactionType,
-    keyword: searchTerm,
+    keyword: "",
     page,
     limit: 10,
     titleOffice: "",
@@ -75,15 +78,18 @@ const FeeDetail = () => {
       setSelectedOrderId(orderId);
     }
   };
+
   const handlePageChange = ({ selected }: { selected: number }) => {
     const newPage = selected + 1;
     if (newPage >= 1 && newPage <= orderData?.totalPages) {
       setPage(newPage);
     }
   };
+
   const handleReset = () => {
     setSelectedOrderId("");
   };
+
   const removeFilter = (
     key: "propertyCounty" | "fileStatus" | "fileType" | "transactionType"
   ) => {
@@ -94,9 +100,20 @@ const FeeDetail = () => {
       return updatedFilters;
     });
   };
-  const handleSearch = (searchTerm: string) => {
-    setSearchTerm(searchTerm.toLowerCase());
-  };
+
+  useEffect(() => {
+    setSelectedFilters({
+      propertyCounty: selectedPropertyCounty,
+      fileStatus: selectedFileStatus,
+      fileType: selectedFileType,
+      transactionType: selectTransactionType,
+    });
+  }, [
+    selectedPropertyCounty,
+    selectedFileStatus,
+    selectedFileType,
+    selectTransactionType,
+  ]);
 
   const feeDescriptionColumn: TableColumn<any>[] = [
     {
@@ -337,20 +354,6 @@ const FeeDetail = () => {
       sortable: false,
     },
   ];
-
-  useEffect(() => {
-    setSelectedFilters({
-      propertyCounty: selectedPropertyCounty,
-      fileStatus: selectedFileStatus,
-      fileType: selectedFileType,
-      transactionType: selectTransactionType,
-    });
-  }, [
-    selectedPropertyCounty,
-    selectedFileStatus,
-    selectedFileType,
-    selectTransactionType,
-  ]);
 
   return (
     <div className="mb-9">
