@@ -332,6 +332,201 @@ const UnderwriterBoard = () => {
       maxWidth: "150px",
     },
   ];
+  const officeColumns: TableColumn<any>[] = [
+    {
+      name: "Office",
+      selector: (row) => row.titleOffice,
+      cell: (row) => (
+        <div
+          className="rowStyle w-[150px]"
+          title={row.titleOffice}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleTitleOfficeClick(row.index, row.titleOffice);
+          }}
+        >
+          {row.titleOffice}
+        </div>
+      ),
+      maxWidth: "150px",
+    },
+    {
+      name: "Orders",
+      selector: (row) => row.orderCount,
+      cell: (row) => (
+        <div
+          className="rowStyle w-[100px]"
+          title={String(row.orderCount)}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleTitleOfficeClick(row.index, row.titleOffice);
+          }}
+        >
+          {row.orderCount}
+        </div>
+      ),
+      maxWidth: "100px",
+    },
+    {
+      name: "Orders %",
+      selector: (row) => row.orderPercentage,
+      cell: (row) => (
+        <div
+          className="rowStyle w-[100px]"
+          title={`${Number(row.orderPercentage).toFixed(2)}%`}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleTitleOfficeClick(row.index, row.titleOffice);
+          }}
+        >
+          {Number(row.orderPercentage).toFixed(2)}%
+        </div>
+      ),
+      maxWidth: "100px",
+    },
+    {
+      name: "Fees",
+      selector: (row) => row.orderFeeTotal,
+      cell: (row) => (
+        <div
+          className="rowStyle w-[100px]"
+          title={String(row.orderFeeTotal)}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleTitleOfficeClick(row.index, row.titleOffice);
+          }}
+        >
+          {row.orderFeeTotal}
+        </div>
+      ),
+      maxWidth: "100px",
+    },
+    {
+      name: "Fees %",
+      selector: (row) => row.feePercentage,
+      cell: (row) => (
+        <div
+          className="rowStyle w-[100px]"
+          title={`${Number(row.feePercentage).toFixed(2)}%`}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleTitleOfficeClick(row.index, row.titleOffice);
+          }}
+        >
+          {Number(row.feePercentage).toFixed(2)}%
+        </div>
+      ),
+      maxWidth: "100px",
+    },
+  ];
+  const countyColumns: TableColumn<any>[] = [
+    {
+      name: "County",
+      selector: (row: any) => row.propertyCounty,
+      cell: (row: any, index: number) => (
+        <div
+          className="rowStyle w-[200px] cursor-pointer"
+          title={row.propertyCounty}
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePropertyCountyClick(index, row.propertyCounty);
+          }}
+        >
+          {row.propertyCounty}
+        </div>
+      ),
+      maxWidth: "200px",
+    },
+    {
+      name: "Orders",
+      selector: (row: any) => row.orderCount,
+      cell: (row: any, index: number) => (
+        <div
+          className="rowStyle w-[100px] cursor-pointer"
+          title={row.orderCount}
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePropertyCountyClick(index, row.propertyCounty);
+          }}
+        >
+          {row.orderCount}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "100px",
+    },
+    {
+      name: "Orders %",
+      selector: (row: any) => row.orderPercentage,
+      cell: (row: any, index: number) => (
+        <div
+          className="rowStyle w-[100px] cursor-pointer"
+          title={row.orderPercentage}
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePropertyCountyClick(index, row.propertyCounty);
+          }}
+        >
+          {Number(row.orderPercentage).toFixed(2)}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "100px",
+    },
+    {
+      name: "Fees",
+      selector: (row: any) => row.orderFeeTotal,
+      cell: (row: any, index: number) => (
+        <div
+          className="rowStyle w-[100px] cursor-pointer"
+          title={row.orderFeeTotal}
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePropertyCountyClick(index, row.propertyCounty);
+          }}
+        >
+          {row.orderFeeTotal}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "100px",
+    },
+    {
+      name: "Fees %",
+      selector: (row: any) => row.feePercentage,
+      cell: (row: any, index: number) => (
+        <div
+          className="rowStyle w-[100px] cursor-pointer"
+          title={row.feePercentage}
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePropertyCountyClick(index, row.propertyCounty);
+          }}
+        >
+          {Number(row.feePercentage).toFixed(2)}
+        </div>
+      ),
+      sortable: false,
+      maxWidth: "100px",
+    },
+    {
+      name: "Last Access",
+      selector: (row: any) => row.lastAccess,
+      cell: (row: any, index: number) => (
+        <div
+          className="rowStyle w-[150px] cursor-pointer"
+          title={row.lastAccess}
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePropertyCountyClick(index, row.propertyCounty);
+          }}
+        >
+          {row.lastAccess}
+        </div>
+      ),
+      maxWidth: "150px",
+    },
+  ];
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <div className="flex  justify-between">
@@ -493,173 +688,100 @@ const UnderwriterBoard = () => {
 
           <CardLayout className="w-full">
             <MainTitle title="Office" />
+
             <div className="w-full overflow-y-auto max-h-[300px]">
-              <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F]">
-                <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] bg-white sticky top-0 z-10">
-                  <tr>
-                    <th className="text-start font-medium">Office</th>
-                    <th className="text-start font-medium pr-2">Orders</th>
-                    <th className="text-start font-medium px-2">
-                      <div className="flex gap-0.5 items-center">
-                        Orders <span>%</span>
+              {titleOfficeDataLoading ? (
+                <TablesSkeleton
+                  columnCount={orderColumns.length}
+                  rowCount={10}
+                />
+              ) : (
+                <div className="w-full">
+                  <DataTable
+                    columns={officeColumns}
+                    data={titleOfficeData?.data?.titleOffices || []}
+                    highlightOnHover
+                    striped
+                    className="head-row table-row"
+                    noDataComponent={
+                      <div
+                        className="w-full text-center py-6 px-6 text-gray-500 bg-gray-100 rounded"
+                        style={{ minWidth: "100%", width: "100%" }}
+                      >
+                        No data found
                       </div>
-                    </th>
-                    <th className="text-start font-medium">Fees</th>
-                    <th className="text-start font-medium  pr-2">
-                      <div className="flex gap-0.5 items-center">
-                        Fees <span>%</span>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
+                    }
+                    fixedHeader
+                    fixedHeaderScrollHeight="300px"
+                    onRowClicked={(row) =>
+                      handleTitleOfficeClick(row.index, row.titleOffice)
+                    }
+                  />
+                </div>
+              )}
+            </div>
 
-                <tbody>
-                  {titleOfficeDataLoading ? (
-                    <TableSkeleton columns={8} />
-                  ) : (
-                    <>
-                      {titleOfficeData?.data?.titleOffices?.length === 0 ? (
-                        <NoDataRow colSpan={8} />
-                      ) : (
-                        <>
-                          {titleOfficeData?.data?.titleOffices?.map(
-                            (e: any, i: number) => (
-                              <tr
-                                key={e.id}
-                                onClick={() =>
-                                  handleTitleOfficeClick(i, e.titleOffice)
-                                }
-                                className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
-            transition-colors duration-500 ease-in-out ${
-              selectedTitleOfficeId === i
-                ? "bg-gray-300"
-                : "bg-white hover:bg-gray-100"
-            }`}
-                              >
-                                <td>{e.titleOffice}</td>
-                                <td>{e.orderCount}</td>
-                                <td className="px-2">
-                                  {Number(e.orderPercentage).toFixed(2)}
-                                </td>
-                                <td>{e.orderFeeTotal}</td>
-                                <td>{Number(e.feePercentage).toFixed(2)}</td>
-                                <td>{e.lastAccess}</td>
-                              </tr>
-                            )
-                          )}
-                        </>
-                      )}
-                    </>
-                  )}
-                </tbody>
-
-                <tfoot>
-                  <tr className="bg-[#F3F3F3]">
-                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                      Total
-                    </td>
-                    <td className="py-3  font-medium text-sm text-[#15120F]">
-                      {titleOfficeData?.data?.totalOrderCount || ""}
-                    </td>
-                    <td className="py-3 px-2 font-medium text-sm text-[#15120F]">
-                      {titleOfficeData?.data?.totalOrderPercentage || ""}
-                    </td>
-                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                      {titleOfficeData?.data?.totalFeeCount || ""}
-                    </td>
-                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                      {titleOfficeData?.data?.totalFeePercentage || ""}
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+            <div className="bg-[#F3F3F3] py-3 px-2 font-medium text-sm text-[#15120F] flex justify-between w-full">
+              <span>Total:</span>
+              <span>{titleOfficeData?.data?.totalOrderCount || ""}</span>
+              <span>{titleOfficeData?.data?.totalOrderPercentage || ""}</span>
+              <span>{titleOfficeData?.data?.totalFeeCount || ""}</span>
+              <span>{titleOfficeData?.data?.totalFeePercentage || ""}</span>
             </div>
           </CardLayout>
+
           <CardLayout className="w-full">
             <MainTitle title="County" />
+
             <div className="w-full overflow-y-auto max-h-[300px]">
-              <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F]">
-                <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] bg-white sticky top-0 z-10">
-                  <tr>
-                    <th className="text-start font-medium">County</th>
-                    <th className="text-start font-medium pr-2">Orders</th>
-                    <th className="text-start font-medium px-2">
-                      <div className="flex gap-0.5 items-center">
-                        Orders <span>%</span>
+              {propertyCountyDataLoading ? (
+                <TablesSkeleton
+                  columnCount={countyColumns.length}
+                  rowCount={3}
+                />
+              ) : (
+                <div className="w-full">
+                  <DataTable
+                    columns={countyColumns}
+                    data={propertyCountyData?.data?.propertyCounties || []}
+                    highlightOnHover
+                    striped
+                    className="head-row table-row"
+                    noDataComponent={
+                      <div
+                        className="w-full text-center py-6 px-20 text-gray-500 bg-gray-100 rounded"
+                        style={{ minWidth: "100%", width: "100%" }}
+                      >
+                        No data found
                       </div>
-                    </th>
-                    <th className="text-start font-medium">Fees</th>
-                    <th className="text-start font-medium  pr-2">
-                      <div className="flex gap-0.5 items-center">
-                        Fees <span>%</span>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
+                    }
+                    fixedHeader
+                    fixedHeaderScrollHeight="300px"
+                    onRowClicked={(row, _event) => {
+                      console.log("Row clicked:", row);
+                      handlePropertyCountyClick(row.index, row.propertyCounty);
+                    }}
+                    conditionalRowStyles={[
+                      {
+                        when: (_row, index?: number) =>
+                          index !== undefined &&
+                          selectedPropertyCountyId === index,
+                        classNames: ["bg-gray-300"], // Highlight selected row
+                      },
+                    ]}
+                  />
+                </div>
+              )}
+            </div>
 
-                <tbody>
-                  {propertyCountyDataLoading ? (
-                    <TableSkeleton columns={8} />
-                  ) : (
-                    <>
-                      {propertyCountyData?.data?.propertyCounties?.length ===
-                      0 ? (
-                        <NoDataRow colSpan={8} />
-                      ) : (
-                        <>
-                          {propertyCountyData?.data?.propertyCounties?.map(
-                            (e: any, i: number) => (
-                              <tr
-                                key={e.id}
-                                onClick={() =>
-                                  handlePropertyCountyClick(i, e.propertyCounty)
-                                }
-                                className={`font-Jakarta text-sm font-normal text-[#15120F] h-[60px] border-b-[1px] border-[#F4EFE9] cursor-pointer  
-            transition-colors duration-500 ease-in-out 
-            ${
-              selectedPropertyCountyId === i
-                ? "bg-gray-300"
-                : "bg-white hover:bg-gray-100"
-            }
-            `}
-                              >
-                                <td>{e.propertyCounty}</td>
-                                <td>{e.orderCount}</td>
-                                <td className="px-2">
-                                  {Number(e.orderPercentage).toFixed(2)}
-                                </td>
-                                <td>{e.orderFeeTotal}</td>
-                                <td>{Number(e.feePercentage).toFixed(2)}</td>
-                                <td>{e.lastAccess}</td>
-                              </tr>
-                            )
-                          )}
-                        </>
-                      )}
-                    </>
-                  )}
-                </tbody>
-
-                <tfoot>
-                  <tr className="bg-[#F3F3F3]">
-                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                      Total
-                    </td>
-                    <td className="py-3  font-medium text-sm text-[#15120F]">
-                      {titleOfficeData?.data?.totalOrderCount || ""}
-                    </td>
-                    <td className="py-3 px-2 font-medium text-sm text-[#15120F]">
-                      {titleOfficeData?.data?.totalOrderPercentage || ""}
-                    </td>
-                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                      {titleOfficeData?.data?.totalFeeCount || ""}
-                    </td>
-                    <td className="py-3 px-4 font-medium text-sm text-[#15120F]">
-                      {titleOfficeData?.data?.totalFeePercentage || ""}
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+            <div className="bg-[#F3F3F3] py-3 px-4 font-medium text-sm text-[#15120F] flex justify-between w-full">
+              <span>Total:</span>
+              <span>{propertyCountyData?.data?.totalOrderCount || ""}</span>
+              <span>
+                {propertyCountyData?.data?.totalOrderPercentage || ""}
+              </span>
+              <span>{propertyCountyData?.data?.totalFeeCount || ""}</span>
+              <span>{propertyCountyData?.data?.totalFeePercentage || ""}</span>
             </div>
           </CardLayout>
         </div>
