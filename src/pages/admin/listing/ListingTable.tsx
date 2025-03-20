@@ -23,6 +23,7 @@ import InputField from "../../../components/inputs/InputFields";
 import toast from "react-hot-toast";
 import Spinner from "../../../components/common/Spinner";
 import { formatNumber } from "../../../utils/functions";
+import DataTable, { TableColumn } from "react-data-table-component";
 const ListingTable = () => {
   const [loading, setLoading] = useState("");
 
@@ -137,6 +138,83 @@ const ListingTable = () => {
     }
   };
 
+  const listingOfficeColumns: TableColumn<any>[] = [
+    {
+      name: "",
+      cell: (row: any) =>
+        loading === row?.id ? (
+          <Spinner />
+        ) : (
+          <PopoverMenu
+            triggerImage={menu}
+            options={[
+              { label: "Edit", onClick: () => handleAction("edit", row) },
+              { label: "Detail", onClick: () => handleAction("detail", row) },
+              { label: "Delete", onClick: () => handleAction("delete", row) },
+            ]}
+          />
+        ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
+    {
+      name: "Id",
+      selector: (row: any) => row.id,
+      cell: (row: any) => (
+        <div className="px-3" title={row.id}>
+          {row.id}
+        </div>
+      ),
+    },
+    {
+      name: "Listing Office",
+      selector: (row: any) => row.name,
+    },
+    {
+      name: "Orders",
+      selector: (row: any) => row.orderCount,
+    },
+    {
+      name: "Orders %",
+      selector: (row: any) => formatNumber(row.orderPercentage),
+    },
+    {
+      name: "Fees",
+      selector: (row: any) => row.orderFeeTotal,
+    },
+    {
+      name: "Fees %",
+      selector: (row: any) => formatNumber(row.feePercentage),
+    },
+  ];
+
+  const listingAgentColumns: TableColumn<any>[] = [
+    {
+      name: "Agent ID",
+      selector: (row: any) => row.id,
+    },
+    {
+      name: "Contact Name",
+      selector: (row: any) => row.contactName,
+    },
+    {
+      name: "Actions",
+      cell: (row: any) => (
+        <button
+          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+          onClick={() => handleDeleteAgent(row.id)}
+          disabled={deleteLoading}
+        >
+          Delete
+        </button>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
+  ];
+
   return (
     <div className="w-full px-4 my-8 font-Poppins min-h-full">
       <Breadcrumb items={["Admin", "Listing "]} />
@@ -209,7 +287,7 @@ const ListingTable = () => {
 
       {expandedRowId === null ? (
         <CardLayout>
-          <div className="w-full flex flex-col gap-4 ">
+          <div className="w-full flex flex-col gap-4">
             <div className="flex justify-between items-center">
               <MainTitle title="Listing Offices" />
               <div
@@ -220,81 +298,25 @@ const ListingTable = () => {
               </div>
             </div>
 
-            <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-7">
-              <thead className="text-sm font-normal text-start border-b-[1px] border-[#F4EFE9] ">
-                <tr>
-                  <th></th>
-                  <th className="text-start font-medium">Id</th>
-                  <th className="text-start font-medium">Listing Office</th>
-                  <th className="text-start font-medium">Orders</th>
-                  <th className="text-start font-medium">
-                    <div className="flex gap-2 items-center">
-                      Orders <span>%</span>
-                    </div>
-                  </th>
-                  <th className="text-start font-medium">Fees</th>
-                  <th className="text-start font-medium">
-                    <div className="flex gap-2 items-center">
-                      Fees <span>%</span>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {isLoading ? (
-                  <TableSkeleton columns={7} />
-                ) : listingOfficeData?.data?.length === 0 ? (
-                  <NoDataRow colSpan={7} />
-                ) : (
-                  listingOfficeData?.data?.map((e: any) => (
-                    <tr
-                      key={e.id}
-                      className="font-Jakarta text-sm font-normal text-[#15120F] h-[55px] border-b-[1px] border-[#F4EFE9] bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out"
-                    >
-                      <td>
-                        {loading == e?.id ? (
-                          <Spinner />
-                        ) : (
-                          <>
-                            <PopoverMenu
-                              triggerImage={menu}
-                              options={[
-                                {
-                                  label: "Edit ",
-                                  onClick: () => handleAction("edit", e),
-                                },
-                                {
-                                  label: "Detail",
-                                  onClick: () => handleAction("detail", e),
-                                },
-                                {
-                                  label: "Delete",
-                                  onClick: () => handleAction("delete", e),
-                                },
-                              ]}
-                            />
-                          </>
-                        )}
-                      </td>
-                      <td className="px-3" title={e.id}>
-                        {e.id}
-                      </td>
-                      <td>{e.name}</td>
-                      <td>{e.orderCount}</td>
-                      <td>{formatNumber(e.orderPercentage)}</td>
-                      <td>{e.orderFeeTotal}</td>
-                      <td>{formatNumber(e.feePercentage)}</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+            <DataTable
+              columns={listingOfficeColumns}
+              data={listingOfficeData?.data || []}
+              highlightOnHover
+              striped
+              className="head-row table-row"
+              noDataComponent={
+                <div className="w-full text-center py-6 px-6 text-gray-500 bg-gray-100 rounded">
+                  No data found
+                </div>
+              }
+              progressPending={isLoading}
+              fixedHeader
+            />
           </div>
         </CardLayout>
       ) : (
         <CardLayout>
-          <div className="w-full flex flex-col gap-4 ">
+          <div className="w-full flex flex-col gap-4">
             <div className="flex justify-between items-center">
               <MainTitle title="Listing Detail" />
               <div
@@ -305,35 +327,20 @@ const ListingTable = () => {
               </div>
             </div>
 
-            <table className="w-full text-sm font-normal text-[#15120F] mt-4">
-              <thead className="text-start border-b-[1px] border-[#F4EFE9]">
-                <tr>
-                  <th className="p-2 text-start">Agent ID</th>
-                  <th className="p-2 text-start">Contact Name</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {selectedRow?.listingAgents.map((agent: any) => (
-                  <tr
-                    key={agent.id}
-                    className="border-b-[1px] border-[#F4EFE9]"
-                  >
-                    <td className="p-2">{agent.id}</td>
-                    <td className="p-2">{agent.contactName}</td>
-                    <td className="p-2">
-                      <button
-                        className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                        onClick={() => handleDeleteAgent(agent.id)}
-                        disabled={deleteLoading}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <DataTable
+              columns={listingAgentColumns}
+              data={selectedRow?.listingAgents || []}
+              highlightOnHover
+              striped
+              className="head-row table-row"
+              noDataComponent={
+                <div className="w-full text-center py-6 px-6 text-gray-500 bg-gray-100 rounded">
+                  No data found
+                </div>
+              }
+              fixedHeader
+              fixedHeaderScrollHeight="300px"
+            />
 
             <button
               onClick={() => setExpandedRowId(null)}
