@@ -182,9 +182,22 @@ export const orderApi = createApi({
         body,
       }),
     }),
+    createSellingOffice: builder.mutation<any, any>({
+      query: (body) => ({
+        url: "selling-office",
+        method: "POST",
+        body,
+      }),
+    }),
     deleteListingOffice: builder.mutation<any, { id: string }>({
       query: ({ id }) => ({
         url: `listing-office/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    deleteSellingOffice: builder.mutation<any, { id: string }>({
+      query: ({ id }) => ({
+        url: `selling-office/${id}`,
         method: "DELETE",
       }),
     }),
@@ -198,9 +211,25 @@ export const orderApi = createApi({
         body,
       }),
     }),
+    createSellingAgent: builder.mutation<
+      any,
+      { sellingOfficeId: number; contactName: string }
+    >({
+      query: (body) => ({
+        url: "selling-agent",
+        method: "POST",
+        body,
+      }),
+    }),
     deleteListingAgent: builder.mutation<any, { id: number }>({
       query: ({ id }) => ({
         url: `listing-agent/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    deleteSellingAgent: builder.mutation<any, { id: number }>({
+      query: ({ id }) => ({
+        url: `selling-agent/${id}`,
         method: "DELETE",
       }),
     }),
@@ -228,4 +257,8 @@ export const {
   useDeleteListingOfficeMutation,
   useCreateListingAgentMutation,
   useDeleteListingAgentMutation,
+  useCreateSellingAgentMutation,
+  useCreateSellingOfficeMutation,
+  useDeleteSellingOfficeMutation,
+  useDeleteSellingAgentMutation,
 } = orderApi;
