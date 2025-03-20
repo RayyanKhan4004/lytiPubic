@@ -157,13 +157,15 @@ export const useOptionsAddNew = () => {
     ) || []),
   ];
 
-  const sellingOfficesOption =
-    SellingOfficeData?.SellingOffices?.map(
+  const sellingOfficesOption = [
+    { value: "addNew", label: "Add Selling Office " },
+    ...(SellingOfficeData?.SellingOffices?.map(
       (user: { name: string; id: number }) => ({
         value: user.id,
         label: user.name,
       })
-    ) || [];
+    ) || []),
+  ];
 
   return {
     agentsOption,

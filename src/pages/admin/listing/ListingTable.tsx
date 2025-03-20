@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Pagination from "../../../components/common/Pagination";
 import CardLayout from "../../../components/layouts/CardLayout";
 import MainTitle from "../../../components/ui/typography/MainTitle";
-import TableSkeleton from "../../../components/ui/skeleton/TableSkeleton";
-import NoDataRow from "../../../components/ui/NoDataRow";
 import {
   useCreateListingAgentMutation,
   useCreateListingOfficeMutation,
@@ -34,19 +32,15 @@ const ListingTable = () => {
     reset,
     watch,
   } = useForm<ListingOfficeDataType>({
-    defaultValues: {
-      name: "",
-    },
+    defaultValues: { name: "" },
   });
 
   const [page, setPage] = useState(1);
   const [expandedRowId, setExpandedRowId] = useState<number | null>(null);
-
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isAddAgentInListingPopupOpen, setIsAddAgentInListingPopupOpen] =
     useState(false);
-  const [createListingAgent, { isLoading: createListingAgentLoading }] =
-    useCreateListingAgentMutation();
+
   const togglePopup = () => setIsPopupOpen((prev) => !prev);
   const toggleAddAgentInListingPopup = () =>
     setIsAddAgentInListingPopupOpen((prev) => !prev);
@@ -55,10 +49,8 @@ const ListingTable = () => {
     data: listingOfficeData,
     isLoading,
     refetch,
-  } = useGetListingOfficesWithAgentQuery({
-    page,
-    limit: 10,
-  });
+  } = useGetListingOfficesWithAgentQuery({ page, limit: 10 });
+
   const selectedRow = listingOfficeData?.data?.find(
     (item: any) => item.id === expandedRowId
   );
@@ -71,6 +63,13 @@ const ListingTable = () => {
   };
 
   const [deleteListingOffice] = useDeleteListingOfficeMutation();
+  const [createListingOffice, { isLoading: createListingOfficeLoading }] =
+    useCreateListingOfficeMutation();
+  const [createListingAgent, { isLoading: createListingAgentLoading }] =
+    useCreateListingAgentMutation();
+  const [deleteListingAgent, { isLoading: deleteLoading }] =
+    useDeleteListingAgentMutation();
+
   const handleAction = async (action: string, rowData: any) => {
     if (action === "detail") {
       setExpandedRowId(rowData.id);
@@ -89,15 +88,9 @@ const ListingTable = () => {
     }
   };
 
-  const [createListingOffice, { isLoading: createListingOfficeLoading }] =
-    useCreateListingOfficeMutation();
   const onSubmit: SubmitHandler<ListingOfficeDataType> = async (data) => {
-    const formattedData = {
-      ...data,
-    };
     try {
-      const res = await createListingOffice(formattedData).unwrap();
-      console.log(res, "==res==");
+      const res = await createListingOffice(data).unwrap();
       toast.success("Company Created Successfully");
       reset();
       togglePopup();
@@ -106,6 +99,7 @@ const ListingTable = () => {
       toast.error(err?.data?.message || "Company creation failed");
     }
   };
+
   const onListingAgentSubmit: SubmitHandler<ListingOfficeDataType> = async (
     data
   ) => {
@@ -115,7 +109,6 @@ const ListingTable = () => {
     };
     try {
       const res = await createListingAgent(formattedData).unwrap();
-      console.log(res, "==res==");
       toast.success("Agent Added Successfully");
       reset();
       refetch();
@@ -124,13 +117,10 @@ const ListingTable = () => {
       toast.error(err?.data?.message || "Failed to add agent");
     }
   };
-  const [deleteListingAgent, { isLoading: deleteLoading }] =
-    useDeleteListingAgentMutation();
 
   const handleDeleteAgent = async (agentId: number) => {
     try {
       const res = await deleteListingAgent({ id: agentId }).unwrap();
-
       toast.success(res?.message || "Agent deleted successfully");
       refetch();
     } catch (err: any) {

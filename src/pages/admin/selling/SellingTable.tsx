@@ -5,15 +5,10 @@ import MainTitle from "../../../components/ui/typography/MainTitle";
 import TableSkeleton from "../../../components/ui/skeleton/TableSkeleton";
 import NoDataRow from "../../../components/ui/NoDataRow";
 import {
-  useCreateListingAgentMutation,
-  useCreateListingOfficeMutation,
   useCreateSellingAgentMutation,
   useCreateSellingOfficeMutation,
-  useDeleteListingAgentMutation,
-  useDeleteListingOfficeMutation,
   useDeleteSellingAgentMutation,
   useDeleteSellingOfficeMutation,
-  useGetListingOfficesWithAgentQuery,
   useGetSellingOfficesWithAgentQuery,
 } from "../../../lib/rtkQuery/orderApi";
 import Breadcrumb from "../../../components/common/BreadCrumb";
@@ -39,19 +34,15 @@ const SellingTable = () => {
     reset,
     watch,
   } = useForm<ListingOfficeDataType>({
-    defaultValues: {
-      name: "",
-    },
+    defaultValues: { name: "" },
   });
 
   const [page, setPage] = useState(1);
   const [expandedRowId, setExpandedRowId] = useState<number | null>(null);
-
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isAddAgentInListingPopupOpen, setIsAddAgentInListingPopupOpen] =
     useState(false);
-  const [createSellingAgent, { isLoading: createListingAgentLoading }] =
-    useCreateSellingAgentMutation();
+
   const togglePopup = () => setIsPopupOpen((prev) => !prev);
   const toggleAddAgentInListingPopup = () =>
     setIsAddAgentInListingPopupOpen((prev) => !prev);
@@ -60,10 +51,8 @@ const SellingTable = () => {
     data: listingOfficeData,
     isLoading,
     refetch,
-  } = useGetSellingOfficesWithAgentQuery({
-    page,
-    limit: 10,
-  });
+  } = useGetSellingOfficesWithAgentQuery({ page, limit: 10 });
+
   const selectedRow = listingOfficeData?.data?.find(
     (item: any) => item.id === expandedRowId
   );
@@ -76,6 +65,13 @@ const SellingTable = () => {
   };
 
   const [deleteSellingOffice] = useDeleteSellingOfficeMutation();
+  const [createSellingOffice, { isLoading: createListingOfficeLoading }] =
+    useCreateSellingOfficeMutation();
+  const [createSellingAgent, { isLoading: createListingAgentLoading }] =
+    useCreateSellingAgentMutation();
+  const [deleteSellingAgent, { isLoading: deleteLoading }] =
+    useDeleteSellingAgentMutation();
+
   const handleAction = async (action: string, rowData: any) => {
     if (action === "detail") {
       setExpandedRowId(rowData.id);
@@ -94,14 +90,9 @@ const SellingTable = () => {
     }
   };
 
-  const [createSellingOffice, { isLoading: createListingOfficeLoading }] =
-    useCreateSellingOfficeMutation();
   const onSubmit: SubmitHandler<ListingOfficeDataType> = async (data) => {
-    const formattedData = {
-      ...data,
-    };
     try {
-      const res = await createSellingOffice(formattedData).unwrap();
+      const res = await createSellingOffice(data).unwrap();
       toast.success("Company Created Successfully");
       reset();
       togglePopup();
@@ -110,6 +101,7 @@ const SellingTable = () => {
       toast.error(err?.data?.message || "Company creation failed");
     }
   };
+
   const onListingAgentSubmit: SubmitHandler<ListingOfficeDataType> = async (
     data
   ) => {
@@ -128,13 +120,10 @@ const SellingTable = () => {
       toast.error(err?.data?.message || "Failed to add agent");
     }
   };
-  const [deleteSellingAgent, { isLoading: deleteLoading }] =
-    useDeleteSellingAgentMutation();
 
   const handleDeleteAgent = async (agentId: number) => {
     try {
       const res = await deleteSellingAgent({ id: agentId }).unwrap();
-
       toast.success(res?.message || "Agent deleted successfully");
       refetch();
     } catch (err: any) {
