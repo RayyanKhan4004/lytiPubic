@@ -22,6 +22,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import InputField from "../../../components/inputs/InputFields";
 import toast from "react-hot-toast";
 import Spinner from "../../../components/common/Spinner";
+import { formatNumber } from "../../../utils/functions";
 const ListingTable = () => {
   const [loading, setLoading] = useState("");
 
@@ -99,6 +100,7 @@ const ListingTable = () => {
       toast.success("Company Created Successfully");
       reset();
       togglePopup();
+      refetch();
     } catch (err: any) {
       toast.error(err?.data?.message || "Company creation failed");
     }
@@ -181,7 +183,7 @@ const ListingTable = () => {
             key={isAddAgentInListingPopupOpen ? "open" : "closed"}
           >
             <div className="flex justify-between items-center mb-4">
-              <MainTitle title="Add Listing Office" />
+              <MainTitle title="Add Agent" />
               <button onClick={toggleAddAgentInListingPopup}>
                 <X className="w-5 h-5 text-gray-500" />
               </button>
@@ -280,9 +282,9 @@ const ListingTable = () => {
                       </td>
                       <td>{e.name}</td>
                       <td>{e.orderCount}</td>
-                      <td>{parseFloat(e.orderPercentage).toFixed(2)}</td>
+                      <td>{formatNumber(e.orderPercentage)}</td>
                       <td>{e.orderFeeTotal}</td>
-                      <td>{parseFloat(e.feePercentage).toFixed(2)}</td>
+                      <td>{formatNumber(e.feePercentage)}</td>
                     </tr>
                   ))
                 )}
