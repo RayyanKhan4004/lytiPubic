@@ -115,15 +115,13 @@ export const useOptions = () => {
       label: user.firstname,
     })) || [];
 
-  const listingOfficeOption = [
-    { value: "addNewListing", label: "Add new listing" },
-    ...(listingOfficeData?.listingOffices?.map(
+  const listingOfficeOption =
+    listingOfficeData?.listingOffices?.map(
       (user: { name: string; id: number }) => ({
         value: user.id,
         label: user.name,
       })
-    ) || []),
-  ];
+    ) || [];
 
   const sellingOfficesOption =
     SellingOfficeData?.SellingOffices?.map(
@@ -150,7 +148,7 @@ export const useOptionsAddNew = () => {
     })) || [];
 
   const listingOfficeOption = [
-    { value: "addNewListing", label: "Add new listing" },
+    { value: "addNew", label: "Add new listing" },
     ...(listingOfficeData?.listingOffices?.map(
       (user: { name: string; id: number }) => ({
         value: user.id,
