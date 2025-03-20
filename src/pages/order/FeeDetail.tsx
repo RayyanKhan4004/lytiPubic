@@ -157,7 +157,6 @@ const FeeDetail = () => {
         </div>
       ),
       sortable: false,
-      maxWidth: "150px",
     },
   ];
 

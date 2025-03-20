@@ -71,14 +71,12 @@
 .react-datepicker__navigation {
   top: 8px !important;
 }
-/* hide scroll bar classes */
 .scroll-container::-webkit-scrollbar {
   display: none;
 }
-/* Hide scrollbar for IE, Edge and Firefox */
 .scroll-container {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .head-row {
@@ -106,7 +104,6 @@
   max-width: inherit;
 }
 
-/* Ensures tooltips appear above other content */
 .group-hover .absolute {
   z-index: 50;
 }
