@@ -78,17 +78,19 @@ const ListingCompanyLeaderBoard = () => {
             />
           ) : (
             <div className="flex flex-wrap w-full justify-between">
-              {topAgentData?.data?.map((e: any, i: number) => (
-                <TopAgentCard
-                  count={e.orderCount}
-                  image={dummyImage}
-                  name={e.contactName}
-                  key={i}
-                  rank={i + 1}
-                  // percentage={e.percentage}
-                  width="w-[48%]"
-                />
-              ))}
+              {topAgentData?.data
+                ?.filter((e: any) => e.contactName !== "none")
+                .map((e: any, i: number) => (
+                  <TopAgentCard
+                    count={e.orderCount}
+                    image={dummyImage}
+                    name={e.contactName}
+                    key={i}
+                    rank={i + 1}
+                    // percentage={e.percentage}
+                    width="w-[48%]"
+                  />
+                ))}
             </div>
           )}
         </CardLayout>
@@ -96,46 +98,6 @@ const ListingCompanyLeaderBoard = () => {
       <div className="w-full flex flex-col gap-4 my-4">
         <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-full my-6 overflow-auto ">
           <div className="font-Poppins flex justify-between items-center w-full pt-3 ">
-            {/* <form className="font-Poppins flex justify-between items-center w-full  gap-2">
-              <SearchInput
-                debounceTimeout={500}
-                placeholder="Search Keyword"
-                onChange={(e) => setSearchTerm(e)}
-                className="w-[27%]"
-              />
-              <div className="flex items-center gap-1.5">
-                <SelectField
-                  name="propertyCounty"
-                  control={control}
-                  options={countyOptions}
-                  placeholder="County"
-                  error={errors.propertyCounty?.message}
-                  required={false}
-                  className="w-[113px]"
-                  height="44px"
-                />
-                <SelectField
-                  name="propertyCounty"
-                  control={control}
-                  options={countyOptions}
-                  placeholder="County"
-                  error={errors.propertyCounty?.message}
-                  required={false}
-                  className="w-[113px]"
-                  height="44px"
-                />
-                <SelectField
-                  name="propertyCounty"
-                  control={control}
-                  options={countyOptions}
-                  placeholder="County"
-                  error={errors.propertyCounty?.message}
-                  required={false}
-                  className="w-[113px]"
-                  height="44px"
-                />
-              </div>
-            </form> */}
             <MainTitle title="Listing Offices" />
           </div>
 
