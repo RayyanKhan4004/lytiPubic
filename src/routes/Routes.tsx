@@ -49,6 +49,7 @@ import StatusesBoard from "../pages/order/StatusesBoard";
 import ListingCompanyLeaderBoard from "../pages/leaderboards/ListingCompanyLeaderboard";
 import SellingCompanyLeaderBoard from "../pages/leaderboards/SellingCompanyLeaderBoard";
 import ListingTable from "../pages/admin/listing/ListingTable";
+import SellingTable from "../pages/admin/selling/SellingTable";
 
 export const router = createBrowserRouter([
   {
@@ -75,7 +76,7 @@ export const router = createBrowserRouter([
       { path: "admin/edit-user", element: <EditUser /> },
       { path: "admin/challenge", element: <AdminChallengeTable /> },
       { path: "admin/listing", element: <ListingTable /> },
-      { path: "admin/selling", element: <AdminChallengeTable /> },
+      { path: "admin/selling", element: <SellingTable /> },
       { path: "admin/create-challenge", element: <AddChallenge /> },
       { path: "admin/lead-source", element: <LeadSource /> },
       { path: "admin/team-settings", element: <TeamSettings /> },
