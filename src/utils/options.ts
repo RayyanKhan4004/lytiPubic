@@ -115,13 +115,15 @@ export const useOptions = () => {
       label: user.firstname,
     })) || [];
 
-  const listingOfficeOption =
-    listingOfficeData?.listingOffices?.map(
+  const listingOfficeOption = [
+    { value: "addNewListing", label: "Add new listing" },
+    ...(listingOfficeData?.listingOffices?.map(
       (user: { name: string; id: number }) => ({
         value: user.id,
         label: user.name,
       })
-    ) || [];
+    ) || []),
+  ];
 
   const sellingOfficesOption =
     SellingOfficeData?.SellingOffices?.map(
@@ -132,4 +134,45 @@ export const useOptions = () => {
     ) || [];
 
   return { agentsOption, listingOfficeOption, sellingOfficesOption };
+};
+
+export const useOptionsAddNew = () => {
+  const { data, refetch: refetchAgents } = useFetchUsersWithoutLimitQuery();
+  const { data: listingOfficeData, refetch: refetchListingOffices } =
+    useGetListingOfficesQuery();
+  const { data: SellingOfficeData, refetch: refetchSellingOffices } =
+    useGetSellingOfficeQuery();
+
+  const agentsOption =
+    data?.users?.map((user: { firstname: string }) => ({
+      value: user.firstname,
+      label: user.firstname,
+    })) || [];
+
+  const listingOfficeOption = [
+    { value: "addNewListing", label: "Add new listing" },
+    ...(listingOfficeData?.listingOffices?.map(
+      (user: { name: string; id: number }) => ({
+        value: user.id,
+        label: user.name,
+      })
+    ) || []),
+  ];
+
+  const sellingOfficesOption =
+    SellingOfficeData?.SellingOffices?.map(
+      (user: { name: string; id: number }) => ({
+        value: user.id,
+        label: user.name,
+      })
+    ) || [];
+
+  return {
+    agentsOption,
+    listingOfficeOption,
+    sellingOfficesOption,
+    refetchAgents,
+    refetchListingOffices,
+    refetchSellingOffices,
+  };
 };

@@ -15,6 +15,7 @@ import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 import ArrowBlack from "../../assets/icons/ArrowBlack.svg";
 import {
+  useCreateListingOfficeMutation,
   useCreateOrderMutation,
   useGetListingOfficeByIdQuery,
   useGetSellingOfficeByIdQuery,
@@ -29,22 +30,31 @@ import {
   fileTypeOptions,
   transactionOption,
   useOptions,
+  useOptionsAddNew,
 } from "../../utils/options";
-import { OrderDataType } from "../../utils/types";
+import { ListingOfficeDataType, OrderDataType } from "../../utils/types";
 import MainTitle from "../../components/ui/typography/MainTitle";
 import CardLayout from "../../components/layouts/CardLayout";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import { useState } from "react";
+import { Dialog, DialogOverlay, DialogContent } from "@radix-ui/react-dialog";
+import { X } from "lucide-react";
 
 const CreateNewOrder = () => {
   const [activeTab, setActiveTab] = useState("transactionDetails");
   const [createOrder, { isLoading }] = useCreateOrderMutation();
-  const { agentsOption, listingOfficeOption, sellingOfficesOption } =
-    useOptions();
+  const [createListingOffice, { isLoading: createListingOfficeLoading }] =
+    useCreateListingOfficeMutation();
+  const {
+    agentsOption,
+    listingOfficeOption,
+    sellingOfficesOption,
+    refetchListingOffices,
+  } = useOptionsAddNew();
   const navigate = useNavigate();
 
   const {
-    handleSubmit,
+    handleSubmit: handleOrderSubmit,
     formState: { errors },
     control,
     reset,
@@ -59,6 +69,17 @@ const CreateNewOrder = () => {
           feeAmount: 0,
         },
       ],
+    },
+  });
+
+  const {
+    handleSubmit: handleNewListingSubmit,
+    control: newListingControl,
+    formState: { errors: newListingErrors },
+    reset: resetNewListing,
+  } = useForm<{ name: string }>({
+    defaultValues: {
+      name: "",
     },
   });
 
@@ -113,10 +134,57 @@ const CreateNewOrder = () => {
     }
   };
 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const onAddNewSubmit: SubmitHandler<ListingOfficeDataType> = async (data) => {
+    try {
+      await createListingOffice(data).unwrap();
+      toast.success("Company Created Successfully");
+      resetNewListing();
+      setIsPopupOpen(false);
+      refetchListingOffices();
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Company creation failed");
+    }
+  };
+
+  const handleAddNew = () => {
+    setIsPopupOpen(true);
+  };
   return (
     <div className="w-full px-4 my-8 font-Poppins">
+      <Dialog open={isPopupOpen} onOpenChange={setIsPopupOpen}>
+        <DialogOverlay className="fixed inset-0 bg-black/50 z-[100]" />
+        <DialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg w-96 z-[100]">
+          <form
+            onSubmit={handleNewListingSubmit(onAddNewSubmit)}
+            key={isPopupOpen ? "open" : "closed"}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Add Listing Office</h2>
+              <button type="button" onClick={() => setIsPopupOpen(false)}>
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+            <InputField
+              label="Company Name"
+              name="name"
+              control={newListingControl}
+              type="text"
+              placeholder="Devclan"
+              error={newListingErrors.name?.message}
+            />
+            <button
+              type="submit"
+              className="w-full bg-(--secondary) text-white py-2 rounded-md mt-5"
+            >
+              {createListingOfficeLoading ? "Loading..." : "Create"}
+            </button>
+          </form>
+        </DialogContent>
+      </Dialog>
       <Breadcrumb items={["Orders", "Create New Order"]} />
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleOrderSubmit(onSubmit)}>
         <CardLayout>
           <div className="w-full flex justify-between">
             <MainTitle title="Create New Order" />
@@ -213,14 +281,12 @@ const CreateNewOrder = () => {
               control={control}
               label="Estimated Closing Date"
               placeholder="8-21-15"
-              // rules={{ required: "Date is required" }}
             />
             <CustomDatePicker
               name="closedDate"
               control={control}
               label="Closing Date"
               placeholder="8-21-15"
-              // rules={{ required: "Date is required" }}
             />
             <InputField
               label="Title Officer"
@@ -324,15 +390,6 @@ const CreateNewOrder = () => {
               error={errors.escrowOfficer?.message}
             />
 
-            {/* <SelectField
-              label="Listing Agent Company"
-              name="listingAgentCompany"
-              control={control}
-              options={listingOfficeOption}
-              placeholder="Select..."
-              error={errors.listingAgentCompany?.message}
-              required={false}
-            /> */}
             <SelectField
               label="Listing Agent Company"
               name="listingOfficeId"
@@ -341,6 +398,7 @@ const CreateNewOrder = () => {
               placeholder="Select..."
               error={errors.listingAgentCompany?.message}
               required={false}
+              addNew={handleAddNew}
             />
             <SelectField
               label="Listing Agent "

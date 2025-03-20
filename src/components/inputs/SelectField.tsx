@@ -1,12 +1,8 @@
-import Select, {
-  Props as SelectProps,
-  SingleValue,
-  MultiValue,
-  components,
-} from "react-select";
+import Select, { SingleValue, MultiValue, components } from "react-select";
 import { FaChevronDown } from "react-icons/fa";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import ErrorsMessage from "../common/ErrorMessage";
+import { useState } from "react";
 
 interface Option {
   value: string | number;
@@ -24,7 +20,8 @@ interface SelectFieldProps<T extends FieldValues> {
   required?: boolean;
   className?: string;
   menuPlacement?: "auto" | "top" | "bottom";
-  height?: string; // New optional height prop
+  height?: string;
+  addNew?: () => void;
 }
 
 const customStyles = (height: string) => ({
@@ -90,7 +87,8 @@ function SelectField<T extends FieldValues>({
   required = false,
   className = "",
   menuPlacement = "auto",
-  height = "55px", // Default height
+  height = "55px",
+  addNew,
 }: SelectFieldProps<T>) {
   return (
     <div
@@ -122,7 +120,12 @@ function SelectField<T extends FieldValues>({
                 field.onChange(multiValue.map((option) => option.value));
               } else {
                 const singleValue = selectedOption as SingleValue<Option>;
-                field.onChange(singleValue?.value || null);
+
+                if (singleValue?.value === "addNewListing") {
+                  addNew?.();
+                } else {
+                  field.onChange(singleValue?.value || null);
+                }
               }
             }}
             value={
