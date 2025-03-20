@@ -121,7 +121,7 @@ function SelectField<T extends FieldValues>({
               } else {
                 const singleValue = selectedOption as SingleValue<Option>;
 
-                if (singleValue?.value === "addNewListing") {
+                if (singleValue?.value === "addNew") {
                   addNew?.();
                 } else {
                   field.onChange(singleValue?.value || null);
