@@ -54,6 +54,7 @@ export interface ListingOfficeDataType {
   name?: string;
   listingOfficeId?: number;
   contactName?: string;
+  agentName?: string;
 }
 
 export interface Fee {

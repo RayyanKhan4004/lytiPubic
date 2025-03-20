@@ -15,6 +15,7 @@ import SelectField from "../../components/inputs/SelectField";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 import ArrowBlack from "../../assets/icons/ArrowBlack.svg";
 import {
+  useCreateListingAgentMutation,
   useCreateListingOfficeMutation,
   useCreateOrderMutation,
   useGetListingOfficeByIdQuery,
@@ -39,12 +40,15 @@ import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import { useState } from "react";
 import { Dialog, DialogOverlay, DialogContent } from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
+import Spinner from "../../components/ui/loader/Spinner";
 
 const CreateNewOrder = () => {
   const [activeTab, setActiveTab] = useState("transactionDetails");
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const [createListingOffice, { isLoading: createListingOfficeLoading }] =
     useCreateListingOfficeMutation();
+  const [createListingAgent, { isLoading: createListingAgentLoading }] =
+    useCreateListingAgentMutation();
   const {
     agentsOption,
     listingOfficeOption,
@@ -76,22 +80,21 @@ const CreateNewOrder = () => {
     handleSubmit: handleNewListingSubmit,
     control: newListingControl,
     formState: { errors: newListingErrors },
-    reset: resetNewListing,
-  } = useForm<{ name: string }>({
+    setValue,
+  } = useForm<ListingOfficeDataType>({
     defaultValues: {
       name: "",
+      agentName: "",
     },
   });
 
   const selectedListingOfficeId = watch("listingOfficeId");
   const selectedSellingOfficeId = watch("sellingOfficeId");
 
-  const { data: listingData } = useGetListingOfficeByIdQuery(
-    selectedListingOfficeId as number,
-    {
+  const { data: listingData, refetch: refetchListingAgents } =
+    useGetListingOfficeByIdQuery(selectedListingOfficeId as number, {
       skip: !selectedListingOfficeId,
-    }
-  );
+    });
   const { data: sellingData } = useGetSellingOfficeByIdQuery(
     selectedSellingOfficeId as number,
     {
@@ -99,13 +102,15 @@ const CreateNewOrder = () => {
     }
   );
 
-  const listingAgentNameOption =
-    listingData?.listingAgents?.map(
+  const listingAgentNameOption = [
+    { value: "addNew", label: "Add new agent" },
+    ...(listingData?.listingAgents?.map(
       (agent: { contactName: string; id: number }) => ({
         value: agent.id,
         label: agent.contactName,
       })
-    ) || [];
+    ) || []),
+  ];
 
   const sellingAgentNameOption =
     sellingData?.sellingAgents?.map(
@@ -125,7 +130,6 @@ const CreateNewOrder = () => {
 
     try {
       const res = await createOrder(formattedData).unwrap();
-      console.log(res, "==res==");
       navigate("/orders/orders");
       toast.success("Order Created Successfully");
       reset();
@@ -134,35 +138,111 @@ const CreateNewOrder = () => {
     }
   };
 
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isAddNewListingCompanyPopupOpen, setIsAddNewListingCompanyPopupOpen] =
+    useState(false);
+  const [
+    isAddNewListingCompanyAgentPopupOpen,
+    setIsAddNewListingCompanyAgentPopupOpen,
+  ] = useState(false);
 
-  const onAddNewSubmit: SubmitHandler<ListingOfficeDataType> = async (data) => {
+  const onAddNewLsitingCompanySubmit: SubmitHandler<
+    ListingOfficeDataType
+  > = async (data) => {
     try {
       await createListingOffice(data).unwrap();
       toast.success("Company Created Successfully");
-      resetNewListing();
-      setIsPopupOpen(false);
+
+      setIsAddNewListingCompanyPopupOpen(false);
       refetchListingOffices();
     } catch (err: any) {
       toast.error(err?.data?.message || "Company creation failed");
     }
   };
+  const onAddNewListingCompanyAgentSubmit: SubmitHandler<
+    ListingOfficeDataType
+  > = async (data) => {
+    const formattedData = {
+      listingOfficeId: selectedListingOfficeId || 0,
+      contactName: data.agentName || "",
+    };
+    try {
+      const res = await createListingAgent(formattedData).unwrap();
+      console.log(res, "==res==");
+      toast.success("Agent Added Successfully");
+      setValue("agentName", "");
+      setIsAddNewListingCompanyAgentPopupOpen(false);
+      refetchListingAgents();
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to add agent");
+    }
+  };
 
   const handleAddNew = () => {
-    setIsPopupOpen(true);
+    setIsAddNewListingCompanyPopupOpen(true);
+  };
+
+  const handleAddNewAgent = () => {
+    if (!selectedListingOfficeId) {
+      toast.error("Please select a listing company first");
+    } else {
+      setIsAddNewListingCompanyAgentPopupOpen(true);
+    }
   };
   return (
     <div className="w-full px-4 my-8 font-Poppins">
-      <Dialog open={isPopupOpen} onOpenChange={setIsPopupOpen}>
+      <Dialog
+        open={isAddNewListingCompanyAgentPopupOpen}
+        onOpenChange={setIsAddNewListingCompanyAgentPopupOpen}
+      >
         <DialogOverlay className="fixed inset-0 bg-black/50 z-[100]" />
         <DialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg w-96 z-[100]">
           <form
-            onSubmit={handleNewListingSubmit(onAddNewSubmit)}
-            key={isPopupOpen ? "open" : "closed"}
+            onSubmit={handleNewListingSubmit(onAddNewListingCompanyAgentSubmit)}
+            key={isAddNewListingCompanyAgentPopupOpen ? "open" : "closed"}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Add Agent</h2>
+              <button
+                type="button"
+                onClick={() => setIsAddNewListingCompanyAgentPopupOpen(false)}
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+            <InputField
+              label="Agent Name"
+              name="agentName"
+              control={newListingControl}
+              type="text"
+              placeholder="Devclan"
+              error={newListingErrors.agentName?.message}
+              required={true}
+            />
+            <button
+              type="submit"
+              className="w-full bg-(--secondary) text-white py-2 rounded-md mt-5"
+            >
+              {createListingAgentLoading ? <Spinner /> : "Create"}
+            </button>
+          </form>
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={isAddNewListingCompanyPopupOpen}
+        onOpenChange={setIsAddNewListingCompanyPopupOpen}
+      >
+        <DialogOverlay className="fixed inset-0 bg-black/50 z-[100]" />
+        <DialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg shadow-lg w-96 z-[100]">
+          <form
+            onSubmit={handleNewListingSubmit(onAddNewLsitingCompanySubmit)}
+            key={isAddNewListingCompanyPopupOpen ? "open" : "closed"}
           >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Add Listing Office</h2>
-              <button type="button" onClick={() => setIsPopupOpen(false)}>
+              <button
+                type="button"
+                onClick={() => setIsAddNewListingCompanyPopupOpen(false)}
+              >
                 <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
@@ -173,12 +253,13 @@ const CreateNewOrder = () => {
               type="text"
               placeholder="Devclan"
               error={newListingErrors.name?.message}
+              required={true}
             />
             <button
               type="submit"
               className="w-full bg-(--secondary) text-white py-2 rounded-md mt-5"
             >
-              {createListingOfficeLoading ? "Loading..." : "Create"}
+              {createListingOfficeLoading ? <Spinner /> : "Create"}
             </button>
           </form>
         </DialogContent>
@@ -408,6 +489,7 @@ const CreateNewOrder = () => {
               placeholder="Select..."
               error={errors.listingAgentId?.message}
               required={false}
+              addNew={handleAddNewAgent}
             />
             <InputField
               label="Listing Agent Contact Name"
