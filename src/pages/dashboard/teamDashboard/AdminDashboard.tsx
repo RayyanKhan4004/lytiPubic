@@ -111,8 +111,8 @@ const AdminDashboard = () => {
         </h1>
         <div className="w-full flex gap-3 items-center justify-between">
           <AdminDashboardStatsCard value="$72356431" label="Closed GCI" />
-          <AdminDashboardStatsCard value="$72356431" label="Closed GCI" />
-          <AdminDashboardStatsCard value="$72356431" label="Closed GCI" />
+          <AdminDashboardStatsCard value="$72356431" label="Net" />
+          <AdminDashboardStatsCard value="$72356431" label="Expense" />
           <img src={equal} alt="" />
           <AdminDashboardStatsCard
             value="$72356431"
@@ -154,32 +154,32 @@ const AdminDashboard = () => {
                 <th className="text-start text-xs font-normal p-2">Month</th>
                 <th className="text-start text-xs font-normal">
                   <div className="flex gap-2 items-center">
-                    Closed Units <img src={arrowUpDown} alt="Sort" />
+                    Closed Orders <img src={arrowUpDown} alt="Sort" />
                   </div>
                 </th>
                 <th className="text-start text-xs font-normal">
                   <div className="flex gap-2 items-center">
-                    Closed GCI <img src={arrowUpDown} alt="Sort" />
+                    Revenue <img src={arrowUpDown} alt="Sort" />
                   </div>
                 </th>
                 <th className="text-start text-xs font-normal">
                   <div className="flex gap-2 items-center">
-                    Closed Net GCI <img src={arrowUpDown} alt="Sort" />
+                    Net Revenue <img src={arrowUpDown} alt="Sort" />
                   </div>
                 </th>
                 <th className="text-start text-xs font-normal">
                   <div className="flex gap-2 items-center">
-                    Closed Listings <img src={arrowUpDown} alt="Sort" />
+                    Closed Title <img src={arrowUpDown} alt="Sort" />
                   </div>
                 </th>
                 <th className="text-start text-xs font-normal">
                   <div className="flex gap-2 items-center">
-                    Closed Buyers <img src={arrowUpDown} alt="Sort" />
+                    Closed Escrows <img src={arrowUpDown} alt="Sort" />
                   </div>
                 </th>
                 <th className="text-start text-xs font-normal">
                   <div className="flex gap-2 items-center">
-                    Pending Units <img src={arrowUpDown} alt="Sort" />
+                    Open Orders <img src={arrowUpDown} alt="Sort" />
                   </div>
                 </th>
                 <th className="text-start text-xs font-normal">

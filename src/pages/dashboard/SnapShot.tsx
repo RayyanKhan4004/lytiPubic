@@ -67,9 +67,10 @@ const SnapShot = () => {
       <div className="w-full flex gap-4 mt-6">
         {isLoading ? (
           <div className="w-full flex gap-4 mt-2">
-            <CustomizableSkeleton height={156} width="32%" />
-            <CustomizableSkeleton height={156} width="32%" />
-            <CustomizableSkeleton height={156} width="32%" />
+            <CustomizableSkeleton height={156} width="24%" />
+            <CustomizableSkeleton height={156} width="24%" />
+            <CustomizableSkeleton height={156} width="24%" />
+            <CustomizableSkeleton height={156} width="24%" />
           </div>
         ) : (
           <div className="w-full flex gap-4 mt-2 justify-between">
