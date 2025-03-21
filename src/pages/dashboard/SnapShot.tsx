@@ -6,13 +6,14 @@ import CustomizableDropdown from "../../components/common/CustomizableDropdown";
 import LineChartComponent from "../../components/dashboard/snapShot/LineChartComponent";
 import StackedBarChart from "../../components/dashboard/snapShot/StackedBarChart";
 import SlimBarChart from "../../components/dashboard/snapShot/SlimBarChart";
-import StatsCard from "../../components/orders/StatsCard";
+import StatsCard from "../../components/ui/card/StatsCard";
 import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
 import {
   formatNumber,
   formatNumberWithoutDecimals,
 } from "../../utils/functions";
+import DashboardSnapshotStatsCard from "../../components/ui/card/DashboardSnapshotStatsCard";
 
 const SnapShot = () => {
   const [selectedFilter, setSelectedFilter] = useState("Active");
@@ -71,54 +72,30 @@ const SnapShot = () => {
             <CustomizableSkeleton height={156} width="32%" />
           </div>
         ) : (
-          <div className="w-full flex gap-4 mt-2">
-            <StatsCard
-              heading="Orders"
-              stats={[
-                {
-                  value: `${formatNumberWithoutDecimals(
-                    data?.totalOrderCount
-                  )}`,
-                  text: "Total Orders",
-                },
-                {
-                  value: `$${formatNumber(data?.totalFee)}`,
-                  text: "Total Amount",
-                },
-                { value: "0", text: "Avg /Order" },
-              ]}
+          <div className="w-full flex gap-4 mt-2 justify-between">
+            <DashboardSnapshotStatsCard
+              title="YTD (All order count)"
+              totalCount={65}
+              escrowCount={47}
+              titleCount={20}
             />
-            <StatsCard
-              heading="Title"
-              stats={[
-                {
-                  value: `${formatNumberWithoutDecimals(
-                    data?.titleChargesOrderCount
-                  )}`,
-                  text: "Total Units",
-                },
-                {
-                  value: `$${formatNumber(data?.titleChargesTotalFee)}`,
-                  text: "Title charges",
-                },
-                { value: "0", text: "Avg Title " },
-              ]}
+            <DashboardSnapshotStatsCard
+              title="YTD open order"
+              totalCount={65}
+              escrowCount={47}
+              titleCount={20}
             />
-            <StatsCard
-              heading="Escrow"
-              stats={[
-                {
-                  value: `${formatNumberWithoutDecimals(
-                    data?.escrowChargesOrderCount
-                  )}`,
-                  text: "Escrow Units",
-                },
-                {
-                  value: `$${formatNumber(data?.escrowChargesTotalFee)}`,
-                  text: "Escrow charges",
-                },
-                { value: "0", text: "Avg Escrow" },
-              ]}
+            <DashboardSnapshotStatsCard
+              title="YTD prelim"
+              totalCount={65}
+              escrowCount={47}
+              titleCount={20}
+            />
+            <DashboardSnapshotStatsCard
+              title="YTD closed"
+              totalCount={65}
+              escrowCount={47}
+              titleCount={20}
             />
           </div>
         )}

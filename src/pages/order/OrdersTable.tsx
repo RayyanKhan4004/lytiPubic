@@ -18,7 +18,7 @@ import {
 
 import Breadcrumb from "../../components/common/BreadCrumb";
 import Pagination from "../../components/common/Pagination";
-import StatsCard from "../../components/orders/StatsCard";
+import StatsCard from "../../components/ui/card/StatsCard";
 import TableHeader from "../../components/ui/table/TableHeader";
 import SelectField from "../../components/inputs/SelectField";
 import SearchInput from "../../components/inputs/SearchInput";

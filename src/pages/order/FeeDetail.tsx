@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
 
 import Breadcrumb from "../../components/common/BreadCrumb";
-import StatsCard from "../../components/orders/StatsCard";
+import StatsCard from "../../components/ui/card/StatsCard";
 import FilterPopup from "../../components/ui/FilterPopup";
 import MainTitle from "../../components/ui/typography/MainTitle";
 import CardLayout from "../../components/layouts/CardLayout";

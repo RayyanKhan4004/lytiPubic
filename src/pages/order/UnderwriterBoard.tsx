@@ -4,7 +4,7 @@ import Breadcrumb from "../../components/common/BreadCrumb";
 import CardLayout from "../../components/layouts/CardLayout";
 import MainTitle from "../../components/ui/typography/MainTitle";
 import Pagination from "../../components/common/Pagination";
-import StatsCard from "../../components/orders/StatsCard";
+import StatsCard from "../../components/ui/card/StatsCard";
 
 import {
   useGetOrdersQuery,
