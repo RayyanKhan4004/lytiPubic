@@ -5,7 +5,7 @@ import CirclesDashboard from "./teamDashboard/CirclesDashboard";
 import YtdDashboard from "./teamDashboard/YtdDashboard";
 import ActivitiesDashboard from "./teamDashboard/ActivitiesDashboard";
 import LeaderboardsDashboard from "./teamDashboard/LeaderboardsDashboard";
-import AdminDashboard from "../admin/AdminDashboard";
+import AdminDashboard from "./teamDashboard/AdminDashboard";
 
 const CeoDashboard = () => {
   const tabItems = [
