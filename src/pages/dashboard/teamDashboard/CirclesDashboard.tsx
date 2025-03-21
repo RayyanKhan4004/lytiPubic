@@ -1,6 +1,8 @@
 import React from "react";
 import CircleDashboardStatsCard from "../../../components/dashboard/teamDashboard/circlesDashboard/CircleDashboardStatsCard";
 import CircularProgress from "../../../components/dashboard/teamDashboard/circlesDashboard/CircularProgress";
+import DoubleCircularProgress from "../../../components/dashboard/teamDashboard/circlesDashboard/DoubleCircularProgressProps ";
+import CircleStatsSection from "../../../components/dashboard/teamDashboard/circlesDashboard/CircleStatsSection";
 
 const CirclesDashboard = () => {
   const dashboardStats = [
@@ -62,9 +64,7 @@ const CirclesDashboard = () => {
           />
         ))}
       </div>
-      <CircularProgress value={30} maxValue={100} status="Not on pace" />{" "}
-      <CircularProgress value={70} maxValue={100} status="On pace" />{" "}
-      <CircularProgress value={100} maxValue={100} status="Goal achieved" />{" "}
+      <CircleStatsSection />
     </div>
   );
 };
