@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import { useFetchUsersQuery } from "../../../lib/rtkQuery/userApi";
+import {
+  useDeleteUserMutation,
+  useFetchUsersQuery,
+} from "../../../lib/rtkQuery/userApi";
 import { DummyData, userTableHeaders } from "../../../utils/DummyData";
 import { filterOption } from "../../../utils/options";
 
@@ -23,7 +26,6 @@ import arrowUpDown from "../../../assets/icons/ArrowsDownUp.svg";
 import dummyImage from "../../../assets/images/Dummy.jpg";
 import PopoverMenu from "../../../components/ui/popup/PopupMenu";
 import toast from "react-hot-toast";
-import { useDeleteUserMutation } from "../../../lib/rtkQuery/authApi";
 import { UserTableType } from "../../../utils/types";
 import PrimaryButton from "../../../components/ui/button/PrimaryButton";
 import MainTitle from "../../../components/ui/typography/MainTitle";

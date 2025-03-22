@@ -13,13 +13,11 @@ import InputField from "../../../components/inputs/InputFields";
 import { formatDate } from "../../../utils/formatDate";
 import { roleOption } from "../../../utils/options";
 
+import { UserDataType } from "../../../utils/types";
 import {
   useDeleteUserMutation,
-  useSignUpMutation,
   useUpdateUserMutation,
-} from "../../../lib/rtkQuery/authApi";
-import { useDeleteOrderMutation } from "../../../lib/rtkQuery/orderApi";
-import { UserDataType } from "../../../utils/types";
+} from "../../../lib/rtkQuery/userApi";
 
 const EditUser = () => {
   const [isChallenge, setIsChallenge] = useState<boolean>(false);

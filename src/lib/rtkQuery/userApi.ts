@@ -1,9 +1,32 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 interface FormValues {
-  keyword: string;
-  page: number;
+  keyword?: string;
+  page?: number;
   pageSize?: number;
-  limit: number;
+  limit?: number;
+  firstname?: string;
+  lastname?: string;
+  alternativemail?: string;
+  password?: string;
+  business_entity?: string;
+  email?: string;
+  role?: string;
+  startDate?: string;
+  profileImage?: File | null;
+  brokerageCap?: string;
+  yearAnniversary?: string;
+  agentTransactionFee?: string;
+  agentMonthlyFee?: string;
+  commissionTemplate?: string;
+  notes?: string;
+  ae_commission_threshold?: number;
+  ae_escrow_commission?: number;
+  ae_title_commission?: number;
+  career_path?: string;
+  lead_source?: string;
+  exclude_challenges_leaderboards?: boolean;
+  download_transactions?: boolean;
+  send_welcome_email?: boolean;
 }
 
 export const userApi = createApi({
@@ -48,7 +71,28 @@ export const userApi = createApi({
     fetchUsersWithoutLimit: builder.query<any, void>({
       query: () => `users?limit=${100000}&role=Account Executive`,
     }),
+    updateUser: builder.mutation<
+      any,
+      { id: string; data: Partial<FormValues> }
+    >({
+      query: ({ id, data }) => ({
+        url: `users/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    deleteUser: builder.mutation<any, string>({
+      query: (id) => ({
+        url: `users/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useFetchUsersQuery, useFetchUsersWithoutLimitQuery } = userApi;
+export const {
+  useFetchUsersQuery,
+  useFetchUsersWithoutLimitQuery,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+} = userApi;
