@@ -1,31 +1,49 @@
 import YtdDashboardStatsCard from "../../../components/dashboard/teamDashboard/ytdDashboard/YtdDashboardStatsCard";
+import { useGetYtdStatsQuery } from "../../../lib/rtkQuery/dashboardApi";
+import {
+  formatNumber,
+  formatNumberWithoutDecimals,
+} from "../../../utils/functions";
 
 const YtdDashboard = () => {
-  const statsData = [
-    { value: 41, heading: "Live Listings" },
-    { value: 99, heading: "Units Pending" },
-    { value: "$82.4M", heading: "Volume Pending" },
-    { value: "2.41%", heading: "AVG GCI %" },
-    { value: "$82.4M", heading: "Avg Sales Price" },
-    { value: 99, heading: "Avg Escrow Fee" },
-    { value: "$82.4M", heading: "Avg Title Fee" },
-    { value: "$82.4M", heading: "Avg Days To Close (DTC)" },
-    { value: 99, heading: "Orders Closed" },
-    { value: "$82.4M", heading: "Sales Closed Volume" },
-    { value: "2.41%", heading: "Buyers Sold" },
-    { value: 99, heading: "Units Pending" },
-  ];
+  const { data } = useGetYtdStatsQuery();
+
+  const formatHeading = (key: string) => {
+    return key
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (str) => str.toUpperCase());
+  };
 
   return (
     <div>
-      <div className="flex gap-3 items-center w-full flex-wrap font-poppins">
-        {statsData.map((stat, index) => (
-          <YtdDashboardStatsCard
-            key={index}
-            value={stat.value}
-            heading={stat.heading}
-          />
-        ))}
+      <div className="flex gap-2 items-center w-full flex-wrap font-poppins">
+        {data &&
+          Object.entries(data).map(([key, value], index) => {
+            let formattedValue;
+
+            if (typeof value === "string" || typeof value === "number") {
+              const numValue =
+                typeof value === "string" ? parseFloat(value) : value;
+
+              if (!isNaN(numValue)) {
+                formattedValue = Number.isInteger(numValue)
+                  ? formatNumberWithoutDecimals(numValue)
+                  : formatNumber(numValue);
+              } else {
+                formattedValue = "Invalid Number";
+              }
+            } else {
+              formattedValue = "N/A";
+            }
+
+            return (
+              <YtdDashboardStatsCard
+                key={index}
+                value={formattedValue}
+                heading={formatHeading(key)}
+              />
+            );
+          })}
       </div>
     </div>
   );

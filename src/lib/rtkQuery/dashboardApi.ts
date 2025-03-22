@@ -41,7 +41,12 @@ export const dashboardApi = createApi({
         params: { year },
       }),
     }),
+    getYtdStats: builder.query<any, void>({
+      query: () => ({
+        url: "dashboard/ytd-stats",
+      }),
+    }),
   }),
 });
 
-export const { useGetDashboardStatsQuery } = dashboardApi;
+export const { useGetDashboardStatsQuery, useGetYtdStatsQuery } = dashboardApi;
