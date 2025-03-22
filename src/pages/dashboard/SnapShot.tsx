@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import trend from "../../assets/icons/TrendUp.svg";
 import arrow from "../../assets/icons/ArrowLongDark.svg";
 import Breadcrumb from "../../components/common/BreadCrumb";
@@ -9,59 +9,118 @@ import SlimBarChart from "../../components/dashboard/snapShot/SlimBarChart";
 import StatsCard from "../../components/ui/card/StatsCard";
 import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
-import {
-  formatNumber,
-  formatNumberWithoutDecimals,
-} from "../../utils/functions";
 import DashboardSnapshotStatsCard from "../../components/ui/card/DashboardSnapshotStatsCard";
+import { useGetDashboardStatsQuery } from "../../lib/rtkQuery/dashboardApi";
+import SelectField from "../../components/inputs/SelectField";
+import { useForm } from "react-hook-form";
+import { OrderDataType } from "../../utils/types";
+import { yearOptions } from "../../utils/options";
+import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 
 const SnapShot = () => {
-  const [selectedFilter, setSelectedFilter] = useState("Active");
-  const [selectedYear, setSelectedYear] = useState("2023");
   const [isMonthly, setIsMonthly] = useState(true);
+  const [selectedFilters, setSelectedFilters] = useState<
+    Record<string, string>
+  >({});
+  const {
+    formState: { errors },
+    reset,
+    watch,
+    setValue,
+    control,
+  } = useForm<OrderDataType>();
 
-  const { data, isLoading, refetch } = useGetOrdersQuery({
-    status: "",
-    type: "",
-    propertyCounty: "",
-    transactionType: "",
-    page: 1,
-    limit: 10,
-    keyword: "",
-    titleOffice: "",
-    underwriter: "",
-    orderId: "",
+  const selectedYear = watch("year") || "";
+  const formatDate = (date: any) => {
+    return date ? new Date(date).toISOString().split("T")[0] : "";
+  };
+
+  const selectedStartDate = formatDate(watch("startDate")) || "";
+  const selectedEndDate = formatDate(watch("endDate")) || "";
+  console.log(selectedEndDate);
+
+  const { data: dashboardStats, isLoading } = useGetDashboardStatsQuery({
+    startDate: selectedStartDate,
+    endDate: selectedEndDate,
+    year: selectedYear,
   });
+  useEffect(() => {
+    setSelectedFilters({
+      year: selectedYear,
+      startDate: selectedStartDate,
+      endDate: selectedEndDate,
+    });
+  }, [selectedYear, selectedStartDate, selectedEndDate]);
+
+  const removeFilter = (key: "year" | "startDate" | "endDate") => {
+    setValue(key, "");
+    setSelectedFilters((prev) => {
+      const updatedFilters = { ...prev };
+      delete updatedFilters[key];
+      return updatedFilters;
+    });
+  };
+
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <div className="flex items-center justify-between">
         <Breadcrumb items={["Dashboard", "SnapShot"]} />
-        <div className="flex gap-3">
-          <CustomizableDropdown
-            height="h-[44px]"
-            options={["All", "Active", "InActive"]}
-            selected={selectedFilter}
-            setSelected={(e) => setSelectedFilter(e)}
-            width="w-[200px]"
+        <form className="font-Poppins flex justify-between items-center  gap-2">
+          {/* <CustomDatePicker
+            name="startDate"
+            control={control}
+            label=""
+            placeholder="Start Date"
           />
-          <CustomizableDropdown
-            height="h-[44px]"
-            options={["2023", "2024", "2025", "2026"]}
-            selected={selectedYear}
-            setSelected={(e) => setSelectedYear(e)}
-            width="w-[130px]"
+          <CustomDatePicker
+            name="endDate"
+            control={control}
+            label=""
+            placeholder="End Date"
+          /> */}
+          <SelectField
+            name="year"
+            control={control}
+            options={yearOptions}
+            placeholder="Year"
+            error={errors.propertyCounty?.message}
+            required={false}
+            className="w-[113px]"
           />
-          <CustomizableDropdown
-            height="h-[44px]"
-            options={["All", "Active", "InActive"]}
-            selected={selectedFilter}
-            setSelected={(e) => setSelectedFilter(e)}
-            width="w-[180px]"
-          />
-          <div className="bg-(--primary) w-[44px] h-[44px] flex items-center justify-center rounded-[10px]">
-            <img src={trend} alt="" />
+
+          <div className="flex gap-3">
+            <div className="bg-(--primary) w-[44px] h-[44px] flex items-center justify-center rounded-[10px]">
+              <img src={trend} alt="" />
+            </div>
           </div>
-        </div>
+        </form>
+      </div>
+      <div className="flex gap-2 mt-2 justify-end">
+        {Object.entries(selectedFilters).map(([key, value]) => {
+          if (!value) return null;
+
+          const displayValue =
+            key === "startDate" || key === "endDate"
+              ? new Date(value).toLocaleDateString()
+              : value;
+
+          return (
+            <div
+              key={key}
+              className="flex items-center bg-[#E5E5E5] px-4 py-1 rounded-[27px] text-sm h-[40px]"
+            >
+              <button
+                onClick={() =>
+                  removeFilter(key as "year" | "startDate" | "endDate")
+                }
+                className="mr-2 text-(--secondary)"
+              >
+                ✖
+              </button>
+              {displayValue}
+            </div>
+          );
+        })}
       </div>
 
       <div className="w-full flex gap-4 mt-6">
@@ -76,27 +135,61 @@ const SnapShot = () => {
           <div className="w-full flex gap-4 mt-2 justify-between">
             <DashboardSnapshotStatsCard
               title="YTD (All order count)"
-              totalCount={65}
-              escrowCount={47}
-              titleCount={20}
+              totalCount={
+                Number(dashboardStats?.data?.allOrderCount?.[0]?.count) || 0
+              }
+              escrowCount={
+                Number(dashboardStats?.data?.allOrderCount?.[0]?.escrow) || 0
+              }
+              titleCount={
+                Number(dashboardStats?.data?.allOrderCount?.[0]?.title) || 0
+              }
             />
             <DashboardSnapshotStatsCard
               title="YTD open order"
-              totalCount={65}
-              escrowCount={47}
-              titleCount={20}
+              totalCount={
+                Number(dashboardStats?.data?.openOrdersByYear?.[0]?.count) || 0
+              }
+              escrowCount={
+                Number(dashboardStats?.data?.openOrdersByYear?.[0]?.escrow) || 0
+              }
+              titleCount={
+                Number(dashboardStats?.data?.openOrdersByYear?.[0]?.title) || 0
+              }
             />
             <DashboardSnapshotStatsCard
               title="YTD prelim"
-              totalCount={65}
-              escrowCount={47}
-              titleCount={20}
+              totalCount={
+                Number(
+                  dashboardStats?.data?.prelimCommitmentOrdersByYear?.[0]?.count
+                ) || 0
+              }
+              escrowCount={
+                Number(
+                  dashboardStats?.data?.prelimCommitmentOrdersByYear?.[0]
+                    ?.escrow
+                ) || 0
+              }
+              titleCount={
+                Number(
+                  dashboardStats?.data?.prelimCommitmentOrdersByYear?.[0]?.title
+                ) || 0
+              }
             />
             <DashboardSnapshotStatsCard
               title="YTD closed"
-              totalCount={65}
-              escrowCount={47}
-              titleCount={20}
+              totalCount={
+                Number(dashboardStats?.data?.closedOrdersByYear?.[0]?.count) ||
+                0
+              }
+              escrowCount={
+                Number(dashboardStats?.data?.closedOrdersByYear?.[0]?.escrow) ||
+                0
+              }
+              titleCount={
+                Number(dashboardStats?.data?.closedOrdersByYear?.[0]?.title) ||
+                0
+              }
             />
           </div>
         )}

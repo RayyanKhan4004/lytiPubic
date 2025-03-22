@@ -48,6 +48,9 @@ export interface OrderDataType {
   listingAgentId?: number;
   sellingAgentId?: number;
   orderId?: string;
+  year?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface ListingOfficeDataType {

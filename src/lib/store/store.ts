@@ -6,6 +6,7 @@ import AuthSlice from "./slices/authSlice";
 import { authApi } from "../rtkQuery/authApi";
 import { userApi } from "../rtkQuery/userApi";
 import { orderApi } from "../rtkQuery/orderApi";
+import { dashboardApi } from "../rtkQuery/dashboardApi";
 
 const persistConfig = {
   key: "root",
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
   [orderApi.reducerPath]: orderApi.reducer,
+  [dashboardApi.reducerPath]: dashboardApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -29,7 +31,8 @@ export const store = configureStore({
     getDefaultMiddleware({ serializableCheck: false }).concat(
       authApi.middleware,
       userApi.middleware,
-      orderApi.middleware
+      orderApi.middleware,
+      dashboardApi.middleware
     ),
 });
 

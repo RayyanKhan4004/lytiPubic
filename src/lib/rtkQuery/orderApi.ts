@@ -40,7 +40,7 @@ export const orderApi = createApi({
       query: ({
         status,
         page,
-        limit,
+        limit = 10,
         type,
         propertyCounty,
         keyword,
@@ -48,8 +48,21 @@ export const orderApi = createApi({
         titleOffice,
         underwriter,
         orderId,
-      }) =>
-        `orders/?page=${page}&limit=${10}&fileStatus=${status}&fileType=${type}&propertyCounty=${propertyCounty}&keyword=${keyword}&transactionType=${transactionType}&titleOffice=${titleOffice}&underwriter=${underwriter}&orderId=${orderId}`,
+      }) => ({
+        url: "orders/",
+        params: {
+          page,
+          limit,
+          fileStatus: status,
+          fileType: type,
+          propertyCounty,
+          keyword,
+          transactionType,
+          titleOffice,
+          underwriter,
+          orderId,
+        },
+      }),
     }),
 
     createOrder: builder.mutation<any, OrderDataType>({
