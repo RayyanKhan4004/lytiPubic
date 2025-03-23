@@ -49,6 +49,9 @@ export const dashboardApi = createApi({
     getUserActivities: builder.query<any, { userId: string }>({
       query: ({ userId }) => `activities/user/${userId}`,
     }),
+    getAdminActivities: builder.query<any, void>({
+      query: () => `activities/user`,
+    }),
     incrementActivity: builder.mutation<
       any,
       { userId: number; activityId: number }
@@ -91,4 +94,5 @@ export const {
   useDecrementActivityMutation,
   useIncrementActivityMutation,
   useGetAdminDashboardStatsQuery,
+  useGetAdminActivitiesQuery,
 } = dashboardApi;

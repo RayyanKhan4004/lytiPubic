@@ -9,12 +9,12 @@ import ArrowLeft from "../assets/icons/ArrowLineLeft.svg";
 import { sidebarData } from "../utils/SidebarData";
 interface SideBarProps {
   setIsSideBarExpanded: any;
-  isSideBarExpanded :boolean
+  isSideBarExpanded: boolean;
 }
-const Sidebar = ({ setIsSideBarExpanded, isSideBarExpanded } : SideBarProps) => {
+const Sidebar = ({ setIsSideBarExpanded, isSideBarExpanded }: SideBarProps) => {
   const sidebarItems = sidebarData();
   const navigate = useNavigate();
-  
+
   const [selectedItem, setSelectedItem] = useState<number | null>(() => {
     const storedItem = localStorage.getItem("selectedItem");
     return storedItem ? JSON.parse(storedItem) : null;
@@ -24,9 +24,9 @@ const Sidebar = ({ setIsSideBarExpanded, isSideBarExpanded } : SideBarProps) => 
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 
   useEffect(() => {
-    if(selectedItem === null){
-      setSelectedItem(0)
-       localStorage.setItem("selectedItem", JSON.stringify(0));
+    if (selectedItem === null) {
+      setSelectedItem(0);
+      localStorage.setItem("selectedItem", JSON.stringify(0));
     }
     if (selectedItem !== null) {
       localStorage.setItem("selectedItem", JSON.stringify(selectedItem));
@@ -59,7 +59,7 @@ const Sidebar = ({ setIsSideBarExpanded, isSideBarExpanded } : SideBarProps) => 
 
   return (
     <div
-      className={`w-full min-h-screen h-full font-Poppins bg-[#F6F6F6] flex items-center flex-col text-sm mb-48 relative ${
+      className={`w-full min-h-screen h-auto font-Poppins bg-[#F6F6F6] flex items-center flex-col text-sm mb-48 relative ${
         isSideBarExpanded && "p-2"
       }`}
     >
@@ -88,7 +88,7 @@ const Sidebar = ({ setIsSideBarExpanded, isSideBarExpanded } : SideBarProps) => 
               className={`h-[50px] flex items-center ${
                 isSideBarExpanded ? "justify-center" : "justify-between"
               } rounded-[10px] px-4 hover:cursor-pointer ${
-                selectedItem === i || openDropdown === i 
+                selectedItem === i || openDropdown === i
                   ? "bg-(--primary) text-white"
                   : "text-black"
               }`}

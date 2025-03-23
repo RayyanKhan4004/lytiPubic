@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import Breadcrumb from "../../components/common/BreadCrumb";
-import TabNavigation from "../../components/common/TabNavigation";
-import CirclesDashboard from "./teamDashboard/CirclesDashboard";
-import YtdDashboard from "./teamDashboard/YtdDashboard";
-import ActivitiesDashboard from "./teamDashboard/ActivitiesDashboard";
-import LeaderboardsDashboard from "./teamDashboard/LeaderboardsDashboard";
-import AdminDashboard from "./teamDashboard/AdminDashboard";
+import Breadcrumb from "../../../components/common/BreadCrumb";
+import TabNavigation from "../../../components/common/TabNavigation";
+import CirclesDashboard from "../teamDashboard/CirclesDashboard";
+import YtdDashboard from "../teamDashboard/YtdDashboard";
+import ActivitiesDashboard from "../teamDashboard/ActivitiesDashboard";
+import LeaderboardsDashboard from "../teamDashboard/LeaderboardsDashboard";
+import AdminDashboard from "../teamDashboard/AdminDashboard";
+import CeoActivitiesDashboard from "./CeoActivitiesDashboard";
 
 const CeoDashboard = () => {
   const tabItems = [
@@ -26,7 +27,7 @@ const CeoDashboard = () => {
 
       {activeTab === "Circles Dashboard" && <CirclesDashboard />}
       {activeTab === "YTD Dashboard" && <YtdDashboard />}
-      {activeTab === "Activities Dashboard" && <ActivitiesDashboard />}
+      {activeTab === "Activities Dashboard" && <CeoActivitiesDashboard />}
       {activeTab === "Leaderboards Dashboard" && <LeaderboardsDashboard />}
       {activeTab === "Admin Dashboard" && <AdminDashboard />}
     </div>
