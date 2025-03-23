@@ -16,8 +16,6 @@ const Record = () => {
   const userId = useAppSelector((state: any) => state?.auth?.user?.id);
   const { data, isLoading } = useGetUserActivitiesQuery({ userId });
 
-  console.log(data, "==data==");
-
   const [counts, setCounts] = useState<{
     [key: string]: { activityId: number; count: number };
   }>({});
@@ -98,7 +96,6 @@ const Record = () => {
           ))}
         </div>
       </CardLayout>
-      ;
       <CardLayout className="py-5">
         <MainTitle title="Activities" />
         {isLoading ? (
