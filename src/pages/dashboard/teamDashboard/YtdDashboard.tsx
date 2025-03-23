@@ -21,17 +21,21 @@ const YtdDashboard = () => {
           Object.entries(data).map(([key, value], index) => {
             let formattedValue;
 
-            if (typeof value === "string" || typeof value === "number") {
-              const numValue =
-                typeof value === "string" ? parseFloat(value) : value;
-
+            if (typeof value === "string") {
+              const numValue = parseFloat(value);
               if (!isNaN(numValue)) {
-                formattedValue = Number.isInteger(numValue)
-                  ? formatNumberWithoutDecimals(numValue)
-                  : formatNumber(numValue);
+                formattedValue =
+                  `$` +
+                  (Number.isInteger(numValue)
+                    ? formatNumberWithoutDecimals(numValue)
+                    : formatNumber(numValue));
               } else {
-                formattedValue = "Invalid Number";
+                formattedValue = "$" + value;
               }
+            } else if (typeof value === "number") {
+              formattedValue = Number.isInteger(value)
+                ? formatNumberWithoutDecimals(value)
+                : formatNumber(value);
             } else {
               formattedValue = "N/A";
             }

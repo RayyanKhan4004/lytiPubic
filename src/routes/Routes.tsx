@@ -50,13 +50,15 @@ import ListingCompanyLeaderBoard from "../pages/leaderboards/ListingCompanyLeade
 import SellingCompanyLeaderBoard from "../pages/leaderboards/SellingCompanyLeaderBoard";
 import ListingTable from "../pages/admin/listing/ListingTable";
 import SellingTable from "../pages/admin/selling/SellingTable";
+import Record from "../pages/record/Record";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <ProtectedLayout />,
     children: [
-      { index: true, element: <Navigate to="dashboard/snapShot" replace /> },
+      { index: true, element: <Navigate to="record" replace /> },
+      { path: "record", element: <Record /> },
       { path: "dashboard/snapShot", element: <SnapShot /> },
       { path: "dashboard/ceo-dashboard", element: <CeoDashboard /> },
       { path: "dashboard/personal-dashboard", element: <PersonalDashboard /> },

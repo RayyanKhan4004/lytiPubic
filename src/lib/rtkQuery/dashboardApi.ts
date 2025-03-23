@@ -46,7 +46,45 @@ export const dashboardApi = createApi({
         url: "dashboard/ytd-stats",
       }),
     }),
+    getUserActivities: builder.query<any, void>({
+      query: () => "activities/user",
+    }),
+    incrementActivity: builder.mutation<
+      any,
+      { userId: number; activityId: number }
+    >({
+      query: ({ userId, activityId }) => ({
+        url: "activities/increment",
+        method: "POST",
+        body: {
+          userId,
+          activityId,
+          updatedBy: "Manually",
+        },
+      }),
+    }),
+
+    decrementActivity: builder.mutation<
+      any,
+      { userId: number; activityId: number }
+    >({
+      query: ({ userId, activityId }) => ({
+        url: "activities/decrement", // Removed query parameters from URL
+        method: "POST",
+        body: {
+          userId,
+          activityId,
+          updatedBy: "Manually",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetDashboardStatsQuery, useGetYtdStatsQuery } = dashboardApi;
+export const {
+  useGetDashboardStatsQuery,
+  useGetYtdStatsQuery,
+  useGetUserActivitiesQuery,
+  useDecrementActivityMutation,
+  useIncrementActivityMutation,
+} = dashboardApi;
