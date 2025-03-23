@@ -9,6 +9,7 @@ import {
 import { useAppSelector } from "../../lib/store/hooks";
 import toast from "react-hot-toast";
 import CardLayout from "../../components/layouts/CardLayout";
+import MainTitle from "../../components/ui/typography/MainTitle";
 
 const Record = () => {
   const userId = useAppSelector((state: any) => state?.auth?.user?.id);
@@ -56,7 +57,8 @@ const Record = () => {
           count: Math.max(0, prev[activityName].count + value),
         },
       }));
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Can't delete ");
       console.error("Error updating activity count:", error);
     }
   };
@@ -65,36 +67,41 @@ const Record = () => {
     <div className="w-full px-4 my-6 font-Poppins">
       <Breadcrumb items={["Home", "Record"]} />
 
-      <div className="flex justify-between items-center gap-3">
-        {Object.entries(counts).map(([name, data]) => (
-          <CardLayout>
-            <div key={name} className="">
-              <h3 className="text-lg font-semibold mb-2">{name}</h3>{" "}
-              <div className="flex items-center">
-                <button
-                  className="bg-(--secondary) text-white px-4 py-2 rounded-l-lg"
-                  onClick={() => updateCount(name, -1)}
-                >
-                  <Minus size={16} />
-                </button>
-                <input
-                  type="text"
-                  name={name}
-                  value={data.count}
-                  readOnly
-                  className="w-32 text-center border-t border-b h-8 border-gray-300"
-                />
-                <button
-                  className="bg-(--secondary) text-white px-4 py-2 rounded-r-lg"
-                  onClick={() => updateCount(name, 1)}
-                >
-                  <Plus size={16} />
-                </button>
+      <CardLayout>
+        <MainTitle title="Activities" />
+        <div className="flex justify-between items-center gap-3">
+          {Object.entries(counts).map(([name, data]) => (
+            <CardLayout className="py-3">
+              <div key={name} className="flex flex-col gap-3">
+                <h3 className="text-md font-semibold text-(--primary)">
+                  {name}
+                </h3>{" "}
+                <div className="flex items-center">
+                  <button
+                    className="bg-(--secondary) text-white px-4 py-2 rounded-l-lg"
+                    onClick={() => updateCount(name, -1)}
+                  >
+                    <Minus size={16} />
+                  </button>
+                  <input
+                    type="text"
+                    name={name}
+                    value={data.count}
+                    readOnly
+                    className="w-32 text-center border-t border-b h-8 border-gray-300"
+                  />
+                  <button
+                    className="bg-(--secondary) text-white px-4 py-2 rounded-r-lg"
+                    onClick={() => updateCount(name, 1)}
+                  >
+                    <Plus size={16} />
+                  </button>
+                </div>
               </div>
-            </div>
-          </CardLayout>
-        ))}
-      </div>
+            </CardLayout>
+          ))}
+        </div>
+      </CardLayout>
     </div>
   );
 };

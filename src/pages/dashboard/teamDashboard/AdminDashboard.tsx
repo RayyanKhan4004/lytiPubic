@@ -1,7 +1,15 @@
-import React from "react";
 import AdminDashboardStatsCard from "../../../components/dashboard/teamDashboard/AdminDashboardStatsCard";
 import equal from "../../../assets/icons/Equals.svg";
 import arrowUpDown from "../../../assets/icons/ArrowsDownUp.svg";
+import { useGetAdminDashboardStatsQuery } from "../../../lib/rtkQuery/dashboardApi";
+import DataTable, { TableColumn } from "react-data-table-component";
+import CardLayout from "../../../components/layouts/CardLayout";
+import MainTitle from "../../../components/ui/typography/MainTitle";
+import TablesSkeleton from "../../../components/ui/skeleton/TablesSkeleton";
+import {
+  formatNumber,
+  formatNumberWithoutDecimals,
+} from "../../../utils/functions";
 
 const data = [
   {
@@ -25,47 +33,113 @@ const data = [
     pendingVolume: "$8,000",
   },
 ];
+
 const AdminDashboard = () => {
+  const { data: adminData, isLoading } = useGetAdminDashboardStatsQuery();
+  console.log(adminData, "==data==");
+  const titleInformationColumns: TableColumn<any>[] = [
+    {
+      name: "",
+      selector: (row: any) => row.category,
+      cell: (row: any) => (
+        <div className="rowStyle font-semibold w-[60px]">{row.category}</div>
+      ),
+      maxWidth: "60px",
+    },
+    {
+      name: "Total",
+      selector: (row: any) => row.total,
+      cell: (row: any) => <div className="rowStyle">{row.total}</div>,
+      maxWidth: "130px",
+    },
+    {
+      name: "Pending",
+      selector: (row: any) => row.pending,
+      cell: (row: any) => <div className="rowStyle">{row.pending}</div>,
+      maxWidth: "130px",
+    },
+    {
+      name: "Closed",
+      selector: (row: any) => row.closed,
+      cell: (row: any) => <div className="rowStyle">{row.closed}</div>,
+      maxWidth: "200px",
+    },
+  ];
+
+  const titleInformationData = [
+    {
+      category: "Units",
+      total:
+        formatNumberWithoutDecimals(adminData?.title.totalTitleOrder) ?? "0",
+      pending:
+        formatNumberWithoutDecimals(adminData?.title.titleOpenOrder) ?? "0",
+      closed:
+        formatNumberWithoutDecimals(adminData?.title.titleClosedOrder) ?? "0",
+    },
+    {
+      category: "Volume",
+      total: `$${
+        formatNumberWithoutDecimals(adminData?.title.salePriceTitleOrder) ?? "0"
+      }`,
+      pending: `$${
+        formatNumberWithoutDecimals(adminData?.title.salePriceTitleOrderOpen) ??
+        "0"
+      }`,
+      closed: `$${
+        formatNumberWithoutDecimals(
+          adminData?.title.salePriceTitleOrderClosed
+        ) ?? "0"
+      }`,
+    },
+    {
+      category: "Revenue",
+      total: `$${formatNumber(adminData?.title.sumOfFeesTitleOrder) ?? "0"}`,
+      pending: `$${
+        formatNumberWithoutDecimals(adminData?.title.sumOfFeesTitleOrderOpen) ??
+        "0"
+      }`,
+      closed: `$${
+        formatNumber(adminData?.title.sumOfFeesTitleOrderClosed) ?? "0"
+      }`,
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-5 ">
       <div className="flex justify-between w-full gap-3 ">
-        <div className=" w-[48%] shadow-(--cardShadow) rounded-xl py-4">
-          <h2 className="text-lg font-semibold mb-2 text-(--primary) px-4">
-            Title Information
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="border-b border-(--smoke)">
-                  <th className="text-left p-2 font-medium"></th>
-                  <th className="text-left p-2 font-medium">Total</th>
-                  <th className="text-left p-2 font-medium">Pending</th>
-                  <th className="text-left p-2 font-medium">Closed</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-(--smoke)">
-                  <td className="px-4 font-semibold">Units</td>
-                  <td className="p-2">66</td>
-                  <td className="p-2">42</td>
-                  <td className="p-2">24</td>
-                </tr>
-                <tr className="border-b border-(--smoke)">
-                  <td className="px-4 font-semibold">Volume</td>
-                  <td className="p-2">$105.55</td>
-                  <td className="p-2">$948.55</td>
-                  <td className="p-2">$601.13</td>
-                </tr>
-                <tr>
-                  <td className="px-4 font-semibold">Revenue</td>
-                  <td className="p-2">$202.87</td>
-                  <td className="p-2">$446.61</td>
-                  <td className="p-2">$779.58</td>
-                </tr>
-              </tbody>
-            </table>
+        <CardLayout className="w-[48%] shadow-(--cardShadow) rounded-xl py-4">
+          <MainTitle title="Title Information" />
+
+          <div className="w-full overflow-y-auto max-h-[300px]">
+            {isLoading ? (
+              <TablesSkeleton
+                columnCount={titleInformationColumns.length}
+                rowCount={3}
+              />
+            ) : (
+              <div className="w-full">
+                <DataTable
+                  columns={titleInformationColumns}
+                  data={titleInformationData}
+                  highlightOnHover
+                  striped
+                  className="head-row table-row"
+                  noDataComponent={
+                    <div
+                      className="w-full text-center py-6 px-6 text-gray-500 bg-gray-100 rounded"
+                      style={{ minWidth: "100%", width: "100%" }}
+                    >
+                      No data found
+                    </div>
+                  }
+                  fixedHeader
+                  fixedHeaderScrollHeight="300px"
+                />
+              </div>
+            )}
           </div>
-        </div>
+        </CardLayout>
+
         <div className=" w-[48%] shadow-(--cardShadow) rounded-xl py-4">
           <h2 className="text-lg font-semibold mb-2 text-(--primary) px-4">
             Escrow Information

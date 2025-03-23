@@ -78,6 +78,9 @@ export const dashboardApi = createApi({
         },
       }),
     }),
+    getAdminDashboardStats: builder.query<any, void>({
+      query: () => "dashboard/admin-dashboard-stats",
+    }),
   }),
 });
 
@@ -87,4 +90,5 @@ export const {
   useGetUserActivitiesQuery,
   useDecrementActivityMutation,
   useIncrementActivityMutation,
+  useGetAdminDashboardStatsQuery,
 } = dashboardApi;
