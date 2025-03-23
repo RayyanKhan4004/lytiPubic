@@ -10,6 +10,7 @@ import { useAppSelector } from "../../lib/store/hooks";
 import toast from "react-hot-toast";
 import CardLayout from "../../components/layouts/CardLayout";
 import MainTitle from "../../components/ui/typography/MainTitle";
+import add from "../../assets/icons/Add.svg";
 
 const Record = () => {
   const userId = useAppSelector((state: any) => state?.auth?.user?.id);
@@ -62,12 +63,40 @@ const Record = () => {
       console.error("Error updating activity count:", error);
     }
   };
-
+  const stages = [
+    "Appointment Set",
+    "Appointment Met",
+    "Signed",
+    "Under Contract",
+    "Closed",
+  ];
   return (
     <div className="w-full px-4 my-6 font-Poppins">
       <Breadcrumb items={["Home", "Record"]} />
 
-      <CardLayout>
+      <CardLayout className="py-5 my-6">
+        <div className="flex justify-between items-center ">
+          <MainTitle title="Transactions" />
+          <div className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[40px] px-3 rounded-xl text-white">
+            <img src={add} alt="" />
+            Add Transaction
+          </div>
+        </div>
+        <div className="flex justify-between gap-2 mt-3">
+          {stages.map((stage) => (
+            <div
+              key={stage}
+              className="flex flex-col items-center justify-center w-48 h-24 bg-gray-100 rounded-md shadow-sm"
+            >
+              <p className="text-gray-700">{stage}</p>
+              <div className="mt-2 bg-(--secondary) rounded-full p-0.5">
+                <img src={add} alt="Add" className="h-5 w-5" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </CardLayout>
+      <CardLayout className="py-5">
         <MainTitle title="Activities" />
         <div className="flex justify-between items-center gap-3">
           {Object.entries(counts).map(([name, data]) => (
