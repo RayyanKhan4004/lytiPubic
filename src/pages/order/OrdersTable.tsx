@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -14,6 +14,7 @@ import {
   fileStatusOption,
   fileTypeOptions,
   transactionOption,
+  yearOptions,
 } from "../../utils/options";
 
 import Breadcrumb from "../../components/common/BreadCrumb";
@@ -50,9 +51,6 @@ const OrdersTable = () => {
     Record<string, string>
   >({});
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
-
-  const navigate = useNavigate();
-
   const {
     formState: { errors },
     reset,
@@ -60,6 +58,46 @@ const OrdersTable = () => {
     setValue,
     control,
   } = useForm<OrderDataType>();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const selectedYear = location.state?.selectedYear;
+  const type = location.state?.type;
+
+  // Function to get the full year range
+  const getYearDates = (year: number) => ({
+    startDate: `${year}-01-01`,
+    endDate: `${year}-12-31`,
+  });
+
+  // Function to get the current month range
+  const getMonthDates = (year: number) => {
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1;
+    const lastDay = new Date(year, currentMonth, 0).getDate();
+
+    return {
+      startDate: `${year}-${String(currentMonth).padStart(2, "0")}-01`,
+      endDate: `${year}-${String(currentMonth).padStart(2, "0")}-${lastDay}`,
+    };
+  };
+
+  // Get the year from input
+  const yearFromInput = watch("year") || "";
+
+  // Determine the final year to use
+  const finalYear = yearFromInput || selectedYear;
+
+  // Set startDate and endDate based on the available year
+  let startDate = "";
+  let endDate = "";
+
+  if (finalYear) {
+    if (type === "year") {
+      ({ startDate, endDate } = getYearDates(Number(finalYear)));
+    } else if (type === "month") {
+      ({ startDate, endDate } = getMonthDates(Number(finalYear)));
+    }
+  }
 
   const selectedPropertyCounty = watch("propertyCounty") || "";
   const selectedFileStatus = watch("fileStatus") || "";
@@ -78,6 +116,8 @@ const OrdersTable = () => {
     titleOffice: "",
     underwriter: "",
     orderId: "",
+    startDate: startDate || undefined,
+    endDate: endDate || undefined,
   });
 
   const handlePageChange = ({ selected }: { selected: number }) => {
@@ -128,23 +168,40 @@ const OrdersTable = () => {
       fileStatus: selectedFileStatus,
       fileType: selectedFileType,
       transactionType: selectTransactionType,
+      year: yearFromInput,
     });
   }, [
     selectedPropertyCounty,
     selectedFileStatus,
     selectedFileType,
     selectTransactionType,
+    yearFromInput,
   ]);
 
   const removeFilter = (
-    key: "propertyCounty" | "fileStatus" | "fileType" | "transactionType"
+    key:
+      | "propertyCounty"
+      | "fileStatus"
+      | "fileType"
+      | "transactionType"
+      | "year"
   ) => {
-    setValue(key, "");
+    setValue(key, ""); // Reset the selected filter
+
     setSelectedFilters((prev) => {
       const updatedFilters = { ...prev };
-      delete updatedFilters[key];
+      delete updatedFilters[key]; // Remove from selected filters
+
+      // If the "year" filter is removed, reset startDate and endDate
+      if (key === "year") {
+        startDate = "";
+        endDate = "";
+      }
+
       return updatedFilters;
     });
+
+    refetch(); // Trigger API refetch with updated filters
   };
 
   const handleExportPDF = () => {
@@ -227,6 +284,12 @@ const OrdersTable = () => {
 
     doc.save("exported-orders.pdf");
   };
+
+  useEffect(() => {
+    if (selectedYear) {
+      setValue("year", selectedYear);
+    }
+  }, [selectedYear, setValue]);
 
   return (
     <>
@@ -333,7 +396,7 @@ const OrdersTable = () => {
                 placeholder="File type"
                 error={errors.fileType?.message}
                 required={false}
-                className="w-[180px]"
+                className="w-[134px]"
                 height="44px"
               />
               <SelectField
@@ -346,6 +409,16 @@ const OrdersTable = () => {
                 className="w-[90px]"
                 height="44px"
               />
+              {/* <SelectField
+                name="year"
+                control={control}
+                options={yearOptions}
+                placeholder="Year"
+                error={errors.year?.message}
+                required={false}
+                className="w-[90px]"
+                height="h-[53px]"
+              /> */}
 
               <button
                 type="button"
@@ -369,7 +442,6 @@ const OrdersTable = () => {
                 onClick={() => navigate("/orders/add-order")}
               >
                 <img src={add} alt="" />
-                {/* Add Order */}
               </div>
             </div>
           </form>
@@ -388,6 +460,7 @@ const OrdersTable = () => {
                           | "transactionType"
                           | "fileType"
                           | "fileStatus"
+                          | "year"
                       )
                     }
                     className="mr-2 text-(--secondary)"
