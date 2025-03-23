@@ -103,6 +103,20 @@ const YtdDashboard = () => {
       .replace(/^./, (str) => str.toUpperCase());
   };
 
+  //   {
+  //     "titleOrdersCount": 599,
+  //     "openTitleOnlyOrdersCount": 124,
+  //     "openEscrowOnlyOrdersCount": 27,
+  //     "openTitleOnlySalePriceSum": "83075842",
+  //     "openEscrowOnlySalePriceSum": "4895388",
+  //     "openTitleOnlyRefiSalePriceSum": "6050000",
+  //     "openEscrowOnlyRefiSalePriceSum": "0",
+  //     "avgTitleChargesFeeAmount": "440.1397641587776117",
+  //     "avgEscrowChargesFeeAmount": "408.5688567990373045",
+  //     "avgSalePrice": "616372.377858613590",
+  //     "avgDaysToClose": 0,
+  //     "avgCancellationRate": 0
+  // }
   return (
     <div>
       {isLoading ? (
@@ -126,46 +140,51 @@ const YtdDashboard = () => {
             heading={"Title Open Orders"}
             value={formatNumberWithoutDecimals(data.openTitleOnlyOrdersCount)}
           />
+
           <YtdDashboardStatsCard
             heading={"Escrow Open Orders"}
+            value={`$${formatNumber(Number(data.openEscrowOnlyOrdersCount))}`}
+          />
+
+          <YtdDashboardStatsCard
+            heading={"Title Sales Volume Open"}
             value={`$${formatNumber(Number(data.openTitleOnlySalePriceSum))}`}
           />
           <YtdDashboardStatsCard
-            heading={"Title Sales Volume Open"}
+            heading={"Escrow Sales Volume Open"}
             value={`$${formatNumber(Number(data.openEscrowOnlySalePriceSum))}`}
           />
           <YtdDashboardStatsCard
-            heading={"Escrow Sales Volume Open"}
+            heading={"Refi Title Volume Open"}
             value={`$${formatNumber(
               Number(data.openTitleOnlyRefiSalePriceSum)
             )}`}
           />
           <YtdDashboardStatsCard
-            heading={"Refi Title Volume Open"}
+            heading={"Refi Escrow Volume Open"}
             value={`$${formatNumber(
               Number(data.openEscrowOnlyRefiSalePriceSum)
             )}`}
           />
           <YtdDashboardStatsCard
-            heading={"Refi Escrow Volume Open"}
+            heading={"Avg Title Revenue"}
             value={`$${formatNumber(Number(data.avgTitleChargesFeeAmount))}`}
           />
           <YtdDashboardStatsCard
-            heading={"Avg Title Revenue"}
+            heading={"Avg. Escrow Revenue"}
             value={`$${formatNumber(Number(data.avgEscrowChargesFeeAmount))}`}
           />
           <YtdDashboardStatsCard
             heading={"Avg Sales Price"}
-            value={`$${formatNumber(Number(data.avgSalePrice))}`}
+            value={`${formatNumberWithoutDecimals(data.avgSalePrice)}%`}
           />
-
           <YtdDashboardStatsCard
             heading={"Avg Days Closed"}
-            value={formatNumberWithoutDecimals(data.avgDaysToClose)}
+            value={`${formatNumberWithoutDecimals(data.avgDaysToClose)}%`}
           />
           <YtdDashboardStatsCard
             heading={"Avg Cancellation Rate"}
-            value={formatNumberWithoutDecimals(data.avgCancellationRate)}
+            value={`${formatNumberWithoutDecimals(data.avgCancellationRate)}%`}
           />
         </div>
       )}
