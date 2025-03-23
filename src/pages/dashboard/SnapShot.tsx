@@ -58,7 +58,7 @@ const SnapShot = () => {
 
   return (
     <div className="w-full px-4 mb-8 font-Poppins">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mt-2">
         <Breadcrumb items={["Dashboard", "SnapShot"]} />
         <form className="font-Poppins flex justify-between items-center  gap-2">
           {/* <CustomDatePicker
@@ -81,6 +81,7 @@ const SnapShot = () => {
             error={errors.propertyCounty?.message}
             required={false}
             className="w-[113px]"
+            height="h-[53px]"
           />
 
           <div className="flex gap-3">
