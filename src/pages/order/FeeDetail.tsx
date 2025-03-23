@@ -72,8 +72,6 @@ const FeeDetail = () => {
   });
 
   const handleRowClick = (orderId: string) => {
-    console.log("==click==", orderId);
-
     if (selectedOrderId !== orderId) {
       setSelectedOrderId(orderId);
     }
@@ -284,7 +282,7 @@ const FeeDetail = () => {
       name: "",
       cell: (row: any) => (
         <button
-          className=" border border-secondary flex items-center cursor-pointer text-sm h-[24px] w-[24px] justify-center rounded-md text-gray-700 bg-(--secondary)"
+          className="border border-secondary flex items-center cursor-pointer text-sm h-[24px] min-w-[24px] justify-center rounded-md text-gray-700 bg-(--secondary) "
           onClick={() =>
             setExpandedRow((prev) =>
               prev === row.feeCategory ? null : row.feeCategory
@@ -293,14 +291,16 @@ const FeeDetail = () => {
           disabled={!row.accountSums?.length}
         >
           {expandedRow === "Title Charges" ? (
-            <FiMinus size={16} color="red" />
+            <FiMinus size={16} />
           ) : (
-            <FiPlus size={16} color="red" />
+            <FiPlus size={16} />
           )}
         </button>
       ),
       sortable: false,
-      maxWidth: "30px",
+      maxWidth: "61px",
+      minWidth: "61px",
+      style: { width: "61px" },
     },
 
     {
@@ -312,21 +312,21 @@ const FeeDetail = () => {
         </div>
       ),
       sortable: false,
-      maxWidth: "180px",
+      maxWidth: "150px",
     },
     {
       name: "Amount",
       selector: (row: any) => row.amount,
       cell: (row: any) => (
         <div
-          className="rowStyle w-[120px]"
+          className="rowStyle w-[100px]"
           title={formatNumberWithoutDecimals(row.amount)}
         >
           {formatNumberWithoutDecimals(row.amount)}
         </div>
       ),
       sortable: false,
-      maxWidth: "120px",
+      maxWidth: "100px",
     },
     {
       name: "Amount %",
@@ -340,17 +340,18 @@ const FeeDetail = () => {
         </div>
       ),
       sortable: false,
-      maxWidth: "180px",
+      maxWidth: "100px",
     },
     {
       name: "OOC TFI",
       selector: (row: any) => row.ocCTFI,
       cell: (row: any) => (
-        <div className="rowStyle w-[100px]" title={formatNumber(row.ocCTFI)}>
+        <div className="rowStyle w-[120px]" title={formatNumber(row.ocCTFI)}>
           {formatNumber(row.ocCTFI)}
         </div>
       ),
       sortable: false,
+      maxWidth: "120px",
     },
     {
       name: "Fee Deposit",
