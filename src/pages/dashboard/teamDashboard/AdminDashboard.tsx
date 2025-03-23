@@ -52,7 +52,7 @@ const AdminDashboard = () => {
       maxWidth: "130px",
     },
     {
-      name: "Pending",
+      name: "Open",
       selector: (row: any) => row.pending,
       cell: (row: any) => <div className="rowStyle">{row.pending}</div>,
       maxWidth: "130px",
@@ -118,7 +118,7 @@ const AdminDashboard = () => {
       maxWidth: "130px",
     },
     {
-      name: "Pending",
+      name: "Open",
       selector: (row: any) => row.pending,
       cell: (row: any) => <div className="rowStyle">{row.pending}</div>,
       maxWidth: "130px",

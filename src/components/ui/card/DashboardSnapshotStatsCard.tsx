@@ -5,6 +5,7 @@ interface DashboardSnapshotStatsCardProps {
   totalCount: number;
   escrowCount: number;
   titleCount: number;
+  mtdCount?: number;
 }
 
 const DashboardSnapshotStatsCard: React.FC<DashboardSnapshotStatsCardProps> = ({
@@ -12,6 +13,7 @@ const DashboardSnapshotStatsCard: React.FC<DashboardSnapshotStatsCardProps> = ({
   totalCount,
   escrowCount,
   titleCount,
+  mtdCount,
 }) => {
   return (
     <div className="shadow-md rounded-lg flex flex-col justify-between min-w-[24%] p-4 my-5 bg-white font-poppin h-fit gap-3 relative">
@@ -24,7 +26,7 @@ const DashboardSnapshotStatsCard: React.FC<DashboardSnapshotStatsCardProps> = ({
         <div className="text-2xl text-(--secondary) font-semibold">
           {totalCount}
         </div>
-        <span className="font-semibold text-xs">Total MTD:</span> {totalCount}
+        <span className="font-semibold text-xs">Total MTD:</span> {mtdCount}
       </div>
       <div className="flex gap-4 text-xs">
         <div className="flex flex-col">

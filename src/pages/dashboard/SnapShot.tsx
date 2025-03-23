@@ -139,6 +139,9 @@ const SnapShot = () => {
               titleCount={
                 Number(dashboardStats?.data?.allOrderCount?.[0]?.title) || 0
               }
+              mtdCount={
+                Number(dashboardStats?.data?.allOrderCount?.[0]?.count_mtd) || 0
+              }
             />
             <DashboardSnapshotStatsCard
               title="YTD open order"
@@ -150,6 +153,9 @@ const SnapShot = () => {
               }
               titleCount={
                 Number(dashboardStats?.data?.openOrdersByYear?.[0]?.title) || 0
+              }
+              mtdCount={
+                Number(dashboardStats?.data?.allOrderCount?.[0]?.count_mtd) || 0
               }
             />
             <DashboardSnapshotStatsCard
@@ -170,6 +176,9 @@ const SnapShot = () => {
                   dashboardStats?.data?.prelimCommitmentOrdersByYear?.[0]?.title
                 ) || 0
               }
+              mtdCount={
+                Number(dashboardStats?.data?.allOrderCount?.[0]?.count_mtd) || 0
+              }
             />
             <DashboardSnapshotStatsCard
               title="YTD closed"
@@ -184,6 +193,9 @@ const SnapShot = () => {
               titleCount={
                 Number(dashboardStats?.data?.closedOrdersByYear?.[0]?.title) ||
                 0
+              }
+              mtdCount={
+                Number(dashboardStats?.data?.allOrderCount?.[0]?.count_mtd) || 0
               }
             />
           </div>
