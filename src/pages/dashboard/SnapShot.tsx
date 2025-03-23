@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { OrderDataType } from "../../utils/types";
 import { yearOptions } from "../../utils/options";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 const SnapShot = () => {
   const [isMonthly, setIsMonthly] = useState(true);
@@ -26,13 +27,27 @@ const SnapShot = () => {
     control,
   } = useForm<OrderDataType>();
 
-  const selectedYear = watch("year") || "";
   const formatDate = (date: any) => {
     return date ? new Date(date).toISOString().split("T")[0] : "";
   };
+  const selectedYear = watch("year") || "";
 
-  const selectedStartDate = formatDate(watch("startDate")) || "";
-  const selectedEndDate = formatDate(watch("endDate")) || "";
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  useEffect(() => {
+    if (selectedYear) {
+      setStartDate(`${selectedYear}-01-01`);
+      setEndDate(`${selectedYear}-12-31`);
+    } else {
+      const currentYear = dayjs().format("YYYY");
+      setStartDate(`${currentYear}-01-01`);
+      setEndDate(`${currentYear}-12-31`);
+    }
+  }, [selectedYear]);
+
+  const selectedStartDate = startDate;
+  const selectedEndDate = endDate;
 
   const { data: dashboardStats, isLoading } = useGetDashboardStatsQuery({
     startDate: selectedStartDate,
