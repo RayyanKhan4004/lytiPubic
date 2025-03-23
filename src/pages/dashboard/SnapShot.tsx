@@ -60,11 +60,11 @@ const SnapShot = () => {
     setValue("year", "2025");
   }, [setValue]);
   const handleItemClick = () => {
-    navigate("/orders/orders", { state: { selectedYear, type: "year" } });
+    // navigate("/orders/orders", { state: { selectedYear, type: "year" } });
   };
 
   const handleMTDClick = () => {
-    navigate("/orders/orders", { state: { selectedYear, type: "month" } });
+    // navigate("/orders/orders", { state: { selectedYear, type: "month" } });
   };
 
   return (

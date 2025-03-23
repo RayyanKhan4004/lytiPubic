@@ -8,8 +8,7 @@ import LeaderBoards from "../pages/leaderboards/LeaderBoards";
 // Dashboards
 import SnapShot from "../pages/dashboard/SnapShot";
 import TeamDashboard from "../pages/dashboard/teamDashboard/TeamDashboard";
-import CeoDashboard from "../pages/dashboard/CeoDashboard";
-import PersonalDashboard from "../pages/dashboard/PersonalDashboard";
+import CeoDashboard from "../pages/dashboard/ceoDashboard/CeoDashboard";
 
 // Admin
 import AdminDashboard from "../pages/admin/AdminDashboard";
@@ -51,6 +50,7 @@ import SellingCompanyLeaderBoard from "../pages/leaderboards/SellingCompanyLeade
 import ListingTable from "../pages/admin/listing/ListingTable";
 import SellingTable from "../pages/admin/selling/SellingTable";
 import Record from "../pages/record/Record";
+import PersonalDashboard from "../pages/dashboard/personalDashboard/PersonalDashboard";
 
 export const router = createBrowserRouter([
   {

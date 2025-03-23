@@ -15,9 +15,9 @@ const ActivitiesDashboardStatsCard: React.FC<CircleDashboardStatsCardProps> = ({
   maxValue,
 }) => {
   return (
-    <div className="px-3 py-3 shadow-md font-poppins rounded-xl flex gap-2.5 w-[24%] flex-col">
-      <h1 className="text-(--secondary) text-2xl font-semibold">{heading}</h1>
-      <h3 className="font-normal text-xs">{description1}</h3>
+    <div className="px-3 py-3 shadow-md font-poppins rounded-xl flex gap-2.5 w-[24%] flex-col text-center">
+      <h3 className="font-semibold text-xl">{description1}</h3>
+      <h1 className="text-(--secondary) text-md font-semibold">{heading}</h1>
 
       {/* <NewProgressBar currentValue={currentValue} maxValue={maxValue} /> */}
     </div>
