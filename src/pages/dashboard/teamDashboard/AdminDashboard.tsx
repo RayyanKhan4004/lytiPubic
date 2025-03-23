@@ -258,29 +258,43 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 p-4 w-full shadow-(--cardShadow) rounded-xl">
-        <h1 className="font-semibold text-[18px] text-(--primary)">
-          Title & Escrow Avgs
-        </h1>
+      <CardLayout className="py-5">
+        <MainTitle title="Title & Escrow Avgs" />
         <div className="w-full flex gap-3 items-center justify-between">
           <AdminDashboardStatsCard
-            value="$72356431"
+            value={`$${
+              formatNumber(
+                adminData?.titleAndEscrowAvg?.avgSalePriceTitleOrder
+              ) ?? "0"
+            }`}
             label="Title Avg Sales Price"
           />
           <AdminDashboardStatsCard
-            value="$72356431"
+            value={`$${
+              formatNumber(
+                adminData?.titleAndEscrowAvg?.avgFeeAmountTitleOrder
+              ) ?? "0"
+            }`}
             label="Title Avg Revenue"
           />
           <AdminDashboardStatsCard
-            value="$72356431"
+            value={`$${
+              formatNumber(
+                adminData?.titleAndEscrowAvg?.avgSalePriceEscrowOrder
+              ) ?? "0"
+            }`}
             label="Escrow Avg Sales Price"
           />
           <AdminDashboardStatsCard
-            value="$72356431"
+            value={`$${
+              formatNumber(
+                adminData?.titleAndEscrowAvg?.avgFeeAmountEscrowOrder
+              ) ?? "0"
+            }`}
             label="Escrow Avg Revenue"
           />
         </div>
-      </div>
+      </CardLayout>
 
       <div className="shadow-(--cardShadow) w-full rounded-xl p-4">
         <div className="border border-(--inputBorder) overflow-hidden rounded-xl w-full ">
