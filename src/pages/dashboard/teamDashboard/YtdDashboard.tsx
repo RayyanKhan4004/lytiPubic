@@ -103,20 +103,6 @@ const YtdDashboard = () => {
       .replace(/^./, (str) => str.toUpperCase());
   };
 
-  //   {
-  //     "titleOrdersCount": 599,
-  //     "openTitleOnlyOrdersCount": 124,
-  //     "openEscrowOnlyOrdersCount": 27,
-  //     "openTitleOnlySalePriceSum": "83075842",
-  //     "openEscrowOnlySalePriceSum": "4895388",
-  //     "openTitleOnlyRefiSalePriceSum": "6050000",
-  //     "openEscrowOnlyRefiSalePriceSum": "0",
-  //     "avgTitleChargesFeeAmount": "440.1397641587776117",
-  //     "avgEscrowChargesFeeAmount": "408.5688567990373045",
-  //     "avgSalePrice": "616372.377858613590",
-  //     "avgDaysToClose": 0,
-  //     "avgCancellationRate": 0
-  // }
   return (
     <div>
       {isLoading ? (
@@ -168,11 +154,11 @@ const YtdDashboard = () => {
           />
           <YtdDashboardStatsCard
             heading={"Avg Title Revenue"}
-            value={`$${formatNumber(Number(data.avgTitleChargesFeeAmount))}`}
+            value={`$${formatNumber(Number(data.avgTitleChargesFeeAmount))}%`}
           />
           <YtdDashboardStatsCard
             heading={"Avg. Escrow Revenue"}
-            value={`$${formatNumber(Number(data.avgEscrowChargesFeeAmount))}`}
+            value={`$${formatNumber(Number(data.avgEscrowChargesFeeAmount))}%`}
           />
           <YtdDashboardStatsCard
             heading={"Avg Sales Price"}
