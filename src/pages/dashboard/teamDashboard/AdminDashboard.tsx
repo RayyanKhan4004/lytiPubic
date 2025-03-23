@@ -171,6 +171,65 @@ const AdminDashboard = () => {
     },
   ];
 
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const monthlyBreakdownColumn: TableColumn<any>[] = [
+    {
+      name: "Month",
+      selector: (row: any) => row.month,
+      cell: (row: any) => <div>{monthNames[row.month - 1]}</div>,
+      maxWidth: "130px",
+    },
+    {
+      name: "Closed Orders",
+      selector: (row: any) => row["Closed Order"],
+      cell: (row: any) => <div>{row["Closed Order"]}</div>,
+      sortable: true,
+      maxWidth: "150px",
+    },
+    {
+      name: "Revenue",
+      selector: (row: any) => row.Revenue,
+      cell: (row: any) => <div>${row.Revenue}</div>,
+      sortable: true,
+      maxWidth: "200px",
+    },
+    {
+      name: "Net Revenue",
+      selector: (row: any) => row["Net Revenue"],
+      cell: (row: any) => <div>${row["Net Revenue"]}</div>,
+      sortable: true,
+      maxWidth: "200px",
+    },
+    {
+      name: "Closed Titles",
+      selector: (row: any) => row["Closed Title"],
+      cell: (row: any) => <div>{row["Closed Title"]}</div>,
+      sortable: true,
+      maxWidth: "150px",
+    },
+    {
+      name: "Closed Escrows",
+      selector: (row: any) => row["Closed Escrow"],
+      cell: (row: any) => <div>{row["Closed Escrow"]}</div>,
+      sortable: true,
+      maxWidth: "150px",
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-5 ">
       <div className="flex justify-between w-full gap-3 ">
@@ -296,77 +355,32 @@ const AdminDashboard = () => {
         </div>
       </CardLayout>
 
-      <div className="shadow-(--cardShadow) w-full rounded-xl p-4">
-        <div className="border border-(--inputBorder) overflow-hidden rounded-xl w-full ">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b-[1px] border-[#F4EFE9] bg-(--smoke)">
-                <th className="text-start text-xs font-normal p-2">Month</th>
-                <th className="text-start text-xs font-normal">
-                  <div className="flex gap-2 items-center">
-                    Closed Orders <img src={arrowUpDown} alt="Sort" />
-                  </div>
-                </th>
-                <th className="text-start text-xs font-normal">
-                  <div className="flex gap-2 items-center">
-                    Revenue <img src={arrowUpDown} alt="Sort" />
-                  </div>
-                </th>
-                <th className="text-start text-xs font-normal">
-                  <div className="flex gap-2 items-center">
-                    Net Revenue <img src={arrowUpDown} alt="Sort" />
-                  </div>
-                </th>
-                <th className="text-start text-xs font-normal">
-                  <div className="flex gap-2 items-center">
-                    Closed Title <img src={arrowUpDown} alt="Sort" />
-                  </div>
-                </th>
-                <th className="text-start text-xs font-normal">
-                  <div className="flex gap-2 items-center">
-                    Closed Escrows <img src={arrowUpDown} alt="Sort" />
-                  </div>
-                </th>
-                <th className="text-start text-xs font-normal">
-                  <div className="flex gap-2 items-center">
-                    Open Orders <img src={arrowUpDown} alt="Sort" />
-                  </div>
-                </th>
-                <th className="text-start text-xs font-normal">
-                  <div className="flex gap-2 items-center">
-                    Pending Volume <img src={arrowUpDown} alt="Sort" />
-                  </div>
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {data.map((row, index) => (
-                <tr key={index} className="border-b-[1px] border-[#F4EFE9]">
-                  <td className="text-start text-xs p-2">{row.month}</td>
-                  <td className="text-start text-xs">{row.closedUnits}</td>
-                  <td className="text-start text-xs">{row.closedGCI}</td>
-                  <td className="text-start text-xs">{row.closedNetGCI}</td>
-                  <td className="text-start text-xs">{row.closedListings}</td>
-                  <td className="text-start text-xs">{row.closedBuyers}</td>
-                  <td className="text-start text-xs">{row.pendingUnits}</td>
-                  <td className="text-start text-xs">{row.pendingVolume}</td>
-                </tr>
-              ))}
-              <tr className="border-b-[1px] border-[#F4EFE9] bg-(--secondary) text-white">
-                <td className="text-start text-xs p-2">Total</td>
-                <td className="text-start text-xs p-2">50</td>
-                <td className="text-start text-xs p-2">$100,000</td>
-                <td className="text-start text-xs p-2">$85,000</td>
-                <td className="text-start text-xs p-2">25</td>
-                <td className="text-start text-xs p-2">30</td>
-                <td className="text-start text-xs p-2">10</td>
-                <td className="text-start text-xs p-2">$40,000</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <CardLayout>
+        <MainTitle title="Monthly Breakdown" />
+        {isLoading ? (
+          <TablesSkeleton
+            columnCount={monthlyBreakdownColumn.length}
+            rowCount={10}
+          />
+        ) : (
+          <DataTable
+            columns={monthlyBreakdownColumn}
+            data={adminData?.monthlyBreakDown}
+            highlightOnHover
+            striped
+            className="head-row table-row"
+            noDataComponent={
+              <div
+                className="w-full text-center py-6 px-6 text-gray-500 bg-gray-100 rounded"
+                style={{ minWidth: "100%", width: "100%" }}
+              >
+                No data found
+              </div>
+            }
+            fixedHeader
+          />
+        )}
+      </CardLayout>
     </div>
   );
 };
