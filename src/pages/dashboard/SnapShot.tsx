@@ -32,7 +32,6 @@ const SnapShot = () => {
 
   const selectedStartDate = formatDate(watch("startDate")) || "";
   const selectedEndDate = formatDate(watch("endDate")) || "";
-  console.log(selectedEndDate);
 
   const { data: dashboardStats, isLoading } = useGetDashboardStatsQuery({
     startDate: selectedStartDate,

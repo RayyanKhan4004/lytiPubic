@@ -19,7 +19,7 @@ const ActivitiesDashboardStatsCard: React.FC<CircleDashboardStatsCardProps> = ({
       <h1 className="text-(--secondary) text-2xl font-semibold">{heading}</h1>
       <h3 className="font-normal text-xs">{description1}</h3>
 
-      <NewProgressBar currentValue={currentValue} maxValue={maxValue} />
+      {/* <NewProgressBar currentValue={currentValue} maxValue={maxValue} /> */}
     </div>
   );
 };

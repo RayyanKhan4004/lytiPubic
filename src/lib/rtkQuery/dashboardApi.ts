@@ -46,8 +46,8 @@ export const dashboardApi = createApi({
         url: "dashboard/ytd-stats",
       }),
     }),
-    getUserActivities: builder.query<any, void>({
-      query: () => "activities/user",
+    getUserActivities: builder.query<any, { userId: string }>({
+      query: ({ userId }) => `activities/user/${userId}`,
     }),
     incrementActivity: builder.mutation<
       any,
