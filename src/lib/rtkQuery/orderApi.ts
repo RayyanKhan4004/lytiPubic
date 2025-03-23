@@ -48,6 +48,8 @@ export const orderApi = createApi({
         titleOffice,
         underwriter,
         orderId,
+        startDate,
+        endDate,
       }) => ({
         url: "orders/",
         params: {
@@ -61,6 +63,8 @@ export const orderApi = createApi({
           titleOffice,
           underwriter,
           orderId,
+          startDate,
+          endDate,
         },
       }),
     }),
