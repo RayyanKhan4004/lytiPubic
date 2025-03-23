@@ -38,7 +38,7 @@ export const dashboardApi = createApi({
     getDashboardStats: builder.query({
       query: ({ startDate, endDate, year }) => ({
         url: "dashboard/stats",
-        params: { year },
+        params: { year, startDate, endDate },
       }),
     }),
     getYtdStats: builder.query<any, void>({
@@ -72,7 +72,7 @@ export const dashboardApi = createApi({
       { userId: number; activityId: number }
     >({
       query: ({ userId, activityId }) => ({
-        url: "activities/decrement", // Removed query parameters from URL
+        url: "activities/decrement",
         method: "POST",
         body: {
           userId,
