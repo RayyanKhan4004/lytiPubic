@@ -41,6 +41,7 @@ import {
   formatNumber,
   formatNumberWithoutDecimals,
 } from "../../utils/functions";
+import dayjs from "dayjs";
 
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -71,16 +72,29 @@ const OrdersTable = () => {
   const selectedYear = watch("year") || yearFromCard || "";
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  console.log(startDate, "===data===", endDate);
   useEffect(() => {
-    if (selectedYear) {
-      setStartDate(`${selectedYear}-01-01`);
-      setEndDate(`${selectedYear}-12-31`);
+    if (type === "year") {
+      if (selectedYear) {
+        setStartDate(`${selectedYear}-01-01`);
+        setEndDate(`${selectedYear}-12-31`);
+      } else {
+        const currentYear = dayjs().format("YYYY");
+        setStartDate(`${currentYear}-01-01`);
+        setEndDate(`${currentYear}-12-31`);
+      }
+    } else if (type === "month") {
+      const currentYear = selectedYear || dayjs().format("YYYY");
+      const currentMonth = dayjs().format("MM");
+      const daysInMonth = dayjs(`${currentYear}-${currentMonth}`).daysInMonth();
+      setStartDate(`${currentYear}-${currentMonth}-01`);
+      setEndDate(`${currentYear}-${currentMonth}-${daysInMonth}`);
     } else {
       setStartDate("");
       setEndDate("");
     }
-  }, [selectedYear]);
+  }, [selectedYear, type]);
+  console.log(startDate, "===data===", endDate);
+
   const { data, isLoading, refetch } = useGetOrdersQuery({
     status: selectedFileStatus,
     type: selectedFileType,
