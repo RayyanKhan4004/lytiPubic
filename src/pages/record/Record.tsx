@@ -106,7 +106,7 @@ const Record = () => {
             <CustomizableSkeleton />
           </div>
         ) : (
-          <div className="flex justify-between items-center gap-3">
+          <div className="flex justify-between items-center gap-2">
             {Object.entries(counts).map(([name, data]) => (
               <CardLayout key={name} className="py-3">
                 <div className="flex flex-col gap-3">
@@ -125,7 +125,7 @@ const Record = () => {
                       name={name}
                       value={data.count}
                       readOnly
-                      className="w-32 text-center border-t border-b h-8 border-gray-300"
+                      className="w-[70%] text-center border-t border-b h-8 border-gray-300"
                     />
                     <button
                       className="bg-(--secondary) text-white px-4 py-2 rounded-r-lg"
