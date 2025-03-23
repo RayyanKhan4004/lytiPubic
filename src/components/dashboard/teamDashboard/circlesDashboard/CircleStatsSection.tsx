@@ -14,42 +14,42 @@ const CircleStatsSection = () => {
   const agentData: DataItem[] = [
     {
       label: "Agent Appointments Set",
-      value: 22,
+      value: 0,
       total: 0,
-      target: 81.8,
-      maxTarget: 100,
-      status: "Goal achieved",
+      target: 0,
+      maxTarget: 0,
+      status: "Not on pace",
     },
     {
       label: "Agent Appointments Met",
-      value: 18,
-      total: 90,
+      value: 0,
+      total: 0,
       target: 0,
-      maxTarget: 100,
+      maxTarget: 0,
       status: "Not on pace",
     },
     {
       label: "Agent Verbal Commitments",
       value: 0,
-      total: 22.5,
+      total: 0,
       target: 0,
-      maxTarget: 100,
-      status: "On pace",
+      maxTarget: 0,
+      status: "Not on pace",
     },
     {
       label: "Agent Open Orders",
       value: 0,
-      total: 21,
+      total: 0,
       target: 0,
-      maxTarget: 100,
+      maxTarget: 0,
       status: "Not on pace",
     },
     {
       label: "Agent Closed Orders",
       value: 0,
-      total: 16.5,
+      total: 0,
       target: 0,
-      maxTarget: 100,
+      maxTarget: 0,
       status: "Not on pace",
     },
   ];
@@ -57,45 +57,46 @@ const CircleStatsSection = () => {
   const lenderData: DataItem[] = [
     {
       label: "Lender Appointments Set",
-      value: 5,
+      value: 0,
       total: 0,
-      target: 120,
-      maxTarget: 100,
-      status: "Goal achieved",
+      target: 0,
+      maxTarget: 0,
+      status: "Not on pace",
     },
     {
       label: "Lender Appointments Met",
-      value: 6,
-      total: 27,
+      value: 0,
+      total: 0,
       target: 0,
-      maxTarget: 100,
+      maxTarget: 0,
       status: "Not on pace",
     },
     {
       label: "Lender Verbal Commitments",
       value: 0,
-      total: 13.5,
+      total: 0,
       target: 0,
-      maxTarget: 100,
+      maxTarget: 0,
       status: "Not on pace",
     },
     {
       label: "Lender Open Orders",
       value: 0,
-      total: 12,
+      total: 0,
       target: 0,
-      maxTarget: 100,
+      maxTarget: 0,
       status: "Not on pace",
     },
     {
       label: "Lender Closed Orders",
       value: 0,
-      total: 10.5,
+      total: 0,
       target: 0,
-      maxTarget: 100,
+      maxTarget: 0,
       status: "Not on pace",
     },
   ];
+
   return (
     <div className="p-6">
       <div className="flex items-center space-x-4  flex-col">
@@ -103,10 +104,10 @@ const CircleStatsSection = () => {
 
         <div className="w-32 h-32">
           <DoubleCircularProgress
-            currentValue={156}
-            currentTotal={2700}
-            currentTarget={17.3}
-            targetTotal={100}
+            currentValue={0}
+            currentTotal={0}
+            currentTarget={0}
+            targetTotal={0}
             status={
               "Not on pace" as "Goal achieved" | "Not on pace" | "On pace"
             }

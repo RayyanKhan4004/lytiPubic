@@ -246,12 +246,12 @@ const AdminDashboard = () => {
           Fee Passthroughs
         </h1>
         <div className="w-full flex gap-3 items-center justify-between">
-          <AdminDashboardStatsCard value="$72356431" label="Closed GCI" />
-          <AdminDashboardStatsCard value="$72356431" label="Net" />
-          <AdminDashboardStatsCard value="$72356431" label="Expense" />
+          <AdminDashboardStatsCard value="$0" label="Closed GCI" />
+          <AdminDashboardStatsCard value="$0" label="Net" />
+          <AdminDashboardStatsCard value="$0" label="Expense" />
           <img src={equal} alt="" />
           <AdminDashboardStatsCard
-            value="$72356431"
+            value="$0"
             label="Closed GCI"
             darkMode={true}
           />
