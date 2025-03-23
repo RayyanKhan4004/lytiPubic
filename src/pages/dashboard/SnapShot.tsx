@@ -11,6 +11,7 @@ import SelectField from "../../components/inputs/SelectField";
 import { useForm } from "react-hook-form";
 import { OrderDataType } from "../../utils/types";
 import { yearOptions } from "../../utils/options";
+import { useNavigate } from "react-router-dom";
 
 const SnapShot = () => {
   const [isMonthly, setIsMonthly] = useState(true);
@@ -54,6 +55,17 @@ const SnapShot = () => {
       return updatedFilters;
     });
   };
+  const navigate = useNavigate();
+  useEffect(() => {
+    setValue("year", "2025");
+  }, [setValue]);
+  const handleItemClick = () => {
+    navigate("/orders/orders", { state: { selectedYear, type: "year" } });
+  };
+
+  const handleMTDClick = () => {
+    navigate("/orders/orders", { state: { selectedYear, type: "month" } });
+  };
 
   return (
     <div className="w-full px-4 mb-8 font-Poppins">
@@ -77,7 +89,7 @@ const SnapShot = () => {
             control={control}
             options={yearOptions}
             placeholder="Year"
-            error={errors.propertyCounty?.message}
+            error={errors.year?.message}
             required={false}
             className="w-[113px]"
             height="h-[53px]"
@@ -90,7 +102,7 @@ const SnapShot = () => {
           </div>
         </form>
       </div>
-      <div className="flex gap-2 mt-2 justify-end">
+      {/* <div className="flex gap-2 mt-2 justify-end">
         {Object.entries(selectedFilters).map(([key, value]) => {
           if (!value) return null;
 
@@ -116,9 +128,9 @@ const SnapShot = () => {
             </div>
           );
         })}
-      </div>
+      </div> */}
 
-      <div className="w-full flex gap-4 mt-6">
+      <div className="w-full flex gap-4 ">
         {isLoading ? (
           <div className="w-full flex gap-4 mt-2">
             <CustomizableSkeleton height={156} width="24%" />
@@ -142,6 +154,8 @@ const SnapShot = () => {
               mtdCount={
                 Number(dashboardStats?.data?.allOrderCount?.[0]?.count_mtd) || 0
               }
+              onMTDClick={handleMTDClick}
+              onItemClick={handleItemClick}
             />
             <DashboardSnapshotStatsCard
               title="YTD open order"
