@@ -344,7 +344,12 @@ const FeeDetail = () => {
     },
     {
       name: "OOC TFI",
-      selector: (row: any) => 0,
+      selector: (row: any) => row.ocCTFI,
+      cell: (row: any) => (
+        <div className="rowStyle w-[100px]" title={formatNumber(row.ocCTFI)}>
+          {formatNumber(row.ocCTFI)}
+        </div>
+      ),
       sortable: false,
     },
     {
