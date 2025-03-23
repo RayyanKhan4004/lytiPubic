@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import trend from "../../assets/icons/TrendUp.svg";
-import arrow from "../../assets/icons/ArrowLongDark.svg";
 import Breadcrumb from "../../components/common/BreadCrumb";
-import CustomizableDropdown from "../../components/common/CustomizableDropdown";
 import LineChartComponent from "../../components/dashboard/snapShot/LineChartComponent";
 import StackedBarChart from "../../components/dashboard/snapShot/StackedBarChart";
 import SlimBarChart from "../../components/dashboard/snapShot/SlimBarChart";
-import StatsCard from "../../components/ui/card/StatsCard";
-import { useGetOrdersQuery } from "../../lib/rtkQuery/orderApi";
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
 import DashboardSnapshotStatsCard from "../../components/ui/card/DashboardSnapshotStatsCard";
 import { useGetDashboardStatsQuery } from "../../lib/rtkQuery/dashboardApi";
@@ -15,7 +11,6 @@ import SelectField from "../../components/inputs/SelectField";
 import { useForm } from "react-hook-form";
 import { OrderDataType } from "../../utils/types";
 import { yearOptions } from "../../utils/options";
-import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 
 const SnapShot = () => {
   const [isMonthly, setIsMonthly] = useState(true);
@@ -62,7 +57,7 @@ const SnapShot = () => {
   };
 
   return (
-    <div className="w-full px-4 my-8 font-Poppins">
+    <div className="w-full px-4 mb-8 font-Poppins">
       <div className="flex items-center justify-between">
         <Breadcrumb items={["Dashboard", "SnapShot"]} />
         <form className="font-Poppins flex justify-between items-center  gap-2">

@@ -27,6 +27,13 @@ export interface Item {
 export const sidebarData = () => {
   return [
     {
+      id: 10,
+      title: "Record",
+      icon1: icon11,
+      icon2: icon12,
+      path: "/record",
+    },
+    {
       id: 1,
       title: "Dashboard",
       icon1: icon1,
