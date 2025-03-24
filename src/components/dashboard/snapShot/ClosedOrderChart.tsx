@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -12,9 +12,26 @@ import CustomizableDropdown from "../../common/CustomizableDropdown";
 import { useGetGraphDataQuery } from "../../../lib/rtkQuery/dashboardApi";
 import CardLayout from "../../layouts/CardLayout";
 import CustomizableSkeleton from "../../ui/skeleton/CustomizableSkeleton";
+import { graphOption, graphOptions } from "../../../utils/options";
+import SelectField from "../../inputs/SelectField";
+import { useForm } from "react-hook-form";
+import { graphType } from "../../../utils/types";
 
-const OpenLineChart: React.FC = () => {
-  const [selectedFilter, setSelectedFilter] = useState("Open");
+const ClosedOrderChart: React.FC = () => {
+  const {
+    formState: { errors },
+    reset,
+    watch,
+    setValue,
+    control,
+  } = useForm<graphType>({
+    defaultValues: { filter: "openOrder" },
+  });
+  const selectedFilter = watch("filter") || "";
+
+  useEffect(() => {
+    setValue("filter", "closedOrder");
+  }, [setValue]);
   const {
     data: graphData,
     error,
@@ -23,11 +40,14 @@ const OpenLineChart: React.FC = () => {
 
   return (
     <CardLayout className="w-[49%]">
-      <CustomizableDropdown
-        height="h-[44px]"
-        options={["Open", "Closed"]}
-        selected={selectedFilter}
-        setSelected={setSelectedFilter}
+      <SelectField
+        name="filter"
+        control={control}
+        options={graphOption}
+        placeholder="Filter"
+        error={errors.filter?.message}
+        required={false}
+        height="h-[38px]"
       />
 
       {isLoading ? (
@@ -35,7 +55,7 @@ const OpenLineChart: React.FC = () => {
       ) : (
         <ResponsiveContainer width="100%" height={450}>
           <LineChart
-            data={graphData?.data}
+            data={graphData}
             margin={{ top: 20, right: 0, left: -42, bottom: 5 }}
           >
             <XAxis dataKey="name" tick={{ fontSize: 10 }} />
@@ -96,4 +116,4 @@ const OpenLineChart: React.FC = () => {
   );
 };
 
-export default OpenLineChart;
+export default ClosedOrderChart;

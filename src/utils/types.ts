@@ -125,3 +125,7 @@ export interface ChartData {
   value: number;
   color: string;
 }
+
+export interface graphType {
+  filter?: string;
+}
