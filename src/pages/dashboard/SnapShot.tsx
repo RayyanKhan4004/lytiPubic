@@ -191,7 +191,9 @@ const SnapShot = () => {
                 Number(dashboardStats?.data?.openOrdersByYear?.[0]?.title) || 0
               }
               mtdCount={
-                Number(dashboardStats?.data?.allOrderCount?.[0]?.count_mtd) || 0
+                Number(
+                  dashboardStats?.data?.openOrdersByYear?.[0]?.count_mtd
+                ) || 0
               }
               onMTDClick={handleMTDClick}
               onItemClick={handleItemClick}
@@ -215,7 +217,10 @@ const SnapShot = () => {
                 ) || 0
               }
               mtdCount={
-                Number(dashboardStats?.data?.allOrderCount?.[0]?.count_mtd) || 0
+                Number(
+                  dashboardStats?.data?.prelimCommitmentOrdersByYear?.[0]
+                    ?.count_mtd
+                ) || 0
               }
               onMTDClick={handleMTDClick}
               onItemClick={handleItemClick}
@@ -235,7 +240,9 @@ const SnapShot = () => {
                 0
               }
               mtdCount={
-                Number(dashboardStats?.data?.allOrderCount?.[0]?.count_mtd) || 0
+                Number(
+                  dashboardStats?.data?.closedOrdersByYear?.[0]?.count_mtd
+                ) || 0
               }
               onMTDClick={handleMTDClick}
               onItemClick={handleItemClick}
