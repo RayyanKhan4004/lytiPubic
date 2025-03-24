@@ -84,6 +84,10 @@ export const dashboardApi = createApi({
     getAdminDashboardStats: builder.query<any, void>({
       query: () => "dashboard/admin-dashboard-stats",
     }),
+    getGraphData: builder.query<any, string>({
+      query: (filterStatus) =>
+        `dashboard/graph-data?fileStatus=${filterStatus}`,
+    }),
   }),
 });
 
@@ -95,4 +99,5 @@ export const {
   useIncrementActivityMutation,
   useGetAdminDashboardStatsQuery,
   useGetAdminActivitiesQuery,
+  useGetGraphDataQuery,
 } = dashboardApi;

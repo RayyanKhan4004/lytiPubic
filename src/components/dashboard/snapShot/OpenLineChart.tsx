@@ -13,8 +13,8 @@ import { useGetGraphDataQuery } from "../../../lib/rtkQuery/dashboardApi";
 import CardLayout from "../../layouts/CardLayout";
 import CustomizableSkeleton from "../../ui/skeleton/CustomizableSkeleton";
 
-const LineChartComponent: React.FC = () => {
-  const [selectedFilter, setSelectedFilter] = useState("Closed");
+const OpenLineChart: React.FC = () => {
+  const [selectedFilter, setSelectedFilter] = useState("Open");
   const {
     data: graphData,
     error,
@@ -96,4 +96,4 @@ const LineChartComponent: React.FC = () => {
   );
 };
 
-export default LineChartComponent;
+export default OpenLineChart;
