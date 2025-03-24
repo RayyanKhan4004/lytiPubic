@@ -43,14 +43,12 @@ const SnapShot = () => {
   const [endDate, setEndDate] = useState("");
 
   useEffect(() => {
-    if (selectedYear) {
-      setStartDate(`${selectedYear}-01-01`);
-      setEndDate(`${selectedYear}-12-31`);
-    } else {
-      const currentYear = dayjs().format("YYYY");
-      setStartDate(`${currentYear}-01-01`);
-      setEndDate(`${currentYear}-12-31`);
-    }
+    const currentMonth = dayjs().format("MM");
+    const yearToUse = selectedYear || dayjs().format("YYYY");
+    const daysInMonth = dayjs(`${yearToUse}-${currentMonth}`).daysInMonth();
+
+    setStartDate(`${yearToUse}-${currentMonth}-01`);
+    setEndDate(`${yearToUse}-${currentMonth}-${daysInMonth}`);
   }, [selectedYear]);
 
   const selectedStartDate = startDate;
@@ -61,6 +59,7 @@ const SnapShot = () => {
     endDate: selectedEndDate,
     year: selectedYear,
   });
+
   useEffect(() => {
     setSelectedFilters({
       year: selectedYear,
