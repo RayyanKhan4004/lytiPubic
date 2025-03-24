@@ -54,10 +54,7 @@ const OpenRevenueChart: React.FC = () => {
         <CustomizableSkeleton height={430} />
       ) : (
         <ResponsiveContainer width="100%" height={450}>
-          <LineChart
-            data={graphData}
-            margin={{ top: 20, right: 0, left: -42, bottom: 5 }}
-          >
+          <LineChart data={graphData} margin={{ top: 20, right: 0, bottom: 5 }}>
             <XAxis dataKey="name" tick={{ fontSize: 10 }} />
             <YAxis
               tickFormatter={(value) => `${value}`}
