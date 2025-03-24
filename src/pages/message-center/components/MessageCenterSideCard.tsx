@@ -1,15 +1,15 @@
 interface messageCenterSideCardProps {
-  selectedItem: number  | undefined | any;
+  selectedItem: any;
   setSelectedItem: any;
-  key?: number;
+  key?: any;
   data: any ;
 }
-interface messageCenterSideCardProps {
-    title : string;
-    disp : string;
-    time : string;
-    key ?: number
-}
+// interface messageCenterSideCardProps {
+//     title : string;
+//     disp : string;
+//     time : string;
+//     key ?: number
+// }
 
 function MessageCenterSideCard({
   selectedItem,
