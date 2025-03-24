@@ -154,23 +154,23 @@ const YtdDashboard = () => {
           />
           <YtdDashboardStatsCard
             heading={"Avg Title Revenue"}
-            value={`$${formatNumber(Number(data.avgTitleChargesFeeAmount))}%`}
+            value={`$${formatNumber(Number(data.avgTitleChargesFeeAmount))}`}
           />
           <YtdDashboardStatsCard
             heading={"Avg. Escrow Revenue"}
-            value={`$${formatNumber(Number(data.avgEscrowChargesFeeAmount))}%`}
+            value={`$${formatNumber(Number(data.avgEscrowChargesFeeAmount))} `}
           />
           <YtdDashboardStatsCard
             heading={"Avg Sales Price"}
-            value={`${formatNumberWithoutDecimals(data.avgSalePrice)}%`}
+            value={`${formatNumberWithoutDecimals(data.avgSalePrice)} `}
           />
           <YtdDashboardStatsCard
             heading={"Avg Days Closed"}
-            value={`${formatNumberWithoutDecimals(data.avgDaysToClose)}%`}
+            value={`${formatNumberWithoutDecimals(data.avgDaysToClose)} `}
           />
           <YtdDashboardStatsCard
             heading={"Avg Cancellation Rate"}
-            value={`${formatNumberWithoutDecimals(data.avgCancellationRate)}%`}
+            value={`${formatNumberWithoutDecimals(data.avgCancellationRate)} `}
           />
         </div>
       )}

@@ -105,12 +105,8 @@ const DummyChart = () => {
         margin={{ top: 20, right: 0, left: -35, bottom: 5 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          dataKey="name"
-          stroke="#6c42a0"
-          tick={{ fontSize: 10 }} // Smaller text size for X-axis
-        />
-        <YAxis tick={{ fontSize: 10 }} /> {/* Smaller text size for Y-axis */}
+        <XAxis dataKey="name" stroke="#6c42a0" tick={{ fontSize: 10 }} />
+        <YAxis tick={{ fontSize: 10 }} />
         <Tooltip />
         <Bar dataKey="bar" fill="#d1d5db" barSize={30} />
         <Bar dataKey="bar" fill="#1e293b" barSize={30} radius={[5, 5, 0, 0]} />

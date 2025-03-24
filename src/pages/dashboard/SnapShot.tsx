@@ -6,13 +6,17 @@ import StackedBarChart from "../../components/dashboard/snapShot/StackedBarChart
 import SlimBarChart from "../../components/dashboard/snapShot/SlimBarChart";
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
 import DashboardSnapshotStatsCard from "../../components/ui/card/DashboardSnapshotStatsCard";
-import { useGetDashboardStatsQuery } from "../../lib/rtkQuery/dashboardApi";
+import {
+  useGetDashboardStatsQuery,
+  useGetGraphDataQuery,
+} from "../../lib/rtkQuery/dashboardApi";
 import SelectField from "../../components/inputs/SelectField";
 import { useForm } from "react-hook-form";
 import { OrderDataType } from "../../utils/types";
 import { yearOptions } from "../../utils/options";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import OpenLineChart from "../../components/dashboard/snapShot/OpenLineChart";
 
 const SnapShot = () => {
   const [isMonthly, setIsMonthly] = useState(true);
@@ -252,8 +256,9 @@ const SnapShot = () => {
       </div>
 
       <div className="w-full flex justify-between flex-wrap gap-2">
+        <OpenLineChart />
         <LineChartComponent />
-        <StackedBarChart />
+
         <div className="flex justify-between mt-5 w-full">
           <SlimBarChart />
           <LineChartComponent />
