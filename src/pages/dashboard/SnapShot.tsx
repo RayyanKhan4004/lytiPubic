@@ -193,6 +193,8 @@ const SnapShot = () => {
               mtdCount={
                 Number(dashboardStats?.data?.allOrderCount?.[0]?.count_mtd) || 0
               }
+              onMTDClick={handleMTDClick}
+              onItemClick={handleItemClick}
             />
             <DashboardSnapshotStatsCard
               title="YTD prelim"
@@ -215,6 +217,8 @@ const SnapShot = () => {
               mtdCount={
                 Number(dashboardStats?.data?.allOrderCount?.[0]?.count_mtd) || 0
               }
+              onMTDClick={handleMTDClick}
+              onItemClick={handleItemClick}
             />
             <DashboardSnapshotStatsCard
               title="YTD closed"
@@ -233,6 +237,8 @@ const SnapShot = () => {
               mtdCount={
                 Number(dashboardStats?.data?.allOrderCount?.[0]?.count_mtd) || 0
               }
+              onMTDClick={handleMTDClick}
+              onItemClick={handleItemClick}
             />
           </div>
         )}
