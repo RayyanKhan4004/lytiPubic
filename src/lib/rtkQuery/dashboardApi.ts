@@ -85,8 +85,7 @@ export const dashboardApi = createApi({
       query: () => "dashboard/admin-dashboard-stats",
     }),
     getGraphData: builder.query<any, string>({
-      query: (filterStatus) =>
-        `dashboard/graph-data?fileStatus=${filterStatus}`,
+      query: (filterStatus) => `dashboard/graph-data?graph=${filterStatus}`,
     }),
   }),
 });
