@@ -51,6 +51,8 @@ import ListingTable from "../pages/admin/listing/ListingTable";
 import SellingTable from "../pages/admin/selling/SellingTable";
 import Record from "../pages/record/Record";
 import PersonalDashboard from "../pages/dashboard/personalDashboard/PersonalDashboard";
+import MessageCenter from "../pages/message-center/MessageCenter";
+// import MessageCenter from "../pages/message-center/messageCenter";
 
 export const router = createBrowserRouter([
   {
@@ -99,6 +101,7 @@ export const router = createBrowserRouter([
       { path: "account/goals", element: <Goals /> },
       { path: "challenges", element: <Challenges /> },
       { path: "create-challenge", element: <CreateChallenge /> },
+      { path: "message-center", element: <MessageCenter /> },
       { path: "*", element: <NotFoundPage /> },
     ],
   },

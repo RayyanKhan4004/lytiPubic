@@ -113,7 +113,7 @@ export const sidebarData = () => {
       title: "Message Center",
       icon1: icon9,
       icon2: icon10,
-      path: "/Dashboard",
+      path: "/message-center",
     },
     {
       id: 6,
