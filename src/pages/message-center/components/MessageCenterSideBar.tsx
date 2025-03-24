@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import SearchInput from '../../../components/common/SearchInput';
 // import MessageCenterSideCard from './messageCenterSideCard';
-import { title } from 'process';
+// import { title } from 'process';
 import MessageCenterSideCard from './MessageCenterSideCard';
 function MessageCenterSideBar() {
     const [selectedItem, setSelectedItem] = useState<number | null>(1);
@@ -48,11 +48,7 @@ function MessageCenterSideBar() {
         {title : 'hn' , disp : 'knhjgv  fytuy uyfyt ut' , time : '19:10'},
         {title : 'hn' , disp : 'knhjgv  fytuy uyfyt ut' , time : '19:10'},
         {title : 'hn' , disp : 'knhjgv  fytuy uyfyt ut' , time : '19:10'},
-        {title : 'hn' , disp : 'knhjgv  fytuy uyfyt ut' , time : '19:10'},
-        {title : 'hn' , disp : 'knhjgv  fytuy uyfyt ut' , time : '19:10'},
-        {title : 'hn' , disp : 'knhjgv  fytuy uyfyt ut' , time : '19:10'},
-        {title : 'hn' , disp : 'knhjgv  fytuy uyfyt ut' , time : '19:10'},
-        {title : 'hn' , disp : 'knhjgv  fytuy uyfyt ut' , time : '19:10'},
+      
         ]} selectedItem={selectedItem}  setSelectedItem={setSelectedItem}/>
     </aside>
   );

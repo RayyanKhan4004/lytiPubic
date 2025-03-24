@@ -203,14 +203,16 @@ const AdminDashboard = () => {
     {
       name: "Revenue",
       selector: (row: any) => row.Revenue,
-      cell: (row: any) => <div>${row.Revenue}</div>,
+      cell: (row: any) => <div>${formatNumber(row.Revenue)}</div>,
+
       sortable: true,
       maxWidth: "200px",
     },
     {
       name: "Net Revenue",
       selector: (row: any) => row["Net Revenue"],
-      cell: (row: any) => <div>${row["Net Revenue"]}</div>,
+      cell: (row: any) => <div>${formatNumber(row["Net Revenue"])}</div>,
+
       sortable: true,
       maxWidth: "200px",
     },
@@ -225,6 +227,15 @@ const AdminDashboard = () => {
       name: "Closed Escrows",
       selector: (row: any) => row["Closed Escrow"],
       cell: (row: any) => <div>{row["Closed Escrow"]}</div>,
+      sortable: true,
+      maxWidth: "150px",
+    },
+    {
+      name: "Closed Volume",
+      selector: (row: any) => row["Closed Volume"],
+      cell: (row: any) => (
+        <div>${formatNumberWithoutDecimals(row["Closed Volume"])}</div>
+      ),
       sortable: true,
       maxWidth: "150px",
     },
@@ -311,7 +322,7 @@ const AdminDashboard = () => {
           <img src={equal} alt="" />
           <AdminDashboardStatsCard
             value="$0"
-            label="Closed GCI"
+            label="Cost of sales"
             darkMode={true}
           />
         </div>

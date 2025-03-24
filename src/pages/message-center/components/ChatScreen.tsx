@@ -51,15 +51,15 @@ function ChatScreen({ userName } : {userName : string} ) {
 
   return (
     <div className="chat-screen grow h-full">
-      <div className="user-info flex border-b-[1px] border-[#E6E6E6]  ">
+      <div className="user-info flex border-b-[1px] border-[#E6E6E6] items-center gap-3 p-4">
         <img
-          src="path-to-avatar.jpg"
+          src="https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=612x612&w=0&k=20&c=tyLvtzutRh22j9GqSGI33Z4HpIwv9vL_MZw_xOE19NQ="
           alt="User Avatar"
           className="w-[56px] h-[56px] rounded-full"
         />
         <h3 className="font-Urbanist font-medium text-[18px]">{userName}</h3>
       </div>
-      <div className="messages overflow-scroll scroll-container h-[calc(80vh-50px)]">
+      <div className="messages overflow-scroll scroll-container h-[calc(80vh-50px) mt-3">
         {messages.map((message) => (
           <div
             key={message.id}
@@ -87,7 +87,7 @@ function ChatScreen({ userName } : {userName : string} ) {
       </div>
       <form
         onSubmit={handleSendMessage}
-        className="message-form w-full flex justify-between py-[17px] px-6 border border-[#E6E6E6] rounded-[14px] "
+        className="message-form w-full absolute bottom-3 flex justify-between py-[17px] px-6 border border-[#E6E6E6] rounded-[14px] "
       >
         <input
           type="text"
@@ -98,9 +98,7 @@ function ChatScreen({ userName } : {userName : string} ) {
         />
         <div className="send-button">
           <span className="w-8 h-8 rounded-full bg-(--primary) "></span>
-          <span className="w-8 h-8 rounded-full bg-(--primary) ">
-            
-          </span>
+          <span className="w-8 h-8 rounded-full bg-(--primary) "></span>
         </div>
       </form>
     </div>

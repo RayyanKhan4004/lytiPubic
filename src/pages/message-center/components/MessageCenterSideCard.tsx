@@ -25,7 +25,11 @@ function MessageCenterSideCard({
             selectedItem === item?.key && "bg-[#F3F3F3]"
           } `}
         >
-          <img className="w-[45px] h-[45px] rounded-full   " src="" alt="" />
+          <img
+            className="w-[45px] h-[45px] rounded-full   "
+            src="https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=612x612&w=0&k=20&c=tyLvtzutRh22j9GqSGI33Z4HpIwv9vL_MZw_xOE19NQ="
+            alt=""
+          />
           <div className="flex flex-col gap-[3px] w-[200px]">
             <h3 className="font-poppin font-medium text-[16px] ">
               {item.title}

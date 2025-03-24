@@ -3,8 +3,6 @@ import { useForm } from "react-hook-form";
 
 import Breadcrumb from "../../components/common/BreadCrumb";
 import MainTitle from "../../components/ui/typography/MainTitle";
-import SelectField from "../../components/inputs/SelectField";
-import SearchInput from "../../components/inputs/SearchInput";
 import Pagination from "../../components/common/Pagination";
 import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
 import NoDataRow from "../../components/ui/NoDataRow";
@@ -17,12 +15,10 @@ import {
   useGetTop5ListingAgentsQuery,
 } from "../../lib/rtkQuery/orderApi";
 
-import { countyOptions } from "../../utils/options";
 import { ChartData, OrderDataType } from "../../utils/types";
 
 import CardLayout from "../../components/layouts/CardLayout";
 import DummyChart from "./DummyChart";
-import { users } from "../../utils/DummyData";
 import TopAgentCard from "../../components/ui/card/TopAgentCard";
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
 

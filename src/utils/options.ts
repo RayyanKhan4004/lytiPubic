@@ -279,3 +279,21 @@ export const useOptionsAddNew = () => {
     refetchSellingOffices,
   };
 };
+
+export const graphOptions = [
+  "Open Order",
+  "Open Volume",
+  "Open Revenue",
+  "Closed Order",
+  "Closed Volume",
+  "Closed Revenue",
+];
+
+export const graphOption = [
+  { value: "openOrder", label: "Open Order" },
+  { value: "openVolume", label: "Open Volume" },
+  { value: "openRevenue", label: "Open Revenue" },
+  { value: "closedOrder", label: "Closed Order" },
+  { value: "closedVolume", label: "Closed Volume" },
+  { value: "closedRevenue", label: "Closed Revenue" },
+];

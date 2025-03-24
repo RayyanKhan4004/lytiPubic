@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 import trend from "../../assets/icons/TrendUp.svg";
 import Breadcrumb from "../../components/common/BreadCrumb";
-import LineChartComponent from "../../components/dashboard/snapShot/LineChartComponent";
-import StackedBarChart from "../../components/dashboard/snapShot/StackedBarChart";
 import SlimBarChart from "../../components/dashboard/snapShot/SlimBarChart";
 import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkeleton";
 import DashboardSnapshotStatsCard from "../../components/ui/card/DashboardSnapshotStatsCard";
-import { useGetDashboardStatsQuery } from "../../lib/rtkQuery/dashboardApi";
+import {
+  useGetDashboardStatsQuery,
+  useGetGraphDataQuery,
+} from "../../lib/rtkQuery/dashboardApi";
 import SelectField from "../../components/inputs/SelectField";
 import { useForm } from "react-hook-form";
 import { OrderDataType } from "../../utils/types";
 import { yearOptions } from "../../utils/options";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import OpenOrderChart from "../../components/dashboard/snapShot/OpenOrderChart";
+import OpenVolumeChart from "../../components/dashboard/snapShot/OpenVolumeChart";
+import OpenRevenueChart from "../../components/dashboard/snapShot/OpenRevenueChart";
+import ClosedOrderChart from "../../components/dashboard/snapShot/ClosedOrderChart";
+import ClosedRevenueChart from "../../components/dashboard/snapShot/ClosedRevenueChart";
+import ClosedVolumeChart from "../../components/dashboard/snapShot/ClosedVolumeChart";
 
 const SnapShot = () => {
   const [isMonthly, setIsMonthly] = useState(true);
@@ -252,11 +259,15 @@ const SnapShot = () => {
       </div>
 
       <div className="w-full flex justify-between flex-wrap gap-2">
-        <LineChartComponent />
-        <StackedBarChart />
+        <OpenOrderChart />
+        <OpenVolumeChart />
         <div className="flex justify-between mt-5 w-full">
-          <SlimBarChart />
-          <LineChartComponent />
+          <OpenRevenueChart />
+          <ClosedOrderChart />
+        </div>
+        <div className="flex justify-between mt-5 w-full">
+          <ClosedRevenueChart />
+          <ClosedVolumeChart />
         </div>
       </div>
     </div>
