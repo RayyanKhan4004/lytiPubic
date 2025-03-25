@@ -80,8 +80,8 @@ const SnapShot = () => {
   useEffect(() => {
     setValue("year", "2025");
   }, [setValue]);
-  const handleItemClick = () => {
-    navigate("/orders/orders", { state: { selectedYear, type: "year" } });
+  const handleItemClick = (type: string) => {
+    navigate("/orders/orders", { state: { selectedYear, type } });
   };
 
   const handleMTDClick = () => {
@@ -196,6 +196,7 @@ const SnapShot = () => {
               }
               onMTDClick={handleMTDClick}
               onItemClick={handleItemClick}
+              onItemClickParam="open"
             />
             <DashboardSnapshotStatsCard
               title="YTD prelim"
@@ -223,6 +224,7 @@ const SnapShot = () => {
               }
               onMTDClick={handleMTDClick}
               onItemClick={handleItemClick}
+              onItemClickParam="pending"
             />
             <DashboardSnapshotStatsCard
               title="YTD closed"
@@ -245,6 +247,7 @@ const SnapShot = () => {
               }
               onMTDClick={handleMTDClick}
               onItemClick={handleItemClick}
+              onItemClickParam="closed"
             />
           </div>
         )}

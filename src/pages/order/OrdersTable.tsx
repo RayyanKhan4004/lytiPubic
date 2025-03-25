@@ -72,6 +72,8 @@ const OrdersTable = () => {
   const selectedYear = watch("year") || yearFromCard || "";
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  console.log(type, "==type==");
+
   useEffect(() => {
     if (type === "year") {
       if (selectedYear) {
@@ -93,11 +95,20 @@ const OrdersTable = () => {
       setEndDate("");
     }
   }, [selectedYear, type]);
-  console.log(startDate, "===data===", endDate);
+
+  const adjustedStatus =
+    type === "open"
+      ? `Open${selectedFileStatus ? `, ${selectedFileStatus}` : ""}`
+      : type === "closed"
+      ? `Closed${selectedFileStatus ? `, ${selectedFileStatus}` : ""}`
+      : selectedFileStatus;
+
+  const adjustedType =
+    type === "pending" ? "Prelim/Commitment" : selectedFileType;
 
   const { data, isLoading, refetch } = useGetOrdersQuery({
-    status: selectedFileStatus,
-    type: selectedFileType,
+    status: adjustedStatus,
+    type: adjustedType,
     propertyCounty: selectedPropertyCounty,
     transactionType: selectTransactionType,
     page,
@@ -142,10 +153,6 @@ const OrdersTable = () => {
     }
   };
 
-  useEffect(() => {
-    refetch();
-  }, []);
-
   const handleCheckboxChange = (id: number) => {
     setSelectedRows((prev) =>
       prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
@@ -155,15 +162,15 @@ const OrdersTable = () => {
   useEffect(() => {
     setSelectedFilters({
       propertyCounty: selectedPropertyCounty,
-      fileStatus: selectedFileStatus,
-      fileType: selectedFileType,
+      fileStatus: adjustedStatus, // Updated status with "Open" or "Closed"
+      fileType: adjustedType, // Updated type with "Prelim/Commitment"
       transactionType: selectTransactionType,
       year: selectedYear,
     });
   }, [
     selectedPropertyCounty,
-    selectedFileStatus,
-    selectedFileType,
+    adjustedStatus,
+    adjustedType,
     selectTransactionType,
     selectedYear,
   ]);
