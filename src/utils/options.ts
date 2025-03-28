@@ -196,21 +196,15 @@ export const ChallengeTypeOptions = [
   { value: "Per-Unit", label: "Per-Unit" },
 ];
 
-// export const TimePeriodOptions = [
-//   { value: "week", label: "Week" },
-//   { value: "month", label: "Month" },
-//   { value: "quarter", label: "Quarter" },
-//   { value: "year", label: "Year" },
-//   { value: "custom", label: "Custom" },
-// ];
+export const TimePeriodOptions = [
+  { value: "week", label: "Week" },
+  { value: "month", label: "Month" },
+  { value: "quarter", label: "Quarter" },
+  { value: "year", label: "Year" },
+  { value: "custom", label: "Custom" },
+];
 
 export const RecurringOptions = [
   { value: "true", label: "Yes" },
   { value: "false", label: "No" },
-];
-
-export const TimePeriodOptions = [
-  { value: "month", label: "Month" },
-  { value: "year", label: "Year" },
-  { value: "custom", label: "Custom" },
 ];

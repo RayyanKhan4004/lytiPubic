@@ -46,6 +46,49 @@ const generateTimePeriodSelectionOptions = (type: string) => {
     );
   }
 
+  if (type === "week") {
+    return years.flatMap((year) => {
+      const weeks = [];
+      let startDate = new Date(year, 0, 1);
+      let weekNumber = 1;
+
+      while (startDate.getDay() !== 1) {
+        startDate.setDate(startDate.getDate() + 1);
+      }
+
+      while (startDate.getFullYear() === year) {
+        const endDate = new Date(startDate);
+        endDate.setDate(endDate.getDate() + 6);
+
+        weeks.push({
+          value: `week-${weekNumber}-${year}`,
+          label: `${year} week #${weekNumber} (${
+            startDate.toISOString().split("T")[0]
+          } to ${endDate.toISOString().split("T")[0]})`,
+        });
+
+        startDate.setDate(startDate.getDate() + 7);
+        weekNumber++;
+      }
+      return weeks;
+    });
+  }
+
+  if (type === "quarter") {
+    const quarters = [
+      { q: "Q1", start: "01-01", end: "03-31" },
+      { q: "Q2", start: "04-01", end: "06-30" },
+      { q: "Q3", start: "07-01", end: "09-30" },
+      { q: "Q4", start: "10-01", end: "12-31" },
+    ];
+    return years.flatMap((year) =>
+      quarters.map(({ q, start, end }) => ({
+        value: `${q}-${year}`,
+        label: `${year}-${q} (${start}-${year} to ${end}-${year})`,
+      }))
+    );
+  }
+
   return [];
 };
 const CreateChallenge = () => {
@@ -65,7 +108,66 @@ const CreateChallenge = () => {
 
   const onSubmit: SubmitHandler<ChallengesType> = async (
     data: ChallengesType
-  ) => {};
+  ) => {
+    let formattedData = { ...data };
+
+    if (data.timePeriodType === "custom") {
+      formattedData.startDate = data.startDate;
+      formattedData.endDate = data.endDate;
+    } else {
+      const selectedPeriod = data.timePeriodSelection;
+
+      if (data.timePeriodType === "year") {
+        formattedData.startDate = `${selectedPeriod}-01-01`;
+        formattedData.endDate = `${selectedPeriod}-12-31`;
+      }
+
+      if (data.timePeriodType === "month") {
+        const [month, year] = selectedPeriod.split("-");
+        const monthIndex = new Date(`${month} 1, ${year}`).getMonth() + 1;
+        const lastDay = new Date(parseInt(year), monthIndex, 0).getDate();
+
+        formattedData.startDate = `${year}-${monthIndex
+          .toString()
+          .padStart(2, "0")}-01`;
+        formattedData.endDate = `${year}-${monthIndex
+          .toString()
+          .padStart(2, "0")}-${lastDay}`;
+      }
+
+      if (data.timePeriodType === "week") {
+        const [, weekNumber, year] = selectedPeriod.split("-");
+        const startDate = new Date(parseInt(year), 0, 1);
+
+        while (startDate.getDay() !== 1) {
+          startDate.setDate(startDate.getDate() + 1);
+        }
+
+        startDate.setDate(startDate.getDate() + (parseInt(weekNumber) - 1) * 7);
+        const endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 6);
+
+        formattedData.startDate = startDate.toISOString().split("T")[0];
+        formattedData.endDate = endDate.toISOString().split("T")[0];
+      }
+
+      if (data.timePeriodType === "quarter") {
+        const [quarter, year] = selectedPeriod.split("-");
+        const quarterStartEnd = {
+          Q1: ["01-01", "03-31"],
+          Q2: ["04-01", "06-30"],
+          Q3: ["07-01", "09-30"],
+          Q4: ["10-01", "12-31"],
+        };
+
+        const quarterKey = quarter as "Q1" | "Q2" | "Q3" | "Q4";
+        formattedData.startDate = `${year}-${quarterStartEnd[quarterKey][0]}`;
+        formattedData.endDate = `${year}-${quarterStartEnd[quarterKey][1]}`;
+      }
+    }
+
+    console.log(formattedData, "==formatted data==");
+  };
 
   return (
     <div className="w-full px-4 my-8 font-Poppins">
@@ -86,7 +188,7 @@ const CreateChallenge = () => {
                 placeholder="Enter Name"
                 error={errors.challengeName?.message}
                 className="w-[48%]"
-                required={true}
+                // required={true}
               />
               <SelectField
                 label="Scope"
@@ -95,7 +197,7 @@ const CreateChallenge = () => {
                 options={ScopeOptions}
                 placeholder="Select scope"
                 error={errors.scope?.message}
-                required={true}
+                // required={true}
                 className="w-[48%]"
               />
               <SelectField
@@ -105,7 +207,7 @@ const CreateChallenge = () => {
                 options={ChallengeTypeOptions}
                 placeholder="Select challenge type"
                 error={errors.challengeType?.message}
-                required={true}
+                // required={true}
                 className="w-[48%]"
               />
               {challengeType === "Race" && (
@@ -188,7 +290,7 @@ const CreateChallenge = () => {
                 options={TimePeriodOptions}
                 placeholder="Select time period type"
                 error={errors.timePeriodType?.message}
-                required={true}
+                // required={true}
                 className="w-[48%]"
               />
 
@@ -228,7 +330,7 @@ const CreateChallenge = () => {
                 options={RecurringOptions}
                 placeholder="Select option"
                 error={errors.recurring?.message}
-                required={true}
+                // required={true}
                 className="w-[48%]"
               />
             </div>
