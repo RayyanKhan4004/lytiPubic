@@ -48,7 +48,15 @@ const LeadSource = () => {
     },
   });
 
-  const { data: leadSources, isLoading, refetch } = useGetLeadSourcesQuery();
+  const {
+    data: leadSources,
+    isLoading,
+    refetch,
+  } = useGetLeadSourcesQuery({
+    keyword: searchTerm,
+    status: "",
+  });
+
   console.log(leadSources, "=source==");
 
   const [addLeadSource, { isLoading: isLoadingLeadSource, error }] =

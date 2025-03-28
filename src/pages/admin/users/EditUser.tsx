@@ -59,7 +59,7 @@ const EditUser = () => {
   const onSubmit: SubmitHandler<UserDataType> = async (data: UserDataType) => {
     const formattedData = {
       ...data,
-      startDate: formatDate(data.startDate),
+      // startDate: formatDate(data.startDate),
       exclude_challenges_leaderboards: isChallenge,
       download_transactions: isDownload,
       send_welcome_email: isWelcome,
@@ -96,7 +96,7 @@ const EditUser = () => {
       setValue("business_entity", userData.business_entity || "");
       setValue("email", userData.email || "");
       setValue("role", userData.role || "");
-      setValue("startDate", userData.startdate || "");
+      setValue("startdate", userData.startdate || "");
       setValue("brokerageCap", userData.brokerageCap || "");
       setValue("yearAnniversary", userData.yearAnniversary || "");
       setValue("agentTransactionFee", userData.agentTransactionFee || "");
