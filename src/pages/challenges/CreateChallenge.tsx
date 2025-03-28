@@ -21,6 +21,7 @@ import {
   useGetChallengeCategoriesQuery,
 } from "../../lib/rtkQuery/challengeApi";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const CreateChallenge = () => {
   const {
@@ -36,14 +37,16 @@ const CreateChallenge = () => {
     () => generateTimePeriodSelectionOptions(timePeriodType),
     [timePeriodType]
   );
-  const { data, error, isLoading } = useGetChallengeCategoriesQuery();
+  const { data } = useGetChallengeCategoriesQuery();
   const categoryOptions =
     data?.categories?.map((category: any) => ({
       value: category.id,
       label: category.categoryName,
     })) || [];
 
-  const [createChallenge] = useCreateChallengeMutation();
+  const [createChallenge, { isLoading }] = useCreateChallengeMutation();
+
+  const navigate = useNavigate();
   const onSubmit: SubmitHandler<ChallengesType> = async (
     data: ChallengesType
   ) => {
@@ -148,6 +151,7 @@ const CreateChallenge = () => {
       const response = await createChallenge(cleanedData).unwrap();
       console.log("Challenge Created:", response);
       toast.success("Challenge created successfully");
+      navigate("/challenges");
     } catch (err: any) {
       console.error("Error:", err);
       toast.error(err?.data?.message || "error in creating challenge");
@@ -326,7 +330,11 @@ const CreateChallenge = () => {
               />
             </div>
             <div className="flex justify-end">
-              <PrimaryButton text="Generate" type="submit" />
+              <PrimaryButton
+                text="Generate"
+                type="submit"
+                isLoading={isLoading}
+              />
             </div>
           </CardLayout>
         </form>

@@ -45,8 +45,25 @@ export const challengeApi = createApi({
         body: challengeData,
       }),
     }),
+    getChallenges: builder.query<
+      any,
+      { keyword: string; page: number; limit: number }
+    >({
+      query: ({ keyword, page, limit }) =>
+        `challenges?keyword=${keyword}&page=${page}&limit=${limit}`,
+    }),
+    deleteChallenge: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `challenges/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useGetChallengeCategoriesQuery, useCreateChallengeMutation } =
-  challengeApi;
+export const {
+  useGetChallengeCategoriesQuery,
+  useCreateChallengeMutation,
+  useGetChallengesQuery,
+  useDeleteChallengeMutation,
+} = challengeApi;
