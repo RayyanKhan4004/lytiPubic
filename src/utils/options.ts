@@ -1,3 +1,4 @@
+import { Label } from "recharts";
 import {
   useGetListingOfficesQuery,
   useGetSellingOfficeQuery,
@@ -41,6 +42,7 @@ export const fileTypeOptions = [
   { value: "Escrow Only", label: "Escrow Only" },
   { value: "Title and Escrow", label: "Title and Escrow" },
   { value: "Commercial Escrow", label: "Commercial Escrow" },
+  { value: "Prelim/Commitment", label: "Prelim/Commitment" },
   { value: "Commercial Title", label: "Commercial Title" },
   { value: "LCP", label: "LCP" },
   { value: "Other", label: "Other" },

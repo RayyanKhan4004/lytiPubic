@@ -13,10 +13,11 @@ import InputField from "../../../components/inputs/InputFields";
 import { useSignUpMutation } from "../../../lib/rtkQuery/authApi";
 import { formatDate } from "../../../utils/formatDate";
 import { roleOption } from "../../../utils/options";
-import { UserDataType } from "../../../utils/types";
+import { SignUpFormValues, UserDataType } from "../../../utils/types";
 import MainTitle from "../../../components/ui/typography/MainTitle";
 import CardLayout from "../../../components/layouts/CardLayout";
 import PrimaryButton from "../../../components/ui/button/PrimaryButton";
+import { useAppSelector } from "../../../lib/store/hooks";
 
 const AddUser = () => {
   const [isChallenge, setIsChallenge] = useState<boolean>(false);
@@ -32,7 +33,7 @@ const AddUser = () => {
     setValue,
     watch,
     control,
-  } = useForm<UserDataType>();
+  } = useForm<SignUpFormValues>();
 
   const profileImage = watch("profileImage");
   const profileImagePreview =
@@ -51,14 +52,15 @@ const AddUser = () => {
       }
     }, 0);
   };
-
+  const ownerId = useAppSelector((state: any) => state?.auth?.user?.id || "");
   const onSubmit: SubmitHandler<UserDataType> = async (data: UserDataType) => {
     const formattedData = {
       ...data,
-      startDate: formatDate(data.startDate),
+      // startdate: formatDate(data.startdate),
       exclude_challenges_leaderboards: isChallenge,
       download_transactions: isDownload,
       send_welcome_email: isWelcome,
+      ownerId,
     };
 
     try {
@@ -202,7 +204,7 @@ const AddUser = () => {
                   />
 
                   <CustomDatePicker
-                    name="startDate"
+                    name="startdate"
                     control={control}
                     label="Select a Date"
                     placeholder="8-21-15"

@@ -1,29 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-interface FormValues {
-  firstname?: string;
-  lastname?: string;
-  alternativemail?: string;
-  password?: string;
-  business_entity?: string;
-  email?: string;
-  role?: string;
-  startDate?: string;
-  profileImage?: File | null;
-  brokerageCap?: string;
-  yearAnniversary?: string;
-  agentTransactionFee?: string;
-  agentMonthlyFee?: string;
-  commissionTemplate?: string;
-  notes?: string;
-  ae_commission_threshold?: number;
-  ae_escrow_commission?: number;
-  ae_title_commission?: number;
-  career_path?: string;
-  lead_source?: string;
-  exclude_challenges_leaderboards?: boolean;
-  download_transactions?: boolean;
-  send_welcome_email?: boolean;
-}
+import { SignUpFormValues } from "../../utils/types";
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
@@ -66,7 +42,7 @@ export const authApi = createApi({
         body,
       }),
     }),
-    signUp: builder.mutation<any, FormValues>({
+    signUp: builder.mutation<any, SignUpFormValues>({
       query: (body) => ({
         url: "auth/signup",
         method: "POST",
