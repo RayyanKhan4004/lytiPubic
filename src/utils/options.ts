@@ -208,3 +208,9 @@ export const RecurringOptions = [
   { value: "true", label: "Yes" },
   { value: "false", label: "No" },
 ];
+
+export const LeadSorceStatusOptions = [
+  { value: "", label: "All" },
+  { value: "Active", label: "Active" },
+  { value: "Archive", label: "Archive" },
+];

@@ -173,3 +173,9 @@ export interface ChallengesType {
   recurring?: boolean | string;
   timePeriodSelection?: string;
 }
+
+export interface LeadSourceType {
+  name: string;
+  status?: string;
+  groupName: string;
+}
