@@ -15,82 +15,13 @@ import {
 } from "../../utils/options";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
 import { useMemo } from "react";
-const generateTimePeriodSelectionOptions = (type: string) => {
-  const currentYear = new Date().getFullYear();
-  const years = [currentYear, currentYear + 1, currentYear + 2];
+import { generateTimePeriodSelectionOptions } from "../../utils/functions";
+import {
+  useCreateChallengeMutation,
+  useGetChallengeCategoriesQuery,
+} from "../../lib/rtkQuery/challengeApi";
+import toast from "react-hot-toast";
 
-  if (type === "year") {
-    return years.map((year) => ({ value: `${year}`, label: `${year}` }));
-  }
-
-  if (type === "month") {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    return years.flatMap((year) =>
-      months.map((month, index) => ({
-        value: `${index + 1}-${year}`,
-        label: `${month}-${year}`,
-      }))
-    );
-  }
-
-  if (type === "week") {
-    return years.flatMap((year) => {
-      const weeks = [];
-      let startDate = new Date(year, 0, 1);
-      let weekNumber = 1;
-
-      while (startDate.getDay() !== 1) {
-        startDate.setDate(startDate.getDate() + 1);
-      }
-
-      while (startDate.getFullYear() === year) {
-        const endDate = new Date(startDate);
-        endDate.setDate(endDate.getDate() + 6);
-
-        weeks.push({
-          value: `week-${weekNumber}-${year}`,
-          label: `${year} week #${weekNumber} (${
-            startDate.toISOString().split("T")[0]
-          } to ${endDate.toISOString().split("T")[0]})`,
-        });
-
-        startDate.setDate(startDate.getDate() + 7);
-        weekNumber++;
-      }
-      return weeks;
-    });
-  }
-
-  if (type === "quarter") {
-    const quarters = [
-      { q: "Q1", start: "01-01", end: "03-31" },
-      { q: "Q2", start: "04-01", end: "06-30" },
-      { q: "Q3", start: "07-01", end: "09-30" },
-      { q: "Q4", start: "10-01", end: "12-31" },
-    ];
-    return years.flatMap((year) =>
-      quarters.map(({ q, start, end }) => ({
-        value: `${q}-${year}`,
-        label: `${year}-${q} (${start}-${year} to ${end}-${year})`,
-      }))
-    );
-  }
-
-  return [];
-};
 const CreateChallenge = () => {
   const {
     handleSubmit,
@@ -105,7 +36,14 @@ const CreateChallenge = () => {
     () => generateTimePeriodSelectionOptions(timePeriodType),
     [timePeriodType]
   );
+  const { data, error, isLoading } = useGetChallengeCategoriesQuery();
+  const categoryOptions =
+    data?.categories?.map((category: any) => ({
+      value: category.id,
+      label: category.categoryName,
+    })) || [];
 
+  const [createChallenge] = useCreateChallengeMutation();
   const onSubmit: SubmitHandler<ChallengesType> = async (
     data: ChallengesType
   ) => {
@@ -117,13 +55,26 @@ const CreateChallenge = () => {
     } else {
       const selectedPeriod = data.timePeriodSelection;
 
+      if (!selectedPeriod) {
+        console.error("Error: timePeriodSelection is undefined");
+        return;
+      }
+
       if (data.timePeriodType === "year") {
         formattedData.startDate = `${selectedPeriod}-01-01`;
         formattedData.endDate = `${selectedPeriod}-12-31`;
       }
 
       if (data.timePeriodType === "month") {
-        const [month, year] = selectedPeriod.split("-");
+        const periodParts = selectedPeriod.split("-");
+        if (periodParts.length !== 2) {
+          console.error(
+            "Invalid selectedPeriod format for month:",
+            selectedPeriod
+          );
+          return;
+        }
+        const [month, year] = periodParts;
         const monthIndex = new Date(`${month} 1, ${year}`).getMonth() + 1;
         const lastDay = new Date(parseInt(year), monthIndex, 0).getDate();
 
@@ -136,7 +87,15 @@ const CreateChallenge = () => {
       }
 
       if (data.timePeriodType === "week") {
-        const [, weekNumber, year] = selectedPeriod.split("-");
+        const periodParts = selectedPeriod.split("-");
+        if (periodParts.length !== 3) {
+          console.error(
+            "Invalid selectedPeriod format for week:",
+            selectedPeriod
+          );
+          return;
+        }
+        const [, weekNumber, year] = periodParts;
         const startDate = new Date(parseInt(year), 0, 1);
 
         while (startDate.getDay() !== 1) {
@@ -152,21 +111,47 @@ const CreateChallenge = () => {
       }
 
       if (data.timePeriodType === "quarter") {
-        const [quarter, year] = selectedPeriod.split("-");
-        const quarterStartEnd = {
+        const periodParts = selectedPeriod.split("-");
+        if (periodParts.length !== 2) {
+          console.error(
+            "Invalid selectedPeriod format for quarter:",
+            selectedPeriod
+          );
+          return;
+        }
+        const [quarter, year] = periodParts;
+        const quarterStartEnd: Record<string, [string, string]> = {
           Q1: ["01-01", "03-31"],
           Q2: ["04-01", "06-30"],
           Q3: ["07-01", "09-30"],
           Q4: ["10-01", "12-31"],
         };
 
-        const quarterKey = quarter as "Q1" | "Q2" | "Q3" | "Q4";
-        formattedData.startDate = `${year}-${quarterStartEnd[quarterKey][0]}`;
-        formattedData.endDate = `${year}-${quarterStartEnd[quarterKey][1]}`;
+        if (!quarterStartEnd[quarter]) {
+          console.error("Invalid quarter:", quarter);
+          return;
+        }
+
+        formattedData.startDate = `${year}-${quarterStartEnd[quarter][0]}`;
+        formattedData.endDate = `${year}-${quarterStartEnd[quarter][1]}`;
       }
     }
 
-    console.log(formattedData, "==formatted data==");
+    const cleanedData = {
+      ...formattedData,
+      recurring: Boolean(formattedData.recurring),
+    };
+
+    delete cleanedData.timePeriodSelection;
+
+    try {
+      const response = await createChallenge(cleanedData).unwrap();
+      console.log("Challenge Created:", response);
+      toast.success("Challenge created successfully");
+    } catch (err: any) {
+      console.error("Error:", err);
+      toast.error(err?.data?.message || "error in creating challenge");
+    }
   };
 
   return (
@@ -197,6 +182,16 @@ const CreateChallenge = () => {
                 options={ScopeOptions}
                 placeholder="Select scope"
                 error={errors.scope?.message}
+                // required={true}
+                className="w-[48%]"
+              />{" "}
+              <SelectField
+                label="Category"
+                name="categoryId"
+                control={control}
+                options={categoryOptions}
+                placeholder="Select category"
+                error={errors.categoryId?.message}
                 // required={true}
                 className="w-[48%]"
               />
@@ -244,7 +239,6 @@ const CreateChallenge = () => {
                   />
                 </>
               )}
-
               {challengeType === "Everybody Wins" && (
                 <>
                   <InputField
@@ -269,7 +263,6 @@ const CreateChallenge = () => {
                   />
                 </>
               )}
-
               {challengeType === "Per-Unit" && (
                 <InputField
                   label="Total Points"
@@ -282,7 +275,6 @@ const CreateChallenge = () => {
                   required={true}
                 />
               )}
-
               <SelectField
                 label="Time Period Type"
                 name="timePeriodType"
@@ -293,7 +285,6 @@ const CreateChallenge = () => {
                 // required={true}
                 className="w-[48%]"
               />
-
               {timePeriodType === "custom" ? (
                 <>
                   <CustomDatePicker

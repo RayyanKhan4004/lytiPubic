@@ -30,3 +30,80 @@ export const formatDate = (date: Date | string | null | undefined): string => {
 
   return `${year}-${month}-${day}`;
 };
+
+export const generateTimePeriodSelectionOptions = (type: string) => {
+  const currentYear = new Date().getFullYear();
+  const years = [currentYear, currentYear + 1, currentYear + 2];
+
+  if (type === "year") {
+    return years.map((year) => ({ value: `${year}`, label: `${year}` }));
+  }
+
+  if (type === "month") {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    return years.flatMap((year) =>
+      months.map((month, index) => ({
+        value: `${index + 1}-${year}`,
+        label: `${month}-${year}`,
+      }))
+    );
+  }
+
+  if (type === "week") {
+    return years.flatMap((year) => {
+      const weeks = [];
+      let startDate = new Date(year, 0, 1);
+      let weekNumber = 1;
+
+      while (startDate.getDay() !== 1) {
+        startDate.setDate(startDate.getDate() + 1);
+      }
+
+      while (startDate.getFullYear() === year) {
+        const endDate = new Date(startDate);
+        endDate.setDate(endDate.getDate() + 6);
+
+        weeks.push({
+          value: `week-${weekNumber}-${year}`,
+          label: `${year} week #${weekNumber} (${
+            startDate.toISOString().split("T")[0]
+          } to ${endDate.toISOString().split("T")[0]})`,
+        });
+
+        startDate.setDate(startDate.getDate() + 7);
+        weekNumber++;
+      }
+      return weeks;
+    });
+  }
+
+  if (type === "quarter") {
+    const quarters = [
+      { q: "Q1", start: "01-01", end: "03-31" },
+      { q: "Q2", start: "04-01", end: "06-30" },
+      { q: "Q3", start: "07-01", end: "09-30" },
+      { q: "Q4", start: "10-01", end: "12-31" },
+    ];
+    return years.flatMap((year) =>
+      quarters.map(({ q, start, end }) => ({
+        value: `${q}-${year}`,
+        label: `${year}-${q} (${start}-${year} to ${end}-${year})`,
+      }))
+    );
+  }
+
+  return [];
+};
