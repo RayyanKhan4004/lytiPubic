@@ -13,14 +13,16 @@ import PrimaryButton from "../../components/ui/button/PrimaryButton";
 import {
   useAddLeadSourceGroupMutation,
   useAddLeadSourceMutation,
+  useGetLeadSourceGroupsQuery,
   useGetLeadSourcesQuery,
+  useUpdateLeadSourceMutation,
 } from "../../lib/rtkQuery/challengeApi";
 import Spinner from "../../components/ui/loader/Spinner";
 import toast from "react-hot-toast";
 import SelectField from "../../components/inputs/SelectField";
 import { LeadSorceStatusOptions, roleOption } from "../../utils/options";
 import SearchInput from "../../components/inputs/SearchInput";
-
+import { FiSettings } from "react-icons/fi";
 const LeadSource = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -90,6 +92,20 @@ const LeadSource = () => {
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm.toLowerCase());
   };
+  const [updateLeadSource] = useUpdateLeadSourceMutation();
+
+  const handleUpdateStatus = async (id: string, currentStatus: string) => {
+    const newStatus = currentStatus === "Active" ? "Archived" : "Active";
+
+    try {
+      await updateLeadSource({ id, status: newStatus }).unwrap();
+      toast.success(`Lead source ${newStatus.toLowerCase()} successfully`);
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to update lead source");
+    }
+  };
+
+  const { data: leadSourceGroups } = useGetLeadSourceGroupsQuery();
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Admin", "Lead Sources"]} />
@@ -114,9 +130,9 @@ const LeadSource = () => {
                 height="46px"
               /> */}
 
-              <div className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white">
+              {/* <div className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white">
                 <img src={copy} alt="" />
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -133,7 +149,15 @@ const LeadSource = () => {
                   />
                   <h2>{e.name}</h2>
                 </div>
-                <div className="bg-(--secondary) flex items-center gap-2 rounded-xl px-5 w-fit h-[32px]">
+
+                <div
+                  className={`flex items-center gap-2 rounded-xl px-5 w-fit h-[32px] cursor-pointer ${
+                    e.status === "Archived"
+                      ? "bg-gray-400 opacity-70"
+                      : "bg-(--secondary)"
+                  }`}
+                  onClick={() => handleUpdateStatus(e.id, e.status)}
+                >
                   <img src={archieve} alt="" />
                   <p className="text-white">
                     {e?.status === "Active" ? "Archive" : "Archived"}
@@ -143,7 +167,7 @@ const LeadSource = () => {
             ))}
           </div>
         </div>
-        <div className="flex flex-col gap-6  w-[21%] ">
+        <div className="flex flex-col gap-6 w-[21%] ">
           <form onSubmit={handleSubmitLeadSource(onSubmitLeadSource)}>
             <CardLayout className="mt-0">
               <MainTitle title="Add Lead Sources" />
@@ -197,6 +221,21 @@ const LeadSource = () => {
               </button>
             </CardLayout>
           </form>
+
+          <CardLayout className="mt-0">
+            <MainTitle title="Lead Source Groups" />
+            <div className="mt-2 flex flex-col gap-3">
+              {leadSourceGroups?.map((group: any) => (
+                <div
+                  key={group.id}
+                  className="py-2 text-sm font-medium px-3 cursor-pointer rounded-lg flex justify-between items-center transition-colors hover:bg-gray-200"
+                >
+                  <span>{group.name}</span>
+                  <FiSettings className="text-black text-lg cursor-pointer" />
+                </div>
+              ))}
+            </div>
+          </CardLayout>
         </div>
       </div>
     </div>
