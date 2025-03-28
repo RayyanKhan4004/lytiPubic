@@ -84,9 +84,9 @@ export const challengeApi = createApi({
         body: { name },
       }),
     }),
-    getLeadSources: builder.query<any, void>({
-      query: () => ({
-        url: "leadsource",
+    getLeadSources: builder.query<any, { keyword?: string; status?: string }>({
+      query: ({ keyword = "", status = "" }) => ({
+        url: `leadsource?keyword=${keyword}&status=${status}`,
         method: "GET",
       }),
     }),
