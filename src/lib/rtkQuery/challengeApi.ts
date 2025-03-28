@@ -67,6 +67,29 @@ export const challengeApi = createApi({
         }),
       }
     ),
+    addLeadSource: builder.mutation<any, { name: string }>({
+      query: ({ name }) => ({
+        url: "leadsource",
+        method: "POST",
+        body: {
+          name,
+          status: "Active",
+        },
+      }),
+    }),
+    addLeadSourceGroup: builder.mutation<any, { name: string }>({
+      query: ({ name }) => ({
+        url: "leadsource/groups",
+        method: "POST",
+        body: { name },
+      }),
+    }),
+    getLeadSources: builder.query<any, void>({
+      query: () => ({
+        url: "leadsource",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -76,4 +99,7 @@ export const {
   useGetChallengesQuery,
   useDeleteChallengeMutation,
   usePatchChallengeMutation,
+  useAddLeadSourceMutation,
+  useAddLeadSourceGroupMutation,
+  useGetLeadSourcesQuery,
 } = challengeApi;
