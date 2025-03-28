@@ -56,7 +56,6 @@ const AddUser = () => {
   const onSubmit: SubmitHandler<UserDataType> = async (data: UserDataType) => {
     const formattedData = {
       ...data,
-      // startdate: formatDate(data.startdate),
       exclude_challenges_leaderboards: isChallenge,
       download_transactions: isDownload,
       send_welcome_email: isWelcome,
