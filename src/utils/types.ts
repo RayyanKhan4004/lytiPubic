@@ -75,7 +75,7 @@ export interface UserDataType {
   business_entity?: string;
   email?: string;
   role?: string;
-  startDate?: string;
+  startdate?: string;
   profileImage?: File | null;
   brokerageCap?: string;
   yearAnniversary?: string;
@@ -128,4 +128,31 @@ export interface ChartData {
 
 export interface graphType {
   filter?: string;
+}
+
+export interface SignUpFormValues {
+  firstname?: string;
+  lastname?: string;
+  alternativemail?: string;
+  password?: string;
+  business_entity?: string;
+  email?: string;
+  role?: string;
+  startdate?: string;
+  profileImage?: File | null;
+  brokerageCap?: string;
+  yearAnniversary?: string;
+  agentTransactionFee?: string;
+  agentMonthlyFee?: string;
+  commissionTemplate?: string;
+  notes?: string;
+  ae_commission_threshold?: number;
+  ae_escrow_commission?: number;
+  ae_title_commission?: number;
+  career_path?: string;
+  lead_source?: string;
+  exclude_challenges_leaderboards?: boolean;
+  download_transactions?: boolean;
+  send_welcome_email?: boolean;
+  ownerId?: number;
 }

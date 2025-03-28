@@ -27,7 +27,6 @@ import dummyImage from "../../../assets/images/Dummy.jpg";
 import PopoverMenu from "../../../components/ui/popup/PopupMenu";
 import toast from "react-hot-toast";
 import { UserTableType } from "../../../utils/types";
-import PrimaryButton from "../../../components/ui/button/PrimaryButton";
 import MainTitle from "../../../components/ui/typography/MainTitle";
 import CardLayout from "../../../components/layouts/CardLayout";
 

@@ -72,7 +72,6 @@ const OrdersTable = () => {
   const selectedYear = watch("year") || yearFromCard || "";
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  console.log(type, "==type==");
 
   useEffect(() => {
     if (type === "year") {
@@ -162,8 +161,8 @@ const OrdersTable = () => {
   useEffect(() => {
     setSelectedFilters({
       propertyCounty: selectedPropertyCounty,
-      fileStatus: adjustedStatus, // Updated status with "Open" or "Closed"
-      fileType: adjustedType, // Updated type with "Prelim/Commitment"
+      fileStatus: adjustedStatus,
+      fileType: adjustedType,
       transactionType: selectTransactionType,
       year: selectedYear,
     });
