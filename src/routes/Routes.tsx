@@ -53,6 +53,7 @@ import Record from "../pages/record/Record";
 import PersonalDashboard from "../pages/dashboard/personalDashboard/PersonalDashboard";
 import MessageCenter from "../pages/message-center/MessageCenter";
 import EditChallenge from "../pages/challenges/EditChallenge";
+import LeadsSourceGroup from "../pages/admin/LeadsSourceGroup";
 // import MessageCenter from "../pages/message-center/messageCenter";
 
 export const router = createBrowserRouter([
@@ -84,6 +85,7 @@ export const router = createBrowserRouter([
       { path: "admin/challenge", element: <AdminChallengeTable /> },
       { path: "admin/create-challenge", element: <AddChallenge /> },
       { path: "admin/lead-source", element: <LeadSource /> },
+      { path: "/leads-source-group", element: <LeadsSourceGroup /> },
       { path: "admin/team-settings", element: <TeamSettings /> },
       { path: "admin/tasks", element: <Tasks /> },
       { path: "admin/commissions", element: <Commission /> },
