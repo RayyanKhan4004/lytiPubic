@@ -158,18 +158,18 @@ export interface SignUpFormValues {
 }
 
 export interface ChallengesType {
-  challengeName: string;
-  scope: string;
-  categoryId: number;
-  challengeType: string;
+  challengeName?: string;
+  scope?: string;
+  categoryId?: number;
+  challengeType?: string;
   timePeriodType: string;
-  startDate: string;
-  endDate: string;
-  firstPlacePoints: number;
-  secondPlacePoints: number;
-  thirdPlacePoints: number;
-  points: number;
-  threshold: number;
-  recurring: boolean;
-  timePeriodSelection: string;
+  startDate?: string;
+  endDate?: string;
+  firstPlacePoints?: number;
+  secondPlacePoints?: number;
+  thirdPlacePoints?: number;
+  points?: number;
+  threshold?: number;
+  recurring?: boolean;
+  timePeriodSelection?: string;
 }
