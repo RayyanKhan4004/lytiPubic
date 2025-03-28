@@ -23,6 +23,7 @@ import SelectField from "../../components/inputs/SelectField";
 import { LeadSorceStatusOptions, roleOption } from "../../utils/options";
 import SearchInput from "../../components/inputs/SearchInput";
 import { FiSettings } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 const LeadSource = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -109,6 +110,7 @@ const LeadSource = () => {
   };
 
   const { data: leadSourceGroups } = useGetLeadSourceGroupsQuery();
+  const navigate = useNavigate();
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Admin", "Lead Sources"]} />
@@ -236,6 +238,11 @@ const LeadSource = () => {
                 <div
                   key={group.id}
                   className="py-2 text-sm font-medium px-3 cursor-pointer rounded-lg flex justify-between items-center transition-colors hover:bg-gray-200"
+                  onClick={() =>
+                    navigate("/leads-source-group", {
+                      state: { id: group.id },
+                    })
+                  }
                 >
                   <span>{group.name}</span>
                   <FiSettings className="text-black text-lg cursor-pointer" />
