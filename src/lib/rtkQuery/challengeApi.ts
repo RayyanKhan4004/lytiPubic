@@ -110,6 +110,12 @@ export const challengeApi = createApi({
         body,
       }),
     }),
+    deleteLeadSourceGroup: builder.mutation({
+      query: (id) => ({
+        url: `leadsource/groups/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -126,4 +132,5 @@ export const {
   useGetLeadSourceGroupsQuery,
   useGetLeadSourceGroupByIdQuery,
   useAddLeadsToGroupMutation,
+  useDeleteLeadSourceGroupMutation,
 } = challengeApi;
