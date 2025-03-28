@@ -93,15 +93,18 @@ const LeadSource = () => {
     setSearchTerm(searchTerm.toLowerCase());
   };
   const [updateLeadSource] = useUpdateLeadSourceMutation();
-
+  const [loadingId, setLoadingId] = useState("");
   const handleUpdateStatus = async (id: string, currentStatus: string) => {
     const newStatus = currentStatus === "Active" ? "Archived" : "Active";
-
+    setLoadingId(id);
     try {
       await updateLeadSource({ id, status: newStatus }).unwrap();
       toast.success(`Lead source ${newStatus.toLowerCase()} successfully`);
+      refetch();
     } catch (error: any) {
       toast.error(error?.data?.message || "Failed to update lead source");
+    } finally {
+      setLoadingId("");
     }
   };
 
@@ -160,7 +163,11 @@ const LeadSource = () => {
                 >
                   <img src={archieve} alt="" />
                   <p className="text-white">
-                    {e?.status === "Active" ? "Archive" : "Archived"}
+                    {loadingId === e.id ? (
+                      <Spinner />
+                    ) : (
+                      <>{e?.status === "Active" ? "Archive" : "Archived"}</>
+                    )}
                   </p>
                 </div>
               </div>
