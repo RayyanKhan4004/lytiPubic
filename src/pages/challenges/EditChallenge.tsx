@@ -14,16 +14,17 @@ import {
   TimePeriodOptions,
 } from "../../utils/options";
 import CustomDatePicker from "../../components/inputs/CustomDatePicker";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { generateTimePeriodSelectionOptions } from "../../utils/functions";
 import {
   useCreateChallengeMutation,
   useGetChallengeCategoriesQuery,
+  usePatchChallengeMutation,
 } from "../../lib/rtkQuery/challengeApi";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const CreateChallenge = () => {
+const EditChallenge = () => {
   const {
     handleSubmit,
     formState: { errors },
@@ -31,6 +32,11 @@ const CreateChallenge = () => {
     watch,
     control,
   } = useForm<ChallengesType>();
+
+  const paramData = useLocation();
+  const { rowData } = paramData.state || {};
+  console.log(rowData, "==row==");
+
   const challengeType = watch("challengeType", "");
   const timePeriodType = watch("timePeriodType", "");
   const timePeriodSelectionOptions = useMemo(
@@ -44,7 +50,7 @@ const CreateChallenge = () => {
       label: category.categoryName,
     })) || [];
 
-  const [createChallenge, { isLoading }] = useCreateChallengeMutation();
+  const [patchChallenge, { isLoading }] = usePatchChallengeMutation();
 
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<ChallengesType> = async (
@@ -148,9 +154,12 @@ const CreateChallenge = () => {
     delete cleanedData.timePeriodSelection;
 
     try {
-      const response = await createChallenge(cleanedData).unwrap();
+      const response = await patchChallenge({
+        id: rowData?.id,
+        data: cleanedData,
+      }).unwrap();
       console.log("Challenge Created:", response);
-      toast.success("Challenge created successfully");
+      toast.success("Challenge update successfully");
       navigate("/challenges");
     } catch (err: any) {
       console.error("Error:", err);
@@ -158,16 +167,34 @@ const CreateChallenge = () => {
     }
   };
 
+  useEffect(() => {
+    if (rowData) {
+      setValue("challengeName", rowData.challengeName || "");
+      setValue("challengeType", rowData.challengeType || "");
+      setValue("scope", rowData.scope || "");
+      setValue("categoryId", rowData.category?.id || "");
+      setValue("firstPlacePoints", rowData.firstPlacePoints || 0);
+      setValue("secondPlacePoints", rowData.secondPlacePoints || 0);
+      setValue("thirdPlacePoints", rowData.thirdPlacePoints || 0);
+      setValue("points", rowData.points || 0);
+      setValue("threshold", rowData.threshold || 0);
+      setValue("timePeriodType", rowData.timePeriodType || "");
+      setValue("startDate", rowData.startDate || "");
+      setValue("endDate", rowData.endDate || "");
+      setValue("recurring", rowData.recurring ? "true" : "false");
+    }
+  }, [rowData, setValue]);
+
   return (
     <div className="w-full px-4 my-8 font-Poppins">
-      <Breadcrumb items={["Challenges", "Create New Challenge"]} />
+      <Breadcrumb items={["Challenges", "Edit Challenge"]} />
       <div className="w-full flex justify-between my-6">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 w-[49%]"
         >
           <CardLayout className="mt-0">
-            <MainTitle title="Create New Challenge" />
+            <MainTitle title="Edit Challenge" />
             <div className="w-full flex flex-wrap justify-between items-center gap-4 my-4">
               <InputField
                 label="Challenge Name"
@@ -331,7 +358,7 @@ const CreateChallenge = () => {
             </div>
             <div className="flex justify-end">
               <PrimaryButton
-                text="Generate"
+                text="Update"
                 type="submit"
                 isLoading={isLoading}
               />
@@ -344,4 +371,4 @@ const CreateChallenge = () => {
   );
 };
 
-export default CreateChallenge;
+export default EditChallenge;
