@@ -156,3 +156,20 @@ export interface SignUpFormValues {
   send_welcome_email?: boolean;
   ownerId?: number;
 }
+
+export interface ChallengesType {
+  challengeName: string;
+  scope: string;
+  categoryId: number;
+  challengeType: string;
+  timePeriodType: string;
+  startDate: string;
+  endDate: string;
+  firstPlacePoints: number;
+  secondPlacePoints: number;
+  thirdPlacePoints: number;
+  points: number;
+  threshold: number;
+  recurring: boolean;
+  timePeriodSelection: string;
+}
