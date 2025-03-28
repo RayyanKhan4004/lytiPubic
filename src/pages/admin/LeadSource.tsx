@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import copy from "../../assets/icons/CopySimple.svg";
 import archieve from "../../assets/icons/ArchiveBox.svg";
 import Breadcrumb from "../../components/common/BreadCrumb";
@@ -26,6 +26,8 @@ import { FiSettings } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 const LeadSource = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const navigate = useNavigate();
+  const [loadingId, setLoadingId] = useState("");
 
   const {
     register,
@@ -34,9 +36,7 @@ const LeadSource = () => {
     reset: resetLeadSource,
     control: leadSourceControl,
   } = useForm<LeadSourceType>({
-    defaultValues: {
-      name: "",
-    },
+    defaultValues: { name: "" },
   });
 
   const {
@@ -46,9 +46,7 @@ const LeadSource = () => {
     reset: resetGroup,
     control: groupControl,
   } = useForm<{ groupName: string }>({
-    defaultValues: {
-      groupName: "",
-    },
+    defaultValues: { groupName: "" },
   });
 
   const {
@@ -60,13 +58,19 @@ const LeadSource = () => {
     status: "",
   });
 
-  console.log(leadSources, "=source==");
+  const { data: leadSourceGroups, refetch: refetchGroups } =
+    useGetLeadSourceGroupsQuery();
 
   const [addLeadSource, { isLoading: isLoadingLeadSource, error }] =
     useAddLeadSourceMutation();
-
   const [addLeadSourceGroup, { isLoading: isLoadingLeadSourceGroup }] =
     useAddLeadSourceGroupMutation();
+  const [updateLeadSource] = useUpdateLeadSourceMutation();
+
+  useEffect(() => {
+    refetch();
+    refetchGroups();
+  }, [searchTerm]);
 
   const onSubmitLeadSource: SubmitHandler<LeadSourceType> = async (data) => {
     try {
@@ -84,7 +88,7 @@ const LeadSource = () => {
       await addLeadSourceGroup({ name: data.groupName });
       toast.success("Lead source group created successfully");
       resetGroup({ groupName: "" });
-      refetch();
+      refetchGroups();
     } catch (error: any) {
       toast.error(error?.message?.name || "Error in creation");
     }
@@ -93,8 +97,7 @@ const LeadSource = () => {
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm.toLowerCase());
   };
-  const [updateLeadSource] = useUpdateLeadSourceMutation();
-  const [loadingId, setLoadingId] = useState("");
+
   const handleUpdateStatus = async (id: string, currentStatus: string) => {
     const newStatus = currentStatus === "Active" ? "Archived" : "Active";
     setLoadingId(id);
@@ -109,8 +112,6 @@ const LeadSource = () => {
     }
   };
 
-  const { data: leadSourceGroups } = useGetLeadSourceGroupsQuery();
-  const navigate = useNavigate();
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Admin", "Lead Sources"]} />
