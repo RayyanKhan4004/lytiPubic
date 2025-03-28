@@ -170,6 +170,6 @@ export interface ChallengesType {
   thirdPlacePoints?: number;
   points?: number;
   threshold?: number;
-  recurring?: boolean;
+  recurring?: boolean | string;
   timePeriodSelection?: string;
 }

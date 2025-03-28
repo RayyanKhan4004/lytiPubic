@@ -29,22 +29,28 @@ const Challenges = () => {
     page,
     limit: 10,
   });
+
+  const [deleteChallenge] = useDeleteChallengeMutation();
+
   const handlePageChange = ({ selected }: { selected: number }) => {
     const newPage = selected + 1;
     if (newPage >= 1 && newPage <= data?.totalPages) {
       setPage(newPage);
     }
   };
+
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm.toLowerCase());
   };
-  const [deleteChallenge] = useDeleteChallengeMutation();
+
   const handleAction = async (action: string, rowData: any) => {
+    if (action === "edit" && rowData) {
+      navigate("/challenge-edit", { state: { rowData } });
+    }
     if (action === "delete" && rowData) {
       setLoading(rowData?.id);
       try {
         await deleteChallenge(rowData?.id).unwrap();
-
         toast.success("Order deleted successfully");
         refetch();
       } catch (err: any) {
@@ -66,7 +72,6 @@ const Challenges = () => {
             triggerImage={menu}
             options={[
               { label: "Edit", onClick: () => handleAction("edit", row) },
-              { label: "Detail", onClick: () => handleAction("detail", row) },
               { label: "Delete", onClick: () => handleAction("delete", row) },
             ]}
           />

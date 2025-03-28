@@ -58,6 +58,15 @@ export const challengeApi = createApi({
         method: "DELETE",
       }),
     }),
+    patchChallenge: builder.mutation<any, { id: number; data: ChallengesType }>(
+      {
+        query: ({ id, data }) => ({
+          url: `challenges/${id}`,
+          method: "PATCH",
+          body: data,
+        }),
+      }
+    ),
   }),
 });
 
@@ -66,4 +75,5 @@ export const {
   useCreateChallengeMutation,
   useGetChallengesQuery,
   useDeleteChallengeMutation,
+  usePatchChallengeMutation,
 } = challengeApi;

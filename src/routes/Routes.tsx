@@ -52,6 +52,7 @@ import SellingTable from "../pages/admin/selling/SellingTable";
 import Record from "../pages/record/Record";
 import PersonalDashboard from "../pages/dashboard/personalDashboard/PersonalDashboard";
 import MessageCenter from "../pages/message-center/MessageCenter";
+import EditChallenge from "../pages/challenges/EditChallenge";
 // import MessageCenter from "../pages/message-center/messageCenter";
 
 export const router = createBrowserRouter([
@@ -78,9 +79,9 @@ export const router = createBrowserRouter([
       { path: "admin/users-table", element: <UsersTable /> },
       { path: "admin/add-user", element: <AddUser /> },
       { path: "admin/edit-user", element: <EditUser /> },
-      { path: "admin/challenge", element: <AdminChallengeTable /> },
       { path: "admin/listing", element: <ListingTable /> },
       { path: "admin/selling", element: <SellingTable /> },
+      { path: "admin/challenge", element: <AdminChallengeTable /> },
       { path: "admin/create-challenge", element: <AddChallenge /> },
       { path: "admin/lead-source", element: <LeadSource /> },
       { path: "admin/team-settings", element: <TeamSettings /> },
@@ -100,6 +101,7 @@ export const router = createBrowserRouter([
       { path: "account/ranking", element: <Ranking /> },
       { path: "account/goals", element: <Goals /> },
       { path: "challenges", element: <Challenges /> },
+      { path: "challenge-edit", element: <EditChallenge /> },
       { path: "create-challenge", element: <CreateChallenge /> },
       { path: "message-center", element: <MessageCenter /> },
       { path: "*", element: <NotFoundPage /> },
