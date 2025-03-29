@@ -71,6 +71,9 @@ export const userApi = createApi({
     fetchUsersWithoutLimit: builder.query<any, void>({
       query: () => `users?limit=${100000}&role=Account Executive`,
     }),
+    fetchUsersForChat: builder.query<any, void>({
+      query: () => `users?limit=${100000}`,
+    }),
     updateUser: builder.mutation<
       any,
       { id: string; data: Partial<FormValues> }
@@ -95,4 +98,5 @@ export const {
   useFetchUsersWithoutLimitQuery,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useFetchUsersForChatQuery,
 } = userApi;

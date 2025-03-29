@@ -8,6 +8,7 @@ import { userApi } from "../rtkQuery/userApi";
 import { orderApi } from "../rtkQuery/orderApi";
 import { dashboardApi } from "../rtkQuery/dashboardApi";
 import { challengeApi } from "../rtkQuery/challengeApi";
+import { chatApi } from "../rtkQuery/chatApi";
 
 const persistConfig = {
   key: "root",
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   [orderApi.reducerPath]: orderApi.reducer,
   [dashboardApi.reducerPath]: dashboardApi.reducer,
   [challengeApi.reducerPath]: challengeApi.reducer,
+  [chatApi.reducerPath]: chatApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -35,7 +37,8 @@ export const store = configureStore({
       userApi.middleware,
       orderApi.middleware,
       dashboardApi.middleware,
-      challengeApi.middleware
+      challengeApi.middleware,
+      chatApi.middleware
     ),
 });
 
