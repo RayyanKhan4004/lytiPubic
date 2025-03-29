@@ -513,8 +513,8 @@ function MessageCenter() {
       message,
     };
 
-    // Send message via WebSocket (Let server store it in DB)
     socketRef.current.emit("sendMessage", newMessage);
+    await sendMessageAPI(newMessage);
 
     // Optimistically update UI
     setMessages((prev) => [...prev, newMessage]);
