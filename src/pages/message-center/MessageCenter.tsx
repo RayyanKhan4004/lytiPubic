@@ -163,62 +163,80 @@
 // } from "../../lib/rtkQuery/chatApi";
 // import toast from "react-hot-toast";
 // import { useFetchUsersForChatQuery } from "../../lib/rtkQuery/userApi";
-// import SelectField from "../../components/inputs/SelectField";
 // import { useForm } from "react-hook-form";
+// import SelectField from "../../components/inputs/SelectField";
+// import plane from "../../assets/icons/PaperPlaneTilt.svg";
+// import MainTitle from "../../components/ui/typography/MainTitle";
 
 // const SOCKET_URL = "https://api.lyti.io/";
-
 // interface ChatType {
 //   userId: string;
 // }
-
-// interface MessageType {
-//   id?: number;
-//   senderId: number;
-//   receiverId: number;
-//   message: string;
-//   timestamp?: string;
-// }
-
 // function MessageCenter() {
 //   const [message, setMessage] = useState("");
-//   const [messages, setMessages] = useState<MessageType[]>([]);
-//   const socketRef = useRef<Socket | null>(null);
+//   const [messages, setMessages] = useState<
+//     { sender: string; message: string }[]
+//   >([]);
+//   console.log(messages, "===array of message==");
+
 //   const {
 //     formState: { errors },
 //     watch,
 //     control,
 //   } = useForm<ChatType>();
-
 //   const receiverId = watch("userId");
+//   const socketRef = useRef<Socket | null>(null);
 
 //   const token = useAppSelector((state: any) => state?.auth?.access_token);
 //   const userId = useAppSelector((state: any) => state?.auth?.user?.id);
+
+//   const { data: usersData } = useFetchUsersForChatQuery();
+//   const UsersOptions =
+//     usersData?.users
+//       ?.filter((user: { id: number }) => user.id !== userId)
+//       .map((user: { id: number; firstname: string }) => ({
+//         value: String(user.id),
+//         label: user.firstname,
+//       })) || [];
 
 //   const { data: chatHistory } = useGetChatHistoryQuery(
 //     { userId, receiverId },
 //     { skip: !userId || !receiverId }
 //   );
-//   const { data: usersData } = useFetchUsersForChatQuery();
 //   const [sendMessageAPI] = useSendMessageMutation();
 
-//   // Load chat history when available
 //   useEffect(() => {
 //     if (chatHistory?.data) {
-//       setMessages(
-//         chatHistory.data.map((msg: any) => ({
-//           id: msg.id,
-//           senderId: msg.senderId,
-//           receiverId: msg.receiverId,
+//       setMessages((prevMessages) => {
+//         const historyMessages = chatHistory.data.map((msg: any) => ({
+//           sender: String(msg.senderId),
 //           message: msg.message,
-//           timestamp: msg.timestamp,
-//         }))
-//       );
+//         }));
+
+//         // Remove duplicate messages
+//         const uniqueMessages = [...historyMessages, ...prevMessages].reduce(
+//           (acc, current) => {
+//             if (
+//               !acc.find(
+//                 (msg: any) =>
+//                   msg.sender === current.sender &&
+//                   msg.message === current.message
+//               )
+//             ) {
+//               acc.push(current);
+//             }
+//             return acc;
+//           },
+//           [] as { sender: string; message: string }[]
+//         );
+
+//         return uniqueMessages;
+//       });
 //     }
 //   }, [chatHistory]);
 
 //   useEffect(() => {
-//     if (!token || !userId || socketRef.current) return; // Prevent multiple connections
+//     if (!token || !userId || !receiverId) return;
 
 //     const socket = io(SOCKET_URL, {
 //       extraHeaders: {
@@ -233,100 +251,116 @@
 //       socket.emit("authenticate", { userId: String(userId) });
 //     });
 
-//     // socket.on("receiveMessage", (data: MessageType) => {
-//     //   console.log("== Received message ==", data);
-//     //   toast.success(data.message);
-
-//     //   if (data && data.message) {
-//     //     setMessages((prevMessages) => [...prevMessages, data]);
-//     //   }
-//     // });
 //     socket.on("receiveMessage", (data) => {
-//       console.log("== Received message ==", data);
-//       if (!data) {
-//         console.warn("Received empty or invalid message data!");
-//         return;
+//       console.log("Message received:", data);
+//       toast.success(data.message);
+
+//       if (typeof data === "object" && data.message) {
+//         setMessages((prevMessages) => [
+//           ...prevMessages,
+//           { sender: String(data.senderId), message: data.message },
+//         ]);
 //       }
-//       setMessages((prevMessages) => [...prevMessages, data]);
 //     });
 
 //     return () => {
 //       socket.disconnect();
 //       socketRef.current = null;
 //     };
-//   }, [token, userId]);
+//   }, [token, userId, receiverId]);
 
 //   const sendMessage = async () => {
 //     if (message.trim() === "" || !socketRef.current || !receiverId) return;
 
-//     const newMessage: MessageType = {
-//       senderId: userId,
-//       receiverId: Number(receiverId),
+//     const newMessage = {
+//       sender: String(userId),
+//       receiver: receiverId,
 //       message,
 //     };
 
 //     socketRef.current.emit("sendMessage", newMessage);
-//     console.log("send message event ", newMessage);
+//     toast.success("Message sent!");
 
-//     toast.success(`Message sent: "${newMessage.message}"`);
-
-//     const formattedMessage = {
-//       sender: String(newMessage.senderId),
-//       receiver: String(newMessage.receiverId),
-//       message: newMessage.message,
-//     };
-
-//     await sendMessageAPI(formattedMessage);
+//     await sendMessageAPI(newMessage);
 
 //     setMessages((prev) => [...prev, newMessage]);
 //     setMessage("");
 //   };
 
-//   const UsersOptions =
-//     usersData?.users
-//       ?.filter((user: { id: number }) => user.id !== userId)
-//       .map((user: { id: number; firstname: string }) => ({
-//         value: String(user.id),
-//         label: user.firstname,
-//       })) || [];
+//   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+//   useEffect(() => {
+//     if (messagesEndRef.current) {
+//       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+//     }
+//   }, [messages]);
 //   return (
 //     <div className="p-4">
 //       <Breadcrumb items={["Account", "Message Center"]} />
-//       <SelectField
-//         label="Start a chat with"
-//         name="userId"
-//         control={control}
-//         options={UsersOptions}
-//         placeholder="Select user"
-//         error={errors.userId?.message}
-//         required={false}
-//         className="w-[300px]"
-//         height="44px"
-//       />
-//       <CardLayout>
-//         <div className="flex flex-col w-full max-w-md mx-auto border rounded-lg p-4">
-//           <h2 className="text-lg font-semibold mb-2">Chat</h2>
+//       <div className="mt-5">
+//         <CardLayout className="w-[49%] ">
+//           <MainTitle title="Chat Box" />
 
-//           <div className="h-64 overflow-y-auto border p-2 rounded mb-2 bg-gray-100">
-//             {messages.map((msg, index) => (
-//               <div
-//                 key={index}
-//                 className={`flex my-1 ${
-//                   msg.senderId === userId ? "justify-end" : "justify-start"
-//                 }`}
-//               >
-//                 <span
-//                   className={`px-3 py-1 rounded-lg ${
-//                     msg.senderId === userId
-//                       ? "bg-blue-500 text-white"
-//                       : "bg-gray-300"
+//           <SelectField
+//             label="Start a chat with"
+//             name="userId"
+//             control={control}
+//             options={UsersOptions}
+//             placeholder="Select user"
+//             error={errors.userId?.message}
+//             required={false}
+//             height="44px"
+//           />
+
+//           <div
+//             className={`h-64 overflow-y-auto border border-gray-200 p-2 rounded-lg mb-1 bg-gray-100 ${
+//               messages.length === 0 ? "flex justify-center items-center" : ""
+//             }`}
+//           >
+//             {Array.isArray(messages) && messages.length > 0 ? (
+//               messages.map((msg, index) => (
+//                 <div
+//                   key={index}
+//                   className={`flex items-end my-1 ${
+//                     msg.sender === String(userId)
+//                       ? "justify-end"
+//                       : "justify-start"
 //                   }`}
 //                 >
-//                   {msg.message}
-//                 </span>
+//                   <div
+//                     className={`px-4 py-2 rounded-2xl max-w-[75%] text-sm relative ${
+//                       msg.sender === String(userId)
+//                         ? "bg-blue-200 text-black"
+//                         : "bg-gray-200 text-black"
+//                     }`}
+//                   >
+//                     {msg.message}
+//                   </div>
+//                 </div>
+//               ))
+//             ) : (
+//               <div className="flex flex-col items-center">
+//                 <svg
+//                   width="130"
+//                   height="130"
+//                   viewBox="0 0 24 24"
+//                   fill="none"
+//                   stroke="currentColor"
+//                   strokeWidth="1.5"
+//                   strokeLinecap="round"
+//                   strokeLinejoin="round"
+//                   className="text-gray-400"
+//                 >
+//                   <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h10l5 5z"></path>
+//                   <path d="M10 8h4"></path>
+//                   <path d="M10 12h4"></path>
+//                 </svg>
+//                 <p className="text-gray-500 text-center text-lg font-medium mt-2">
+//                   Start chatting in Lyti!
+//                 </p>
 //               </div>
-//             ))}
+//             )}
+//             <div ref={messagesEndRef} />
 //           </div>
 
 //           <div className="flex gap-2">
@@ -335,17 +369,18 @@
 //               value={message}
 //               onChange={(e) => setMessage(e.target.value)}
 //               placeholder="Type a message..."
-//               className="flex-1 border rounded p-2"
+//               className="flex-1 border p-2 border-gray-200 rounded-xl"
 //             />
 //             <button
 //               onClick={sendMessage}
-//               className="bg-blue-500 text-white px-4 py-2 rounded"
+//               className="bg-(--secondary)  text-white w-[40px] h-[40px] cursor-pointer  rounded-full"
+//               disabled={!receiverId}
 //             >
-//               Send
+//               <img src={plane} alt="" className="mx-auto" />
 //             </button>
 //           </div>
-//         </div>
-//       </CardLayout>
+//         </CardLayout>
+//       </div>
 //     </div>
 //   );
 // }
@@ -367,25 +402,27 @@ import { useForm } from "react-hook-form";
 import SelectField from "../../components/inputs/SelectField";
 import plane from "../../assets/icons/PaperPlaneTilt.svg";
 import MainTitle from "../../components/ui/typography/MainTitle";
-
 const SOCKET_URL = "https://api.lyti.io/";
+
 interface ChatType {
   userId: string;
 }
+
 function MessageCenter() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<
     { sender: string; message: string }[]
   >([]);
-  console.log(messages, "===array of message==");
+  const socketRef = useRef<Socket | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const {
     formState: { errors },
     watch,
     control,
   } = useForm<ChatType>();
+
   const receiverId = watch("userId");
-  const socketRef = useRef<Socket | null>(null);
 
   const token = useAppSelector((state: any) => state?.auth?.access_token);
   const userId = useAppSelector((state: any) => state?.auth?.user?.id);
@@ -393,45 +430,36 @@ function MessageCenter() {
   const { data: usersData } = useFetchUsersForChatQuery();
   const UsersOptions =
     usersData?.users
-      ?.filter((user: { id: number }) => user.id !== userId)
-      .map((user: { id: number; firstname: string }) => ({
+      ?.filter((user: any) => user.id !== userId)
+      .map((user: any) => ({
         value: String(user.id),
         label: user.firstname,
       })) || [];
 
-  const { data: chatHistory } = useGetChatHistoryQuery(
+  const { data: chatHistory, refetch } = useGetChatHistoryQuery(
     { userId, receiverId },
     { skip: !userId || !receiverId }
   );
+
   const [sendMessageAPI] = useSendMessageMutation();
 
+  // Reset messages when switching users
+  useEffect(() => {
+    setMessages([]);
+    if (receiverId) {
+      refetch();
+    }
+  }, [receiverId, refetch]);
+
+  // Load chat history properly without duplication
   useEffect(() => {
     if (chatHistory?.data) {
-      setMessages((prevMessages) => {
-        const historyMessages = chatHistory.data.map((msg: any) => ({
-          sender: String(msg.senderId),
-          message: msg.message,
-        }));
+      const historyMessages = chatHistory.data.map((msg: any) => ({
+        sender: String(msg.senderId),
+        message: msg.message,
+      }));
 
-        // Remove duplicate messages
-        const uniqueMessages = [...historyMessages, ...prevMessages].reduce(
-          (acc, current) => {
-            if (
-              !acc.find(
-                (msg: any) =>
-                  msg.sender === current.sender &&
-                  msg.message === current.message
-              )
-            ) {
-              acc.push(current);
-            }
-            return acc;
-          },
-          [] as { sender: string; message: string }[]
-        );
-
-        return uniqueMessages;
-      });
+      setMessages(historyMessages);
     }
   }, [chatHistory]);
 
@@ -447,19 +475,26 @@ function MessageCenter() {
     socketRef.current = socket;
 
     socket.on("connect", () => {
-      console.log("Connected to chat service:", socket.id);
       socket.emit("authenticate", { userId: String(userId) });
     });
 
     socket.on("receiveMessage", (data) => {
-      console.log("Message received:", data);
-      toast.success(data.message);
-
       if (typeof data === "object" && data.message) {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { sender: String(data.senderId), message: data.message },
-        ]);
+        setMessages((prevMessages) => {
+          const isDuplicate = prevMessages.some(
+            (msg) =>
+              msg.message === data.message &&
+              msg.sender === String(data.senderId)
+          );
+
+          return isDuplicate
+            ? prevMessages
+            : [
+                ...prevMessages,
+                { sender: String(data.senderId), message: data.message },
+              ];
+        });
+        toast.success("New message received!");
       }
     });
 
@@ -478,17 +513,15 @@ function MessageCenter() {
       message,
     };
 
+    // Send message via WebSocket (Let server store it in DB)
     socketRef.current.emit("sendMessage", newMessage);
-    toast.success("Message sent!");
 
-    await sendMessageAPI(newMessage);
-
+    // Optimistically update UI
     setMessages((prev) => [...prev, newMessage]);
     setMessage("");
   };
 
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
+  // Auto-scroll to latest message
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -498,7 +531,7 @@ function MessageCenter() {
     <div className="p-4">
       <Breadcrumb items={["Account", "Message Center"]} />
       <div className="mt-5">
-        <CardLayout className="w-[49%] ">
+        <CardLayout className="w-[49%]">
           <MainTitle title="Chat Box" />
 
           <SelectField
@@ -517,7 +550,7 @@ function MessageCenter() {
               messages.length === 0 ? "flex justify-center items-center" : ""
             }`}
           >
-            {Array.isArray(messages) && messages.length > 0 ? (
+            {messages.length > 0 ? (
               messages.map((msg, index) => (
                 <div
                   key={index}
@@ -573,7 +606,7 @@ function MessageCenter() {
             />
             <button
               onClick={sendMessage}
-              className="bg-(--secondary)  text-white w-[40px] h-[40px] cursor-pointer  rounded-full"
+              className="bg-(--secondary) text-white w-[40px] h-[40px] cursor-pointer rounded-full"
               disabled={!receiverId}
             >
               <img src={plane} alt="" className="mx-auto" />
