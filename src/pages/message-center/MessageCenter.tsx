@@ -62,7 +62,7 @@
 
 //     socket.on("receiveMessage", (data) => {
 //       console.log("Message received:", data);
-//       toast.success(data);
+//       toast.success(data.message);
 
 //       if (typeof data === "object" && data.message) {
 //         setMessages((prevMessages) => [
@@ -152,6 +152,206 @@
 
 // export default MessageCenter;
 
+// import { io, Socket } from "socket.io-client";
+// import Breadcrumb from "../../components/common/BreadCrumb";
+// import CardLayout from "../../components/layouts/CardLayout";
+// import { useEffect, useRef, useState } from "react";
+// import { useAppSelector } from "../../lib/store/hooks";
+// import {
+//   useGetChatHistoryQuery,
+//   useSendMessageMutation,
+// } from "../../lib/rtkQuery/chatApi";
+// import toast from "react-hot-toast";
+// import { useFetchUsersForChatQuery } from "../../lib/rtkQuery/userApi";
+// import SelectField from "../../components/inputs/SelectField";
+// import { useForm } from "react-hook-form";
+
+// const SOCKET_URL = "https://api.lyti.io/";
+
+// interface ChatType {
+//   userId: string;
+// }
+
+// interface MessageType {
+//   id?: number;
+//   senderId: number;
+//   receiverId: number;
+//   message: string;
+//   timestamp?: string;
+// }
+
+// function MessageCenter() {
+//   const [message, setMessage] = useState("");
+//   const [messages, setMessages] = useState<MessageType[]>([]);
+//   const socketRef = useRef<Socket | null>(null);
+//   const {
+//     formState: { errors },
+//     watch,
+//     control,
+//   } = useForm<ChatType>();
+
+//   const receiverId = watch("userId");
+
+//   const token = useAppSelector((state: any) => state?.auth?.access_token);
+//   const userId = useAppSelector((state: any) => state?.auth?.user?.id);
+
+//   const { data: chatHistory } = useGetChatHistoryQuery(
+//     { userId, receiverId },
+//     { skip: !userId || !receiverId }
+//   );
+//   const { data: usersData } = useFetchUsersForChatQuery();
+//   const [sendMessageAPI] = useSendMessageMutation();
+
+//   // Load chat history when available
+//   useEffect(() => {
+//     if (chatHistory?.data) {
+//       setMessages(
+//         chatHistory.data.map((msg: any) => ({
+//           id: msg.id,
+//           senderId: msg.senderId,
+//           receiverId: msg.receiverId,
+//           message: msg.message,
+//           timestamp: msg.timestamp,
+//         }))
+//       );
+//     }
+//   }, [chatHistory]);
+
+//   useEffect(() => {
+//     if (!token || !userId || socketRef.current) return; // Prevent multiple connections
+
+//     const socket = io(SOCKET_URL, {
+//       extraHeaders: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+
+//     socketRef.current = socket;
+
+//     socket.on("connect", () => {
+//       console.log("Connected to chat service:", socket.id);
+//       socket.emit("authenticate", { userId: String(userId) });
+//     });
+
+//     // socket.on("receiveMessage", (data: MessageType) => {
+//     //   console.log("== Received message ==", data);
+//     //   toast.success(data.message);
+
+//     //   if (data && data.message) {
+//     //     setMessages((prevMessages) => [...prevMessages, data]);
+//     //   }
+//     // });
+//     socket.on("receiveMessage", (data) => {
+//       console.log("== Received message ==", data);
+//       if (!data) {
+//         console.warn("Received empty or invalid message data!");
+//         return;
+//       }
+//       setMessages((prevMessages) => [...prevMessages, data]);
+//     });
+
+//     return () => {
+//       socket.disconnect();
+//       socketRef.current = null;
+//     };
+//   }, [token, userId]);
+
+//   const sendMessage = async () => {
+//     if (message.trim() === "" || !socketRef.current || !receiverId) return;
+
+//     const newMessage: MessageType = {
+//       senderId: userId,
+//       receiverId: Number(receiverId),
+//       message,
+//     };
+
+//     socketRef.current.emit("sendMessage", newMessage);
+//     console.log("send message event ", newMessage);
+
+//     toast.success(`Message sent: "${newMessage.message}"`);
+
+//     const formattedMessage = {
+//       sender: String(newMessage.senderId),
+//       receiver: String(newMessage.receiverId),
+//       message: newMessage.message,
+//     };
+
+//     await sendMessageAPI(formattedMessage);
+
+//     setMessages((prev) => [...prev, newMessage]);
+//     setMessage("");
+//   };
+
+//   const UsersOptions =
+//     usersData?.users
+//       ?.filter((user: { id: number }) => user.id !== userId)
+//       .map((user: { id: number; firstname: string }) => ({
+//         value: String(user.id),
+//         label: user.firstname,
+//       })) || [];
+
+//   return (
+//     <div className="p-4">
+//       <Breadcrumb items={["Account", "Message Center"]} />
+//       <SelectField
+//         label="Start a chat with"
+//         name="userId"
+//         control={control}
+//         options={UsersOptions}
+//         placeholder="Select user"
+//         error={errors.userId?.message}
+//         required={false}
+//         className="w-[300px]"
+//         height="44px"
+//       />
+//       <CardLayout>
+//         <div className="flex flex-col w-full max-w-md mx-auto border rounded-lg p-4">
+//           <h2 className="text-lg font-semibold mb-2">Chat</h2>
+
+//           <div className="h-64 overflow-y-auto border p-2 rounded mb-2 bg-gray-100">
+//             {messages.map((msg, index) => (
+//               <div
+//                 key={index}
+//                 className={`flex my-1 ${
+//                   msg.senderId === userId ? "justify-end" : "justify-start"
+//                 }`}
+//               >
+//                 <span
+//                   className={`px-3 py-1 rounded-lg ${
+//                     msg.senderId === userId
+//                       ? "bg-blue-500 text-white"
+//                       : "bg-gray-300"
+//                   }`}
+//                 >
+//                   {msg.message}
+//                 </span>
+//               </div>
+//             ))}
+//           </div>
+
+//           <div className="flex gap-2">
+//             <input
+//               type="text"
+//               value={message}
+//               onChange={(e) => setMessage(e.target.value)}
+//               placeholder="Type a message..."
+//               className="flex-1 border rounded p-2"
+//             />
+//             <button
+//               onClick={sendMessage}
+//               className="bg-blue-500 text-white px-4 py-2 rounded"
+//             >
+//               Send
+//             </button>
+//           </div>
+//         </div>
+//       </CardLayout>
+//     </div>
+//   );
+// }
+
+// export default MessageCenter;
+
 import { io, Socket } from "socket.io-client";
 import Breadcrumb from "../../components/common/BreadCrumb";
 import CardLayout from "../../components/layouts/CardLayout";
@@ -163,9 +363,10 @@ import {
 } from "../../lib/rtkQuery/chatApi";
 import toast from "react-hot-toast";
 import { useFetchUsersForChatQuery } from "../../lib/rtkQuery/userApi";
-import SelectField from "../../components/inputs/SelectField";
 import { useForm } from "react-hook-form";
+import SelectField from "../../components/inputs/SelectField";
 
+// Constants
 const SOCKET_URL = "https://api.lyti.io/";
 interface ChatType {
   userId: string;
@@ -175,39 +376,50 @@ function MessageCenter() {
   const [messages, setMessages] = useState<
     { sender: string; message: string }[]
   >([]);
-  // const [receiverId, setReceiverId] = useState<string>("");
-  const socketRef = useRef<Socket | null>(null);
   const {
     formState: { errors },
     watch,
     control,
   } = useForm<ChatType>();
-
   const receiverId = watch("userId");
+  const socketRef = useRef<Socket | null>(null);
 
+  // Get token and userId from Redux store
   const token = useAppSelector((state: any) => state?.auth?.access_token);
   const userId = useAppSelector((state: any) => state?.auth?.user?.id);
 
+  // Fetch users for chat selection
+  const { data: usersData } = useFetchUsersForChatQuery();
+  const UsersOptions =
+    usersData?.users
+      ?.filter((user: { id: number }) => user.id !== userId)
+      .map((user: { id: number; firstname: string }) => ({
+        value: String(user.id),
+        label: user.firstname,
+      })) || [];
+
+  // Fetch chat history dynamically
   const { data: chatHistory } = useGetChatHistoryQuery(
     { userId, receiverId },
     { skip: !userId || !receiverId }
   );
-  const { data: usersData } = useFetchUsersForChatQuery();
   const [sendMessageAPI] = useSendMessageMutation();
 
+  // Load old messages from API
   useEffect(() => {
     if (chatHistory?.data) {
       setMessages(
         chatHistory.data.map((msg: any) => ({
-          sender: String(msg.id),
+          sender: String(msg.senderId), // Ensure sender is always a string
           message: msg.message,
         }))
       );
     }
   }, [chatHistory]);
 
+  // WebSocket connection
   useEffect(() => {
-    if (!token || !userId) return;
+    if (!token || !userId || !receiverId) return;
 
     const socket = io(SOCKET_URL, {
       extraHeaders: {
@@ -218,16 +430,18 @@ function MessageCenter() {
     socketRef.current = socket;
 
     socket.on("connect", () => {
+      console.log("Connected to chat service:", socket.id);
       socket.emit("authenticate", { userId: String(userId) });
     });
 
     socket.on("receiveMessage", (data) => {
-      toast.success(data);
+      console.log("Message received:", data);
+      toast.success(data.message);
 
       if (typeof data === "object" && data.message) {
         setMessages((prevMessages) => [
           ...prevMessages,
-          { sender: String(data.sender) || "unknown", message: data.message },
+          { sender: String(data.senderId), message: data.message },
         ]);
       }
     });
@@ -236,8 +450,9 @@ function MessageCenter() {
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [token, userId]);
+  }, [token, userId, receiverId]);
 
+  // Send Message Function
   const sendMessage = async () => {
     if (message.trim() === "" || !socketRef.current || !receiverId) return;
 
@@ -247,54 +462,52 @@ function MessageCenter() {
       message,
     };
 
+    // Send message via WebSocket
     socketRef.current.emit("sendMessage", newMessage);
-    toast.success(`${newMessage.message} is sent`);
+    toast.success("Message sent!");
 
+    // Send message via API
     await sendMessageAPI(newMessage);
 
+    // Optimistically update UI
     setMessages((prev) => [...prev, newMessage]);
     setMessage("");
   };
 
-  const UsersOptions =
-    usersData?.users
-      ?.filter((user: { id: number }) => user.id !== userId)
-      .map((user: { id: number; firstname: string }) => ({
-        value: String(user.id),
-        label: user.firstname,
-      })) || [];
-
   return (
     <div className="p-4">
       <Breadcrumb items={["Account", "Message Center"]} />
-      <SelectField
-        label="Start a chat with"
-        name="userId"
-        control={control}
-        options={UsersOptions}
-        placeholder="Select user"
-        error={errors.userId?.message}
-        required={false}
-        className="w-[300px]"
-        height="44px"
-      />
       <CardLayout>
         <div className="flex flex-col w-full max-w-md mx-auto border rounded-lg p-4">
           <h2 className="text-lg font-semibold mb-2">Chat</h2>
 
+          <SelectField
+            label="Start a chat with"
+            name="userId"
+            control={control}
+            options={UsersOptions}
+            placeholder="Select user"
+            error={errors.userId?.message}
+            required={false}
+            height="44px"
+          />
+
+          {/* Chat Window */}
           <div className="h-64 overflow-y-auto border p-2 rounded mb-2 bg-gray-100">
             {(Array.isArray(messages) ? messages : []).map((msg, index) => (
               <div
                 key={index}
-                className={`p-2 my-1 ${
-                  msg.sender === String(userId) ? "text-right" : "text-left"
+                className={`p-2 my-1 flex ${
+                  msg.sender === String(userId)
+                    ? "justify-end" // Align sender messages to the right
+                    : "justify-start" // Align receiver messages to the left
                 }`}
               >
                 <span
-                  className={`px-3 py-1 rounded-lg ${
+                  className={`px-3 py-1 rounded-lg max-w-[75%] ${
                     msg.sender === String(userId)
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-300"
+                      ? "bg-blue-500 text-white" // Sender message style
+                      : "bg-gray-300 text-black" // Receiver message style
                   }`}
                 >
                   {msg.message}
@@ -302,6 +515,8 @@ function MessageCenter() {
               </div>
             ))}
           </div>
+
+          {/* Input & Send Button */}
           <div className="flex gap-2">
             <input
               type="text"
@@ -313,6 +528,7 @@ function MessageCenter() {
             <button
               onClick={sendMessage}
               className="bg-blue-500 text-white px-4 py-2 rounded"
+              disabled={!receiverId} // Disable if no receiver selected
             >
               Send
             </button>
