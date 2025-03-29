@@ -407,12 +407,31 @@ function MessageCenter() {
 
   useEffect(() => {
     if (chatHistory?.data) {
-      setMessages(
-        chatHistory.data.map((msg: any) => ({
+      setMessages((prevMessages) => {
+        const historyMessages = chatHistory.data.map((msg: any) => ({
           sender: String(msg.senderId),
           message: msg.message,
-        }))
-      );
+        }));
+
+        // Remove duplicate messages
+        const uniqueMessages = [...historyMessages, ...prevMessages].reduce(
+          (acc, current) => {
+            if (
+              !acc.find(
+                (msg: any) =>
+                  msg.sender === current.sender &&
+                  msg.message === current.message
+              )
+            ) {
+              acc.push(current);
+            }
+            return acc;
+          },
+          [] as { sender: string; message: string }[]
+        );
+
+        return uniqueMessages;
+      });
     }
   }, [chatHistory]);
 
@@ -480,7 +499,6 @@ function MessageCenter() {
       <Breadcrumb items={["Account", "Message Center"]} />
       <div className="mt-5">
         <CardLayout className="w-[49%] ">
-          {/* <div className="flex flex-col w-full max-w-md mx-auto border rounded-lg p-4"> */}
           <MainTitle title="Chat Box" />
 
           <SelectField
@@ -495,7 +513,7 @@ function MessageCenter() {
           />
 
           <div
-            className={`h-64 overflow-y-auto border border-gray-200 p-3 rounded-lg mb-2 bg-gray-100 ${
+            className={`h-64 overflow-y-auto border border-gray-200 p-2 rounded-lg mb-1 bg-gray-100 ${
               messages.length === 0 ? "flex justify-center items-center" : ""
             }`}
           >
