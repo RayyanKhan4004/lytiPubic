@@ -478,22 +478,38 @@ function MessageCenter() {
       socket.emit("authenticate", { userId: String(userId) });
     });
 
-    socket.on("receiveMessage", (data) => {
-      if (typeof data === "object" && data.message) {
-        setMessages((prevMessages) => {
-          const isDuplicate = prevMessages.some(
-            (msg) =>
-              msg.message === data.message &&
-              msg.sender === String(data.senderId)
-          );
+    // socket.on("receiveMessage", (data) => {
+    //   console.log(data, "===message received===");
 
-          return isDuplicate
-            ? prevMessages
-            : [
-                ...prevMessages,
-                { sender: String(data.senderId), message: data.message },
-              ];
-        });
+    //   if (typeof data === "object" && data.message) {
+    //     setMessages((prevMessages) => {
+    //       const isDuplicate = prevMessages.some(
+    //         (msg) =>
+    //           msg.message === data.message &&
+    //           msg.sender === String(data.senderId)
+    //       );
+
+    //       return isDuplicate
+    //         ? prevMessages
+    //         : [
+    //             ...prevMessages,
+    //             { sender: String(data.senderId), message: data.message },
+    //           ];
+    //     });
+    //     toast.success("New message received!");
+    //   }
+    // });
+
+    socket.on("receiveMessage", (data) => {
+      console.log(data, "===message received===");
+
+      if (typeof data === "object" && data.message) {
+        const newMessage = {
+          sender: String(data.senderId),
+          message: data.message,
+        };
+
+        setMessages((prev) => [...prev, newMessage]);
         toast.success("New message received!");
       }
     });
@@ -514,7 +530,7 @@ function MessageCenter() {
     };
 
     socketRef.current.emit("sendMessage", newMessage);
-    await sendMessageAPI(newMessage);
+    // await sendMessageAPI(newMessage);
 
     // Optimistically update UI
     setMessages((prev) => [...prev, newMessage]);
