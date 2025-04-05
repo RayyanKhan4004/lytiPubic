@@ -63,15 +63,15 @@ const OrderDetail = () => {
   useEffect(() => {
     if (orderData) {
       setValue("titleOffice", orderData.titleOffice || "");
-      setValue("agent", orderData.agent || "");
+      // setValue("agent", orderData.agent || "");
       setValue("titleRep", orderData.titleRep || "");
       setValue("openDate", orderData.openDate || "");
       setValue("estimatedClosingDate", orderData.estimatedClosingDate || "");
       setValue("closedDate", orderData.closedDate || "");
-      setValue("cancelDate", orderData.cancelDate || "");
+      // setValue("cancelDate", orderData.cancelDate || "");
       setValue("transactionType", orderData.transactionType || "");
       setValue("orderNumber", orderData.orderNumber || "");
-      setValue("orderStatus", orderData.orderStatus || "");
+      // setValue("orderStatus", orderData.orderStatus || "");
       setValue("propertyAddress", orderData.propertyAddress || "");
       setValue("propertyCounty", orderData.propertyCounty || "");
       setValue("propertyState", orderData.propertyState || "");
