@@ -29,9 +29,9 @@ const Record = () => {
         [key: string]: { activityId: number; count: number };
       } = {};
       data.userActivities.forEach((userActivity: any) => {
-        newCounts[userActivity.activity.activityName] = {
-          activityId: userActivity.activity.id,
-          count: userActivity.count,
+        newCounts[userActivity.activityName] = {
+          activityId: userActivity.activityId,
+          count: userActivity.totalCount,
         };
       });
       setCounts(newCounts);

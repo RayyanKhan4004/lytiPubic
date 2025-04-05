@@ -1,5 +1,5 @@
 export interface OrderDataType {
-  agent?: string;
+  // agent?: string;
   titleOffice?: string;
   titleRep?: string;
   titleRepPct?: number;
@@ -35,8 +35,8 @@ export interface OrderDataType {
   status?: string;
   type?: string;
   keyword?: string;
-  cancelDate?: string;
-  orderStatus?: string;
+  // cancelDate?: string;
+  // orderStatus?: string;
   transactionType?: string;
   aeLeadStage?: string;
   contact?: string;
