@@ -51,6 +51,9 @@ const OrdersTable = () => {
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string>
   >({});
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const {
     formState: { errors },
@@ -62,48 +65,47 @@ const OrdersTable = () => {
   const navigate = useNavigate();
   const [deleteOrder] = useDeleteOrderMutation();
 
+  const location = useLocation();
+
   const selectedPropertyCounty = watch("propertyCounty") || "";
   const selectedFileStatus = watch("fileStatus") || "";
   const selectedFileType = watch("fileType") || "";
   const selectTransactionType = watch("transactionType") || "";
-  const location = useLocation();
-  const yearFromCard = location.state?.selectedYear;
-  const type = location.state?.type;
-  const selectedYear = watch("year") || yearFromCard || "";
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const formYear = watch("year") || "";
+  const [locationType, setLocationType] = useState(location.state?.type || "");
+  const yearFromCard = location.state?.selectedYear || "";
+  const typeFromLocation = location.state?.type || "";
+
+  const selectedYear = formYear || yearFromCard || "";
 
   useEffect(() => {
-    if (type === "year") {
-      if (selectedYear) {
-        setStartDate(`${selectedYear}-01-01`);
-        setEndDate(`${selectedYear}-12-31`);
-      } else {
-        const currentYear = dayjs().format("YYYY");
-        setStartDate(`${currentYear}-01-01`);
-        setEndDate(`${currentYear}-12-31`);
-      }
-    } else if (type === "month") {
-      const currentYear = selectedYear || dayjs().format("YYYY");
-      const currentMonth = dayjs().format("MM");
-      const daysInMonth = dayjs(`${currentYear}-${currentMonth}`).daysInMonth();
-      setStartDate(`${currentYear}-${currentMonth}-01`);
-      setEndDate(`${currentYear}-${currentMonth}-${daysInMonth}`);
+    const effectiveYear = formYear || yearFromCard;
+
+    if (locationType === "year") {
+      const year = effectiveYear || dayjs().format("YYYY");
+      setStartDate(`${year}-01-01`);
+      setEndDate(`${year}-12-31`);
+    } else if (locationType === "month") {
+      const year = effectiveYear || dayjs().format("YYYY");
+      const month = dayjs().format("MM");
+      const daysInMonth = dayjs(`${year}-${month}`).daysInMonth();
+      setStartDate(`${year}-${month}-01`);
+      setEndDate(`${year}-${month}-${daysInMonth}`);
     } else {
       setStartDate("");
       setEndDate("");
     }
-  }, [selectedYear, type]);
+  }, [formYear, yearFromCard, locationType]);
 
   const adjustedStatus =
-    type === "open"
+    locationType === "open"
       ? `Open${selectedFileStatus ? `, ${selectedFileStatus}` : ""}`
-      : type === "closed"
+      : locationType === "closed"
       ? `Closed${selectedFileStatus ? `, ${selectedFileStatus}` : ""}`
       : selectedFileStatus;
 
   const adjustedType =
-    type === "pending" ? "Prelim/Commitment" : selectedFileType;
+    locationType === "pending" ? "Prelim/Commitment" : selectedFileType;
 
   const { data, isLoading, refetch } = useGetOrdersQuery({
     status: adjustedStatus,
@@ -159,19 +161,30 @@ const OrdersTable = () => {
   };
 
   useEffect(() => {
+    const formattedDateRange =
+      startDate && endDate
+        ? `startDate: ${dayjs(startDate).format(
+            "DD/MM/YYYY"
+          )}, endDate: ${dayjs(endDate).format("DD/MM/YYYY")}`
+        : "";
+
     setSelectedFilters({
       propertyCounty: selectedPropertyCounty,
       fileStatus: adjustedStatus,
       fileType: adjustedType,
       transactionType: selectTransactionType,
-      year: selectedYear,
+      dateRange: formattedDateRange, // ✅ new key instead of "year"
     });
+
+    // 🟡 Trigger refetch on filter changes
+    refetch();
   }, [
     selectedPropertyCounty,
     adjustedStatus,
     adjustedType,
     selectTransactionType,
-    selectedYear,
+    startDate,
+    endDate,
   ]);
 
   const removeFilter = (
@@ -180,20 +193,27 @@ const OrdersTable = () => {
       | "fileStatus"
       | "fileType"
       | "transactionType"
-      | "year"
+      | "dateRange"
   ) => {
-    setValue(key, "");
-
-    setSelectedFilters((prev) => {
-      const updatedFilters = { ...prev };
-      delete updatedFilters[key];
-      return updatedFilters;
-    });
-
-    if (key === "year") {
+    if (key === "dateRange") {
       setStartDate("");
       setEndDate("");
+    } else {
+      setValue(key, "");
     }
+
+    // Reset the type if it's affecting status or file type
+    if (key === "fileStatus" || key === "fileType") {
+      setLocationType("");
+    }
+
+    setSelectedFilters((prev) => {
+      const updated = { ...prev };
+      delete updated[key];
+      return updated;
+    });
+
+    refetch();
   };
 
   const handleExportPDF = () => {
@@ -431,7 +451,7 @@ const OrdersTable = () => {
               </div>
             </div>
           </form>
-          <div className="flex gap-2 mt-2">
+          <div className="flex gap-2 mt-2 flex-wrap">
             {Object.entries(selectedFilters).map(([key, value]) =>
               value ? (
                 <div
@@ -446,10 +466,10 @@ const OrdersTable = () => {
                           | "transactionType"
                           | "fileType"
                           | "fileStatus"
-                          | "year"
+                          | "dateRange"
                       )
                     }
-                    className="mr-2 text-(--secondary)"
+                    className="mr-2 text-gray-700"
                   >
                     ✖
                   </button>
