@@ -1,9 +1,6 @@
 import React from "react";
 import ActivitiesDashboardStatsCard from "../../../components/dashboard/teamDashboard/ActivitiesDashboardStatsCard";
-import {
-  useGetAdminActivitiesQuery,
-  useGetUserActivitiesQuery,
-} from "../../../lib/rtkQuery/dashboardApi";
+import { useGetUserActivitiesQuery } from "../../../lib/rtkQuery/dashboardApi";
 import { useAppSelector } from "../../../lib/store/hooks";
 
 const PersonalActivitiesDashboard = () => {
@@ -16,10 +13,10 @@ const PersonalActivitiesDashboard = () => {
         {data?.userActivities?.map((e: any, i: number) => (
           <ActivitiesDashboardStatsCard
             key={i}
-            heading={e.activity.activityName}
-            description1={e.count}
+            heading={e.activityName}
+            description1={e.totalCount.toString()}
             currentValue={e.totalCount}
-            maxValue={e.maxValue}
+            maxValue={100}
           />
         ))}
       </div>

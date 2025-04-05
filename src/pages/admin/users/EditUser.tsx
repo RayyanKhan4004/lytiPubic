@@ -26,6 +26,7 @@ const EditUser = () => {
 
   const data = useLocation();
   const { userData } = data.state || {};
+  console.log(userData, "===userData=====");
 
   const navigate = useNavigate();
   const [updateUser, { isLoading }] = useUpdateUserMutation();
@@ -59,11 +60,12 @@ const EditUser = () => {
   const onSubmit: SubmitHandler<UserDataType> = async (data: UserDataType) => {
     const formattedData = {
       ...data,
-      // startDate: formatDate(data.startDate),
+      // startdate: formatDate(data.startdate),
       exclude_challenges_leaderboards: isChallenge,
       download_transactions: isDownload,
       send_welcome_email: isWelcome,
     };
+    console.log(formattedData, "===formattedData=====");
 
     try {
       const res = await updateUser({
@@ -87,6 +89,7 @@ const EditUser = () => {
       toast.error(err?.data?.message || "Can not delete user");
     }
   };
+  console.log(userData, "====userData=====");
 
   useEffect(() => {
     if (userData) {
@@ -97,11 +100,11 @@ const EditUser = () => {
       setValue("email", userData.email || "");
       setValue("role", userData.role || "");
       setValue("startdate", userData.startdate || "");
-      setValue("brokerageCap", userData.brokerageCap || "");
-      setValue("yearAnniversary", userData.yearAnniversary || "");
-      setValue("agentTransactionFee", userData.agentTransactionFee || "");
-      setValue("agentMonthlyFee", userData.agentMonthlyFee || "");
-      setValue("commissionTemplate", userData.commissionTemplate || "");
+      // setValue("brokerageCap", userData.brokerageCap || "");
+      // setValue("yearAnniversary", userData.yearAnniversary || "");
+      // setValue("agentTransactionFee", userData.agentTransactionFee || "");
+      // setValue("agentMonthlyFee", userData.agentMonthlyFee || "");
+      // setValue("commissionTemplate", userData.commissionTemplate || "");
       setValue("notes", userData.notes || "");
       setValue(
         "ae_commission_threshold",
@@ -250,7 +253,7 @@ const EditUser = () => {
                   />
 
                   <CustomDatePicker
-                    name="startDate"
+                    name="startdate"
                     control={control}
                     label="Select a Date"
                     placeholder="8-21-15"
