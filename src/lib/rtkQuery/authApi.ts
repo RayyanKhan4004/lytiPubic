@@ -42,11 +42,11 @@ export const authApi = createApi({
         body,
       }),
     }),
-    signUp: builder.mutation<any, SignUpFormValues>({
-      query: (body) => ({
+    signUp: builder.mutation<SignUpFormValues, FormData>({
+      query: (formData) => ({
         url: "auth/signup",
         method: "POST",
-        body,
+        body: formData,
       }),
     }),
   }),

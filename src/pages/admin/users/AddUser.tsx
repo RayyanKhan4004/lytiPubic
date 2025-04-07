@@ -18,6 +18,7 @@ import MainTitle from "../../../components/ui/typography/MainTitle";
 import CardLayout from "../../../components/layouts/CardLayout";
 import PrimaryButton from "../../../components/ui/button/PrimaryButton";
 import { useAppSelector } from "../../../lib/store/hooks";
+import pencil from "../../../assets/icons/PencilSimple.svg";
 
 const AddUser = () => {
   const [isChallenge, setIsChallenge] = useState<boolean>(false);
@@ -39,8 +40,6 @@ const AddUser = () => {
   const profileImagePreview =
     profileImage instanceof File ? URL.createObjectURL(profileImage) : null;
 
-  console.log(profileImagePreview);
-
   const removeImage = (name: "profileImage") => {
     setValue(name, null);
     setTimeout(() => {
@@ -53,17 +52,53 @@ const AddUser = () => {
     }, 0);
   };
   const ownerId = useAppSelector((state: any) => state?.auth?.user?.id || "");
-  const onSubmit: SubmitHandler<UserDataType> = async (data: UserDataType) => {
-    const formattedData = {
-      ...data,
-      exclude_challenges_leaderboards: isChallenge,
-      download_transactions: isDownload,
-      send_welcome_email: isWelcome,
-      ownerId,
-    };
+  const onSubmit: SubmitHandler<SignUpFormValues> = async (
+    data: SignUpFormValues
+  ) => {
+    const formData = new FormData();
+
+    if (data) {
+      formData.append("firstname", data.firstname || "");
+      formData.append("lastname", data.lastname || "");
+      formData.append("alternativemail", data.alternativemail || "");
+      formData.append("password", data.password || "");
+      formData.append("business_entity", data.business_entity || "");
+      formData.append("email", data.email || "");
+      formData.append("role", data.role || "");
+      formData.append(
+        "startdate",
+        data.startdate ? new Date(data.startdate).toISOString() : ""
+      );
+
+      if (data.profileImage instanceof File) {
+        formData.append("profileImage", data.profileImage);
+      }
+
+      formData.append("notes", data.notes || "");
+      formData.append("career_path", data.career_path || "");
+      formData.append("lead_source", data.lead_source || "");
+
+      // formData.append(
+      //   "ae_commission_threshold",
+      //   JSON.stringify(data.ae_commission_threshold ?? 0)
+      // );
+      // formData.append(
+      //   "ae_escrow_commission",
+      //   JSON.stringify(data.ae_escrow_commission ?? 0)
+      // );
+      // formData.append(
+      //   "ae_title_commission",
+      //   JSON.stringify(data.ae_title_commission ?? 0)
+      // );
+
+      formData.append("exclude_challenges_leaderboards", String(isChallenge));
+      formData.append("download_transactions", String(isDownload));
+      formData.append("send_welcome_email", String(isWelcome));
+      formData.append("ownerId", ownerId?.toString() || "");
+    }
 
     try {
-      const res = await signUp(formattedData).unwrap();
+      const res = await signUp(formData).unwrap();
       toast.success("User created successfully");
       navigate("/admin/users-table");
     } catch (error: any) {
@@ -78,7 +113,7 @@ const AddUser = () => {
         <MainTitle title="Add User" />
 
         <div className="w-full flex flex-col  items-center">
-          {/* {profileImagePreview ? (
+          {profileImagePreview ? (
             <div className=" relative w-[146px] h-[146px] rounded-full">
               <img
                 src={profileImagePreview}
@@ -128,7 +163,7 @@ const AddUser = () => {
                 className="hidden"
               />
             )}
-          /> */}
+          />
 
           <form
             onSubmit={handleSubmit(onSubmit)}
