@@ -53,7 +53,6 @@ const OrdersTable = () => {
   >({});
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isYearManuallyCleared, setIsYearManuallyCleared] = useState(false);
   const [filtersVersion, setFiltersVersion] = useState(0);
@@ -65,9 +64,9 @@ const OrdersTable = () => {
     setValue,
     control,
   } = useForm<OrderDataType>();
+
   const navigate = useNavigate();
   const [deleteOrder] = useDeleteOrderMutation();
-
   const location = useLocation();
 
   const selectedPropertyCounty = watch("propertyCounty") || "";
@@ -75,6 +74,7 @@ const OrdersTable = () => {
   const selectedFileType = watch("fileType") || "";
   const selectTransactionType = watch("transactionType") || "";
   const formYear = watch("year") || "";
+
   const [locationType, setLocationType] = useState(location.state?.type || "");
   const yearFromCard = location.state?.selectedYear || "";
   const typeFromLocation = location.state?.type || "";
@@ -85,19 +85,17 @@ const OrdersTable = () => {
     const effectiveYear = isYearManuallyCleared ? "" : formYear || yearFromCard;
 
     if (effectiveYear) {
-      const year = effectiveYear;
-      const start = `${year}-01-01`;
-      const end = `${year}-12-31`;
+      const start = `${effectiveYear}-01-01`;
+      const end = `${effectiveYear}-12-31`;
 
       setStartDate(start);
       setEndDate(end);
-      setFiltersVersion((v) => v + 1); // ✅ trigger dependent effects
-
+      setFiltersVersion((v) => v + 1);
       setIsYearManuallyCleared(false);
     } else {
       setStartDate("");
       setEndDate("");
-      setFiltersVersion((v) => v + 1); // ✅ trigger update
+      setFiltersVersion((v) => v + 1);
     }
   }, [formYear, yearFromCard, isYearManuallyCleared]);
 
@@ -141,9 +139,11 @@ const OrdersTable = () => {
     if (action === "edit" && orderData) {
       navigate(`/orders/edit-order`, { state: { orderData } });
     }
-    if (action == "detail" && orderData) {
+
+    if (action === "detail" && orderData) {
       navigate("/orders/order-detail", { state: { orderData } });
     }
+
     if (action === "delete" && orderData) {
       setLoading(orderData?.id);
       try {
@@ -188,7 +188,7 @@ const OrdersTable = () => {
     selectTransactionType,
     startDate,
     endDate,
-    filtersVersion, // ✅ added here
+    filtersVersion,
   ]);
 
   useEffect(() => {
