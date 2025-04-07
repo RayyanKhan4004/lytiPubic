@@ -96,7 +96,6 @@ function MessageCenter() {
     socket.on("connect", () => {
       socket.emit("authenticate", { userId: String(userId) });
     });
-
     socket.on("receiveMessage", (data) => {
       console.log(data, "===message received===");
 
@@ -110,8 +109,17 @@ function MessageCenter() {
         const audio = new Audio(messageSound);
         audio.play().catch((e) => console.log("Audio play error:", e));
 
-        setMessages((prev) => [...prev, newMessage]);
-        toast.success("New message received!");
+        if (
+          String(data.senderId) === receiverId ||
+          String(data.receiverId) === receiverId
+        ) {
+          // Only add to messages if this chat is open
+          setMessages((prev) => [...prev, newMessage]);
+        } else {
+          toast.success(
+            `New message from ${data.senderFirstName} ${data.senderLastName}`
+          );
+        }
       }
     });
 
@@ -261,7 +269,6 @@ function MessageCenter() {
         </CardLayout>
       </div>
 
-      {/* Tailwind fadeIn animation */}
       <style>
         {`
           .animate-fadeIn {
