@@ -62,14 +62,17 @@ const AdminDashboard = () => {
   };
 
   const handleUpdateDashboard = async (id: number) => {
+    setUpdatingDashboardId(id);
+
     try {
       const res = await updateDashboard({ id, name: dashboardName }).unwrap();
       toast.success("Dashboard Updated Successfully");
       setSelectedDashboardId(null);
-      setUpdatingDashboardId(null);
       refetch();
     } catch (err: any) {
       toast.error(err?.data?.message || "Dashboard update failed");
+    } finally {
+      setUpdatingDashboardId(null);
     }
   };
 
@@ -125,7 +128,7 @@ const AdminDashboard = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
           {dashboards?.data?.map((dashboard: any) => (
-            <CardLayout key={dashboard.id}>
+            <CardLayout key={dashboard.id} className="w-full min-h-auto my-2">
               <div className="">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-semibold">{dashboard.name}</h3>
@@ -144,7 +147,7 @@ const AdminDashboard = () => {
                       className="bg-(--primary) text-white px-4 py-2 rounded-md"
                       disabled={isUpdating}
                     >
-                      {isUpdating && updatingDashboardId === dashboard.id ? (
+                      {updatingDashboardId === dashboard.id ? (
                         <Spinner />
                       ) : (
                         "Update"
@@ -172,43 +175,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-
-{
-  /* <div className="w-full flex justify-between">
-  {["1", "2", "3", "4"].map(() => (
-    <div className=" relative w-[24%] flex flex-col gap-5 border-[1px] rounded-xl px-3 py-4 border-(--inputBorder)">
-      <div className="text-(--greyText) flex flex-col gap-1.5 ">
-        <label
-          htmlFor="DashboardName"
-          className="text-[14px] leading-[18px] font-medium"
-        >
-          Dashboard Name
-        </label>
-        <input
-          type="text"
-          id="DashboardName"
-          placeholder="John"
-          className={`h-[55px] border-2 ${
-            errors.DashboardName ? "border-red-500" : "border-(--inputBorder)"
-          } rounded-[10px] w-full px-5 text-blackText`}
-          {...register("DashboardName", {
-            required: "First Name is required",
-          })}
-        />
-        {errors.DashboardName && (
-          <span className="text-red-500 text-sm">
-            {errors.DashboardName.message}
-          </span>
-        )}
-      </div>
-
-      <button
-        type="submit"
-        className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] w-full justify-center rounded-xl text-white"
-      >
-        Save Changes
-      </button>
-    </div>
-  ))}
-</div>; */
-}
