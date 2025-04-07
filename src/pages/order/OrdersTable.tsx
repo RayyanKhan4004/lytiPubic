@@ -55,6 +55,9 @@ const OrdersTable = () => {
   const [endDate, setEndDate] = useState("");
 
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [isYearManuallyCleared, setIsYearManuallyCleared] = useState(false);
+  const [filtersVersion, setFiltersVersion] = useState(0);
+
   const {
     formState: { errors },
     reset,
@@ -79,23 +82,24 @@ const OrdersTable = () => {
   const selectedYear = formYear || yearFromCard || "";
 
   useEffect(() => {
-    const effectiveYear = formYear || yearFromCard;
+    const effectiveYear = isYearManuallyCleared ? "" : formYear || yearFromCard;
 
-    if (locationType === "year") {
-      const year = effectiveYear || dayjs().format("YYYY");
-      setStartDate(`${year}-01-01`);
-      setEndDate(`${year}-12-31`);
-    } else if (locationType === "month") {
-      const year = effectiveYear || dayjs().format("YYYY");
-      const month = dayjs().format("MM");
-      const daysInMonth = dayjs(`${year}-${month}`).daysInMonth();
-      setStartDate(`${year}-${month}-01`);
-      setEndDate(`${year}-${month}-${daysInMonth}`);
+    if (effectiveYear) {
+      const year = effectiveYear;
+      const start = `${year}-01-01`;
+      const end = `${year}-12-31`;
+
+      setStartDate(start);
+      setEndDate(end);
+      setFiltersVersion((v) => v + 1); // ✅ trigger dependent effects
+
+      setIsYearManuallyCleared(false);
     } else {
       setStartDate("");
       setEndDate("");
+      setFiltersVersion((v) => v + 1); // ✅ trigger update
     }
-  }, [formYear, yearFromCard, locationType]);
+  }, [formYear, yearFromCard, isYearManuallyCleared]);
 
   const adjustedStatus =
     locationType === "open"
@@ -173,10 +177,9 @@ const OrdersTable = () => {
       fileStatus: adjustedStatus,
       fileType: adjustedType,
       transactionType: selectTransactionType,
-      dateRange: formattedDateRange, // ✅ new key instead of "year"
+      dateRange: formattedDateRange,
     });
 
-    // 🟡 Trigger refetch on filter changes
     refetch();
   }, [
     selectedPropertyCounty,
@@ -185,7 +188,14 @@ const OrdersTable = () => {
     selectTransactionType,
     startDate,
     endDate,
+    filtersVersion, // ✅ added here
   ]);
+
+  useEffect(() => {
+    if (formYear) {
+      setIsYearManuallyCleared(false);
+    }
+  }, [formYear]);
 
   const removeFilter = (
     key:
@@ -198,11 +208,12 @@ const OrdersTable = () => {
     if (key === "dateRange") {
       setStartDate("");
       setEndDate("");
+      setValue("year", "");
+      setIsYearManuallyCleared(true);
     } else {
       setValue(key, "");
     }
 
-    // Reset the type if it's affecting status or file type
     if (key === "fileStatus" || key === "fileType") {
       setLocationType("");
     }
