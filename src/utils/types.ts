@@ -140,11 +140,11 @@ export interface SignUpFormValues {
   role?: string;
   startdate?: string;
   profileImage?: File | null;
-  brokerageCap?: string;
-  yearAnniversary?: string;
-  agentTransactionFee?: string;
-  agentMonthlyFee?: string;
-  commissionTemplate?: string;
+  // brokerageCap?: string;
+  // yearAnniversary?: string;
+  // agentTransactionFee?: string;
+  // agentMonthlyFee?: string;
+  // commissionTemplate?: string;
   notes?: string;
   ae_commission_threshold?: number;
   ae_escrow_commission?: number;
