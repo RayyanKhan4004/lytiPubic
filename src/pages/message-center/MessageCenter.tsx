@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import isToday from "dayjs/plugin/isToday";
 import isYesterday from "dayjs/plugin/isYesterday";
+import messageSound from "../../assets/sound/MessageSound.ogg";
 
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
@@ -87,9 +88,7 @@ function MessageCenter() {
     if (!token || !userId || !receiverId) return;
 
     const socket = io(SOCKET_URL, {
-      extraHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
+      extraHeaders: {},
     });
 
     socketRef.current = socket;
@@ -99,12 +98,17 @@ function MessageCenter() {
     });
 
     socket.on("receiveMessage", (data) => {
+      console.log(data, "===message received===");
+
       if (typeof data === "object" && data.message) {
         const newMessage = {
           sender: String(data.senderId),
           message: data.message,
           timestamp: data.timestamp,
         };
+
+        const audio = new Audio(messageSound);
+        audio.play().catch((e) => console.log("Audio play error:", e));
 
         setMessages((prev) => [...prev, newMessage]);
         toast.success("New message received!");
