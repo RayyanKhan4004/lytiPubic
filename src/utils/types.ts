@@ -179,3 +179,7 @@ export interface LeadSourceType {
   status?: string;
   groupName: string;
 }
+
+export interface DashboardDataType {
+  name: string;
+}

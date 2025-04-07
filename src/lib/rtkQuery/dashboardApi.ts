@@ -1,5 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-interface FormValues {}
+interface DashboardData {
+  id: number;
+  name: string;
+}
+
+interface UpdateDashboardRequest {
+  id: number;
+  name: string;
+}
 export const dashboardApi = createApi({
   reducerPath: "dashboardApi",
   baseQuery: fetchBaseQuery({
@@ -87,6 +95,26 @@ export const dashboardApi = createApi({
     getGraphData: builder.query<any, string>({
       query: (filterStatus) => `dashboard/graph-data?graph=${filterStatus}`,
     }),
+    createDashboard: builder.mutation<any, { name: string }>({
+      query: ({ name }) => ({
+        url: "dashboard",
+        method: "POST",
+        body: { name },
+      }),
+    }),
+    getDashboard: builder.query<any, void>({
+      query: () => ({
+        url: "dashboard",
+        method: "GET",
+      }),
+    }),
+    updateDashboard: builder.mutation<DashboardData, UpdateDashboardRequest>({
+      query: ({ id, name }) => ({
+        url: `dashboard/${id}`,
+        method: "PATCH",
+        body: { name },
+      }),
+    }),
   }),
 });
 
@@ -99,4 +127,7 @@ export const {
   useGetAdminDashboardStatsQuery,
   useGetAdminActivitiesQuery,
   useGetGraphDataQuery,
+  useCreateDashboardMutation,
+  useGetDashboardQuery,
+  useUpdateDashboardMutation,
 } = dashboardApi;
