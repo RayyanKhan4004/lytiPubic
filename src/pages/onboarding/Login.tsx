@@ -9,15 +9,24 @@ import { useLoginMutation } from "../../lib/rtkQuery/authApi";
 import { error } from "console";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { setAuth } from "../../lib/store/slices/authSlice";
+import { clearAuth, setAuth } from "../../lib/store/slices/authSlice";
 import Spinner from "../../components/common/Spinner";
 import PrimaryButton from "../../components/ui/button/PrimaryButton";
+import { jwtDecode } from "jwt-decode";
 
 type FormValues = {
   email: string;
   password: string;
 };
 
+interface JwtPayload {
+  exp: number;
+  iat: number;
+  email: string;
+  id: number;
+  role: string;
+  permissions: string[];
+}
 const Login = () => {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
@@ -29,17 +38,45 @@ const Login = () => {
     control,
     formState: { errors },
   } = useForm<FormValues>();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(clearAuth());
+    localStorage.clear();
+    navigate("/");
+  };
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       const res = await login(data).unwrap();
+
       toast.success("Log in successfully");
       dispatch(setAuth(res));
+
+      const token = res.access_token;
+      const decoded = jwtDecode<JwtPayload>(token);
+
+      const currentTime = Date.now();
+      const expiryTime = decoded.exp * 1000;
+      const timeUntilExpiry = expiryTime - currentTime;
+      const expiryDate = new Date(expiryTime);
+      const sessionDuration = Math.floor(timeUntilExpiry / 1000);
+
+      if (timeUntilExpiry > 0) {
+        setTimeout(() => {
+          toast.error("Session expired. Please log in again.");
+          handleLogout();
+        }, timeUntilExpiry);
+      } else {
+        handleLogout();
+      }
+
       naviagte("/dashboard/snapShot");
     } catch (err: any) {
       toast.error(err?.data?.message || "Log in failed");
     }
   };
+
   return (
     <div className="w-full min-h-screen h-auto flex justify-center items-center flex-col   gap-8">
       <div className="relative flex justify-center items-center h-auto w-[640px] ">
@@ -63,7 +100,6 @@ const Login = () => {
               placeholder="Enter your email"
               error={errors.email?.message}
             />
-
             <InputField
               label="Password"
               name="password"
