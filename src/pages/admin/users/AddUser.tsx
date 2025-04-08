@@ -78,18 +78,18 @@ const AddUser = () => {
       formData.append("career_path", data.career_path || "");
       formData.append("lead_source", data.lead_source || "");
 
-      // formData.append(
-      //   "ae_commission_threshold",
-      //   JSON.stringify(data.ae_commission_threshold ?? 0)
-      // );
-      // formData.append(
-      //   "ae_escrow_commission",
-      //   JSON.stringify(data.ae_escrow_commission ?? 0)
-      // );
-      // formData.append(
-      //   "ae_title_commission",
-      //   JSON.stringify(data.ae_title_commission ?? 0)
-      // );
+      formData.append(
+        "ae_commission_threshold",
+        JSON.stringify(data.ae_commission_threshold ?? 0)
+      );
+      formData.append(
+        "ae_escrow_commission",
+        JSON.stringify(data.ae_escrow_commission ?? 0)
+      );
+      formData.append(
+        "ae_title_commission",
+        JSON.stringify(data.ae_title_commission ?? 0)
+      );
 
       formData.append("exclude_challenges_leaderboards", String(isChallenge));
       formData.append("download_transactions", String(isDownload));
