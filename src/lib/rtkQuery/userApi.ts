@@ -74,16 +74,14 @@ export const userApi = createApi({
     fetchUsersForChat: builder.query<any, void>({
       query: () => `users?limit=${100000}`,
     }),
-    updateUser: builder.mutation<
-      any,
-      { id: string; data: Partial<FormValues> }
-    >({
-      query: ({ id, data }) => ({
+    updateUser: builder.mutation<any, { id: string; formData: FormData }>({
+      query: ({ id, formData }) => ({
         url: `users/${id}`,
         method: "PATCH",
-        body: data,
+        body: formData,
       }),
     }),
+
     deleteUser: builder.mutation<any, string>({
       query: (id) => ({
         url: `users/${id}`,
