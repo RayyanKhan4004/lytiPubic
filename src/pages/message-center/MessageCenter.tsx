@@ -3,10 +3,7 @@ import Breadcrumb from "../../components/common/BreadCrumb";
 import CardLayout from "../../components/layouts/CardLayout";
 import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../lib/store/hooks";
-import {
-  useGetChatHistoryQuery,
-  useSendMessageMutation,
-} from "../../lib/rtkQuery/chatApi";
+import { useGetChatHistoryQuery } from "../../lib/rtkQuery/chatApi";
 import toast from "react-hot-toast";
 import { useFetchUsersForChatQuery } from "../../lib/rtkQuery/userApi";
 import { useForm } from "react-hook-form";
@@ -33,6 +30,7 @@ interface MessageType {
   sender: string;
   message: string;
   timestamp: string;
+  senderImage?: string;
 }
 
 function MessageCenter() {
@@ -66,8 +64,6 @@ function MessageCenter() {
     { skip: !userId || !receiverId }
   );
 
-  const [sendMessageAPI] = useSendMessageMutation();
-
   useEffect(() => {
     setMessages([]);
     if (receiverId) refetch();
@@ -79,6 +75,10 @@ function MessageCenter() {
         sender: String(msg.senderId),
         message: msg.message,
         timestamp: msg.timestamp,
+        senderImage:
+          String(msg.senderId) !== String(userId)
+            ? msg.senderProfileImage
+            : undefined,
       }));
       setMessages(historyMessages);
     }
@@ -229,6 +229,13 @@ function MessageCenter() {
                           : "justify-start"
                       }`}
                     >
+                      {msg.sender !== String(userId) && msg.senderImage && (
+                        <img
+                          src={msg.senderImage}
+                          alt="sender"
+                          className="w-6 h-6 rounded-full mr-2"
+                        />
+                      )}
                       <div
                         className={`px-4 py-2 rounded-2xl max-w-[75%] text-sm relative shadow-sm animate-fadeIn ${
                           msg.sender === String(userId)
