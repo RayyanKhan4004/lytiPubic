@@ -51,10 +51,17 @@ export const chatApi = createApi({
     getChatHistory: builder.query<any, { userId: string; receiverId: string }>({
       query: ({ userId, receiverId }) => `chat/history/${userId}/${receiverId}`,
     }),
+    getChatUsers: builder.query<any, { id: string }>({
+      query: ({ id }) => `chat/chat-users/${id}`,
+    }),
   }),
 });
 
-export const { useSendMessageMutation, useGetChatHistoryQuery } = chatApi;
+export const {
+  useSendMessageMutation,
+  useGetChatHistoryQuery,
+  useGetChatUsersQuery,
+} = chatApi;
 
 //  markAsRead: builder.mutation<any, { sender: string; receiver: string }>({
 //       query: (readData: { sender: string; receiver: string }) => ({
