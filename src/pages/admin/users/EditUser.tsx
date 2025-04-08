@@ -18,6 +18,7 @@ import {
   useDeleteUserMutation,
   useUpdateUserMutation,
 } from "../../../lib/rtkQuery/userApi";
+import pencil from "../../../assets/icons/PencilSimple.svg";
 
 const EditUser = () => {
   const [isChallenge, setIsChallenge] = useState<boolean>(false);
@@ -58,20 +59,46 @@ const EditUser = () => {
   };
 
   const onSubmit: SubmitHandler<UserDataType> = async (data: UserDataType) => {
-    const formattedData = {
-      ...data,
-      // startdate: formatDate(data.startdate),
-      exclude_challenges_leaderboards: isChallenge,
-      download_transactions: isDownload,
-      send_welcome_email: isWelcome,
-    };
-    console.log(formattedData, "===formattedData=====");
+    const formData = new FormData();
+
+    formData.append("firstname", data.firstname || "");
+    formData.append("lastname", data.lastname || "");
+    formData.append("alternativemail", data.alternativemail || "");
+    formData.append("business_entity", data.business_entity || "");
+    formData.append("email", data.email || "");
+    formData.append("role", data.role || "");
+    formData.append(
+      "startdate",
+      data.startdate ? new Date(data.startdate).toISOString() : ""
+    );
+    formData.append("notes", data.notes || "");
+    formData.append("career_path", data.career_path || "");
+    formData.append("lead_source", data.lead_source || "");
+
+    formData.append(
+      "ae_commission_threshold",
+      JSON.stringify(data.ae_commission_threshold ?? 0)
+    );
+    formData.append(
+      "ae_escrow_commission",
+      JSON.stringify(data.ae_escrow_commission ?? 0)
+    );
+    formData.append(
+      "ae_title_commission",
+      JSON.stringify(data.ae_title_commission ?? 0)
+    );
+
+    // Boolean toggles
+    formData.append("exclude_challenges_leaderboards", String(isChallenge));
+    formData.append("download_transactions", String(isDownload));
+    formData.append("send_welcome_email", String(isWelcome));
 
     try {
       const res = await updateUser({
         id: userData.id,
-        data: formattedData,
+        formData, // 👈 Sending FormData
       }).unwrap();
+
       toast.success("User updated successfully");
       navigate("/admin/users-table");
       console.log(res, "===res====");
@@ -100,11 +127,6 @@ const EditUser = () => {
       setValue("email", userData.email || "");
       setValue("role", userData.role || "");
       setValue("startdate", userData.startdate || "");
-      // setValue("brokerageCap", userData.brokerageCap || "");
-      // setValue("yearAnniversary", userData.yearAnniversary || "");
-      // setValue("agentTransactionFee", userData.agentTransactionFee || "");
-      // setValue("agentMonthlyFee", userData.agentMonthlyFee || "");
-      // setValue("commissionTemplate", userData.commissionTemplate || "");
       setValue("notes", userData.notes || "");
       setValue(
         "ae_commission_threshold",
