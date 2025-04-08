@@ -113,7 +113,6 @@ function MessageCenter() {
           String(data.senderId) === receiverId ||
           String(data.receiverId) === receiverId
         ) {
-          // Only add to messages if this chat is open
           setMessages((prev) => [...prev, newMessage]);
         } else {
           toast.success(
