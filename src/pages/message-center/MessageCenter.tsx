@@ -38,6 +38,7 @@ function MessageCenter() {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const socketRef = useRef<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const receiverIdRef = useRef<string | undefined>(undefined);
 
   const {
     formState: { errors },
@@ -46,6 +47,9 @@ function MessageCenter() {
   } = useForm<ChatType>();
 
   const receiverId = watch("userId");
+  useEffect(() => {
+    receiverIdRef.current = receiverId;
+  }, [receiverId]);
 
   const token = useAppSelector((state: any) => state?.auth?.access_token);
   const userId = useAppSelector((state: any) => state?.auth?.user?.id);
@@ -85,7 +89,7 @@ function MessageCenter() {
   }, [chatHistory]);
 
   useEffect(() => {
-    if (!token || !userId || !receiverId) return;
+    if (!token || !userId) return; // Only check token and userId here
 
     const socket = io(SOCKET_URL, {
       extraHeaders: {},
@@ -96,6 +100,7 @@ function MessageCenter() {
     socket.on("connect", () => {
       socket.emit("authenticate", { userId: String(userId) });
     });
+
     socket.on("receiveMessage", (data) => {
       console.log(data, "===message received===");
 
@@ -110,8 +115,8 @@ function MessageCenter() {
         audio.play().catch((e) => console.log("Audio play error:", e));
 
         if (
-          String(data.senderId) === receiverId ||
-          String(data.receiverId) === receiverId
+          String(data.senderId) === receiverIdRef.current ||
+          String(data.receiverId) === receiverIdRef.current
         ) {
           setMessages((prev) => [...prev, newMessage]);
         } else {
@@ -126,7 +131,7 @@ function MessageCenter() {
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [token, userId, receiverId]);
+  }, [token, userId]);
 
   const sendMessage = async () => {
     if (message.trim() === "" || !socketRef.current || !receiverId) return;
