@@ -1,9 +1,12 @@
 import { io, Socket } from "socket.io-client";
 import Breadcrumb from "../../components/common/BreadCrumb";
 import CardLayout from "../../components/layouts/CardLayout";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAppSelector } from "../../lib/store/hooks";
-import { useGetChatHistoryQuery } from "../../lib/rtkQuery/chatApi";
+import {
+  useGetChatHistoryQuery,
+  useGetChatUsersQuery,
+} from "../../lib/rtkQuery/chatApi";
 import toast from "react-hot-toast";
 import { useFetchUsersForChatQuery } from "../../lib/rtkQuery/userApi";
 import { useForm } from "react-hook-form";
@@ -15,6 +18,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import isToday from "dayjs/plugin/isToday";
 import isYesterday from "dayjs/plugin/isYesterday";
 import messageSound from "../../assets/sound/MessageSound.ogg";
+import SearchInput from "../../components/inputs/SearchInput";
 
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
@@ -44,6 +48,7 @@ function MessageCenter() {
     formState: { errors },
     watch,
     control,
+    setValue,
   } = useForm<ChatType>();
 
   const receiverId = watch("userId");
@@ -173,13 +178,71 @@ function MessageCenter() {
 
   const groupedMessages = groupMessagesByDate();
 
+  const userIdFromStore = useAppSelector((state: any) => state?.auth?.user?.id);
+  const { data: chatUsers, isLoading } = useGetChatUsersQuery({
+    id: userIdFromStore,
+  });
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (search: string) => {
+    setSearchTerm(search.toLowerCase());
+  };
+
+  const filteredUsers = useMemo(() => {
+    if (!chatUsers) return [];
+    return chatUsers.filter((user: any) =>
+      `${user.firstname} ${user.lastname}`.toLowerCase().includes(searchTerm)
+    );
+  }, [searchTerm, chatUsers]);
+
   return (
     <div className="p-4">
       <Breadcrumb items={["Account", "Message Center"]} />
-      <div className="mt-5">
-        <CardLayout className="w-[49%]">
-          <MainTitle title="Chat Box" />
+      <div className="shadow-(--cardShadow) rounded-2xl bg-white p-3 flex mt-3">
+        <div className="w-[30%] border-r border-gray-300">
+          <MainTitle title="Message center" />
+          <div className="pr-2 mt-2">
+            <SearchInput
+              debounceTimeout={500}
+              placeholder="Search Keyword"
+              onChange={handleSearch}
+              className=" mb-4 "
+              height="41px"
+            />
 
+            <div className="space-y-2 ">
+              {isLoading ? (
+                <p>Loading...</p>
+              ) : (
+                filteredUsers.map((user: any) => (
+                  <div
+                    key={user.id}
+                    className={`flex items-center p-2 rounded-lg hover:bg-gray-100 transition cursor-pointer ${
+                      String(receiverId) === String(user.id)
+                        ? "bg-gray-100"
+                        : ""
+                    }`}
+                    onClick={() => setValue("userId", String(user.id))}
+                  >
+                    <img
+                      src={
+                        user.profileImage ||
+                        "https://via.placeholder.com/40?text=U"
+                      }
+                      alt={`${user.firstname} ${user.lastname}`}
+                      className="w-10 h-10 rounded-full object-cover mr-3"
+                    />
+                    <div className="text-sm font-medium text-gray-800">
+                      {user.firstname} {user.lastname}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="w-[70%] px-3 flex flex-col gap-3">
           <SelectField
             label="Start a chat with"
             name="userId"
@@ -192,7 +255,7 @@ function MessageCenter() {
           />
 
           <div
-            className={`h-64 overflow-y-auto border border-gray-200 p-2 rounded-lg mb-1 bg-gray-100 ${
+            className={`h-64 overflow-y-auto p-2 rounded-lg mb-1  ${
               messages.length === 0 ? "flex justify-center items-center" : ""
             }`}
           >
@@ -277,7 +340,7 @@ function MessageCenter() {
               <img src={plane} alt="Send" className="w-4 h-4" />
             </button>
           </div>
-        </CardLayout>
+        </div>
       </div>
 
       <style>
