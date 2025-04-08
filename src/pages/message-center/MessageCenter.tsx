@@ -43,6 +43,12 @@ function MessageCenter() {
   const socketRef = useRef<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const receiverIdRef = useRef<string | undefined>(undefined);
+  const [selectedUser, setSelectedUser] = useState<{
+    id: string;
+    firstname: string;
+    lastname: string;
+    profileImage?: string;
+  } | null>(null);
 
   const {
     formState: { errors },
@@ -65,7 +71,7 @@ function MessageCenter() {
       ?.filter((user: any) => user.id !== userId)
       .map((user: any) => ({
         value: String(user.id),
-        label: user.firstname,
+        label: `${user.firstname} ${user.lastname}`,
       })) || [];
 
   const { data: chatHistory, refetch } = useGetChatHistoryQuery(
@@ -196,6 +202,25 @@ function MessageCenter() {
     );
   }, [searchTerm, chatUsers]);
 
+  useEffect(() => {
+    if (!receiverId || !usersData?.users) return;
+
+    const matchedUser = usersData.users.find(
+      (user: any) => String(user.id) === receiverId
+    );
+
+    if (matchedUser) {
+      setSelectedUser({
+        id: String(matchedUser.id),
+        firstname: matchedUser.firstname,
+        lastname: matchedUser.lastname,
+        profileImage: matchedUser.profileImage,
+      });
+    } else {
+      setSelectedUser(null);
+    }
+  }, [receiverId, usersData]);
+
   return (
     <div className="p-4">
       <Breadcrumb items={["Account", "Message Center"]} />
@@ -223,7 +248,15 @@ function MessageCenter() {
                         ? "bg-gray-100"
                         : ""
                     }`}
-                    onClick={() => setValue("userId", String(user.id))}
+                    onClick={() => {
+                      setValue("userId", String(user.id));
+                      setSelectedUser({
+                        id: String(user.id),
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        profileImage: user.profileImage,
+                      });
+                    }}
                   >
                     <img
                       src={
@@ -253,7 +286,25 @@ function MessageCenter() {
             required={false}
             height="44px"
           />
-
+          <div>
+            {selectedUser && (
+              <div className="flex items-center border-b border-gray-100 pb-2 mb-2">
+                <img
+                  src={
+                    selectedUser.profileImage ||
+                    "https://via.placeholder.com/40?text=U"
+                  }
+                  alt={selectedUser.firstname}
+                  className="w-10 h-10 rounded-full object-cover mr-3"
+                />
+                <div>
+                  <p className="text-sm font-semibold text-gray-800">
+                    {selectedUser.firstname} {selectedUser.lastname}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
           <div
             className={`h-64 overflow-y-auto p-2 rounded-lg mb-1  ${
               messages.length === 0 ? "flex justify-center items-center" : ""
