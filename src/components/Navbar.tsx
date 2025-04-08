@@ -31,10 +31,10 @@ const Navbar = () => {
       <img src={LytiLogo} alt="" className="w-[78px] h-[78px]" />
 
       <div className="flex items-center gap-2">
-        <SearchInput
+        {/* <SearchInput
           value={searchValue}
           onChange={(e: any) => setSearchValue(e.target.value)}
-        />
+        /> */}
         <div className="border-[1px] border-(--inputBorder) bg-(--primary) rounded-full flex justify-center items-center relative h-[44px] w-[44px] cursor-pointer">
           <img
             src={Setting}
