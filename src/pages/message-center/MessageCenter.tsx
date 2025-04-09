@@ -121,12 +121,10 @@ function MessageCenter() {
       socket.emit("authenticate", { userId: String(userId) });
     });
 
-    // socket.on("inbox", (data) => {
-    //   console.log("New inbox message:", data);
-    // });
-    // socket.on("getChatUsers", (data) => {
-    //   console.log("getChatUsers message:", data);
-    // });
+    socket.on("inbox", (data) => {
+      console.log("New inbox message:", data);
+      refetchChatUsers();
+    });
 
     socket.on("receiveMessage", (data) => {
       if (typeof data === "object" && data.message) {
@@ -204,7 +202,11 @@ function MessageCenter() {
   const groupedMessages = groupMessagesByDate();
 
   const userIdFromStore = useAppSelector((state: any) => state?.auth?.user?.id);
-  const { data: chatUsers, isLoading } = useGetChatUsersQuery({
+  const {
+    data: chatUsers,
+    isLoading,
+    refetch: refetchChatUsers,
+  } = useGetChatUsersQuery({
     id: userIdFromStore,
   });
 
