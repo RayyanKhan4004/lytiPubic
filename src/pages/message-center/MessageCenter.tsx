@@ -100,7 +100,7 @@ function MessageCenter() {
   }, [chatHistory]);
 
   useEffect(() => {
-    if (!token || !userId) return; // Only check token and userId here
+    if (!token || !userId) return;
 
     const socket = io(SOCKET_URL, {
       extraHeaders: {},
@@ -121,9 +121,8 @@ function MessageCenter() {
           message: data.message,
           timestamp: data.timestamp,
         };
-
-        const audio = new Audio(messageSound);
-        audio.play().catch((e) => console.log("Audio play error:", e));
+        // const audio = new Audio(messageSound);
+        // audio.play().catch((e) => console.log("Audio play error:", e));
 
         if (
           String(data.senderId) === receiverIdRef.current ||
@@ -236,9 +235,32 @@ function MessageCenter() {
               height="41px"
             />
 
-            <div className="space-y-2 ">
+            <div className="space-y-2">
               {isLoading ? (
                 <p>Loading...</p>
+              ) : filteredUsers.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-10 text-gray-500">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-16 w-16 mb-4 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4.19-.92L3 20l1.35-3.61A8.964 8.964 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    />
+                  </svg>
+
+                  {/* Text Message */}
+                  <p className="text-lg font-semibold">No previous chats</p>
+                  <p className="text-sm text-gray-400">
+                    Start a new conversation to see it here.
+                  </p>
+                </div>
               ) : (
                 filteredUsers.map((user: any) => (
                   <div

@@ -154,7 +154,8 @@ const AddUser = () => {
               <input
                 type="file"
                 id="profileImage"
-                accept="image/*"
+                // accept="image/*"
+                accept="image/png, image/jpeg, image/jpg, image/webp, image/gif"
                 onChange={(e) => {
                   const file = e.target.files ? e.target.files[0] : null;
                   setValue("profileImage", file);

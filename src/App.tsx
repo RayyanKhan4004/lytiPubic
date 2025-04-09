@@ -5,45 +5,26 @@ import { useEffect, useRef } from "react";
 import { useAppSelector } from "./lib/store/hooks";
 import { io, Socket } from "socket.io-client";
 
+const SOCKET_URL = "https://api.lyti.io/";
+
 function App() {
-  // const token = useAppSelector((state: any) => state?.auth?.access_token);
-  // const socketRef = useRef<Socket | null>(null);
+  const token = useAppSelector((state: any) => state?.auth?.access_token);
+  const userId = useAppSelector((state: any) => state?.auth?.user?.id);
+  const socket = io(SOCKET_URL, {
+    extraHeaders: {},
+  });
+  socket.on("connect", () => {
+    console.log("Connected to socket server");
 
-  // useEffect(() => {
-  //   if (!token) return;
+    socket.emit("authenticate", { userId: String(userId) });
+  });
+  socket.on("receiveMessage", (data) => {
+    console.log("Received message:", data);
 
-  //   if (!socketRef.current) {
-  //     const socket = io("https://api.lyti.io/", {
-  //       extraHeaders: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-
-  //     socketRef.current = socket;
-
-  //     socket.on("connect", () => {
-  //       console.log("Connected to notification service:", socket.id);
-  //     });
-
-  //     socket.on("connect_error", (error) => {
-  //       console.error("Connection error:", error.message);
-  //     });
-
-  //     socket.on("notification", (data) => {
-  //       console.log("New notification received:", data);
-  //       displayNotification(data);
-  //     });
-
-  //     return () => {
-  //       socket.disconnect();
-  //       socketRef.current = null;
-  //     };
-  //   }
-  // }, [token]);
-
-  // function displayNotification(notification: any) {
-  //   toast.success(notification.message);
-  // }
+    toast.success(
+      `New message from ${data.senderFirstName} ${data.senderLastName}`
+    );
+  });
   return (
     <>
       <RouterProvider router={router} />
