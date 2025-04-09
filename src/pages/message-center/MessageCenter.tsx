@@ -46,6 +46,7 @@ function MessageCenter() {
   const socketRef = useRef<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const receiverIdRef = useRef<string | undefined>(undefined);
+
   const [selectedUser, setSelectedUser] = useState<{
     id: string;
     firstname: string;
@@ -61,6 +62,7 @@ function MessageCenter() {
   } = useForm<ChatType>();
 
   const receiverId = watch("userId");
+
   useEffect(() => {
     receiverIdRef.current = receiverId;
   }, [receiverId]);
@@ -118,6 +120,7 @@ function MessageCenter() {
     socket.on("connect", () => {
       socket.emit("authenticate", { userId: String(userId) });
     });
+
     // socket.on("inbox", (data) => {
     //   console.log("New inbox message:", data);
     // });
@@ -236,6 +239,7 @@ function MessageCenter() {
       setSelectedUser(null);
     }
   }, [receiverId, usersData]);
+
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const togglePopup = () => {
