@@ -19,7 +19,9 @@ import isToday from "dayjs/plugin/isToday";
 import isYesterday from "dayjs/plugin/isYesterday";
 import messageSound from "../../assets/sound/MessageSound.ogg";
 import SearchInput from "../../components/inputs/SearchInput";
-
+import dummyImage from "../../assets/images/Dummy.jpg";
+import { Dialog, DialogOverlay, DialogContent } from "@radix-ui/react-dialog";
+import { X } from "lucide-react";
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
@@ -35,6 +37,7 @@ interface MessageType {
   message: string;
   timestamp: string;
   senderImage?: string;
+  receiverImage?: string;
 }
 
 function MessageCenter() {
@@ -94,6 +97,10 @@ function MessageCenter() {
           String(msg.senderId) !== String(userId)
             ? msg.senderProfileImage
             : undefined,
+        receiverImage:
+          String(msg.receiverId) !== String(userId)
+            ? msg.receiverProfileImage
+            : undefined,
       }));
       setMessages(historyMessages);
     }
@@ -111,18 +118,28 @@ function MessageCenter() {
     socket.on("connect", () => {
       socket.emit("authenticate", { userId: String(userId) });
     });
+    // socket.on("inbox", (data) => {
+    //   console.log("New inbox message:", data);
+    // });
+    // socket.on("getChatUsers", (data) => {
+    //   console.log("getChatUsers message:", data);
+    // });
 
     socket.on("receiveMessage", (data) => {
-      console.log(data, "===message received===");
-
       if (typeof data === "object" && data.message) {
         const newMessage = {
           sender: String(data.senderId),
           message: data.message,
           timestamp: data.timestamp,
+          senderImage:
+            String(data.senderId) !== String(userId)
+              ? data.senderProfileImage
+              : undefined,
+          receiverImage:
+            String(data.receiverId) !== String(userId)
+              ? data.receiverProfileImage
+              : undefined, // ✅ Add this
         };
-        // const audio = new Audio(messageSound);
-        // audio.play().catch((e) => console.log("Audio play error:", e));
 
         if (
           String(data.senderId) === receiverIdRef.current ||
@@ -219,12 +236,47 @@ function MessageCenter() {
       setSelectedUser(null);
     }
   }, [receiverId, usersData]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  const togglePopup = () => {
+    setIsPopupOpen((prev) => !prev);
+  };
   return (
     <div className="p-4">
-      <Breadcrumb items={["Account", "Message Center"]} />
+      <div className="flex justify-between items-center">
+        <Breadcrumb items={["Account", "Message Center"]} />
+        <button
+          onClick={togglePopup}
+          className="bg-(--secondary) text-white px-4 py-2 rounded-lg transition"
+        >
+          Start New Chat
+        </button>
+
+        <Dialog open={isPopupOpen} onOpenChange={setIsPopupOpen}>
+          <DialogOverlay className="fixed inset-0 bg-black/50 z-[100]" />
+          <DialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-xl w-full max-w-lg z-[101]">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Start a New Chat</h2>
+              <button onClick={togglePopup}>
+                <X className="w-5 h-5 text-gray-500 hover:text-gray-700" />
+              </button>
+            </div>
+
+            <SelectField
+              label="Start a chat with"
+              name="userId"
+              control={control}
+              options={UsersOptions}
+              placeholder="Select user"
+              error={errors.userId?.message}
+              required={false}
+              height="44px"
+            />
+          </DialogContent>
+        </Dialog>
+      </div>
       <div className="shadow-(--cardShadow) rounded-2xl bg-white p-3 flex mt-3">
-        <div className="w-[30%] border-r border-gray-300">
+        <div className="w-[30%] border-r border-gray-300 ">
           <MainTitle title="Message center" />
           <div className="pr-2 mt-2">
             <SearchInput
@@ -235,7 +287,7 @@ function MessageCenter() {
               height="41px"
             />
 
-            <div className="space-y-2">
+            <div className="space-y-2 h-80 overflow-y-auto p-2">
               {isLoading ? (
                 <p>Loading...</p>
               ) : filteredUsers.length === 0 ? (
@@ -281,10 +333,7 @@ function MessageCenter() {
                     }}
                   >
                     <img
-                      src={
-                        user.profileImage ||
-                        "https://via.placeholder.com/40?text=U"
-                      }
+                      src={user.profileImage || dummyImage}
                       alt={`${user.firstname} ${user.lastname}`}
                       className="w-10 h-10 rounded-full object-cover mr-3"
                     />
@@ -298,24 +347,11 @@ function MessageCenter() {
           </div>
         </div>
         <div className="w-[70%] px-3 flex flex-col gap-3">
-          <SelectField
-            label="Start a chat with"
-            name="userId"
-            control={control}
-            options={UsersOptions}
-            placeholder="Select user"
-            error={errors.userId?.message}
-            required={false}
-            height="44px"
-          />
           <div>
-            {selectedUser && (
+            {selectedUser ? (
               <div className="flex items-center border-b border-gray-100 pb-2 mb-2">
                 <img
-                  src={
-                    selectedUser.profileImage ||
-                    "https://via.placeholder.com/40?text=U"
-                  }
+                  src={selectedUser.profileImage || dummyImage}
                   alt={selectedUser.firstname}
                   className="w-10 h-10 rounded-full object-cover mr-3"
                 />
@@ -325,10 +361,22 @@ function MessageCenter() {
                   </p>
                 </div>
               </div>
+            ) : (
+              <div className="flex items-center border-b border-gray-100 pb-2 mb-2">
+                <img
+                  src={dummyImage}
+                  className="w-10 h-10 rounded-full object-cover mr-3"
+                />
+                <div>
+                  <p className="text-sm font-semibold text-gray-800">
+                    Select a user to chat
+                  </p>
+                </div>
+              </div>
             )}
           </div>
           <div
-            className={`h-64 overflow-y-auto p-2 rounded-lg mb-1  ${
+            className={`h-72 overflow-y-auto p-2 rounded-lg mb-1  ${
               messages.length === 0 ? "flex justify-center items-center" : ""
             }`}
           >
@@ -377,18 +425,35 @@ function MessageCenter() {
                           className="w-6 h-6 rounded-full mr-2"
                         />
                       )}
+
                       <div
                         className={`px-4 py-2 rounded-2xl max-w-[75%] text-sm relative shadow-sm animate-fadeIn ${
                           msg.sender === String(userId)
-                            ? "bg-blue-200 text-black"
-                            : "bg-gray-200 text-black"
+                            ? "bg-(--secondary) text-white"
+                            : "bg-(#F3F3F3) text-(#333333"
                         }`}
                       >
                         {msg.message}
-                        <div className="text-[10px] text-right mt-1 text-gray-600">
+                        <div
+                          className={`text-[10px] text-right mt-1  
+                          ${
+                            msg.sender === String(userId)
+                              ? " text-white"
+                              : " text-(#333333"
+                          }`}
+                        >
                           {dayjs(msg.timestamp).format("hh:mm A")}
                         </div>
                       </div>
+
+                      {/* Add the receiver image for sent messages */}
+                      {msg.sender === String(userId) && msg.receiverImage && (
+                        <img
+                          src={msg.receiverImage}
+                          alt="receiver"
+                          className="w-6 h-6 rounded-full ml-2"
+                        />
+                      )}
                     </div>
                   ))}
                 </div>
