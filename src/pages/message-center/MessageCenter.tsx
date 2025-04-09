@@ -97,10 +97,10 @@ function MessageCenter() {
           String(msg.senderId) !== String(userId)
             ? msg.senderProfileImage
             : undefined,
-        receiverImage:
-          String(msg.receiverId) !== String(userId)
-            ? msg.receiverProfileImage
-            : undefined,
+        // receiverImage:
+        //   String(msg.receiverId) !== String(userId)
+        //     ? msg.receiverProfileImage
+        //     : undefined,
       }));
       setMessages(historyMessages);
     }
@@ -135,10 +135,10 @@ function MessageCenter() {
             String(data.senderId) !== String(userId)
               ? data.senderProfileImage
               : undefined,
-          receiverImage:
-            String(data.receiverId) !== String(userId)
-              ? data.receiverProfileImage
-              : undefined, // ✅ Add this
+          // receiverImage:
+          //   String(data.receiverId) !== String(userId)
+          //     ? data.receiverProfileImage
+          //     : undefined,
         };
 
         if (
@@ -446,14 +446,13 @@ function MessageCenter() {
                         </div>
                       </div>
 
-                      {/* Add the receiver image for sent messages */}
-                      {msg.sender === String(userId) && msg.receiverImage && (
+                      {/* {msg.sender === String(userId) && msg.receiverImage && (
                         <img
                           src={msg.receiverImage}
                           alt="receiver"
                           className="w-6 h-6 rounded-full ml-2"
                         />
-                      )}
+                      )} */}
                     </div>
                   ))}
                 </div>
