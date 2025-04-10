@@ -142,13 +142,26 @@ const CreateOrder = () => {
               placeholder="8-21-15"
               // rules={{ required: "Date is required" }}
             />
+
             <CustomDatePicker
               name="closedDate"
               control={control}
               label="Closing Date"
               placeholder="8-21-15"
-              // rules={{ required: "Date is required" }}
             />
+            <CustomDatePicker
+              name="appointmentSetDate"
+              control={control}
+              label="Appointment Set Date"
+              placeholder="8-21-15"
+            />
+            <CustomDatePicker
+              name="appointmentMetDate"
+              control={control}
+              label="Appointment Met Date"
+              placeholder="8-21-15"
+            />
+
             <InputField
               label="Title Officer"
               name="titleOfficer"

@@ -126,9 +126,12 @@ const OrderEdit = () => {
       setValue("titleOffice", orderData.titleOffice || "");
       // setValue("agent", orderData.agent || "");
       setValue("titleRep", orderData.titleRep || "");
-      setValue("openDate", orderData.openDate || "");
-      setValue("estimatedClosingDate", orderData.estimatedClosingDate || "");
-      setValue("closedDate", orderData.closedDate || "");
+      setValue("openDate", orderData.openDate || null);
+      setValue("estimatedClosingDate", orderData.estimatedClosingDate || null);
+      setValue("closedDate", orderData.closedDate || null);
+      setValue("appointmentSetDate", orderData.appointmentSetDate || null);
+      setValue("appointmentMetDate", orderData.appointmentMetDate || null);
+
       // setValue("cancelDate", orderData.cancelDate || "");
       setValue("transactionType", orderData.transactionType || "");
       setValue("orderNumber", orderData.orderNumber || "");
@@ -279,6 +282,18 @@ const OrderEdit = () => {
               label="Closing Date"
               placeholder="8-21-15"
               // rules={{ required: "Date is required" }}
+            />
+            <CustomDatePicker
+              name="appointmentSetDate"
+              control={control}
+              label="Appointment Set Date"
+              placeholder="8-21-15"
+            />
+            <CustomDatePicker
+              name="appointmentMetDate"
+              control={control}
+              label="Appointment Met Date"
+              placeholder="8-21-15"
             />
             <InputField
               label="Title Officer"
