@@ -19,9 +19,11 @@ import isToday from "dayjs/plugin/isToday";
 import isYesterday from "dayjs/plugin/isYesterday";
 import messageSound from "../../assets/sound/MessageSound.ogg";
 import SearchInput from "../../components/inputs/SearchInput";
-import dummyImage from "../../assets/images/Dummy.jpg";
+import dummy from "../../assets/images/Dummy.jpg";
 import { Dialog, DialogOverlay, DialogContent } from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
+import { FaUser } from "react-icons/fa";
+
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
@@ -281,7 +283,7 @@ function MessageCenter() {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="shadow-(--cardShadow) rounded-2xl bg-white p-3 flex mt-3">
+      <div className="shadow-(--cardShadow) rounded-2xl bg-white p-3 flex mt-3 h-[90vh]">
         <div className="w-[30%] border-r border-gray-300 ">
           <MainTitle title="Message center" />
           <div className="pr-2 mt-2">
@@ -313,7 +315,6 @@ function MessageCenter() {
                     />
                   </svg>
 
-                  {/* Text Message */}
                   <p className="text-lg font-semibold">No previous chats</p>
                   <p className="text-sm text-gray-400">
                     Start a new conversation to see it here.
@@ -339,7 +340,9 @@ function MessageCenter() {
                     }}
                   >
                     <img
-                      src={user.profileImage || dummyImage}
+                      src={
+                        user.profileImage || <FaUser size={40} color="blue" />
+                      }
                       alt={`${user.firstname} ${user.lastname}`}
                       className="w-10 h-10 rounded-full object-cover mr-3"
                     />
@@ -356,11 +359,16 @@ function MessageCenter() {
           <div>
             {selectedUser ? (
               <div className="flex items-center border-b border-gray-100 pb-2 mb-2">
-                <img
-                  src={selectedUser.profileImage || dummyImage}
-                  alt={selectedUser.firstname}
-                  className="w-10 h-10 rounded-full object-cover mr-3"
-                />
+                {selectedUser.profileImage ? (
+                  <img
+                    src={selectedUser.profileImage}
+                    alt={selectedUser.firstname}
+                    className="w-10 h-10 rounded-full object-cover mr-3"
+                  />
+                ) : (
+                  <FaUser size={40} color="gray" className="mr-3" />
+                )}
+
                 <div>
                   <p className="text-sm font-semibold text-gray-800">
                     {selectedUser.firstname} {selectedUser.lastname}
@@ -369,10 +377,11 @@ function MessageCenter() {
               </div>
             ) : (
               <div className="flex items-center border-b border-gray-100 pb-2 mb-2">
-                <img
-                  src={dummyImage}
+                <FaUser size={35} color="gray" className="mr-3" />
+                {/* <img
+                  src={dummy}
                   className="w-10 h-10 rounded-full object-cover mr-3"
-                />
+                /> */}
                 <div>
                   <p className="text-sm font-semibold text-gray-800">
                     Select a user to chat
@@ -382,7 +391,7 @@ function MessageCenter() {
             )}
           </div>
           <div
-            className={`h-72 overflow-y-auto p-2 rounded-lg mb-1  ${
+            className={`h-[90vh] overflow-y-auto p-2 rounded-lg mb-1  ${
               messages.length === 0 ? "flex justify-center items-center" : ""
             }`}
           >
