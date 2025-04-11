@@ -44,7 +44,11 @@ const EditUser = () => {
 
   const profileImage = watch("profileImage");
   const profileImagePreview =
-    profileImage instanceof File ? URL.createObjectURL(profileImage) : null;
+    profileImage instanceof File
+      ? URL.createObjectURL(profileImage)
+      : typeof profileImage === "string"
+      ? profileImage
+      : null;
 
   const removeImage = (name: "profileImage") => {
     setValue(name, null);
@@ -74,7 +78,9 @@ const EditUser = () => {
     formData.append("notes", data.notes || "");
     formData.append("career_path", data.career_path || "");
     formData.append("lead_source", data.lead_source || "");
-
+    if (data.profileImage instanceof File) {
+      formData.append("profileImage", data.profileImage);
+    }
     formData.append(
       "ae_commission_threshold",
       JSON.stringify(data.ae_commission_threshold ?? 0)
@@ -96,7 +102,7 @@ const EditUser = () => {
     try {
       const res = await updateUser({
         id: userData.id,
-        formData, // 👈 Sending FormData
+        formData,
       }).unwrap();
 
       toast.success("User updated successfully");
@@ -120,6 +126,7 @@ const EditUser = () => {
 
   useEffect(() => {
     if (userData) {
+      setValue("profileImage", userData.profileImage || null);
       setValue("firstname", userData.firstname || "");
       setValue("lastname", userData.lastname || "");
       setValue("alternativemail", userData.alternativemail || "");
@@ -150,7 +157,7 @@ const EditUser = () => {
         </h2>
 
         <div className="w-full flex flex-col  items-center">
-          {/* {profileImagePreview ? (
+          {profileImagePreview ? (
             <div className=" relative w-[146px] h-[146px] rounded-full">
               <img
                 src={profileImagePreview}
@@ -191,7 +198,7 @@ const EditUser = () => {
               <input
                 type="file"
                 id="profileImage"
-                accept="image/*"
+                accept="image/png, image/jpeg, image/jpg, image/webp, image/gif"
                 onChange={(e) => {
                   const file = e.target.files ? e.target.files[0] : null;
                   setValue("profileImage", file);
@@ -200,7 +207,7 @@ const EditUser = () => {
                 className="hidden"
               />
             )}
-          /> */}
+          />
 
           <form
             onSubmit={handleSubmit(onSubmit)}
