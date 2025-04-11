@@ -37,7 +37,6 @@ const LeaderBoards = () => {
   const dummyData = DummyData();
 
   const { data: leaderData, isLoading } = useGetLeaderboardQuery();
-  console.log(leaderData, "leaderData");
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Leaderboards", "Leaderboard"]} />
