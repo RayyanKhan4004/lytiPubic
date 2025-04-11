@@ -157,6 +157,12 @@ export const orderApi = createApi({
         method: "GET",
       }),
     }),
+    getLeaderboard: builder.query<any, void>({
+      query: () => ({
+        url: "orders/leaderboard",
+        method: "GET",
+      }),
+    }),
 
     getUnderwriters: builder.query<any, { orderId: string }>({
       query: ({ orderId }) => ({
@@ -278,4 +284,5 @@ export const {
   useCreateSellingOfficeMutation,
   useDeleteSellingOfficeMutation,
   useDeleteSellingAgentMutation,
+  useGetLeaderboardQuery,
 } = orderApi;
