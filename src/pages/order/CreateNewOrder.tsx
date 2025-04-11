@@ -130,6 +130,7 @@ const CreateNewOrder = () => {
 
   const onSubmit: SubmitHandler<OrderDataType> = async (data) => {
     const formattedData = { ...data };
+    console.log(formattedData, "==formattedData==");
 
     try {
       const res = await createOrder(formattedData).unwrap();
@@ -398,6 +399,7 @@ const CreateNewOrder = () => {
           </form>
         </DialogContent>
       </Dialog>
+
       <Breadcrumb items={["Orders", "Create New Order"]} />
       <form onSubmit={handleOrderSubmit(onSubmit)}>
         <CardLayout>
@@ -477,11 +479,11 @@ const CreateNewOrder = () => {
             />
             <SelectField
               label="Agent"
-              name="titleRep"
+              name="userId"
               control={control}
               options={agentsOption}
               placeholder="Select..."
-              error={errors.titleRep?.message}
+              error={errors.userId?.message}
               required={false}
             />
             <CustomDatePicker
@@ -497,10 +499,22 @@ const CreateNewOrder = () => {
               label="Estimated Closing Date"
               placeholder="8-21-15"
             />
-            <CustomDatePicker
+            {/* <CustomDatePicker
               name="closedDate"
               control={control}
               label="Closing Date"
+              placeholder="8-21-15"
+            /> */}
+            <CustomDatePicker
+              name="appointmentSetDate"
+              control={control}
+              label="Appointment Set Date"
+              placeholder="8-21-15"
+            />
+            <CustomDatePicker
+              name="appointmentMetDate"
+              control={control}
+              label="Appointment Met Date"
               placeholder="8-21-15"
             />
             <InputField

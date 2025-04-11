@@ -53,6 +53,7 @@ export interface OrderDataType {
   endDate?: string;
   appointmentMetDate?: string;
   appointmentSetDate?: string;
+  userId?: string;
 }
 
 export interface ListingOfficeDataType {
