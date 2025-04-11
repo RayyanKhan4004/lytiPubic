@@ -54,6 +54,7 @@ import PersonalDashboard from "../pages/dashboard/personalDashboard/PersonalDash
 import MessageCenter from "../pages/message-center/MessageCenter";
 import EditChallenge from "../pages/challenges/EditChallenge";
 import LeadsSourceGroup from "../pages/admin/LeadsSourceGroup";
+import PublicDashBoard from "../pages/publicDashboard/PublicDashBoard";
 // import MessageCenter from "../pages/message-center/messageCenter";
 
 export const router = createBrowserRouter([
@@ -114,6 +115,14 @@ export const router = createBrowserRouter([
     element: (
       <PublicRoute>
         <Login />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/public",
+    element: (
+      <PublicRoute>
+        <PublicDashBoard />
       </PublicRoute>
     ),
   },
