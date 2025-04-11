@@ -29,6 +29,7 @@ import {
   fileTypeOptions,
   transactionOption,
   useOptions,
+  useOptionsAddNew,
 } from "../../utils/options";
 import { OrderDataType } from "../../utils/types";
 import MainTitle from "../../components/ui/typography/MainTitle";
@@ -40,10 +41,10 @@ const OrderEdit = () => {
   const [updateOrder, { isLoading }] = useUpdateOrderMutation();
   const data = useLocation();
   const { orderData } = data.state || {};
-  console.log(orderData, "==orderData==");
+  console.log(orderData, "==orderData==", orderData?.user?.id);
   const navigate = useNavigate();
   const { agentsOption, listingOfficeOption, sellingOfficesOption } =
-    useOptions();
+    useOptionsAddNew();
 
   const {
     handleSubmit,
@@ -124,11 +125,17 @@ const OrderEdit = () => {
   useEffect(() => {
     if (orderData) {
       setValue("titleOffice", orderData.titleOffice || "");
-      // setValue("agent", orderData.agent || "");
-      setValue("titleRep", orderData.titleRep || "");
+      const selectedAgent = agentsOption.find(
+        (agent: any) => agent.value === String(orderData.user?.id)
+      );
+
+      if (selectedAgent) {
+        setValue("userId", selectedAgent.value);
+      }
+
       setValue("openDate", orderData.openDate || null);
       setValue("estimatedClosingDate", orderData.estimatedClosingDate || null);
-      setValue("closedDate", orderData.closedDate || null);
+      // setValue("closedDate", orderData.closedDate || null);
       setValue("appointmentSetDate", orderData.appointmentSetDate || null);
       setValue("appointmentMetDate", orderData.appointmentMetDate || null);
 
@@ -152,11 +159,11 @@ const OrderEdit = () => {
         orderData.listingAgentContactEmail || ""
       );
       setValue("listingAgentPhone", orderData.listingAgentPhone || "");
-      setValue("listingOfficeId", orderData.listingOffice?.id || "");
+      setValue("listingOfficeId", orderData.listingOffice?.id || null);
       setValue("listingAgentId", orderData.listingAgent?.id);
       setValue("sellingAgentId", orderData?.sellingAgent?.id);
       setValue("sellingAgentCompany", orderData.sellingAgentCompany || "");
-      setValue("sellingOfficeId", orderData.sellingOffice?.id || "");
+      setValue("sellingOfficeId", orderData.sellingOffice?.id || null);
       setValue(
         "sellingAgentContactName",
         orderData.sellingAgentContactName || ""
@@ -255,11 +262,11 @@ const OrderEdit = () => {
             />
             <SelectField
               label="Agent"
-              name="titleRep"
+              name="userId"
               control={control}
               options={agentsOption}
               placeholder="Select..."
-              error={errors.titleRep?.message}
+              error={errors.userId?.message}
               required={false}
             />
             <CustomDatePicker
@@ -276,13 +283,13 @@ const OrderEdit = () => {
               placeholder="8-21-15"
               // rules={{ required: "Date is required" }}
             />
-            <CustomDatePicker
+            {/* <CustomDatePicker
               name="closedDate"
               control={control}
               label="Closing Date"
               placeholder="8-21-15"
               // rules={{ required: "Date is required" }}
-            />
+            /> */}
             <CustomDatePicker
               name="appointmentSetDate"
               control={control}

@@ -578,7 +578,7 @@ const OrdersTable = () => {
                               <td>{e.id}</td>
                               <td>{e.titleOfficer}</td>
                               <td>{e.titleOffice}</td>
-                              <td>{e.titleRep}</td>
+                              <td>{e.user?.firstname}</td>
                               <td>{e.titleRepPct}</td>
                               <td>{e.openDate}</td>
                               <td>{e.estimatedClosingDate}</td>

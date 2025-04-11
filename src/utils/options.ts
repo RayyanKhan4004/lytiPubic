@@ -103,10 +103,12 @@ export const useOptions = () => {
   const { data: SellingOfficeData } = useGetSellingOfficeQuery();
 
   const agentsOption =
-    data?.users?.map((user: { firstname: string }) => ({
-      value: user.firstname,
-      label: user.firstname,
-    })) || [];
+    data?.users?.map(
+      (user: { firstname: string; lastname: string; id: string }) => ({
+        value: String(user.id),
+        label: `${user.firstname} ${user.lastname}`,
+      })
+    ) || [];
 
   const listingOfficeOption =
     listingOfficeData?.listingOffices?.map(
@@ -135,10 +137,12 @@ export const useOptionsAddNew = () => {
     useGetSellingOfficeQuery();
 
   const agentsOption =
-    data?.users?.map((user: { firstname: string }) => ({
-      value: user.firstname,
-      label: user.firstname,
-    })) || [];
+    data?.users?.map(
+      (user: { firstname: string; lastname: string; id: string }) => ({
+        value: String(user.id),
+        label: `${user.firstname} ${user.lastname}`,
+      })
+    ) || [];
 
   const listingOfficeOption = [
     { value: "addNew", label: "Add new listing" },
