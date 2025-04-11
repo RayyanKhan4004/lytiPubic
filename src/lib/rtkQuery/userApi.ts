@@ -65,8 +65,8 @@ export const userApi = createApi({
   }),
   endpoints: (builder) => ({
     fetchUsers: builder.query<any, FormValues>({
-      query: ({ keyword, page, limit }) =>
-        `users?keyword=${keyword}&page=${page}&limit=${10}`,
+      query: ({ keyword, page, limit, role }) =>
+        `users?keyword=${keyword}&page=${page}&limit=${10}&role=${role}`,
     }),
     fetchUsersWithoutLimit: builder.query<any, void>({
       query: () => `users?limit=${100000}&role=Account Executive`,

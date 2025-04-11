@@ -7,7 +7,11 @@ import {
   useFetchUsersQuery,
 } from "../../../lib/rtkQuery/userApi";
 import { DummyData, userTableHeaders } from "../../../utils/DummyData";
-import { filterOption } from "../../../utils/options";
+import {
+  fileStatusOption,
+  filterOption,
+  roleOption,
+} from "../../../utils/options";
 
 import Breadcrumb from "../../../components/common/BreadCrumb";
 import Pagination from "../../../components/common/Pagination";
@@ -29,35 +33,72 @@ import toast from "react-hot-toast";
 import { UserTableType } from "../../../utils/types";
 import MainTitle from "../../../components/ui/typography/MainTitle";
 import CardLayout from "../../../components/layouts/CardLayout";
+type FilterType = {
+  key: string;
+  value: string;
+};
 
 const UsersTable = () => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState("");
   const navigate = useNavigate();
   const [deleteUser] = useDeleteUserMutation();
+  const [selectedFilters, setSelectedFilters] = useState<FilterType[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const {
     formState: { errors },
     watch,
     control,
+    setValue,
   } = useForm<UserTableType>();
+
+  const selectedRole = watch("role") || "";
+
+  const handleSearch = (value: string) => {
+    const term = value.toLowerCase();
+    setSearchTerm(term);
+    updateFilter("search", term);
+  };
+
+  useEffect(() => {
+    updateFilter("role", selectedRole);
+  }, [selectedRole]);
 
   const { data, error, isLoading, refetch } = useFetchUsersQuery({
     keyword: searchTerm,
     page,
     limit: 10,
+    role: selectedRole,
   });
+
+  const updateFilter = (key: string, value: string) => {
+    setSelectedFilters((prev) => {
+      const updated = prev.filter((f) => f.key !== key);
+      if (value) {
+        updated.push({ key, value });
+      }
+      return updated;
+    });
+  };
+
+  const removeFilter = (key: string) => {
+    setSelectedFilters((prev) => prev.filter((f) => f.key !== key));
+
+    // Reset form fields
+    if (key === "role") {
+      setValue("role", "");
+    }
+    if (key === "search") {
+      setSearchTerm("");
+    }
+  };
 
   const handlePageChange = ({ selected }: { selected: number }) => {
     const newPage = selected + 1;
     if (newPage >= 1 && newPage <= data?.totalPages) {
       setPage(newPage);
     }
-  };
-
-  const handleSearch = (searchTerm: string) => {
-    setSearchTerm(searchTerm.toLowerCase());
   };
 
   const handleAction = async (action: string, userData?: any) => {
@@ -86,36 +127,58 @@ const UsersTable = () => {
     <div className="w-full px-4 my-8">
       <Breadcrumb items={["Admin", "User"]} />
       <CardLayout>
-        <div className="font-Poppins flex justify-between items-center w-full ">
-          <MainTitle title="Users" />
-          <form className="flex items-center gap-3">
-            <SearchInput
-              debounceTimeout={500}
-              placeholder="Search..."
-              onChange={handleSearch}
-            />
-            <SelectField
-              name="type"
-              control={control}
-              options={filterOption}
-              placeholder="Type"
-              error={errors.type?.message}
-              required={false}
-              className="w-[120px]"
-              height="44px"
-            />
+        <div className="font-Poppins flex justify-between items-center w-full flex-col">
+          <div className="w-full flex justify-between items-center">
+            <MainTitle title="Users" />
+            <form className="flex items-center gap-3">
+              <SearchInput
+                debounceTimeout={500}
+                placeholder="Search..."
+                onChange={handleSearch}
+              />
+              <SelectField
+                label=""
+                name="role"
+                control={control}
+                options={roleOption}
+                placeholder="Role"
+                error={errors.role?.message}
+                required={false}
+                className="w-[120px]"
+                height="44px"
+              />
 
-            <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
-              <img src={upload} alt="" />
-            </div>
-            <div
-              className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
-              onClick={() => navigate("/admin/add-user")}
-            >
-              <img src={add} alt="" />
-              Add User
-            </div>
-          </form>
+              <div className="rounded-xl flex justify-center items-center bg-(--smoke) w-[44px] h-[44px]">
+                <img src={upload} alt="" />
+              </div>
+              <div
+                className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] px-3 rounded-xl text-white"
+                onClick={() => navigate("/admin/add-user")}
+              >
+                <img src={add} alt="" />
+                Add User
+              </div>
+            </form>
+          </div>
+
+          <div className="flex gap-2 mt-2 flex-wrap justify-end w-full">
+            {selectedFilters.map((filter) =>
+              filter.value ? (
+                <div
+                  key={filter.key}
+                  className="flex items-center bg-[#E5E5E5] px-4 py-1 rounded-[27px] text-sm h-[40px]"
+                >
+                  <button
+                    onClick={() => removeFilter(filter.key)}
+                    className="mr-2 text-gray-700"
+                  >
+                    ✖
+                  </button>
+                  {filter.value}
+                </div>
+              ) : null
+            )}
+          </div>
         </div>
 
         <div className="w-full overflow-x-auto">
