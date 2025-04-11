@@ -54,6 +54,7 @@ export interface OrderDataType {
   appointmentMetDate?: string;
   appointmentSetDate?: string;
   userId?: string;
+  selectedUser?: string;
 }
 
 export interface ListingOfficeDataType {
