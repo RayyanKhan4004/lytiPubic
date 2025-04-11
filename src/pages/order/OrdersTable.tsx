@@ -77,9 +77,6 @@ const OrdersTable = () => {
 
   const [locationType, setLocationType] = useState(location.state?.type || "");
   const yearFromCard = location.state?.selectedYear || "";
-  const typeFromLocation = location.state?.type || "";
-
-  const selectedYear = formYear || yearFromCard || "";
 
   useEffect(() => {
     const effectiveYear = isYearManuallyCleared ? "" : formYear || yearFromCard;
@@ -110,6 +107,7 @@ const OrdersTable = () => {
     locationType === "pending" ? "Prelim/Commitment" : selectedFileType;
 
   const { data, isLoading, refetch } = useGetOrdersQuery({
+    // userId,
     status: adjustedStatus,
     type: adjustedType,
     propertyCounty: selectedPropertyCounty,

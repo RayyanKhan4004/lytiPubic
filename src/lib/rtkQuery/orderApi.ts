@@ -50,6 +50,7 @@ export const orderApi = createApi({
         orderId,
         startDate,
         endDate,
+        userId,
       }) => ({
         url: "orders/",
         params: {
@@ -65,6 +66,7 @@ export const orderApi = createApi({
           orderId,
           startDate,
           endDate,
+          userId,
         },
       }),
     }),
