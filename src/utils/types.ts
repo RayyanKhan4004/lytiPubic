@@ -98,6 +98,7 @@ export interface UserDataType {
 export interface UserTableType {
   filter: string;
   type: string;
+  role: string;
 }
 
 export type DragAndDropColumnKey =
