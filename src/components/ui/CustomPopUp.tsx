@@ -1,13 +1,13 @@
-import { ReactNode, useState, useEffect } from "react"
+import { ReactNode, useState, useEffect } from "react";
 
 interface FilterPopupProps {
-  setOpenModel: (pramp: boolean) => void
-  openModel: boolean
-  data?: any 
-  children?: ReactNode
-  styles?: string
-  position: 'right' | 'left' | 'center'
-  selected?: any
+  setOpenModel: (pramp: boolean) => void;
+  openModel: boolean;
+  data?: any;
+  children?: ReactNode;
+  styles?: string;
+  position: "right" | "left" | "center";
+  selected?: any;
 }
 
 function CustomPopUp({
@@ -17,13 +17,12 @@ function CustomPopUp({
   children,
   styles,
   position,
-  selected
+  selected,
 }: FilterPopupProps) {
   const [animatePopup, setAnimatePopup] = useState(false);
 
   useEffect(() => {
     if (openModel) {
-      // Start the animation with a slight delay for smooth transition
       setTimeout(() => {
         setAnimatePopup(true);
       }, 50);
@@ -34,22 +33,22 @@ function CustomPopUp({
 
   function getPosition() {
     switch (position) {
-      case 'center':
-        return 'justify-center';
-      case 'left':
-        return 'justify-start';
-      case 'right':
-        return 'justify-end';
+      case "center":
+        return "justify-center";
+      case "left":
+        return "justify-start";
+      case "right":
+        return "justify-end";
     }
   }
 
   function getAnimation() {
     switch (position) {
-      case 'center':
+      case "center":
         return animatePopup ? "opacity-100 scale-100" : "opacity-0 scale-95";
-      case 'left':
+      case "left":
         return animatePopup ? "translate-x-0" : "-translate-x-full";
-      case 'right':
+      case "right":
         return animatePopup ? "translate-x-0" : "translate-x-full";
       default:
         return "";
@@ -70,9 +69,7 @@ function CustomPopUp({
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* content */}
           {children}
-          {/* content end */}
         </div>
       </div>
     </div>
