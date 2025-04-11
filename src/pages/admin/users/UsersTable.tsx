@@ -33,6 +33,7 @@ import toast from "react-hot-toast";
 import { UserTableType } from "../../../utils/types";
 import MainTitle from "../../../components/ui/typography/MainTitle";
 import CardLayout from "../../../components/layouts/CardLayout";
+import { useAppSelector } from "../../../lib/store/hooks";
 type FilterType = {
   key: string;
   value: string;
@@ -64,7 +65,7 @@ const UsersTable = () => {
   useEffect(() => {
     updateFilter("role", selectedRole);
   }, [selectedRole]);
-
+  const userId = useAppSelector((state: any) => state?.auth?.user?.id);
   const { data, error, isLoading, refetch } = useFetchUsersQuery({
     keyword: searchTerm,
     page,
@@ -201,123 +202,128 @@ const UsersTable = () => {
                     <NoDataRow colSpan={4} />
                   ) : (
                     <>
-                      {data?.users?.map(
-                        (e: any, i: number) => (
-                          <tr
-                            key={i}
-                            className="font-Jakarta text-sm font-normal text-[#15120F] h-[70px] border-b-[1px] border-[#F4EFE9] cursor-pointer 
+                      {data?.users
+                        ?.filter((user: any) => user.id !== userId)
+                        .map(
+                          (e: any, i: number) => (
+                            <tr
+                              key={i}
+                              className="font-Jakarta text-sm font-normal text-[#15120F] h-[70px] border-b-[1px] border-[#F4EFE9] cursor-pointer 
                             bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out"
-                          >
-                            <td>
-                              {loading == e?.id ? (
-                                <Spinner />
-                              ) : (
-                                <>
-                                  <PopoverMenu
-                                    triggerImage={menu}
-                                    options={[
-                                      {
-                                        label: "Edit User",
-                                        onClick: () => handleAction("edit", e),
-                                      },
-                                      // {
-                                      //   label: "Documents",
-                                      //   onClick: () =>
-                                      //     handleAction("documents"),
-                                      // },
-                                      // {
-                                      //   label: "Comments",
-                                      //   onClick: () => handleAction("comments"),
-                                      // },
-                                      // {
-                                      //   label: "History",
-                                      //   onClick: () => handleAction("history"),
-                                      // },
-                                      // {
-                                      //   label: "Services",
-                                      //   onClick: () => handleAction("services"),
-                                      // },
-                                      // {
-                                      //   label: "Client Portal",
-                                      //   onClick: () =>
-                                      //     handleAction("client_portal"),
-                                      // },
-                                      // {
-                                      //   label: "Lock",
-                                      //   onClick: () => handleAction("lock"),
-                                      // },
-                                      // {
-                                      //   label: "Lost",
-                                      //   onClick: () => handleAction("lost"),
-                                      // },
-                                      // {
-                                      //   label: "Duplicate",
-                                      //   onClick: () =>
-                                      //     handleAction("duplicate"),
-                                      // },
-                                      {
-                                        label: "Delete",
-                                        onClick: () =>
-                                          handleAction("delete", e),
-                                      },
-                                    ]}
-                                  />
-                                </>
-                              )}
-                            </td>
-                            <td
-                              className="cursor-pointer px-3 "
-                              style={{
-                                maxWidth: "50px",
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                textOverflow: "ellipsis",
-                              }}
-                              title={e.id}
                             >
-                              {e.id}
-                            </td>
-                            <td>
-                              <div className="flex items-center gap-2">
-                                <img
-                                  src={e.profileImage || dummyImage}
-                                  alt=""
-                                  className="w-[40px] h-[40px] rounded-full"
-                                />
-                                <div>
-                                  <h3 className="font-medium ">
-                                    {e.firstname}
-                                  </h3>
-                                  <h3 className="text-xs text-(--secondary)">
-                                    {e.role}
-                                  </h3>
+                              <td>
+                                {loading == e?.id ? (
+                                  <Spinner />
+                                ) : (
+                                  <>
+                                    <PopoverMenu
+                                      triggerImage={menu}
+                                      options={[
+                                        {
+                                          label: "Edit User",
+                                          onClick: () =>
+                                            handleAction("edit", e),
+                                        },
+                                        // {
+                                        //   label: "Documents",
+                                        //   onClick: () =>
+                                        //     handleAction("documents"),
+                                        // },
+                                        // {
+                                        //   label: "Comments",
+                                        //   onClick: () => handleAction("comments"),
+                                        // },
+                                        // {
+                                        //   label: "History",
+                                        //   onClick: () => handleAction("history"),
+                                        // },
+                                        // {
+                                        //   label: "Services",
+                                        //   onClick: () => handleAction("services"),
+                                        // },
+                                        // {
+                                        //   label: "Client Portal",
+                                        //   onClick: () =>
+                                        //     handleAction("client_portal"),
+                                        // },
+                                        // {
+                                        //   label: "Lock",
+                                        //   onClick: () => handleAction("lock"),
+                                        // },
+                                        // {
+                                        //   label: "Lost",
+                                        //   onClick: () => handleAction("lost"),
+                                        // },
+                                        // {
+                                        //   label: "Duplicate",
+                                        //   onClick: () =>
+                                        //     handleAction("duplicate"),
+                                        // },
+                                        {
+                                          label: "Delete",
+                                          onClick: () =>
+                                            handleAction("delete", e),
+                                        },
+                                      ]}
+                                    />
+                                  </>
+                                )}
+                              </td>
+                              <td
+                                className="cursor-pointer px-3 "
+                                style={{
+                                  maxWidth: "50px",
+                                  overflow: "hidden",
+                                  whiteSpace: "nowrap",
+                                  textOverflow: "ellipsis",
+                                }}
+                                title={e.id}
+                              >
+                                {e.id}
+                              </td>
+                              <td>
+                                <div className="flex items-center gap-2">
+                                  <img
+                                    src={e.profileImage || dummyImage}
+                                    alt=""
+                                    className="w-[40px] h-[40px] rounded-full"
+                                  />
+                                  <div>
+                                    <h3 className="font-medium ">
+                                      {e.firstname}
+                                    </h3>
+                                    <h3 className="text-xs text-(--secondary)">
+                                      {e.role}
+                                    </h3>
+                                  </div>
                                 </div>
-                              </div>
-                            </td>
+                              </td>
 
-                            <td>{e.email}</td>
-                            <td>{e.alternativemail}</td>
-                            <td>{e.business_entity}</td>
-                            <td>{e.career_path}</td>
-                            <td>{e.lead_source}</td>
-                            <td>{e.ae_commission_threshold}</td>
-                            <td>{e.ae_escrow_commission}</td>
-                            <td>{e.ae_title_commission}</td>
-                            <td>
-                              {e.exclude_challenges_leaderboards ? "Yes" : "No"}
-                            </td>
-                            <td>{e.send_welcome_email ? "Yes" : "No"}</td>
-                            <td>{e.download_transactions ? "Yes" : "No"}</td>
-                            <td>{e.notes}</td>
+                              <td>{e.email}</td>
+                              <td>{e.alternativemail}</td>
+                              <td>{e.business_entity}</td>
+                              <td>{e.career_path}</td>
+                              <td>{e.lead_source}</td>
+                              <td>{e.ae_commission_threshold}</td>
+                              <td>{e.ae_escrow_commission}</td>
+                              <td>{e.ae_title_commission}</td>
+                              <td>
+                                {e.exclude_challenges_leaderboards
+                                  ? "Yes"
+                                  : "No"}
+                              </td>
+                              <td>{e.send_welcome_email ? "Yes" : "No"}</td>
+                              <td>{e.download_transactions ? "Yes" : "No"}</td>
+                              <td>{e.notes}</td>
 
-                            <td>{e.startdate}</td>
-                            <td>
-                              {new Date(e.createdAt).toLocaleDateString()}
-                            </td>
-                          </tr>
-                        ),
-                        []
-                      )}
+                              <td>{e.startdate}</td>
+                              <td>
+                                {new Date(e.createdAt).toLocaleDateString()}
+                              </td>
+                            </tr>
+                          ),
+                          []
+                        )}
                     </>
                   )}
                 </>

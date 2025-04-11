@@ -50,6 +50,7 @@ export const orderApi = createApi({
         orderId,
         startDate,
         endDate,
+        userId,
       }) => ({
         url: "orders/",
         params: {
@@ -65,6 +66,7 @@ export const orderApi = createApi({
           orderId,
           startDate,
           endDate,
+          userId,
         },
       }),
     }),
@@ -154,6 +156,12 @@ export const orderApi = createApi({
     getSellingOffice: builder.query<any, void>({
       query: () => ({
         url: "orders/selling-offices",
+        method: "GET",
+      }),
+    }),
+    getLeaderboard: builder.query<any, void>({
+      query: () => ({
+        url: "orders/leaderboard",
         method: "GET",
       }),
     }),
@@ -278,4 +286,5 @@ export const {
   useCreateSellingOfficeMutation,
   useDeleteSellingOfficeMutation,
   useDeleteSellingAgentMutation,
+  useGetLeaderboardQuery,
 } = orderApi;

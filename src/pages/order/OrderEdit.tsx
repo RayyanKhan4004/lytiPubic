@@ -188,7 +188,7 @@ const OrderEdit = () => {
       setValue("lastname", orderData.lastname || "");
       setValue("fees", orderData.fees || []);
 
-      setValue("contact", orderData.contact ?? 0);
+      setValue("contact", orderData.contact ?? "");
       setValue("titleRepPct", orderData.titleRepPct ?? 0);
       setValue("salePrice", orderData.salePrice ?? 0);
       setValue("loanAmount", orderData.loanAmount ?? 0);

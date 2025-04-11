@@ -7,6 +7,9 @@ import { PieChart, Pie, Cell } from "recharts";
 import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
 import { DummyData } from "../../utils/DummyData";
 import SearchInput from "../../components/common/SearchInput";
+import { useGetLeaderboardQuery } from "../../lib/rtkQuery/orderApi";
+import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
+import NoDataRow from "../../components/ui/NoDataRow";
 
 interface ChartData {
   name: string;
@@ -33,6 +36,7 @@ const LeaderBoards = () => {
   ];
   const dummyData = DummyData();
 
+  const { data: leaderData, isLoading } = useGetLeaderboardQuery();
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Leaderboards", "Leaderboard"]} />
@@ -111,58 +115,42 @@ const LeaderBoards = () => {
             />
           </div>
 
-          <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-3">
-            <thead className="text-sm font-normal text-start ">
-              <tr className="border-b-[1px] border-[#F4EFE9] ">
-                <th className="text-start font-medium ">
-                  <div className="flex  gap-2 items-center">
-                    Rank <img src={arrowUpDown} alt="" />
+          <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-7">
+            <thead className="text-sm font-normal border-b-[1px] border-[#F4EFE9]">
+              <tr>
+                <th className="text-start font-medium">ID</th>
+                <th className="text-start font-medium">Name</th>
+                <th className="text-start font-medium">Orders</th>
+                <th className="text-start font-medium">
+                  <div className="flex gap-2 items-center">
+                    Orders <span>%</span>
                   </div>
                 </th>
-                <th className="text-start font-medium ">
-                  <div className="flex  gap-2 items-center">
-                    Name <img src={arrowUpDown} alt="" />
-                  </div>
-                </th>
-                <th className="text-start font-medium ">
-                  <div className="flex  gap-2 items-center">
-                    Total Count <img src={arrowUpDown} alt="" />
-                  </div>
-                </th>
-                <th className="text-start font-medium ">
-                  <div className="flex  gap-2 items-center">
-                    % of total <img src={arrowUpDown} alt="" />
-                  </div>
-                </th>
+                <th className="text-start font-medium">Rank</th>
               </tr>
             </thead>
-
             <tbody>
-              {dummyData?.map(
-                (e: any, i: number) => (
-                  <tr
-                    key={i}
-                    className="font-Jakarta text-sm font-normal text-[#15120F] h-[80px] border-b-[1px] border-[#F4EFE9]"
-                  >
-                    <td
-                      className="cursor-pointer px-3 "
-                      style={{
-                        maxWidth: "50px",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis",
-                      }}
-                      title={e.id}
-                    >
-                      {e.id}
-                    </td>
-
-                    <td>{e.phone}</td>
-                    <td>{e.added}</td>
-                    <td>{e.lastAccess}</td>
-                  </tr>
-                ),
-                []
+              {isLoading ? (
+                <TableSkeleton columns={6} />
+              ) : (
+                <>
+                  {leaderData?.leaderboard?.length === 0 ? (
+                    <NoDataRow colSpan={6} />
+                  ) : (
+                    leaderData?.leaderboard?.map((e: any, i: number) => (
+                      <tr
+                        key={e.userId}
+                        className="font-Jakarta text-sm font-normal text-[#15120F] h-[55px] border-b-[1px] border-[#F4EFE9] bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out"
+                      >
+                        <td>{e.userId}</td>
+                        <td>{e.name}</td>
+                        <td>{e.orderCount}</td>
+                        <td>{e.percentage}</td>
+                        <td>{e.rank}</td>
+                      </tr>
+                    ))
+                  )}
+                </>
               )}
             </tbody>
           </table>
