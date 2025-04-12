@@ -14,7 +14,7 @@ function PublicHeadings() {
         </h1>
       </div>
       <div className="p-15">
-      <div className="flex justify-between border-t-2 p-4 border-gray-500 border-b-2">
+      <div className="flex justify-between border-t-2 p-4 border-gray-200 border-b-2">
         <img src={LandingLogo1} alt="" />
         <img src={LandingLogo2} alt="" />
         <img src={LandingLogo3} alt="" />

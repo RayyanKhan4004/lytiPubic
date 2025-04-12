@@ -55,6 +55,7 @@ import MessageCenter from "../pages/message-center/MessageCenter";
 import EditChallenge from "../pages/challenges/EditChallenge";
 import LeadsSourceGroup from "../pages/admin/LeadsSourceGroup";
 import PublicDashBoard from "../pages/publicDashboard/PublicDashBoard";
+import PricingPage from "../pages/PricingPage/PricingPage";
 // import MessageCenter from "../pages/message-center/messageCenter";
 
 export const router = createBrowserRouter([
@@ -126,4 +127,12 @@ export const router = createBrowserRouter([
       </PublicRoute>
     ),
   },
+  {
+    path: "/pricing",
+    element: (
+      <PublicRoute>
+        <PricingPage />
+      </PublicRoute>
+    ),
+  }
 ]);
