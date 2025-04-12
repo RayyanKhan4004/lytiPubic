@@ -353,16 +353,15 @@ const OrdersTable = () => {
                 >
                   Reset
                 </button>
-                <button
+                {/* <button
                   type="button"
                   onClick={() => {
-                    // your filter logic
                     setIsModelOpen(false);
                   }}
                   className="text-white bg-(--secondary) rounded-[8px] font-poppin font-semibold text-[14px] leading-[21px] px-8"
                 >
                   Apply Filters
-                </button>
+                </button> */}
               </div>
             </div>
           </form>
