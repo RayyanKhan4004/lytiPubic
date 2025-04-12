@@ -1,12 +1,25 @@
 import Dummy from "../../assets/images/Dummy.jpg";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Breadcrumb from "../../components/common/BreadCrumb";
-interface FormValues {
-  firstName: string;
-  lastName: string;
-  email: string;
-  notes: string;
-}
+import MainTitle from "../../components/ui/typography/MainTitle";
+import CardLayout from "../../components/layouts/CardLayout";
+import { useAppDispatch, useAppSelector } from "../../lib/store/hooks";
+import pencil from "../../assets/icons/PencilSimple.svg";
+import { UserDataType } from "../../utils/types";
+import image from "../../assets/icons/Image.svg";
+import CustomDatePicker from "../../components/inputs/CustomDatePicker";
+import SelectField from "../../components/inputs/SelectField";
+import InputField from "../../components/inputs/InputFields";
+import { roleOption } from "../../utils/options";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  useDeleteUserMutation,
+  useUpdateUserMutation,
+} from "../../lib/rtkQuery/userApi";
+import toast from "react-hot-toast";
+import { clearAuth, setAuth } from "../../lib/store/slices/authSlice";
+import Spinner from "../../components/ui/loader/Spinner";
 
 const Profile = () => {
   const {
@@ -16,239 +29,279 @@ const Profile = () => {
     setValue,
     watch,
     control,
-  } = useForm<FormValues>();
+  } = useForm<UserDataType>();
+  const [isChallenge, setIsChallenge] = useState<boolean>(false);
+  const [isDownload, setIsDownload] = useState<boolean>(false);
+  const [isWelcome, setIsWelcome] = useState<boolean>(false);
+  const userData = useAppSelector((state: any) => state?.auth?.user);
+  const dispatch = useAppDispatch();
 
+  const profileImage = watch("profileImage");
+  const profileImagePreview =
+    profileImage instanceof File
+      ? URL.createObjectURL(profileImage)
+      : typeof profileImage === "string"
+      ? profileImage
+      : null;
+
+  const removeImage = (name: "profileImage") => {
+    setValue(name, null);
+    setTimeout(() => {
+      const inputElement = document.getElementById(
+        "profileImage"
+      ) as HTMLInputElement;
+      if (inputElement) {
+        inputElement.value = "";
+      }
+    }, 0);
+  };
+  console.log(userData, "userData");
+  useEffect(() => {
+    if (userData) {
+      setValue("profileImage", userData.profileImage || null);
+      setValue("firstname", userData.firstname || "");
+      setValue("lastname", userData.lastname || "");
+      setValue("alternativemail", userData.alternativemail || "");
+      setValue("business_entity", userData.business_entity || "");
+      setValue("email", userData.email || "");
+      setValue("role", userData.role || "");
+      setValue("startdate", userData.startdate || "");
+      setValue("notes", userData.notes || "");
+      setValue(
+        "ae_commission_threshold",
+        userData.ae_commission_threshold || 0
+      );
+      setValue("ae_escrow_commission", userData.ae_escrow_commission || 0);
+      setValue("ae_title_commission", userData.ae_title_commission || 0);
+      setValue("career_path", userData.career_path || 0);
+      setValue("lead_source", userData.lead_source || 0);
+      setIsChallenge(userData.exclude_challenges_leaderboards || false);
+      setIsDownload(userData.download_transactions || false);
+      setIsWelcome(userData.send_welcome_email || false);
+    }
+  }, [userData, setValue]);
+  const navigate = useNavigate();
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const [deleteUser, { isLoading: isDeleteLoading }] = useDeleteUserMutation();
+
+  const onSubmit: SubmitHandler<UserDataType> = async (data: UserDataType) => {
+    const formData = new FormData();
+
+    formData.append("firstname", data.firstname || "");
+    formData.append("lastname", data.lastname || "");
+    formData.append("alternativemail", data.alternativemail || "");
+    formData.append("business_entity", data.business_entity || "");
+    formData.append("email", data.email || "");
+    formData.append("role", data.role || "");
+    formData.append(
+      "startdate",
+      data.startdate ? new Date(data.startdate).toISOString() : ""
+    );
+    formData.append("notes", data.notes || "");
+    formData.append("career_path", data.career_path || "");
+    formData.append("lead_source", data.lead_source || "");
+    if (data.profileImage instanceof File) {
+      formData.append("profileImage", data.profileImage);
+    }
+    formData.append(
+      "ae_commission_threshold",
+      JSON.stringify(data.ae_commission_threshold ?? 0)
+    );
+    formData.append(
+      "ae_escrow_commission",
+      JSON.stringify(data.ae_escrow_commission ?? 0)
+    );
+    formData.append(
+      "ae_title_commission",
+      JSON.stringify(data.ae_title_commission ?? 0)
+    );
+
+    // Boolean toggles
+    formData.append("exclude_challenges_leaderboards", String(isChallenge));
+    formData.append("download_transactions", String(isDownload));
+    formData.append("send_welcome_email", String(isWelcome));
+
+    try {
+      const res = await updateUser({
+        id: userData.id,
+        formData,
+      }).unwrap();
+      dispatch(setAuth(res?.user));
+      toast.success("User updated successfully");
+      // navigate("/admin/users-table");
+      console.log(res, "===res====");
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Can't update user");
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      await deleteUser(userData?.id).unwrap();
+      toast.success("Account  deleted successfully");
+      dispatch(clearAuth());
+      localStorage.clear();
+      navigate("/");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Can not delete user");
+    }
+  };
   return (
     <div className="w-full px-4 my-8 font-Poppins">
       <Breadcrumb items={["Account", "Profile"]} />
-      <div className="w-full flex justify-between my-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full flex justify-between my-6"
+      >
         <div className="w-[49%] flex flex-col gap-5">
-          <div className="shadow-(--cardShadow) rounded-2xl w-full bg-white  px-4   py-7 flex flex-col gap-3">
-            <h1 className="text-lg font-semibold text-(--primary)">User</h1>
+          <CardLayout className="my-0">
+            <MainTitle title="User" />
 
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-4">
-                <img
-                  src={Dummy}
-                  alt=""
-                  className="w-[80px] h-[80px] rounded-full"
+                {profileImagePreview ? (
+                  <div className=" relative w-[146px] h-[146px] rounded-full border border-(--inputBorder) ">
+                    <img
+                      src={profileImagePreview}
+                      alt="Profile Preview"
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                    <label
+                      htmlFor="profileImage"
+                      className="absolute right-2 bottom-2 bg-(--primary) p-1 rounded-full cursor-pointer"
+                    >
+                      <img
+                        src={pencil}
+                        alt="Edit"
+                        className="right-2 bottom-2"
+                        onClick={() => {
+                          removeImage("profileImage");
+                        }}
+                      />
+                    </label>
+                  </div>
+                ) : (
+                  <label
+                    htmlFor="profileImage"
+                    className="w-[146px] h-[146px] rounded-full flex justify-center items-center bg-(--smoke)"
+                  >
+                    <img src={image} alt="" />
+                  </label>
+                )}
+
+                <Controller
+                  name="profileImage"
+                  control={control}
+                  defaultValue={null}
+                  rules={{
+                    required: "Profile image is required",
+                  }}
+                  render={({ field }) => (
+                    <input
+                      type="file"
+                      id="profileImage"
+                      accept="image/png, image/jpeg, image/jpg, image/webp, image/gif"
+                      onChange={(e) => {
+                        const file = e.target.files ? e.target.files[0] : null;
+                        setValue("profileImage", file);
+                        e.target.value = "";
+                      }}
+                      className="hidden"
+                    />
+                  )}
                 />
                 <div>
-                  <h3 className="font-medium text-base">John Doe</h3>
-                  <h3 className="font-normal text-sm">Senior developer</h3>
+                  <h3 className="font-medium text-base">
+                    {userData?.firstname} {userData?.lastname}
+                  </h3>
+                  <h3 className="font-normal text-sm">{userData?.role}</h3>
                 </div>
               </div>
               <button className="bg-[#24B036] text-sm text-white rounded-md px-4 h-[30px] text-center">
                 Active
               </button>
             </div>
-          </div>
+          </CardLayout>
 
-          <div className="shadow-(--cardShadow) rounded-2xl w-full bg-white  px-4   py-4 flex flex-col gap-3">
-            <h1 className="text-lg font-semibold text-(--primary)">
-              User information
-            </h1>
-            <div className="w-full flex justify-between items-center flex-wrap gap-4">
-              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                <label
-                  htmlFor="firstName"
-                  className="text-[14px] leading-[18px] font-medium"
-                >
-                  First Name
-                </label>
-                <input
+          <CardLayout>
+            <MainTitle title="User information" />
+            <div className="w-full flex justify-between ">
+              <div className="w-[48%]  flex flex-col gap-4">
+                <InputField
+                  label="First Name"
+                  name="firstname"
+                  control={control}
                   type="text"
-                  id="firstName"
-                  placeholder="John"
-                  className={`h-[55px] border-2 ${
-                    errors.firstName
-                      ? "border-red-500"
-                      : "border-(--inputBorder)"
-                  } rounded-[10px] w-full px-5 text-blackText`}
-                  {...register("firstName", {
-                    required: "First Name is required",
-                  })}
+                  placeholder="Enter your name"
+                  error={errors.firstname?.message}
                 />
-                {errors.firstName && (
-                  <span className="text-red-500 text-sm">
-                    {errors.firstName.message}
-                  </span>
-                )}
-              </div>
-              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                <label
-                  htmlFor="lastName"
-                  className="text-[14px] leading-[18px] font-medium"
-                >
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  placeholder="Doe"
-                  className={`h-[55px] border-2 ${
-                    errors.lastName
-                      ? "border-red-500"
-                      : "border-(--inputBorder)"
-                  } rounded-[10px] w-full px-5 text-blackText`}
-                  {...register("lastName", {
-                    required: "Last Name is required",
-                  })}
-                />
-                {errors.lastName && (
-                  <span className="text-red-500 text-sm">
-                    {errors.lastName.message}
-                  </span>
-                )}
-              </div>
-              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                <label
-                  htmlFor="email"
-                  className="text-[14px] leading-[18px] font-medium"
-                >
-                  Email
-                </label>
-                <input
+                <InputField
+                  label="Email Address"
+                  name="email"
+                  control={control}
                   type="email"
-                  id="email"
-                  placeholder="bill.sanders@example.com"
-                  className={`h-[55px] border-2 ${
-                    errors.email ? "border-red-500" : "border-(--inputBorder)"
-                  } rounded-[10px] w-full px-5 text-blackText`}
-                  {...register("email", {
-                    required: "Alternative Email is required",
-                    pattern: {
-                      value: /^\S+@\S+$/,
-                      message: "Invalid email format",
-                    },
-                  })}
+                  placeholder="Enter your Email Address"
+                  error={errors.email?.message}
                 />
-                {errors.email && (
-                  <span className="text-red-500 text-sm">
-                    {errors.email.message}
-                  </span>
-                )}
-              </div>
-              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                <label
-                  htmlFor="firstName"
-                  className="text-[14px] leading-[18px] font-medium"
-                >
-                  Phone No.
-                </label>
-                <input
+                <InputField
+                  label="Alternative Email"
+                  name="alternativemail"
+                  control={control}
+                  type="email"
+                  required={true}
+                  placeholder="Enter your Alternative Email"
+                  error={errors.alternativemail?.message}
+                />
+                <InputField
+                  label="Business Entity"
+                  name="business_entity"
+                  control={control}
+                  // required={true}
                   type="text"
-                  id="firstName"
-                  placeholder="John"
-                  className={`h-[55px] border-2 ${
-                    errors.firstName
-                      ? "border-red-500"
-                      : "border-(--inputBorder)"
-                  } rounded-[10px] w-full px-5 text-blackText`}
-                  {...register("firstName", {
-                    required: "First Name is required",
-                  })}
+                  placeholder="Enter your business entity"
+                  error={errors.business_entity?.message}
                 />
-                {errors.firstName && (
-                  <span className="text-red-500 text-sm">
-                    {errors.firstName.message}
-                  </span>
-                )}
               </div>
-              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                <label
-                  htmlFor="firstName"
-                  className="text-[14px] leading-[18px] font-medium"
-                >
-                  Time zone
-                </label>
-                <input
+
+              <div className=" w-[48%] flex flex-col gap-4">
+                <InputField
+                  label="Last Name"
+                  name="lastname"
+                  control={control}
                   type="text"
-                  id="firstName"
-                  placeholder="John"
-                  className={`h-[55px] border-2 ${
-                    errors.firstName
-                      ? "border-red-500"
-                      : "border-(--inputBorder)"
-                  } rounded-[10px] w-full px-5 text-blackText`}
-                  {...register("firstName", {
-                    required: "First Name is required",
-                  })}
+                  placeholder="Enter your last name"
+                  error={errors.lastname?.message}
                 />
-                {errors.firstName && (
-                  <span className="text-red-500 text-sm">
-                    {errors.firstName.message}
-                  </span>
-                )}
-              </div>
-              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                <label
-                  htmlFor="firstName"
-                  className="text-[14px] leading-[18px] font-medium"
-                >
-                  Default landing page
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  placeholder="John"
-                  className={`h-[55px] border-2 ${
-                    errors.firstName
-                      ? "border-red-500"
-                      : "border-(--inputBorder)"
-                  } rounded-[10px] w-full px-5 text-blackText`}
-                  {...register("firstName", {
-                    required: "First Name is required",
-                  })}
+
+                <SelectField
+                  label="Role"
+                  name="role"
+                  control={control}
+                  options={roleOption}
+                  placeholder="Select..."
+                  error={errors.role?.message}
+                  required={false}
                 />
-                {errors.firstName && (
-                  <span className="text-red-500 text-sm">
-                    {errors.firstName.message}
-                  </span>
-                )}
-              </div>
-              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                <label
-                  htmlFor="firstName"
-                  className="text-[14px] leading-[18px] font-medium"
-                >
-                  Business entity
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  placeholder="John"
-                  className={`h-[55px] border-2 ${
-                    errors.firstName
-                      ? "border-red-500"
-                      : "border-(--inputBorder)"
-                  } rounded-[10px] w-full px-5 text-blackText`}
-                  {...register("firstName", {
-                    required: "First Name is required",
-                  })}
+
+                <CustomDatePicker
+                  name="startdate"
+                  control={control}
+                  label="Start Date"
+                  placeholder="8-21-15"
+                  // rules={{ required: "Date is required" }}
                 />
-                {errors.firstName && (
-                  <span className="text-red-500 text-sm">
-                    {errors.firstName.message}
-                  </span>
-                )}
               </div>
             </div>
-          </div>
+          </CardLayout>
 
-          <div className="shadow-(--cardShadow) rounded-2xl w-full bg-white  px-4   py-4 flex flex-col gap-3">
-            <div className="text-(--greyText) flex flex-col gap-1.5 w-full">
-              <label
-                htmlFor="notes"
-                className="text-lg font-semibold text-(--primary)"
-              >
-                Notes
-              </label>
+          <CardLayout className="my-0">
+            <MainTitle title="Notes " />
+            <div className=" flex flex-col gap-1.5 w-full">
               <Controller
                 name="notes"
                 control={control}
                 defaultValue=""
-                rules={{ required: "Notes are required" }}
+                // rules={{ required: "Notes are required" }}
                 render={({ field }) => (
                   <textarea
                     id="notes"
@@ -262,11 +315,11 @@ const Profile = () => {
                 <p className="text-red-500 text-sm">{errors.notes.message}</p>
               )}
             </div>
-          </div>
+          </CardLayout>
         </div>
 
         <div className="w-[49%] flex flex-col gap-5">
-          <div className="shadow-(--cardShadow) rounded-2xl w-full bg-white  px-4   py-4 flex flex-col gap-3">
+          {/* <div className="shadow-(--cardShadow) rounded-2xl w-full bg-white  px-4   py-4 flex flex-col gap-3">
             <h1 className="text-lg font-semibold text-(--primary)">
               User Address{" "}
             </h1>
@@ -404,130 +457,98 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
-          <div className="shadow-(--cardShadow) rounded-2xl w-full bg-white  px-4   py-4 flex flex-col gap-3">
-            <h1 className="text-lg font-semibold text-(--primary)">
-              Cap & Split Settings{" "}
-            </h1>
-            <div className="w-full flex justify-between items-center flex-wrap gap-4">
-              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                <label
-                  htmlFor="firstName"
-                  className="text-[14px] leading-[18px] font-medium"
-                >
-                  Brokerage Year Anniversary
-                </label>
+          <CardLayout className="my-0">
+            <MainTitle title="Cap & Split Settings" />
+            <div className="w-full flex justify-between flex-wrap gap-4">
+              <InputField
+                label="AE Commission Threshold"
+                name="ae_commission_threshold"
+                control={control}
+                type="number"
+                placeholder="Enter AE Commission Threshold"
+                error={errors.ae_commission_threshold?.message}
+                className="w-[48%]"
+              />
+              <InputField
+                label="AE Escrow Commission"
+                name="ae_escrow_commission"
+                control={control}
+                type="number"
+                placeholder="Enter AE Escrow Commission"
+                error={errors.ae_escrow_commission?.message}
+                className="w-[48%]"
+              />
+              <InputField
+                label="AE Title Commission"
+                name="ae_title_commission"
+                control={control}
+                type="number"
+                placeholder="Enter AE Title Commission"
+                error={errors.ae_title_commission?.message}
+                className="w-[48%]"
+              />
+            </div>
+          </CardLayout>
+          <CardLayout>
+            <div className="flex flex-col gap-2">
+              <div className="gap-4 flex items-center">
                 <input
-                  type="text"
-                  id="firstName"
-                  placeholder="John"
-                  className={`h-[55px] border-2 ${
-                    errors.firstName
-                      ? "border-red-500"
-                      : "border-(--inputBorder)"
-                  } rounded-[10px] w-full px-5 text-blackText`}
-                  {...register("firstName", {
-                    required: "First Name is required",
-                  })}
+                  type="checkbox"
+                  id="exclude_challenges_leaderboards"
+                  className="accent-(--primary) outline-(--greyText) w-5 h-5"
+                  checked={isChallenge}
+                  onChange={() => setIsChallenge(!isChallenge)}
                 />
-                {errors.firstName && (
-                  <span className="text-red-500 text-sm">
-                    {errors.firstName.message}
-                  </span>
-                )}
+                <label htmlFor="challenges" className="text-sm">
+                  Exclude from challenges & leaderboards
+                </label>
               </div>
-              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                <label
-                  htmlFor="lastName"
-                  className="text-[14px] leading-[18px] font-medium"
-                >
-                  AE Commission Threshold
-                </label>
+              <div className="gap-4 flex items-center">
                 <input
-                  type="text"
-                  id="lastName"
-                  placeholder="Doe"
-                  className={`h-[55px] border-2 ${
-                    errors.lastName
-                      ? "border-red-500"
-                      : "border-(--inputBorder)"
-                  } rounded-[10px] w-full px-5 text-blackText`}
-                  {...register("lastName", {
-                    required: "Last Name is required",
-                  })}
+                  type="checkbox"
+                  id="challenges"
+                  className="accent-(--primary) outline-(--greyText) w-5 h-5"
+                  checked={isDownload}
+                  onChange={() => setIsDownload(!isDownload)}
                 />
-                {errors.lastName && (
-                  <span className="text-red-500 text-sm">
-                    {errors.lastName.message}
-                  </span>
-                )}
+                <label htmlFor="challenges" className="text-sm">
+                  Download Transactions
+                </label>
               </div>
-              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                <label
-                  htmlFor="firstName"
-                  className="text-[14px] leading-[18px] font-medium"
-                >
-                  AE Escrow Split
-                </label>
+              <div className="gap-4 flex items-center">
                 <input
-                  type="text"
-                  id="firstName"
-                  placeholder="John"
-                  className={`h-[55px] border-2 ${
-                    errors.firstName
-                      ? "border-red-500"
-                      : "border-(--inputBorder)"
-                  } rounded-[10px] w-full px-5 text-blackText`}
-                  {...register("firstName", {
-                    required: "First Name is required",
-                  })}
+                  type="checkbox"
+                  id="challenges"
+                  className="accent-(--primary) outline-(--greyText) w-5 h-5"
+                  checked={isWelcome}
+                  onChange={() => setIsWelcome(!isWelcome)}
                 />
-                {errors.firstName && (
-                  <span className="text-red-500 text-sm">
-                    {errors.firstName.message}
-                  </span>
-                )}
-              </div>
-              <div className="text-(--greyText) flex flex-col gap-1.5 w-[48%]">
-                <label
-                  htmlFor="lastName"
-                  className="text-[14px] leading-[18px] font-medium"
-                >
-                  AE Title Split
+                <label htmlFor="challenges" className="text-sm">
+                  Send Welcome Email
                 </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  placeholder="Doe"
-                  className={`h-[55px] border-2 ${
-                    errors.lastName
-                      ? "border-red-500"
-                      : "border-(--inputBorder)"
-                  } rounded-[10px] w-full px-5 text-blackText`}
-                  {...register("lastName", {
-                    required: "Last Name is required",
-                  })}
-                />
-                {errors.lastName && (
-                  <span className="text-red-500 text-sm">
-                    {errors.lastName.message}
-                  </span>
-                )}
               </div>
             </div>
-          </div>
+          </CardLayout>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-4">
+            {/* <button
+              type="button"
+              className="bg-red-500 flex items-center cursor-pointer gap-1.5 text-sm h-[44px] w-fit px-8  rounded-xl text-white"
+              onClick={handleDeleteUser}
+            >
+              {isDeleteLoading ? <Spinner /> : "Delete"}
+            </button> */}
             <button
               type="submit"
               className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] w-fit px-8  rounded-xl text-white"
             >
-              Save changes
+              {isLoading ? <Spinner /> : "Save Chnages"}
             </button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
