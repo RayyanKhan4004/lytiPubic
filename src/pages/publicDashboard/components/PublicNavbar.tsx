@@ -7,19 +7,17 @@ function PublicNavbar() {
     <div>
       <div className="flex justify-center p-[60px] pt-0 ">
         <div
-          className="w-[100%] rounded-b-[120px] border-white border-3"
-          style={{ boxShadow: "0px 0px 10px 1px #00000040" }}
+          className="w-[100%] border-white border-3"
         >
           <div className="flex-col w-full ">
             <PublicDashboardNavbar />
             <div
-              className="flex items-center justify-between p-[60px] bg-gradient-to-b from-[#FFFFFF] via-80%  via-[#E5E5E5E5] to-[#99999999] rounded-b-[120px] "
-              style={{ boxShadow: "#00000040 , 10px 10px 20px " }}
+              className="flex items-center justify-between p-[60px]  "
             >
               <img
                 src={ScreenLogo}
                 alt=""
-                className="w-[537.685546875px] h-[537.9717407226562px]"
+                className="w-[437px] h-[437px]"
               />
               <div className="flex flex-col gap-[30px] font-poppin ">
                 <h1 className="font-bold text-3xl ">

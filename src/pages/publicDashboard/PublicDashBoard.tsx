@@ -6,7 +6,7 @@ import PublicTestimonial from "./components/PublicTestimonial"
 import PublicWhyChoseus from "./components/PublicWhyChoseus"
 import bg from "./components/assets/BgBoxes.svg"
 function PublicDashBoard() {
-  const card1 = [
+  const card1 = [   
     {num : 15.5 ,
       text: "Total Gross Commission"
     },
@@ -53,7 +53,7 @@ function PublicDashBoard() {
         <div className="flex justify-end gap-[20px]">
 
         {
-        card2.map((item , ind)=>(
+        card1.map((item , ind)=>(
           <PublicWhyChoseus  ind={ind} number={item.num} text={item.text}/>
         ))
       }

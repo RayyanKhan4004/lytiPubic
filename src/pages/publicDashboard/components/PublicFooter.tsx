@@ -5,8 +5,8 @@ import TwitterLogo from "./assets/TwitterLogo.svg"
 function PublicFooter() {
   return (
     <div>
-      <div className="w-full flex justify-center">
-        <div className="flex items-center justify-center mb-[100px]">
+      <div className="w-full flex justify-center p-[60px]">
+        <div className="flex items-center justify-center mt-[200px]">
           <img src={HomeImage} alt="" className="w-[1318px] h-[670px]" />
         </div>
       </div>
