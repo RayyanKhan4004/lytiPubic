@@ -56,6 +56,7 @@ import EditChallenge from "../pages/challenges/EditChallenge";
 import LeadsSourceGroup from "../pages/admin/LeadsSourceGroup";
 import PublicDashBoard from "../pages/publicDashboard/PublicDashBoard";
 import PricingPage from "../pages/PricingPage/PricingPage";
+import Products from "../pages/Products/Products";
 // import MessageCenter from "../pages/message-center/messageCenter";
 
 export const router = createBrowserRouter([
@@ -134,5 +135,13 @@ export const router = createBrowserRouter([
         <PricingPage />
       </PublicRoute>
     ),
-  }
+  },
+  {
+    path: "/products",
+    element: (
+      <PublicRoute>
+        <Products />
+      </PublicRoute>
+    ),
+  },
 ]);
