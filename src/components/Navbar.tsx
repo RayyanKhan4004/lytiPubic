@@ -8,6 +8,7 @@ import Dummy from "../assets/icons/DummyProfileImage.jpg";
 import { useAppDispatch, useAppSelector } from "../lib/store/hooks";
 import { clearAuth } from "../lib/store/slices/authSlice";
 import PopoverMenu from "./ui/popup/PopupMenu";
+import NavbarPopup from "./ui/popup/NavbarPopup";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const Navbar = () => {
           <img src={Bell} alt="Notifications" className="w-[24px] h-[24px]" />
         </div>
 
-        <PopoverMenu
+        <NavbarPopup
           triggerImage={profile || Dummy}
           className="w-[44px] h-[44px] rounded-full border-[1px] border-(--inputBorder)"
           options={[
