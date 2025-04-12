@@ -12,6 +12,7 @@ import SelectField from "../../components/inputs/SelectField";
 import { useForm } from "react-hook-form";
 import { UserTableType } from "../../utils/types";
 import { leaderboardOption } from "../../utils/options";
+import ProgressBar from "../../components/ui/card/ProgressBar";
 
 interface ChartData {
   name: string;
@@ -184,7 +185,9 @@ const LeaderBoards = () => {
                           </div>
                         </td>
                         <td>{e.orderCount}</td>
-                        <td>{e.percentage}</td>
+                        <td>
+                          <ProgressBar key={e.id} percentage={e.percentage} />
+                        </td>
                       </tr>
                     ))
                   )}
