@@ -6,13 +6,14 @@ import ProductsDashboard from "./components/ProductsDashboard";
 function Products() {
   return (
     <>
-    <div className="flex items-center justify-between bg-white  w-full p-4.5 font-poppin">
+    <div className="flex pl-[80px] pr-[80px] pt-0 items-center justify-between bg-white  w-full font-poppin">
+
       <img
         src={LytiLogo}
         alt="LytiLogo"
-        className="w-[60px] h-[60px] font-medium text-base"
+        className="w-[100px] h-[100px] font-medium text-base"
       />
-
+       
       <div className="flex items-center gap-10">
         <h3>Pricing and Free Trial</h3>
         <div className="flex items-center gap-1">
@@ -32,9 +33,10 @@ function Products() {
           <img src={PhoneLogo} alt="" className="w-6 h-6" />
           Contact
         </button>
+        </div>
       </div>
-    </div>
-    <div className="flex items-center justify-center w-full p-[80px] font-semibold text-4xl font-poppin">
+    
+    <div className="flex items-center justify-center w-full pt-[80px] font-semibold text-4xl font-poppin">
             <h1>Build, Coach and Scale a Profitable Real Estate</h1>
         </div>
         <ProductsDashboard/>
