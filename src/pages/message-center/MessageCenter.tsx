@@ -281,6 +281,28 @@ function MessageCenter() {
               required={false}
               height="44px"
             />
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                sendMessage();
+              }}
+              className="flex gap-2 mt-4"
+            >
+              <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Type a message..."
+                className="flex-1 border p-2 border-gray-200 rounded-xl"
+              />
+              <button
+                type="submit"
+                className="bg-(--secondary) text-white w-[40px] h-[40px] cursor-pointer rounded-full flex items-center justify-center transition"
+                disabled={!receiverId}
+              >
+                <img src={plane} alt="Send" className="w-4 h-4" />
+              </button>
+            </form>
           </DialogContent>
         </Dialog>
       </div>
@@ -485,14 +507,6 @@ function MessageCenter() {
                           {dayjs(msg.timestamp).format("hh:mm A")}
                         </div>
                       </div>
-
-                      {/* {msg.sender === String(userId) && msg.receiverImage && (
-                        <img
-                          src={msg.receiverImage}
-                          alt="receiver"
-                          className="w-6 h-6 rounded-full ml-2"
-                        />
-                      )} */}
                     </div>
                   ))}
                 </div>
@@ -501,7 +515,13 @@ function MessageCenter() {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="flex gap-2 mt-2">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              sendMessage();
+            }}
+            className="flex gap-2 mt-2"
+          >
             <input
               type="text"
               value={message}
@@ -510,13 +530,13 @@ function MessageCenter() {
               className="flex-1 border p-2 border-gray-200 rounded-xl"
             />
             <button
-              onClick={sendMessage}
+              type="submit"
               className="bg-(--secondary) text-white w-[40px] h-[40px] cursor-pointer rounded-full flex items-center justify-center transition"
               disabled={!receiverId}
             >
               <img src={plane} alt="Send" className="w-4 h-4" />
             </button>
-          </div>
+          </form>
         </div>
       </div>
 
