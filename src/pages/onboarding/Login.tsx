@@ -51,7 +51,7 @@ const Login = () => {
       const res = await login(data).unwrap();
 
       toast.success("Log in successfully");
-      dispatch(setAuth(res));
+      dispatch(setAuth({ access_token: res.access_token, user: res.user }));
 
       const token = res.access_token;
       const decoded = jwtDecode<JwtPayload>(token);

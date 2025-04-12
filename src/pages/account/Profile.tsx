@@ -18,7 +18,7 @@ import {
   useUpdateUserMutation,
 } from "../../lib/rtkQuery/userApi";
 import toast from "react-hot-toast";
-import { clearAuth, setAuth } from "../../lib/store/slices/authSlice";
+import { clearAuth, updateUserState } from "../../lib/store/slices/authSlice";
 import Spinner from "../../components/ui/loader/Spinner";
 
 const Profile = () => {
@@ -69,10 +69,17 @@ const Profile = () => {
       setValue("notes", userData.notes || "");
       setValue(
         "ae_commission_threshold",
-        userData.ae_commission_threshold || 0
+        Number(userData.ae_commission_threshold) || 0
       );
-      setValue("ae_escrow_commission", userData.ae_escrow_commission || 0);
-      setValue("ae_title_commission", userData.ae_title_commission || 0);
+      setValue(
+        "ae_escrow_commission",
+        Number(userData.ae_escrow_commission) || 0
+      );
+      setValue(
+        "ae_title_commission",
+        Number(userData.ae_title_commission) || 0
+      );
+
       setValue("career_path", userData.career_path || 0);
       setValue("lead_source", userData.lead_source || 0);
       setIsChallenge(userData.exclude_challenges_leaderboards || false);
@@ -126,7 +133,8 @@ const Profile = () => {
         id: userData.id,
         formData,
       }).unwrap();
-      dispatch(setAuth(res?.user));
+      dispatch(updateUserState(res.user));
+
       toast.success("User updated successfully");
       // navigate("/admin/users-table");
       console.log(res, "===res====");
@@ -223,7 +231,7 @@ const Profile = () => {
             </div>
           </CardLayout>
 
-          <CardLayout>
+          <CardLayout className="my-2">
             <MainTitle title="User information" />
             <div className="w-full flex justify-between ">
               <div className="w-[48%]  flex flex-col gap-4">
@@ -491,7 +499,7 @@ const Profile = () => {
               />
             </div>
           </CardLayout>
-          <CardLayout>
+          <CardLayout className="my-2">
             <div className="flex flex-col gap-2">
               <div className="gap-4 flex items-center">
                 <input
@@ -533,13 +541,13 @@ const Profile = () => {
           </CardLayout>
 
           <div className="flex justify-end gap-4">
-            {/* <button
+            <button
               type="button"
               className="bg-red-500 flex items-center cursor-pointer gap-1.5 text-sm h-[44px] w-fit px-8  rounded-xl text-white"
               onClick={handleDeleteUser}
             >
               {isDeleteLoading ? <Spinner /> : "Delete"}
-            </button> */}
+            </button>
             <button
               type="submit"
               className="bg-(--primary) flex items-center cursor-pointer gap-1.5 text-sm h-[44px] w-fit px-8  rounded-xl text-white"
