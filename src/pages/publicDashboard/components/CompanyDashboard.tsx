@@ -165,7 +165,7 @@ const TestimonialSlider = () => {
   return (
     <>
       <PublicDashboardNavbar />
-      <div className="flex flex-col justify-center items-center gap-5 font-poppin text-center mb-[30px]">
+      <div className="flex flex-col justify-center items-center gap-5 font-poppin text-center mb-[30px] mt-[50px]">
             <h2 className="text-[32px] text-[#333333] font-medium ">Testimonials</h2>
             <h3 className="text-[36px] text-[#2D3F50] font-semibold">Don’t just take our word for it</h3>
             <h4 className="text-[24px] text-[#15120F] font-normal ">The results speak for themselves. See how Sisu has helped real clients take their businesses to the next level.</h4>
@@ -197,7 +197,7 @@ const TestimonialSlider = () => {
                 className="snap-center shrink-0 w-auto  flex justify-center items-center"
               >
                 <ProfileCard
-                  stars={i}
+                  stars={5}
                   date={t.date}
                   description={t.content}
                   image={t.image}
