@@ -2,6 +2,8 @@ import PhoneLogo from "../../assets/icons/PhoneLogo.svg";
 import LytiLogo from "../../assets/icons/LytiLogo.svg";
 import ArrowDown from "../publicDashboard/components/assets/ArrowDown.svg";
 import ProductsDashboard from "./components/ProductsDashboard";
+import ProductsImages from "./components/ProductsImages";
+import ProductsFooter from "./components/ProductsFooter";
 
 function Products() {
   return (
@@ -40,6 +42,8 @@ function Products() {
             <h1>Build, Coach and Scale a Profitable Real Estate</h1>
         </div>
         <ProductsDashboard/>
+        <ProductsImages/>
+        <ProductsFooter/>
     </>
   );
 }
