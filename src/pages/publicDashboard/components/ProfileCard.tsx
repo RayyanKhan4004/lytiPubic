@@ -6,11 +6,12 @@ interface ProfileCardProps {
   description?: string;
   image?: string;
   stars : number;
+  isShadow ?: boolean;
 }
-function ProfileCard({ date, name, description, image , stars }: ProfileCardProps) {
+function ProfileCard({ date, name, description, image , stars ,isShadow }: ProfileCardProps) {
   return (
     <>
-    <div className=" backdrop-blur-2xl overflow-hidden h-[343px] w-[536px] flex flex-col justify-center items-center gap-[20px] rounded-[16px] relative ">
+    <div className=" backdrop-blur-2xl overflow-hidden h-[343px] w-[536px] flex flex-col justify-center items-center gap-[20px] rounded-[16px] relative border border-gray-300 ">
       <div className="-skew-y-[20deg] h-[90px] w-[100px] bg-gradient-to-b form-[#33333399] to-[#2D3F5033] rounded-lg p-4 absolute -top-2  left-0 -z-10"></div>
       <span className=" absolute top-4  text-[20px]  left-8">{date}</span>
       <div className="flex pt-[55px]  ">

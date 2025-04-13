@@ -57,6 +57,7 @@ import LeadsSourceGroup from "../pages/admin/LeadsSourceGroup";
 import PublicDashBoard from "../pages/publicDashboard/PublicDashBoard";
 import PricingPage from "../pages/PricingPage/PricingPage";
 import Products from "../pages/Products/Products";
+import CompanyDashboard from "../pages/publicDashboard/components/CompanyDashboard";
 // import MessageCenter from "../pages/message-center/messageCenter";
 
 export const router = createBrowserRouter([
@@ -141,6 +142,14 @@ export const router = createBrowserRouter([
     element: (
       <PublicRoute>
         <Products />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/public/Company",
+    element: (
+      <PublicRoute>
+        <CompanyDashboard />
       </PublicRoute>
     ),
   },
