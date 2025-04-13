@@ -2,14 +2,14 @@ import HomeImage from "./assets/HomeImage.svg";
 import LinkedinLogo from "./assets/LinkedinLogo.svg"
 import FacebookLogo from "./assets/FacebookLogo.svg"
 import TwitterLogo from "./assets/TwitterLogo.svg"
-function PublicFooter() {
+function PublicFooter({hideImage} : {hideImage  ?: boolean}) {
   return (
     <div>
-      <div className="w-full flex justify-center p-[60px]">
+     {!hideImage && <div className="w-full flex justify-center p-[60px]">
         <div className="flex items-center justify-center mt-[200px]">
           <img src={HomeImage} alt="" className="w-[1318px] h-[670px]" />
         </div>
-      </div>
+      </div>}
       <div className="w-full h-[524px] bg-[#333333] flex flex-row   justify-center"> 
         <div className="flex justify-center items-center w-full h-full">
         <div className="flex w-fit justify-center items-start gap-[100px]">
