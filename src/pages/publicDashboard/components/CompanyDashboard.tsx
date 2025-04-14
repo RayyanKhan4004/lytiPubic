@@ -5,6 +5,7 @@ import PublicNavbar from "./PublicNavbar";
 import PublicFooter from "./PublicFooter";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import PublicDashboardNavbar from "./PublicDashboardNavbar";
+import ProfileIcon from "./assets/TestimonialProfileimage.svg"
 
 const testimonials = [
   {
@@ -12,7 +13,84 @@ const testimonials = [
     date: "April 1, 2023",
     content:
       "I am super visual and having a clear dashboard with all the team metrics visible...",
-    image: "https://via.placeholder.com/60", // replace with real image
+    image: {ProfileIcon}, // replace with real image
+  },
+  {
+    name: "Jane Doe",
+    date: "March 15, 2023",
+    content:
+      "The progress tracking is amazing, very user-friendly and efficient...",
+    image: {ProfileIcon},
+  },
+  {
+    name: "Jane Doe",
+    date: "March 15, 2023",
+    content:
+      "The progress tracking is amazing, very user-friendly and efficient...",
+    image: {ProfileIcon},
+  },
+  {
+    name: "Jane Doe",
+    date: "March 15, 2023",
+    content:
+      "The progress tracking is amazing, very user-friendly and efficient...",
+    image: {ProfileIcon},
+  },
+  {
+    name: "Jane Doe",
+    date: "March 15, 2023",
+    content:
+      "The progress tracking is amazing, very user-friendly and efficient...",
+    image: {ProfileIcon},
+  },
+  {
+    name: "Jane Doe",
+    date: "March 15, 2023",
+    content:
+      "The progress tracking is amazing, very user-friendly and efficient...",
+    image: {ProfileIcon},
+  },
+  {
+    name: "Jane Doe",
+    date: "March 15, 2023",
+    content:
+      "The progress tracking is amazing, very user-friendly and efficient...",
+    image: {ProfileIcon},
+  },
+  {
+    name: "Jane Doe",
+    date: "March 15, 2023",
+    content:
+      "The progress tracking is amazing, very user-friendly and efficient...",
+    image: {ProfileIcon},
+  },
+  {
+    name: "Jane Doe",
+    date: "March 15, 2023",
+    content:
+      "The progress tracking is amazing, very user-friendly and efficient...",
+    image: {ProfileIcon},
+  },
+  {
+    name: "Jane Doe",
+    date: "March 15, 2023",
+    content:
+      "The progress tracking is amazing, very user-friendly and efficient...",
+    image: {ProfileIcon},
+  },
+  {
+    name: "Jane Doe",
+    date: "March 15, 2023",
+    content:
+      "The progress tracking is amazing, very user-friendly and efficient...",
+    image: {ProfileIcon},
+  },
+  {
+    name: "Jane Doe",
+    date: "March 15, 2023",
+    content:
+      "The progress tracking is amazing, very user-friendly and efficient...",
+    image: {ProfileIcon},
   },
   {
     name: "Jane Doe",
@@ -26,131 +104,62 @@ const testimonials = [
     date: "March 15, 2023",
     content:
       "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
+    image: {ProfileIcon},
   },
   {
     name: "Jane Doe",
     date: "March 15, 2023",
     content:
       "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
+    image: {ProfileIcon},
   },
   {
     name: "Jane Doe",
     date: "March 15, 2023",
     content:
       "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
+    image: {ProfileIcon},
   },
   {
     name: "Jane Doe",
     date: "March 15, 2023",
     content:
       "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
+    image: {ProfileIcon},
   },
   {
     name: "Jane Doe",
     date: "March 15, 2023",
     content:
       "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
+    image: {ProfileIcon},
   },
   {
     name: "Jane Doe",
     date: "March 15, 2023",
     content:
       "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
+    image: {ProfileIcon},
   },
   {
     name: "Jane Doe",
     date: "March 15, 2023",
     content:
       "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    name: "Jane Doe",
-    date: "March 15, 2023",
-    content:
-      "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    name: "Jane Doe",
-    date: "March 15, 2023",
-    content:
-      "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    name: "Jane Doe",
-    date: "March 15, 2023",
-    content:
-      "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    name: "Jane Doe",
-    date: "March 15, 2023",
-    content:
-      "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    name: "Jane Doe",
-    date: "March 15, 2023",
-    content:
-      "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    name: "Jane Doe",
-    date: "March 15, 2023",
-    content:
-      "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    name: "Jane Doe",
-    date: "March 15, 2023",
-    content:
-      "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    name: "Jane Doe",
-    date: "March 15, 2023",
-    content:
-      "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    name: "Jane Doe",
-    date: "March 15, 2023",
-    content:
-      "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    name: "Jane Doe",
-    date: "March 15, 2023",
-    content:
-      "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
-  },
-  {
-    name: "Jane Doe",
-    date: "March 15, 2023",
-    content:
-      "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
+    image: {ProfileIcon},
   },
   // add more
 ];
-
+// interface testimonialsProps{
+//   t : {
+//     name: string;
+//     date: string;
+//     content: string;
+//     image: string;
+//   }
+// }
 const TestimonialSlider = () => {
+  
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: string) => {
@@ -174,13 +183,13 @@ const TestimonialSlider = () => {
         {/* Slider Controls */}
         <button
           onClick={() => scroll("left")}
-          className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-[#E5E5E5] shadow p-2 w-[60px] h-[60px] rounded-[10px]"
+          className="absolute flex items-center justify-center left-2 top-1/2 -translate-y-1/2 z-10 bg-[#E5E5E5] shadow p-2 w-[60px] h-[60px] rounded-[10px]"
         >
           <ChevronLeft />
         </button>
         <button
           onClick={() => scroll("right")}
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-[#000000] shadow p-2 w-[60px] h-[60px] rounded-[10px]"
+          className="absolute right-2 flex items-center justify-center top-1/2 -translate-y-1/2 z-10 bg-[#000000] shadow p-2 w-[60px] h-[60px] rounded-[10px]"
         >
           <ChevronRight color="#FFFFFF" />
         </button>
