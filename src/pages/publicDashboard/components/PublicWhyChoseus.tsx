@@ -17,13 +17,19 @@ function PublicWhyChoseus({ ind, number, text }: PublicWhyChoseusProp) {
         }  ${ind == 1 && gradient2} ${ind == 2 && gradient3}`}
       >
         <h2
-          className={`font-poppin font-bold text-3xl ${
+          className={`font-poppin font-bold text-[32px] ${
             ind == 0 && "text-white"
           } ${ind == 1 && "text-[#333333]"}  ${ind == 2 && "text-[#333333]"} `}
         >
           ${number}B
         </h2>
-        <h2 className={`font-poppin font-semibold text-xl  ${ind > 0 && "text-[#2D3F50]"} ${ind == 0 && "text-[#E5E5E5]"}  `}>{text}</h2>
+        <h2
+          className={`font-poppin font-semibold text-[20px]  ${
+            ind > 0 && "text-[#2D3F50]"
+          } ${ind == 0 && "text-[#E5E5E5]"}  `}
+        >
+          {text}
+        </h2>
       </div>
     </>
   );

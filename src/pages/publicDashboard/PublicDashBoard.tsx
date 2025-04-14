@@ -5,6 +5,7 @@ import PublicRealtor from "./components/PublicRealtor"
 import PublicTestimonial from "./components/PublicTestimonial"
 import PublicWhyChoseus from "./components/PublicWhyChoseus"
 import bg from "./components/assets/BgBoxes.svg"
+import "./Styles/Public.css";
 function PublicDashBoard() {
   const card1 = [   
     {num : 15.5 ,

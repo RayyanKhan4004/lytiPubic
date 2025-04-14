@@ -17,13 +17,13 @@ function PublicNavbar() {
               <img
                 src={ScreenLogo}
                 alt=""
-                className="w-[437px] h-[437px]"
+                className="w-[537px] h-[537px]"
               />
               <div className="flex flex-col gap-[30px] font-poppin ">
-                <h1 className="font-bold text-3xl ">
+                <h1 className="font-bold text-[28px]  ">
                   Analytics Platform and <br /> Transaction Management Built-In
                 </h1>
-                <p className="font-normal text-base text-[#000000]">
+                <p className="font-normal text-[16px] text-[#000000]">
                   With Sisu, Teams And Brokers Unlock Game-Changing Business
                   <br /> Intelligence, Streamline Transaction Management, And
                   Provide Buyers <br /> And Sellers A Fully Branded Client
@@ -32,12 +32,14 @@ function PublicNavbar() {
                   The competition.
                 </p>
                 <div className="mt-[10px] ">
-                  <button className="bg-[#333333] font-poppin text-white  font-semibold pt-[12px] pr-[16px] pb-[12px] pl-[16px] rounded-[10px]">
+                  <div className="flex gap-[16px]">
+                  <button className=" bg-[#333333] text-[20px] font-semibold font-poppin text-white w-[246px] h-[54px] rounded-[10px]">
                     Pricing and Free Trial
                   </button>
-                  <button className="bg-white ml-[10px] text-[#007FC4] font-poppin rounded-[10px]  font-semibold pt-[12px] pr-[16px] pb-[12px] pl-[16px]">
+                  <button className="bg-[#F3F3F3] w-[91px] h-[54px] text-[20px] font-semibold text-[#007FC4] font-poppin rounded-[10px]">
                     Demo
                   </button>
+                  </div>
                 </div>
               </div>
             </div>

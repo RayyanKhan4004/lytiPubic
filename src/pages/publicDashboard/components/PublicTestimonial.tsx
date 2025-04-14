@@ -1,10 +1,13 @@
-function PublicTestimonial() {
+import { Link } from 'react-router-dom';
+
+  function PublicTestimonial() {
+
   return (
     <div>
-      <div className="flex flex-col gap-[30px] font-poppin ">
-        <h1 className="font-bold text-3xl ">
+      <div className="testinomials-background-img flex flex-col gap-[30px] font-poppin ">
+        <Link to={".public/company"} className="font-bold text-3xl ">
           Testimonials
-        </h1>
+        </Link>
         <p className="font-normal text-base text-[#000000]">
           Hear from real clients about the success they're having streamlining and automating their business with Sisu accountability, business analytics and transaction management software.
         </p>

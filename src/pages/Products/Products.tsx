@@ -5,6 +5,7 @@ import ProductsDashboard from "./components/ProductsDashboard";
 import ProductsImages from "./components/ProductsImages";
 import ProductsFooter from "./components/ProductsFooter";
 
+
 function Products() {
   return (
     <>

@@ -35,19 +35,6 @@ function ProductsDashboard() {
           <img src={videoimage} alt="" className="" />
         </div>
       </div>
-      {/* <div className="flex items-center justify-center flex-col gap-5 pt-[80px]">
-        <h1 className="font-poppin font-semibold text-4xl">
-          <h1>Browse our big set of features</h1>
-        </h1>
-        <p className="flex items-center justify-center pl-[80px] pr-[80px] font-poppin font-normal text-[20px] text-[#2D3F50]">
-          
-            Real estate analytics software combined with leaderboards, real-time
-            agent coaching reports, and a flexible sales contest system ensures
-            that team leaders, coaches and brokers always make data driven
-            decisions and agents pace towards commission goals.
-          
-        </p>
-      </div> */}
     </div>
     <div className="flex items-center justify-center flex-col gap-5 pt-[80px]">
         <h1 className="font-poppin font-semibold text-4xl">
