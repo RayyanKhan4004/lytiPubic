@@ -58,6 +58,7 @@ import PublicDashBoard from "../pages/publicDashboard/PublicDashBoard";
 import PricingPage from "../pages/PricingPage/PricingPage";
 import Products from "../pages/Products/Products";
 import CompanyDashboard from "../pages/publicDashboard/components/CompanyDashboard";
+import CompanyNews from "../pages/publicDashboard/components/CompanyNews";
 // import MessageCenter from "../pages/message-center/messageCenter";
 
 export const router = createBrowserRouter([
@@ -150,6 +151,14 @@ export const router = createBrowserRouter([
     element: (
       <PublicRoute>
         <CompanyDashboard />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/public/Company/News",
+    element: (
+      <PublicRoute>
+        <CompanyNews />
       </PublicRoute>
     ),
   },

@@ -13,7 +13,7 @@ const testimonials = [
     date: "April 1, 2023",
     content:
       "I am super visual and having a clear dashboard with all the team metrics visible...",
-    image: {ProfileIcon}, // replace with real image
+    image: {ProfileIcon}, 
   },
   {
     name: "Jane Doe",
@@ -97,7 +97,7 @@ const testimonials = [
     date: "March 15, 2023",
     content:
       "The progress tracking is amazing, very user-friendly and efficient...",
-    image: "https://via.placeholder.com/60",
+    image: {ProfileIcon},
   },
   {
     name: "Jane Doe",
