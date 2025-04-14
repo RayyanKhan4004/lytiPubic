@@ -7,10 +7,10 @@ function PublicFooter() {
     <div>
       <div className="w-full flex justify-center pl-[60px] pr-[60px] ">
         <div className="flex items-center justify-center">
-          <img src={HomeImage} alt="" className="w-[1318px] h-[670px]" />
+          <img src={HomeImage} alt="" className="mt-[80px]" />
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center pb-[26px] pt-[80px] pl-[80px] pr-[80px]">
+      <div className="flex flex-col items-center justify-center mb-[100px] mt-[80px] px-[80px]">
         <h1 className="font-poppin font-semibold text-4xl text-[#000000]">
           Talk to a professional
         </h1>
@@ -24,7 +24,7 @@ function PublicFooter() {
           way, you’ll get to that decision as quickly as possible so that you
           can keep moving.
         </p>
-        <button className="pt-3 pb-3 pl-4 pr-4 bg-[#333333] rounded-[10px] text-xl font-poppin font-semibold text-[#F3F3F3]">
+        <button className="pt-3 mt-[20px] pb-3 pl-4 pr-4 bg-[#333333] rounded-[10px] text-xl font-poppin font-semibold text-[#F3F3F3]">
           Schedule Demo
         </button>
       </div>

@@ -1,6 +1,7 @@
 import PhoneLogo from "../../../assets/icons/PhoneLogo.svg";
 import LytiLogo from "../../../assets/icons/LytiLogo.svg";
 import ArrowDown from "./assets/ArrowDown.svg";
+import CustomizableDropdown from "../../../components/common/CustomizableDropdown";
 function PublicDashboardNavbar() {
   return (
     <div className="flex items-center justify-between bg-white  w-full p-4.5 font-poppin">
@@ -11,10 +12,20 @@ function PublicDashboardNavbar() {
       />
 
       <div className="flex items-center gap-10">
-        <h3 className="text-[14px] font-medium font-poppin">Pricing and Free Trial</h3>
+        <h3 className="text-[14px] font-medium font-poppin">
+          Pricing and Free Trial
+        </h3>
         <div className="flex items-center gap-1">
           <h3 className="text-[14px] font-medium font-poppin">Product</h3>
-          <img src={ArrowDown} alt="" className="w-5 h-5" />
+          {/* <img src={ArrowDown} alt="" className="w-5 h-5" /> */}
+          {/* <CustomizableDropdown
+          customBorder={"border-0"}
+          options={["Product", "Product 2", "Product 3"]}
+          selected={`Product`}
+          setSelected={() => ""}
+          width="w-60"
+        /> */}
+
         </div>
         <div className="flex items-center gap-1">
           <h3 className="text-[14px] font-medium font-poppin">Company</h3>

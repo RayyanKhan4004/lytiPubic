@@ -9,12 +9,12 @@ function ProductsImages() {
     <div>
       <div className="grid grid-cols-2 gap-4 pl-15 pr-15">
         
-        <img src={ProductImage1} alt="" className="w-[645px] h-[421px]"/>
-        <img src={ProductImage2} alt="" className="w-[645px] h-[421px]"/>
-        <img src={ProductImage3} alt="" className="w-[645px] h-[421px]"/>
-        <img src={ProductImage4} alt="" className="w-[645px] h-[421px]"/>
-        <img src={ProductImage5} alt="" className="w-[645px] h-[421px]"/>
-        <img src={ProductImage6} alt="" className="w-[645px] h-[421px]"/>
+        <img src={ProductImage1} alt="" className="w-fit "/>
+        <img src={ProductImage2} alt="" className="w-fit"/>
+        <img src={ProductImage3} alt="" className="w-fit"/>
+        <img src={ProductImage4} alt="" className="w-fit"/>
+        <img src={ProductImage5} alt="" className="w-fit"/>
+        <img src={ProductImage6} alt="" className="w-fit"/>
         
       </div>
     </div>

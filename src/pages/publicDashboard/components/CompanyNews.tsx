@@ -4,14 +4,182 @@ import { useEffect, useState } from "react";
 
 //icons
 import Cardimg from "./assets/Cardimg.svg"
+import HomeIcon from "./assets/HomeIcon.svg"
+import StadiumIcon from "./assets/StadiumImg.svg"
+import UserIcon from "./assets/UserIcon.svg"
 
 const newsCardData = [
   {
     img: Cardimg,
+    userImg: UserIcon,
+    userName: "Brian CharlesworthKhan ",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: HomeIcon,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: StadiumIcon,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: Cardimg,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: HomeIcon,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: StadiumIcon,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: Cardimg,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: HomeIcon,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: StadiumIcon,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: Cardimg,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: HomeIcon,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: StadiumIcon,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: Cardimg,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: HomeIcon,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: StadiumIcon,
+    userImg: UserIcon,
+    userName: "Brian Charlesworth",
+    date: "April 14, 2025",
+    title: "The NEXT Generation ",
+    description:
+      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
+    buttonTitle: "News",
+    tags: ["Product Update", "Featured"],
+  },
+  {
+    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
     userImg: "https://randomuser.me/api/portraits/men/32.jpg",
     userName: "Ali Khan",
     date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
+    title: "The NEXT Generation ",
     description:
       "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
     buttonTitle: "Read More",
@@ -22,172 +190,7 @@ const newsCardData = [
     userImg: "https://randomuser.me/api/portraits/men/32.jpg",
     userName: "Ali Khan",
     date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description:
-      "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses. The company claims the service uses cutting-edge technology to assist in smarter decision-making.",
-    buttonTitle: "Read More",
-    tags: ["Product Update", "Featured"],
-  },
-  {
-    img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
-    userImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    userName: "Ali Khan",
-    date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
+    title: "The NEXT Generation ",
     description:
       "TechCorp has launched its latest AI service today, aimed at improving data analysis for businesses...",
     buttonTitle: "Read More",
@@ -198,8 +201,8 @@ const newsCardData = [
     userImg: "https://randomuser.me/api/portraits/men/32.jpg",
     userName: "Ali Khan",
     date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
-    description: "TechCorp has launched its latest AI service today...",
+    title: "The NEXT Generation ",
+    description: "The NEXT Generation ",
     buttonTitle: "Read More",
     tags: ["Case Study", "SISU Spotlight"],
   },
@@ -208,7 +211,7 @@ const newsCardData = [
     userImg: "https://randomuser.me/api/portraits/men/32.jpg",
     userName: "Ali Khan",
     date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
+    title: "The NEXT Generation ",
     description: "TechCorp has launched its latest AI service today...",
     buttonTitle: "Read More",
     tags: ["Webinars", "News"],
@@ -217,13 +220,12 @@ const newsCardData = [
     img: "https://images.unsplash.com/photo-1581093588401-4d3a912b5f87",
     userImg: "https://randomuser.me/api/portraits/men/32.jpg",
     userName: "Ali Khan",
+    title: "The NEXT Generation",
     date: "April 14, 2025",
-    title: "TechCorp Launches New AI Service",
     description: "TechCorp has launched its latest AI service today...",
     buttonTitle: "Read More",
     tags: ["Podcast", "Product Update"],
   },
-  // ... repeat for all items with varied tag combinations
 ];
 
 function CompanyNews() {
