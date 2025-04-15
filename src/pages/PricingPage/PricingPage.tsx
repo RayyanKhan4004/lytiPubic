@@ -127,6 +127,13 @@
 //     </div>
 //   );
 // }
+import LandingLogo1 from "../../assets/icons/LandingPageLogo1.svg";
+import LandingLogo2 from "../../assets/icons/LandingPageLogo2.svg";
+import LandingLogo3 from "../../assets/icons/LandingPageLogo3.svg";
+import LandingLogo4 from "../../assets/icons/LandingPageLogo4.svg";
+import LandingLogo5 from "../../assets/icons/LandingPageLogo5.svg";
+import LandingLogo6 from "../../assets/icons/LandingPageLogo6.svg";
+import LandingLogo7 from "../../assets/icons/LandingPageLogo7.svg";
 import Bgimg from "./assets/icons/PricingBgimg.svg"
 import Bgimg2 from "./assets/icons/PricingBgimg2.svg"
 import LytiLogo from "./assets/icons/PricingLytiLogo.svg"
@@ -140,8 +147,8 @@ const GetPricing = () => {
         <div
           className="relative z-20 ">
           <img src={Bgimg} alt="" />
-            <div className="flex flex-col pl-[70px] pt-[96px] pb-[80px]">
-            <div className="bg-white bg-opacity-90 flex flex-col items-start rounded">
+            <div className="flex flex-col">
+            <div className="bg-white bg-opacity-90 flex flex-col items-start px-[70px] py-[90] rounded">
             <h5 className="text-[16px] text-[#333333] font-normal font-poppin mb-2">Get Pricing</h5>
             <h2 className="text-4xl font-poppin font-semibold mb-4">Get Pricing & Free Trial</h2>
             <h2 className="text-2xl font-poppin font-medium">Increase team revenue with:</h2>
@@ -160,17 +167,17 @@ const GetPricing = () => {
         </div>
 
         {/* Right Background */}
-        <div className="bg-black">
+        <div className="bg-black w-full">
         
         {/* Floating Form Positioned Overlap */}
         <div
-          className="absolute top-1/2 left-[45%] transform -translate-y-1/2 w-[40%] z-20"
+          className="absolute top-1/2 left-[45%] -bottom-170 transform -translate-y-1/2 w-[40%] z-20"
         >
-          <div className="bg-[#E5E5E5] mt-[206px] rounded-xl flex flex-col items-center justify-center w-[650px] shadow-lg p-8">
+          <div className="bg-[#E5E5E5] mt-[206px] rounded-xl flex flex-col items-center justify-center max-w-[650px] shadow-lg px-15 pb-[85px]">
             <div>
-              <img src={LytiLogo} alt="Logo" className=" h-[125px] w-[125px] mt-[40px]" />
+              <img src={LytiLogo} alt="Logo" className=" max-h-[125px] max-w-[125px] mt-[40px]" />
             </div>
-            <p className="text-[16px] font-poppin ml-[63px] mr-[63px] text-nowrap text-center text-[#212B27] mt-[12px]">
+            <p className="text-[16px] font-poppin text-center text-[#212B27] mt-[12px]">
               Let us know some basic details so that we can get pricing for you.
             </p>
             <form className="space-y-4">
@@ -178,20 +185,20 @@ const GetPricing = () => {
               <input
                 type="email"
                 placeholder="sergio123@example.com"
-                className="pl-[23px] pr-[365px] text-start py-6 bg-[#FFFFFF] rounded-xl focus:outline-none"
+                className="w-[100%] text-start py-6 bg-[#FFFFFF] rounded-xl focus:outline-none"
               />
               <div className="relative">
                 <h2 className="font-poppin font-normal text-xl pt-6 pb-4 text-[#00000080]">Password</h2>
                 <input
                   type="password"
                   placeholder="Password"
-                  className="pl-[23px] pr-[365px] py-6 bg-[#FFFFFF] rounded-xl focus:outline-none"
+                  className="w-[100%] py-6 bg-[#FFFFFF] rounded-xl focus:outline-none"
                 />
               </div>
               <div className="flex items-center justify-center">
               <button
                 type="submit"
-                className="mt-[60px] mb-[85px] font-poppin font-semibold text-[24px] pl-[197px] pr-[197px] pt-[17px] pb-[17px] bg-[#333333] text-white py-2 rounded-xl"
+                className="w-[100%] text-nowrap font-poppin font-semibold text-[24px] bg-[#333333] text-white px-20 py-4 rounded-xl"
               >
                 Get Pricing
               </button>
@@ -201,6 +208,24 @@ const GetPricing = () => {
           </div>
         </div>
       </div>
+    <div>
+      <div className="flex justify-center mt-[100px] mb-[20px] items-center">
+        <h1 className="font-poppin text-[36px] font-semibold">
+          Trusted by over 7000 of the top teams & brokerages
+        </h1>
+      </div>
+      <div className="p-15">
+      <div className="flex justify-between border-t-2 p-4 border-gray-200 border-b-2">
+        <img src={LandingLogo1} alt="" className="w-[109px] h-[62px]" />
+        <img src={LandingLogo2} alt="" className="w-[109px] h-[62px]" />
+        <img src={LandingLogo3} alt="" className="w-[109px] h-[62px]" />
+        <img src={LandingLogo4} alt="" className="w-[109px] h-[62px]" />
+        <img src={LandingLogo5} alt="" className="w-[109px] h-[62px]" />
+        <img src={LandingLogo6} alt="" className="w-[109px] h-[62px]" />
+        <img src={LandingLogo7} alt="" className="w-[109px] h-[62px]" />
+      </div>
+      </div>
+    </div>
     </div>
   );
 };
