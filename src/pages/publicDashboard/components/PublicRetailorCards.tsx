@@ -38,23 +38,24 @@ export default function SisuTransactionCenter() {
       <img src={BoxesImagebg} alt="" className="z-0 absolute transform translate-x-[50%] taranslate-y-[50%] right-[50%] overflow-hidden " />
         {cardData.map((_, index) => (
           <div className="flex flex-col items-center z-10">
-          <div className={`bg-[#D9D9D9] w-2 ${index % 2 === 1 ? "h-[200px]" : 'h-[400px]' }`} > </div>
+          <div className={`bg-[#D9D9D9] w-1 ${index % 2 === 1 ? "h-[200px]" : 'h-[400px]' }`} > </div>
           <div
             key={index}
             className="bg-white gap-[40px] rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center"
           >
-            <div className="w-full h-[100%] bg-white ">
+            <div className="w-[full] flex justify-center items-center h-[100%] bg-white ">
                <img
                 src={BoxesImage}
                 alt="Icon"
-                width={48}
-                height={48}
+                width={72}
+                height={72}
+                className="pt-[35px]"
               />
             </div>
             <p className="text-lg font-Inter text-[#2D3F50] font-medium mb-4">
               Transaction Management <br /> Software Redefined
             </p>
-            <button className="bg-black text-white px-4 py-2 rounded-md text-sm">
+            <button className="bg-[#333333] font-poppin font-semibold text-[20px] text-[#F3F3F3] mb-[35px] pl-[16px] pr-[16px] py-3 rounded-md text-sm">
               Learn More
             </button>
           </div>
