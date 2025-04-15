@@ -19,6 +19,7 @@ import TablesSkeleton from "../../components/ui/skeleton/TablesSkeleton";
 import {
   formatNumber,
   formatNumberWithoutDecimals,
+  formatToK,
 } from "../../utils/functions";
 
 import { OrderDataType } from "../../utils/types";
@@ -455,48 +456,70 @@ const FeeDetail = () => {
               heading="Orders"
               stats={[
                 {
-                  value: `${formatNumberWithoutDecimals(
+                  value: `${formatToK(orderData?.totalOrderCount)}`,
+                  subValue: `${formatNumberWithoutDecimals(
                     orderData?.totalOrderCount
                   )}`,
                   text: "Total Orders",
                 },
                 {
-                  value: `$${formatNumber(orderData?.totalFee)}`,
+                  value: `$${formatToK(orderData?.totalFee)}`,
+                  subValue: `$${formatNumber(orderData?.totalFee)}`,
                   text: "Total Amount",
                 },
-                { value: "0", text: "Avg /Order" },
+                {
+                  value: `${formatToK(orderData?.totalFeeAvg)}`,
+                  subValue: `${formatNumber(orderData?.totalFeeAvg)}`,
+                  text: "Avg /Order",
+                },
               ]}
             />
+
             <StatsCard
               heading="Title"
               stats={[
                 {
-                  value: `${formatNumberWithoutDecimals(
+                  value: `${formatToK(orderData?.titleChargesOrderCount)}`,
+                  subValue: `${formatNumberWithoutDecimals(
                     orderData?.titleChargesOrderCount
                   )}`,
                   text: "Total Units",
                 },
                 {
-                  value: `$${formatNumber(orderData?.titleChargesTotalFee)}`,
-                  text: "Title charges",
+                  value: `$${formatToK(orderData?.titleChargesTotalFee)}`,
+                  subValue: `$${formatNumber(orderData?.titleChargesTotalFee)}`,
+                  text: "Title Charges",
                 },
-                { value: "0", text: "Avg Title " },
+                {
+                  value: `${formatToK(orderData?.titleChargesFeeAvg)}`,
+                  subValue: `${formatNumber(orderData?.titleChargesFeeAvg)}`,
+                  text: "Avg Title",
+                },
               ]}
             />
+
             <StatsCard
               heading="Escrow"
               stats={[
                 {
-                  value: `${formatNumberWithoutDecimals(
+                  value: `${formatToK(orderData?.escrowChargesOrderCount)}`,
+                  subValue: `${formatNumberWithoutDecimals(
                     orderData?.escrowChargesOrderCount
                   )}`,
                   text: "Escrow Units",
                 },
                 {
-                  value: `$${formatNumber(orderData?.escrowChargesTotalFee)}`,
-                  text: "Escrow charges",
+                  value: `$${formatToK(orderData?.escrowChargesTotalFee)}`,
+                  subValue: `$${formatNumber(
+                    orderData?.escrowChargesTotalFee
+                  )}`,
+                  text: "Escrow Charges",
                 },
-                { value: "0", text: "Avg Escrow" },
+                {
+                  value: `${formatToK(orderData?.escrowChargesFeeAvg)}`,
+                  subValue: `${formatNumber(orderData?.escrowChargesFeeAvg)}`,
+                  text: "Avg Escrow",
+                },
               ]}
             />
           </div>

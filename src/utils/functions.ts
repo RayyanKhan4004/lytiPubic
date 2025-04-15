@@ -6,6 +6,35 @@ export const formatNumber = (num: string | number | null | undefined) => {
   return numberValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
+// utils/formatToK.ts
+
+export const formatToK = (num: string | number | null | undefined): string => {
+  if (num === null || num === undefined) return "0";
+
+  const numberValue = typeof num === "string" ? parseFloat(num) : num;
+
+  if (isNaN(numberValue)) return "Invalid Number";
+
+  const absValue = Math.abs(numberValue);
+
+  const formatWithSuffix = (value: number, suffix: string) => {
+    const rounded = value % 1 === 0 ? value.toFixed(0) : value.toFixed(1);
+    return `${rounded}${suffix}`;
+  };
+
+  if (absValue >= 1_000_000_000) {
+    return formatWithSuffix(numberValue / 1_000_000_000, "B");
+  } else if (absValue >= 1_000_000) {
+    return formatWithSuffix(numberValue / 1_000_000, "M");
+  } else if (absValue >= 1_000) {
+    return formatWithSuffix(numberValue / 1_000, "k");
+  }
+
+  return numberValue % 1 === 0
+    ? numberValue.toFixed(0)
+    : numberValue.toFixed(2);
+};
+
 export const formatNumberWithoutDecimals = (
   num: string | number | null | undefined
 ) => {

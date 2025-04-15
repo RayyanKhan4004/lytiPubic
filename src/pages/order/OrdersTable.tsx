@@ -41,6 +41,7 @@ import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkele
 import {
   formatNumber,
   formatNumberWithoutDecimals,
+  formatToK,
 } from "../../utils/functions";
 import dayjs from "dayjs";
 import { AiOutlineClose } from "react-icons/ai";
@@ -382,17 +383,20 @@ const OrdersTable = () => {
               heading="Orders"
               stats={[
                 {
-                  value: `${formatNumberWithoutDecimals(
+                  value: `${formatToK(data?.totalOrderCount)}`,
+                  subValue: `${formatNumberWithoutDecimals(
                     data?.totalOrderCount
                   )}`,
                   text: "Total Orders",
                 },
                 {
-                  value: `$${formatNumber(data?.totalFee)}`,
+                  value: `$${formatToK(data?.totalFee)}`,
+                  subValue: `$${formatNumber(data?.totalFee)}`,
                   text: "Total Amount",
                 },
                 {
-                  value: `${formatNumber(data?.totalFeeAvg)}`,
+                  value: `${formatToK(data?.totalFeeAvg)}`,
+                  subValue: `${formatNumber(data?.totalFeeAvg)}`,
                   text: "Avg /Order",
                 },
               ]}
@@ -401,36 +405,43 @@ const OrdersTable = () => {
               heading="Title"
               stats={[
                 {
-                  value: `${formatNumberWithoutDecimals(
+                  value: `${formatToK(data?.titleChargesOrderCount)}`,
+                  subValue: `${formatNumberWithoutDecimals(
                     data?.titleChargesOrderCount
                   )}`,
                   text: "Total Units",
                 },
                 {
-                  value: `$${formatNumber(data?.titleChargesTotalFee)}`,
-                  text: "Title charges",
+                  value: `$${formatToK(data?.titleChargesTotalFee)}`,
+                  subValue: `$${formatNumber(data?.titleChargesTotalFee)}`,
+                  text: "Title Charges",
                 },
                 {
-                  value: `${formatNumber(data?.titleChargesFeeAvg)}`,
-                  text: "Avg Title ",
+                  value: `${formatToK(data?.titleChargesFeeAvg)}`,
+                  subValue: `${formatNumber(data?.titleChargesFeeAvg)}`,
+                  text: "Avg Title",
                 },
               ]}
             />
+
             <StatsCard
               heading="Escrow"
               stats={[
                 {
-                  value: `${formatNumberWithoutDecimals(
+                  value: `${formatToK(data?.escrowChargesOrderCount)}`,
+                  subValue: `${formatNumberWithoutDecimals(
                     data?.escrowChargesOrderCount
                   )}`,
                   text: "Escrow Units",
                 },
                 {
-                  value: `$${formatNumber(data?.escrowChargesTotalFee)}`,
-                  text: "Escrow charges",
+                  value: `$${formatToK(data?.escrowChargesTotalFee)}`,
+                  subValue: `$${formatNumber(data?.escrowChargesTotalFee)}`,
+                  text: "Escrow Charges",
                 },
                 {
-                  value: `${formatNumber(data?.escrowChargesFeeAvg)}`,
+                  value: `${formatToK(data?.escrowChargesFeeAvg)}`,
+                  subValue: `${formatNumber(data?.escrowChargesFeeAvg)}`,
                   text: "Avg Escrow",
                 },
               ]}
