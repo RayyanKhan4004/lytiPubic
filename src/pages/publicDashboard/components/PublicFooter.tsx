@@ -5,7 +5,7 @@ import TwitterLogo from "./assets/TwitterLogo.svg"
 function PublicFooter({hideImage} : {hideImage  ?: boolean}) {
   return (
     <div>
-     {!hideImage && <div className="w-full flex justify-center p-[60px]">
+     {!hideImage && <div className="w-full flex justify-center px-[60px]">
         <div className="flex items-center justify-center mt-[200px]">
           <img src={HomeImage} alt="" className="w-[1318px] h-[670px]" />
         </div>

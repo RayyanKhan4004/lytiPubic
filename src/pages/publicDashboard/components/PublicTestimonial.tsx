@@ -21,10 +21,9 @@ import ProfileCard from "./ProfileCard";
       </div>
 
       <div className=" relative w-[45%]  flex flex-col gap-[30px] font-poppin ">
-        
-        {/* <div className="absolute -top-[52px] right-[90px] w-[349px] h-[317px] bg-[#33333330] rounded-[8px] "></div>
-        <div className="absolute bottom-0 right-[200px] w-[349px] h-[317px] bg-[#33333330] rounded-[8px] "></div> */}
-        {/* <ProfileCard 
+        <div className="absolute -top-[52px] right-[90px] w-[349px] h-[317px] bg-[#33333330] rounded-[8px] "></div>
+        <div className="absolute bottom-0 right-[200px] w-[349px] h-[317px] bg-[#33333330] rounded-[8px] "></div>
+        <ProfileCard 
           w={"w-[536px]"}
           h={"h-[343px]"}
          stars={5}
@@ -32,7 +31,7 @@ import ProfileCard from "./ProfileCard";
          description={'I am super visual and having a clear dashboard with all the team metrics visible, helps me see where I stand on my progress. I especially like being able to see how my team is doing and what they are working on.'}
         //  image={t.ima}
          name={"Steve Herron"}
-       /> */}
+       />
        
       </div>
       </div>
