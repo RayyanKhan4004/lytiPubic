@@ -24,6 +24,7 @@
 // }
 
 // export default PublicRetailorCards;
+import BoxesImagebg from "./assets/PublicRealtorBackground.svg"
 
 import BoxesImage from "./assets/Boxesimg.svg";
 const cardData = [1, 2, 3, 4, 5];
@@ -34,12 +35,15 @@ export default function SisuTransactionCenter() {
       className="  flex flex-col items-center justify-center"
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      <img src={BoxesImagebg} alt="" className="z-0 absolute transform translate-x-[50%] taranslate-y-[50%] right-[50%] overflow-hidden " />
         {cardData.map((_, index) => (
+          <div className="flex flex-col items-center z-10">
+          <div className={`bg-[#D9D9D9] w-2 ${index % 2 === 1 ? "h-[200px]" : 'h-[400px]' }`} > </div>
           <div
             key={index}
             className="bg-white gap-[40px] rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center"
           >
-            <div className="w-full h-[100%]">
+            <div className="w-full h-[100%] bg-white ">
                <img
                 src={BoxesImage}
                 alt="Icon"
@@ -53,6 +57,7 @@ export default function SisuTransactionCenter() {
             <button className="bg-black text-white px-4 py-2 rounded-md text-sm">
               Learn More
             </button>
+          </div>
           </div>
         ))}
       </div>
