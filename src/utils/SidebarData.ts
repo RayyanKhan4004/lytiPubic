@@ -120,15 +120,23 @@ export const sidebarData = () => {
       title: "Reports",
       icon1: icon11,
       icon2: icon12,
-      path: "",
+      path: "report/activity-agent",
       subMenu: [
         {
           id: 601,
           title: "Activity",
-          path: "/reports",
+          path: "report/activity-agent",
           subMenuArray: [
-            { id: 611, title: "Activity by agent", path: "/by-agent" },
-            { id: 612, title: "Activity by log", path: "/by-log" },
+            {
+              id: 611,
+              title: "Activity by agent",
+              path: "report/activity-agent",
+            },
+            {
+              id: 612,
+              title: "Activity by log",
+              path: "report/activity-log",
+            },
           ],
         },
         { id: 602, title: "Account. & Coaching", path: "/Dashboard/Team" },

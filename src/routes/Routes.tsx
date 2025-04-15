@@ -54,6 +54,8 @@ import PersonalDashboard from "../pages/dashboard/personalDashboard/PersonalDash
 import MessageCenter from "../pages/message-center/MessageCenter";
 import EditChallenge from "../pages/challenges/EditChallenge";
 import LeadsSourceGroup from "../pages/admin/LeadsSourceGroup";
+import ActivityAgent from "../pages/report/activity/ActivityAgent";
+import ActivityLog from "../pages/report/activity/ActivityLog";
 // import MessageCenter from "../pages/message-center/messageCenter";
 
 export const router = createBrowserRouter([
@@ -106,6 +108,8 @@ export const router = createBrowserRouter([
       { path: "challenge-edit", element: <EditChallenge /> },
       { path: "create-challenge", element: <CreateChallenge /> },
       { path: "message-center", element: <MessageCenter /> },
+      { path: "report/activity-agent", element: <ActivityAgent /> },
+      { path: "report/activity-log", element: <ActivityLog /> },
       { path: "*", element: <NotFoundPage /> },
     ],
   },
