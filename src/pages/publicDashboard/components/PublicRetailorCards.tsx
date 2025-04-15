@@ -39,9 +39,10 @@ export default function SisuTransactionCenter() {
         {cardData.map((_, index) => (
           <div className="flex flex-col items-center z-10">
           <div className={`bg-[#D9D9D9] w-1 ${index % 2 === 1 ? "h-[200px]" : 'h-[400px]' }`} > </div>
+          <div className=" bg-gradient-to-r from-white via-50% via-[#0f0f0f52] to-white rounded-xl shadow-lg !w-[250px] !h-[300px]">
           <div
             key={index}
-            className="bg-white gap-[40px] rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center"
+            className="bg-white gap-6 rounded-xl  py-[36px] flex flex-col items-center justify-center mt-1 text-center h-[calc(100% - 8px )]"
           >
             <div className="w-[full] flex justify-center items-center h-[100%] bg-white ">
                <img
@@ -49,15 +50,17 @@ export default function SisuTransactionCenter() {
                 alt="Icon"
                 width={72}
                 height={72}
-                className="pt-[35px]"
+                className=""
               />
             </div>
-            <p className="text-lg font-Inter text-[#2D3F50] font-medium mb-4">
-              Transaction Management <br /> Software Redefined
+            <p className="text-[16px] font-Inter text-[#2D3F50] font-medium ">
+            Transaction Management Software Redefined
             </p>
-            <button className="bg-[#333333] font-poppin font-semibold text-[20px] text-[#F3F3F3] mb-[35px] pl-[16px] pr-[16px] py-3 rounded-md text-sm">
+            <button className="bg-[#333333] font-poppin font-semibold text-[20px] text-[#F3F3F3] px-4  py-3 rounded-md text-sm">
               Learn More
             </button>
+          </div>
+
           </div>
           </div>
         ))}
