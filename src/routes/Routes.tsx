@@ -60,6 +60,8 @@ import Products from "../pages/Products/Products";
 import CompanyDashboard from "../pages/publicDashboard/components/CompanyDashboard";
 import CompanyNews from "../pages/publicDashboard/components/CompanyNews";
 import CompanyAboutUs from "../pages/publicDashboard/components/CompanyAboutUs";
+import ActivityAgent from "../pages/report/activity/ActivityAgent";
+import ActivityLog from "../pages/report/activity/ActivityLog";
 // import MessageCenter from "../pages/message-center/messageCenter";
 
 export const router = createBrowserRouter([
@@ -112,6 +114,8 @@ export const router = createBrowserRouter([
       { path: "challenge-edit", element: <EditChallenge /> },
       { path: "create-challenge", element: <CreateChallenge /> },
       { path: "message-center", element: <MessageCenter /> },
+      { path: "report/activity-agent", element: <ActivityAgent /> },
+      { path: "report/activity-log", element: <ActivityLog /> },
       { path: "*", element: <NotFoundPage /> },
     ],
   },

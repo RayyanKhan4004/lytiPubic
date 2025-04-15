@@ -83,20 +83,17 @@ const Sidebar = ({ setIsSideBarExpanded, isSideBarExpanded }: SideBarProps) => {
   const handleNestedItemClick = (nestedItem: any, subItem: any) => {
     console.log(nestedItem, "nestedItem");
 
-    // Reset nested item selection and set the selected nested item
     setSelectedNestedItem(nestedItem.id);
 
-    // If the nested item has a path, navigate to it
     if (nestedItem.path) {
       navigate(nestedItem.path);
     }
 
-    // If a subMenuArray exists, open the dropdown and set the first nested item
     if (subItem.subMenuArray && subItem.subMenuArray.length > 0) {
       setOpenNestedDropdown(subItem.id);
-      setSelectedNestedItem(nestedItem.id); // Ensure the correct nested item is selected
+      setSelectedNestedItem(nestedItem.id);
     } else {
-      setOpenNestedDropdown(null); // Close nested dropdown if no subMenuArray
+      setOpenNestedDropdown(null);
     }
   };
 

@@ -192,8 +192,12 @@ export const graphOption = [
   { value: "closedRevenue", label: "Closed Revenue" },
 ];
 export const leaderboardOption = [
-  { value: "appointmentMet", label: "Appointment Met" },
-  { value: "appointmentSet", label: "Appointment Met" },
+  { value: "appointmentMetDate", label: "Appointment Met " },
+  { value: "appointmentSetDate", label: "Appointment Set " },
+  { value: "closedOrder", label: "Closed Order" },
+  { value: "closedVolume", label: "Closed Volume" },
+  { value: "closedRevenue", label: "Closed Revenue" },
+  { value: "conversation", label: "Conversation" },
 ];
 
 export const ScopeOptions = [{ value: "Agents", label: "Agents" }];
