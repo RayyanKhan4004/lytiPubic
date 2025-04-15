@@ -13,7 +13,7 @@ const StatsCard: React.FC<StatsCardProps> = ({ heading, stats }) => {
         {stats.map((stat, index) => (
           <div
             key={index}
-            className="text-(--secondary) font-semibold text-2xl text-center flex flex-col gap-2.5 font-poppin leading-[36px]"
+            className="text-(--secondary) font-semibold text-xl text-center flex flex-col gap-2.5 font-poppin "
           >
             {stat.value}
             <span className="font-normal text-black text-xs leading-[18px]">

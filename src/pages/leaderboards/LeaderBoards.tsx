@@ -20,7 +20,6 @@ interface ChartData {
   color: string;
 }
 const LeaderBoards = () => {
-  const [selectedFilter, setSelectedFilter] = useState("Devclan");
   const [searchValue, setSearchValue] = useState("");
 
   const {
@@ -29,8 +28,10 @@ const LeaderBoards = () => {
     control,
     setValue,
   } = useForm<UserTableType>();
-
-  const { data: leaderData, isLoading } = useGetLeaderboardQuery();
+  const selectedRole = watch("role");
+  const { data: leaderData, isLoading } = useGetLeaderboardQuery({
+    report: selectedRole,
+  });
   const totalOrderCount =
     leaderData?.leaderboard?.reduce(
       (sum: any, item: any) => sum + item.orderCount,
@@ -54,7 +55,7 @@ const LeaderBoards = () => {
 
   return (
     <div className="w-full px-4 my-8 font-Poppins">
-      <Breadcrumb items={["Leaderboards", "Leaderboard"]} />
+      <Breadcrumb items={["Leaderboards", "Agent Leaderboard"]} />
       <div className="w-full flex flex-col gap-4 my-7">
         <div className="shadow-(--cardShadow) rounded-2xl bg-white p-4 w-full ">
           <div className="flex justify-between items-center">

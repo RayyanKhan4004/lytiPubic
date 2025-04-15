@@ -391,7 +391,10 @@ const OrdersTable = () => {
                   value: `$${formatNumber(data?.totalFee)}`,
                   text: "Total Amount",
                 },
-                { value: "0", text: "Avg /Order" },
+                {
+                  value: `${formatNumber(data?.totalFeeAvg)}`,
+                  text: "Avg /Order",
+                },
               ]}
             />
             <StatsCard
@@ -407,7 +410,10 @@ const OrdersTable = () => {
                   value: `$${formatNumber(data?.titleChargesTotalFee)}`,
                   text: "Title charges",
                 },
-                { value: "0", text: "Avg Title " },
+                {
+                  value: `${formatNumber(data?.titleChargesFeeAvg)}`,
+                  text: "Avg Title ",
+                },
               ]}
             />
             <StatsCard
@@ -423,7 +429,10 @@ const OrdersTable = () => {
                   value: `$${formatNumber(data?.escrowChargesTotalFee)}`,
                   text: "Escrow charges",
                 },
-                { value: "0", text: "Avg Escrow" },
+                {
+                  value: `${formatNumber(data?.escrowChargesFeeAvg)}`,
+                  text: "Avg Escrow",
+                },
               ]}
             />
           </div>
