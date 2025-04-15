@@ -3,10 +3,10 @@ import PublicDashboardNavbar from "./PublicDashboardNavbar";
 import { useEffect, useState } from "react";
 
 //icons
-import Cardimg from "./assets/Cardimg.svg"
-import HomeIcon from "./assets/HomeIcon.svg"
-import StadiumIcon from "./assets/StadiumImg.svg"
-import UserIcon from "./assets/UserIcon.svg"
+import Cardimg from "./assets/Cardimg.svg";
+import HomeIcon from "./assets/HomeIcon.svg";
+import StadiumIcon from "./assets/StadiumImg.svg";
+import UserIcon from "./assets/UserIcon.svg";
 
 const newsCardData = [
   {
@@ -227,74 +227,100 @@ const newsCardData = [
     tags: ["Podcast", "Product Update"],
   },
 ];
-
+const tagsList = [
+  "All",
+  "Podcast",
+  "News",
+  "Webinars",
+  "Product Update",
+  "Featured",
+  "SISU Spotlight",
+  "Case Study",
+  "Tips and Tricks",
+  "Strategy",
+];
 function CompanyNews() {
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(9);
-    const [tag, setTag] = useState(["Featured"]);
-    const [newsCard, setNewsCard] = useState(newsCardData);
-  
-    // Filter logic
-    function renderNews() {
-      if (tag.includes("all")) {
-        setNewsCard(newsCardData);
-      } else {
-        const filtered = newsCardData.filter((item) =>
-          tag.some((t) => item.tags.includes(t))
-        );
-        setNewsCard(filtered);
-      }
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(9);
+  const [tag, setTag] = useState("All");
+  const [newsCard, setNewsCard] = useState(newsCardData);
+
+  // Filter logic
+  function renderNews() {
+    if (tag.includes("All")) {
+      setNewsCard(newsCardData);
+    } else {
+      const filtered = newsCardData.filter((item) => item.tags.includes(tag));
+      setNewsCard(filtered);
     }
-  
-    useEffect(() => {
-      renderNews();
-      setPage(1); // Reset to page 1 when tags change
-    }, [tag]);
-  
-    // Pagination logic (outside renderNews)
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const totalPages = Math.ceil(newsCard.length / pageSize);
-    const currentNews = newsCard.slice(startIndex, endIndex);
-  
-    const goToPage = ( num : any) => {
-      setPage(num);
-    };
-  
-    return (
-      <div>
-        <PublicDashboardNavbar />
-        <div className="grid grid-cols-3 gap-6 px-15">
-          {currentNews.map((newsCard, index) => (
-            <CompanyNewsCard
-              key={index}
-              img={newsCard.img}
-              userImg={newsCard.userImg}
-              userName={newsCard.userName}
-              date={newsCard.date}
-              title={newsCard.title}
-              description={newsCard.description}
-              buttonTitle={newsCard.buttonTitle}
-            />
-          ))}
-        </div>
-  
-        {/* Pagination Controls */}
-        <div className="flex justify-center gap-2 mt-6">
-          {[...Array(totalPages)].map((_, index:any) => (
+  }
+
+  useEffect(() => {
+    renderNews();
+    setPage(1); // Reset to page 1 when tags change
+  }, [tag]);
+
+  // Pagination logic (outside renderNews)
+  const startIndex = (page - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const totalPages = Math.ceil(newsCard.length / pageSize);
+  const currentNews = newsCard.slice(startIndex, endIndex);
+
+  const goToPage = (num: any) => {
+    setPage(num);
+  };
+
+  return (
+    <div>
+      <PublicDashboardNavbar />
+      <div className="px-[60px] flex flex-col gap-8">
+        <h3 className="font-poppin font-semibold text-[32px] leading-[38px] text-[#262626]">
+          Latest Articles
+        </h3>
+        <div>
+          {tagsList.map((curr, i) => (
             <button
-              key={index}
-              onClick={() => goToPage(index + 1)}
-              className={`px-3 py-1 rounded ${
-                page === index + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
-              }`}
-            >
-              {index + 1}
-            </button>
+            onClick={()=> setTag(curr)}
+              className={`  ${
+                tag == curr
+                  ? "bg-[#333333] text-[#F3F3F3]"
+                  : "bg-[#F3F3F3] text-[#333333]"
+              } p-5 rounded-[10px] text-[22px] font-poppin font-medium mr-[23px] mb-8 `}
+            >{curr}</button>
           ))}
         </div>
       </div>
-    );
-  }
+      <div className="grid grid-cols-3 gap-6 px-15">
+        {currentNews.map((newsCard, index) => (
+          <CompanyNewsCard
+            key={index}
+            img={newsCard.img}
+            userImg={newsCard.userImg}
+            userName={newsCard.userName}
+            date={newsCard.date}
+            title={newsCard.title}
+            description={newsCard.description}
+            buttonTitle={newsCard.buttonTitle}
+          />
+        ))}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center gap-2 mt-6">
+        {[...Array(totalPages)].map((_, index: any) => (
+          <button
+            key={index}
+            onClick={() => goToPage(index + 1)}
+            className={`px-3 py-1 rounded ${
+              page === index + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default CompanyNews;
