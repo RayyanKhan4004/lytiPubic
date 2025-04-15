@@ -2,7 +2,7 @@ import React from "react";
 
 interface StatsCardProps {
   heading: string;
-  stats: { value: string; text: string }[];
+  stats: { value: string; text: string; subValue?: string }[];
 }
 
 const StatsCard: React.FC<StatsCardProps> = ({ heading, stats }) => {
@@ -13,9 +13,14 @@ const StatsCard: React.FC<StatsCardProps> = ({ heading, stats }) => {
         {stats.map((stat, index) => (
           <div
             key={index}
-            className="text-(--secondary) font-semibold text-xl text-center flex flex-col gap-2.5 font-poppin "
+            className="text-(--secondary) font-semibold text-2xl text-center flex flex-col gap-2 font-poppin "
           >
-            {stat.value}
+            <div className="flex flex-col gap-0.5">
+              {stat.value}
+              <span className="font-normal text-black text-xs leading-[18px]">
+                {stat.subValue ? stat.subValue : "0"}
+              </span>
+            </div>
             <span className="font-normal text-black text-xs leading-[18px]">
               {stat.text}
             </span>
