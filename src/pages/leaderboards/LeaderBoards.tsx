@@ -28,7 +28,7 @@ const LeaderBoards = () => {
     control,
     setValue,
   } = useForm<UserTableType>();
-  const selectedRole = watch("role");
+  const selectedRole = watch("role") || "";
   const { data: leaderData, isLoading } = useGetLeaderboardQuery({
     report: selectedRole,
   });
@@ -52,6 +52,12 @@ const LeaderBoards = () => {
       value: parseFloat(user.percentage.replace("%", "")),
       color: rankColors[user.rank] || "#ccc",
     })) || [];
+  const rawLeaderboard = leaderData?.leaderboard || [];
+
+  // Make sure we clean and slice the latest fresh data only
+  const leaderboardTop5 = rawLeaderboard
+    .filter((user: any) => user && user.userId && user.name && user.rank)
+    .slice(0, 5);
 
   return (
     <div className="w-full px-4 my-8 font-Poppins">
@@ -79,11 +85,10 @@ const LeaderBoards = () => {
 
           <div className="flex justify-between gapp-3 items-center w-full">
             <div className="w-[70%] flex flex-wrap gap-2 items-center">
-              {leaderData?.leaderboard
-                ?.slice(0, 5)
-                .map((user: any, i: number) => (
+              {leaderboardTop5.length > 0 ? (
+                leaderboardTop5.map((user: any) => (
                   <LeaderboardsDashboardUserCard
-                    key={user.rank}
+                    key={user.userId}
                     image={user.profileImage || dummyImage}
                     rank={user.rank}
                     name={user.name}
@@ -92,7 +97,12 @@ const LeaderBoards = () => {
                     width="w-[30%]"
                     border="border border-(--inputBorder)"
                   />
-                ))}
+                ))
+              ) : (
+                <p className="text-sm text-gray-500">
+                  No leaderboard data available.
+                </p>
+              )}
             </div>
 
             <div className="relative flex justify-center items-center">

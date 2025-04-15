@@ -161,9 +161,9 @@ export const orderApi = createApi({
     }),
     getLeaderboard: builder.query<any, { report: string }>({
       query: ({ report }) => ({
-        url: "orders/leaderboard",
+        url: `orders/leaderboard?report=${report}`,
         method: "GET",
-        params: { report },
+        // params: { report },
       }),
     }),
 
