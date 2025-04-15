@@ -7,6 +7,8 @@ import Cardimg from "./assets/Cardimg.svg";
 import HomeIcon from "./assets/HomeIcon.svg";
 import StadiumIcon from "./assets/StadiumImg.svg";
 import UserIcon from "./assets/UserIcon.svg";
+import PublicFooter from "./PublicFooter";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const newsCardData = [
   {
@@ -267,7 +269,8 @@ function CompanyNews() {
   const currentNews = newsCard.slice(startIndex, endIndex);
 
   const goToPage = (num: any) => {
-    setPage(num);
+    num <= totalPages && num !== 0 &&  setPage(num);
+   
   };
 
   return (
@@ -306,19 +309,28 @@ function CompanyNews() {
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex justify-center gap-2 mt-6">
+      <div className="flex justify-center gap-2 my-6">
+        <button className="w-[70px] h-[50px] flex justify-center items-center rounded-[8px] bg-[#F3F3F3]"
+        onClick={() => {page !== 1 && goToPage( page - 1)}}
+        > <ChevronLeft color="#333333"/></button>
+       
         {[...Array(totalPages)].map((_, index: any) => (
           <button
             key={index}
             onClick={() => goToPage(index + 1)}
-            className={`px-3 py-1 rounded ${
-              page === index + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
+            className={`px-3 py-1 rounded text-[16px] font-medium font-poppin w-[50px] h-[50px]  ${
+              page === index + 1 ? "bg-[#333333] text-[#F3F3F3]" : "bg-[#F3F3F3]"
             }`}
           >
             {index + 1}
           </button>
         ))}
+        <button className="bg-[#333333] w-[70px] h-[50px] flex justify-center items-center rounded-[8px]" 
+          onClick={() => goToPage(page + 1)}
+        ><ChevronRight color="#F3F3F3"/></button>
+        
       </div>
+      <PublicFooter hideImage={true}/>
     </div>
   );
 }
