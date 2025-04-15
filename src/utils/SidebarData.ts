@@ -122,7 +122,15 @@ export const sidebarData = () => {
       icon2: icon12,
       path: "",
       subMenu: [
-        { id: 601, title: "Activity", path: "/Dashboard/" },
+        {
+          id: 601,
+          title: "Activity",
+          path: "/reports",
+          subMenuArray: [
+            { id: 611, title: "Activity by agent", path: "/by-agent" },
+            { id: 612, title: "Activity by log", path: "/by-log" },
+          ],
+        },
         { id: 602, title: "Account. & Coaching", path: "/Dashboard/Team" },
         { id: 603, title: "Commissions", path: "/Dashboard/Personal" },
         { id: 604, title: "Production", path: "/Dashboard/Personal" },
