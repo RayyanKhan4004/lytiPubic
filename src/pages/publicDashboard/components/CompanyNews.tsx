@@ -8,7 +8,7 @@ import HomeIcon from "./assets/HomeIcon.svg";
 import StadiumIcon from "./assets/StadiumImg.svg";
 import UserIcon from "./assets/UserIcon.svg";
 import PublicFooter from "./PublicFooter";
-import Footerimg from "./assets/CompanyNewsBgimg.svg"
+import Footerimg from "./assets/CompanyNewsBgimg.svg";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const newsCardData = [
@@ -270,8 +270,7 @@ function CompanyNews() {
   const currentNews = newsCard.slice(startIndex, endIndex);
 
   const goToPage = (num: any) => {
-    num <= totalPages && num !== 0 &&  setPage(num);
-   
+    num <= totalPages && num !== 0 && setPage(num);
   };
 
   return (
@@ -284,13 +283,15 @@ function CompanyNews() {
         <div>
           {tagsList.map((curr, i) => (
             <button
-            onClick={()=> setTag(curr)}
+              onClick={() => setTag(curr)}
               className={`  ${
                 tag == curr
                   ? "bg-[#333333] text-[#F3F3F3]"
                   : "bg-[#F3F3F3] text-[#333333]"
               } p-5 rounded-[10px] text-[22px] font-poppin font-medium mr-[23px] mb-8 `}
-            >{curr}</button>
+            >
+              {curr}
+            </button>
           ))}
         </div>
       </div>
@@ -311,43 +312,63 @@ function CompanyNews() {
 
       {/* Pagination Controls */}
       <div className="flex justify-center gap-2 my-6">
-        <button className="w-[70px] h-[50px] flex justify-center items-center rounded-[8px] bg-[#F3F3F3]"
-        onClick={() => {page !== 1 && goToPage( page - 1)}}
-        > <ChevronLeft color="#333333"/></button>
-       
+        <button
+          className="w-[70px] h-[50px] flex justify-center items-center rounded-[8px] bg-[#F3F3F3]"
+          onClick={() => {
+            page !== 1 && goToPage(page - 1);
+          }}
+        >
+          {" "}
+          <ChevronLeft color="#333333" />
+        </button>
+
         {[...Array(totalPages)].map((_, index: any) => (
           <button
             key={index}
             onClick={() => goToPage(index + 1)}
             className={`px-3 py-1 rounded text-[16px] font-medium font-poppin w-[50px] h-[50px]  ${
-              page === index + 1 ? "bg-[#333333] text-[#F3F3F3]" : "bg-[#F3F3F3]"
+              page === index + 1
+                ? "bg-[#333333] text-[#F3F3F3]"
+                : "bg-[#F3F3F3]"
             }`}
           >
             {index + 1}
           </button>
         ))}
-        <button className="bg-[#333333] w-[70px] h-[50px] flex justify-center items-center rounded-[8px]" 
+        <button
+          className="bg-[#333333] w-[70px] h-[50px] flex justify-center items-center rounded-[8px]"
           onClick={() => goToPage(page + 1)}
-        ><ChevronRight color="#F3F3F3"/></button>
-        
+        >
+          <ChevronRight color="#F3F3F3" />
+        </button>
       </div>
       <div className="flex justify-between items-center px-[88px]">
         <div className="flex flex-col gap-11">
           <div>
-          <h1 className="leading-20 text-[#262626] font-poppin font-medium text-[60px] uppercase">The best insights,<br /> <span className="bg-gradient-to-b from-[#262626] to-[#B8C2CE]  inline-block text-transparent bg-clip-text">right in your inbox.</span></h1>
+            <h1 className="leading-20 text-[#262626] font-poppin font-medium text-[60px] uppercase">
+              The best insights,
+              <br />{" "}
+              <span className="bg-gradient-to-b from-[#262626] to-[#B8C2CE]  inline-block text-transparent bg-clip-text">
+                right in your inbox.
+              </span>
+            </h1>
           </div>
           <div className="flex flex-col gap-5">
-          <input 
-          type="text" 
-          className="border-[#0000004D] border-1 h-[70px] placeholder:font-poppin placeholder:text-[#00000080] placeholder:text-[14px] focus:outline-0 rounded-[16px] p-5"
-          placeholder="sergio123@example.com"
-          />
-          <button className="bg-[#333333] w-[264px] h-[64px] text-[#F3F3F3] text-[24px] font-poppin rounded-[10px]">Join this Family</button>
+            <input
+              type="text"
+              className="border-[#0000004D] border-1 h-[70px] placeholder:font-poppin placeholder:text-[#00000080] placeholder:text-[14px] focus:outline-0 rounded-[16px] p-5"
+              placeholder="sergio123@example.com"
+            />
+            <button className="bg-[#333333] w-[264px] h-[64px] text-[#F3F3F3] text-[24px] font-poppin rounded-[10px]">
+              Join this Family
+            </button>
           </div>
         </div>
-        <div><img src={Footerimg} alt="" /></div>
+        <div>
+          <img src={Footerimg} alt="" />
+        </div>
       </div>
-      <PublicFooter hideImage={true}/>
+      <PublicFooter hideImage={true} />
     </div>
   );
 }

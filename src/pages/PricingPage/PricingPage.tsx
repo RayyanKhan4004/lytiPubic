@@ -134,6 +134,7 @@ import LandingLogo4 from "../../assets/icons/LandingPageLogo4.svg";
 import LandingLogo5 from "../../assets/icons/LandingPageLogo5.svg";
 import LandingLogo6 from "../../assets/icons/LandingPageLogo6.svg";
 import LandingLogo7 from "../../assets/icons/LandingPageLogo7.svg";
+import PublicTestimonial from "../publicDashboard/components/PublicTestimonial";
 import Bgimg from "./assets/icons/PricingBgimg.svg"
 import Bgimg2 from "./assets/icons/PricingBgimg2.svg"
 import LytiLogo from "./assets/icons/PricingLytiLogo.svg"
@@ -228,7 +229,10 @@ const GetPricing = () => {
       </div>
       </div>
     </div>
-    
+    <PublicTestimonial/>
+    <div className="flex justify-center items-center mb-[155px]">
+      <button className="font-poppin font-semibold rounded-[16px] text-[32px] w-[293px] h-[90px] bg-[#333333] text-[#F3F3F3]">Get Pricing </button>
+    </div>
     </div>
   );
 };
