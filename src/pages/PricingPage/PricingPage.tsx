@@ -180,25 +180,27 @@ const GetPricing = () => {
             <p className="text-[16px] font-poppin text-center text-[#212B27] mt-[12px]">
               Let us know some basic details so that we can get pricing for you.
             </p>
-            <form className="space-y-4">
+            <form className="space-y-4 flex flex-col items-start justify-center">
+              <div className="flex flex-col items-start justify-center">
               <h2 className="font-poppin font-normal text-xl mt-[10px] text-[#00000080]">Email Address</h2>
               <input
                 type="email"
                 placeholder="sergio123@example.com"
-                className="w-[100%] text-start py-6 bg-[#FFFFFF] rounded-xl focus:outline-none"
+                className="w-[200%] text-start pl-7 py-6 bg-[#FFFFFF] rounded-xl focus:outline-none"
               />
-              <div className="relative">
+              </div>
+              <div className="relative flex flex-col items-start">
                 <h2 className="font-poppin font-normal text-xl pt-6 pb-4 text-[#00000080]">Password</h2>
                 <input
                   type="password"
                   placeholder="Password"
-                  className="w-[100%] py-6 bg-[#FFFFFF] rounded-xl focus:outline-none"
+                  className="w-[200%] py-6 pl-7 bg-[#FFFFFF] rounded-xl focus:outline-none"
                 />
               </div>
               <div className="flex items-center justify-center">
               <button
                 type="submit"
-                className="w-[100%] text-nowrap font-poppin font-semibold text-[24px] bg-[#333333] text-white px-20 py-4 rounded-xl"
+                className=" text-nowrap font-poppin font-semibold text-[24px] bg-[#333333] text-white text-center px-20 py-4 rounded-xl"
               >
                 Get Pricing
               </button>
@@ -226,6 +228,7 @@ const GetPricing = () => {
       </div>
       </div>
     </div>
+    
     </div>
   );
 };

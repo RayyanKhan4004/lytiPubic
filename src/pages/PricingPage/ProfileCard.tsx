@@ -57,5 +57,3 @@ function ProfileCard({
 }
 
 export default ProfileCard;
-
-// <ProfileCard stars={4} date="April 1, 2023" name="Steve Herron" description="I am super visual and having a clear dashboard with all the team metrics visible, helps me see where I stand on my progress. I especially like being"/>

@@ -34,12 +34,16 @@ function PublicDashBoard() {
      <PublicNavbar/>
      <PublicHeadings />
       <PublicTestimonial/>
+
       <div className="relative">
+        <div className="px-[40px]">
+      <h1 className="font-poppin font-semibold text-[40px] flex flex-row justify-start">Why Choose Us</h1>
+      </div>
+      
       <img src={bg} alt="" className="absolute top-0 left-0 w-full h-full -z-10" />
       <div className="p-15  gap-[50px] flex flex-col justify-center"> 
        
         
-        <h1 className="font-poppin font-semibold text-[40px] mb-[10px] flex flex-row justify-start">Why Choose Us</h1>
         <div className="flex flex-col gap-[30px]">
           
         <div className="flex justify-start gap-[20px]">
@@ -58,7 +62,7 @@ function PublicDashBoard() {
           <PublicWhyChoseus  ind={ind} number={item.num} text={item.text}/>
         ))
       }
-
+        
         </div>
         </div>
       </div>

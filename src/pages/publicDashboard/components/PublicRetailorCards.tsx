@@ -42,7 +42,7 @@ export default function SisuTransactionCenter() {
           <div className=" bg-gradient-to-r from-white via-50% via-[#0f0f0f52] to-white rounded-xl shadow-lg !w-[250px] !h-[300px]">
           <div
             key={index}
-            className="bg-white gap-6 rounded-xl  py-[36px] flex flex-col items-center justify-center mt-1 text-center h-[calc(100% - 8px )]"
+            className="bg-white gap-6 rounded-xl  py-[36px] flex flex-col items-center justify-center mt-1 text-center min-h-[292px] ]h-[calc(100% - 8px )]"
           >
             <div className="w-[full] flex justify-center items-center h-[100%] bg-white ">
                <img
