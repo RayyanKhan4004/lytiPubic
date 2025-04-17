@@ -14,6 +14,7 @@ import {
   fileStatusOption,
   fileTypeOptions,
   transactionOption,
+  useOptionsAddNew,
   yearOptions,
 } from "../../utils/options";
 
@@ -40,8 +41,11 @@ import CustomizableSkeleton from "../../components/ui/skeleton/CustomizableSkele
 import {
   formatNumber,
   formatNumberWithoutDecimals,
+  formatToK,
 } from "../../utils/functions";
 import dayjs from "dayjs";
+import { AiOutlineClose } from "react-icons/ai";
+import MainTitle from "../../components/ui/typography/MainTitle";
 
 const OrdersTable = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -56,6 +60,7 @@ const OrdersTable = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isYearManuallyCleared, setIsYearManuallyCleared] = useState(false);
   const [filtersVersion, setFiltersVersion] = useState(0);
+  const { agentsOption } = useOptionsAddNew();
 
   const {
     formState: { errors },
@@ -73,13 +78,11 @@ const OrdersTable = () => {
   const selectedFileStatus = watch("fileStatus") || "";
   const selectedFileType = watch("fileType") || "";
   const selectTransactionType = watch("transactionType") || "";
+  const selectedUser = watch("userId") || "";
   const formYear = watch("year") || "";
 
   const [locationType, setLocationType] = useState(location.state?.type || "");
   const yearFromCard = location.state?.selectedYear || "";
-  const typeFromLocation = location.state?.type || "";
-
-  const selectedYear = formYear || yearFromCard || "";
 
   useEffect(() => {
     const effectiveYear = isYearManuallyCleared ? "" : formYear || yearFromCard;
@@ -110,6 +113,7 @@ const OrdersTable = () => {
     locationType === "pending" ? "Prelim/Commitment" : selectedFileType;
 
   const { data, isLoading, refetch } = useGetOrdersQuery({
+    userId: selectedUser,
     status: adjustedStatus,
     type: adjustedType,
     propertyCounty: selectedPropertyCounty,
@@ -178,6 +182,7 @@ const OrdersTable = () => {
       fileType: adjustedType,
       transactionType: selectTransactionType,
       dateRange: formattedDateRange,
+      selectedUser,
     });
 
     refetch();
@@ -189,6 +194,7 @@ const OrdersTable = () => {
     startDate,
     endDate,
     filtersVersion,
+    selectedUser,
   ]);
 
   useEffect(() => {
@@ -204,6 +210,7 @@ const OrdersTable = () => {
       | "fileType"
       | "transactionType"
       | "dateRange"
+      | "selectedUser"
   ) => {
     if (key === "dateRange") {
       setStartDate("");
@@ -213,7 +220,9 @@ const OrdersTable = () => {
     } else {
       setValue(key, "");
     }
-
+    if (key === "selectedUser") {
+      setValue("userId", "");
+    }
     if (key === "fileStatus" || key === "fileType") {
       setLocationType("");
     }
@@ -310,12 +319,56 @@ const OrdersTable = () => {
 
   return (
     <>
-      {
-        <FilterPopup
-          isModelOpen={isModelOpen}
-          setIsModelOpen={setIsModelOpen}
-        />
-      }
+      {isModelOpen && (
+        <div className="fixed inset-0 bg-black/30 w-screen h-screen flex items-center justify-end z-50">
+          <form className="bg-white rounded-[16px] max-w-[700px] w-[90%] h-full overflow-y-auto shadow-xl animate-slide-in-right relative">
+            <button
+              onClick={() => setIsModelOpen(false)}
+              className="absolute top-4 right-4 text-gray-600 hover:text-black text-2xl"
+            >
+              <AiOutlineClose />
+            </button>
+
+            <div className="pt-8 px-6 font-poppin flex flex-col gap-6">
+              <MainTitle title="Filters" />
+
+              <form>
+                <SelectField
+                  label="Agent"
+                  name="userId"
+                  control={control}
+                  options={agentsOption}
+                  placeholder="Select agent"
+                  error={errors.userId?.message}
+                  required={false}
+                />
+              </form>
+
+              <div className="flex flex-row justify-end gap-4 h-10">
+                <button
+                  type="button"
+                  onClick={() => {
+                    reset();
+                  }}
+                  className="text-gray-500 bg-[#F3F3F3] rounded-[8px] font-poppin font-semibold text-[14px] leading-[21px] px-8"
+                >
+                  Reset
+                </button>
+                {/* <button
+                  type="button"
+                  onClick={() => {
+                    setIsModelOpen(false);
+                  }}
+                  className="text-white bg-(--secondary) rounded-[8px] font-poppin font-semibold text-[14px] leading-[21px] px-8"
+                >
+                  Apply Filters
+                </button> */}
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
+
       <div className="w-full px-4 my-8 font-poppin">
         <Breadcrumb items={["Orders", "Orders"]} />
         {isLoading ? (
@@ -330,48 +383,67 @@ const OrdersTable = () => {
               heading="Orders"
               stats={[
                 {
-                  value: `${formatNumberWithoutDecimals(
+                  value: `${formatToK(data?.totalOrderCount)}`,
+                  subValue: `${formatNumberWithoutDecimals(
                     data?.totalOrderCount
                   )}`,
                   text: "Total Orders",
                 },
                 {
-                  value: `$${formatNumber(data?.totalFee)}`,
+                  value: `$${formatToK(data?.totalFee)}`,
+                  subValue: `$${formatNumber(data?.totalFee)}`,
                   text: "Total Amount",
                 },
-                { value: "0", text: "Avg /Order" },
+                {
+                  value: `${formatToK(data?.totalFeeAvg)}`,
+                  subValue: `${formatNumber(data?.totalFeeAvg)}`,
+                  text: "Avg /Order",
+                },
               ]}
             />
             <StatsCard
               heading="Title"
               stats={[
                 {
-                  value: `${formatNumberWithoutDecimals(
+                  value: `${formatToK(data?.titleChargesOrderCount)}`,
+                  subValue: `${formatNumberWithoutDecimals(
                     data?.titleChargesOrderCount
                   )}`,
                   text: "Total Units",
                 },
                 {
-                  value: `$${formatNumber(data?.titleChargesTotalFee)}`,
-                  text: "Title charges",
+                  value: `$${formatToK(data?.titleChargesTotalFee)}`,
+                  subValue: `$${formatNumber(data?.titleChargesTotalFee)}`,
+                  text: "Title Charges",
                 },
-                { value: "0", text: "Avg Title " },
+                {
+                  value: `${formatToK(data?.titleChargesFeeAvg)}`,
+                  subValue: `${formatNumber(data?.titleChargesFeeAvg)}`,
+                  text: "Avg Title",
+                },
               ]}
             />
+
             <StatsCard
               heading="Escrow"
               stats={[
                 {
-                  value: `${formatNumberWithoutDecimals(
+                  value: `${formatToK(data?.escrowChargesOrderCount)}`,
+                  subValue: `${formatNumberWithoutDecimals(
                     data?.escrowChargesOrderCount
                   )}`,
                   text: "Escrow Units",
                 },
                 {
-                  value: `$${formatNumber(data?.escrowChargesTotalFee)}`,
-                  text: "Escrow charges",
+                  value: `$${formatToK(data?.escrowChargesTotalFee)}`,
+                  subValue: `$${formatNumber(data?.escrowChargesTotalFee)}`,
+                  text: "Escrow Charges",
                 },
-                { value: "0", text: "Avg Escrow" },
+                {
+                  value: `${formatToK(data?.escrowChargesFeeAvg)}`,
+                  subValue: `${formatNumber(data?.escrowChargesFeeAvg)}`,
+                  text: "Avg Escrow",
+                },
               ]}
             />
           </div>
@@ -478,6 +550,7 @@ const OrdersTable = () => {
                           | "fileType"
                           | "fileStatus"
                           | "dateRange"
+                          | "selectedUser"
                       )
                     }
                     className="mr-2 text-gray-700"

@@ -12,6 +12,8 @@
   /* fonts  */
   --font-poppin: "Poppins";
   --font-jakarta: "Plus Jakarta Sans", serif;
+  --font-Inter: "Inter";
+  --font-DMSans: "DMSans";
 
   /* shadow  */
   --cardShadow: 0 5px 10px rgba(0, 0, 0, 0.1);
@@ -122,4 +124,7 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.linerGradient{
+  background-image: linear-gradient(to bottom, #ffffff, #e5e5e5, #cccccc, #999999),
 }

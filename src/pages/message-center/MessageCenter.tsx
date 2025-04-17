@@ -23,6 +23,7 @@ import dummy from "../../assets/images/Dummy.jpg";
 import { Dialog, DialogOverlay, DialogContent } from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { FaUser } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
 
 dayjs.extend(relativeTime);
 dayjs.extend(isToday);
@@ -33,6 +34,8 @@ const SOCKET_URL = "https://api.lyti.io/";
 interface ChatType {
   userId: string;
 }
+const tabs = ["All", "Unread", "Archived"] as const;
+type TabType = (typeof tabs)[number];
 
 interface MessageType {
   sender: string;
@@ -164,6 +167,8 @@ function MessageCenter() {
   }, [token, userId]);
 
   const sendMessage = async () => {
+    refetchChatUsers();
+
     if (message.trim() === "" || !socketRef.current || !receiverId) return;
 
     const newMessage = {
@@ -249,16 +254,12 @@ function MessageCenter() {
   const togglePopup = () => {
     setIsPopupOpen((prev) => !prev);
   };
+
+  const [activeTab, setActiveTab] = useState<TabType>("All");
   return (
     <div className="p-4">
       <div className="flex justify-between items-center">
         <Breadcrumb items={["Account", "Message Center"]} />
-        <button
-          onClick={togglePopup}
-          className="bg-(--secondary) text-white px-4 py-2 rounded-lg transition"
-        >
-          Start New Chat
-        </button>
 
         <Dialog open={isPopupOpen} onOpenChange={setIsPopupOpen}>
           <DialogOverlay className="fixed inset-0 bg-black/50 z-[100]" />
@@ -280,12 +281,58 @@ function MessageCenter() {
               required={false}
               height="44px"
             />
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                sendMessage();
+              }}
+              className="flex gap-2 mt-4"
+            >
+              <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Type a message..."
+                className="flex-1 border p-2 border-gray-200 rounded-xl"
+              />
+              <button
+                type="submit"
+                className="bg-(--secondary) text-white w-[40px] h-[40px] cursor-pointer rounded-full flex items-center justify-center transition"
+                disabled={!receiverId}
+              >
+                <img src={plane} alt="Send" className="w-4 h-4" />
+              </button>
+            </form>
           </DialogContent>
         </Dialog>
       </div>
       <div className="shadow-(--cardShadow) rounded-2xl bg-white p-3 flex mt-3 h-[90vh]">
         <div className="w-[30%] border-r border-gray-300 ">
-          <MainTitle title="Message center" />
+          <div className="flex justify-between items-center pr-2">
+            <MainTitle title="Message center" />
+            <button
+              onClick={togglePopup}
+              className="bg-(--secondary) text-white px-3 py-1.5 rounded-lg transition"
+            >
+              <MdEdit size={20} />
+            </button>
+          </div>
+
+          <div className="flex rounded-[10px] border border-(--inputBorder) p-1 w-[97.5%] mr-5 gap-2 my-5">
+            {tabs.map((tab: any) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-1.5 text-sm font-medium rounded-[10px] transition-colors duration-200 ${
+                  activeTab === tab
+                    ? "bg-(--secondary) text-white"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
           <div className="pr-2 mt-2">
             <SearchInput
               debounceTimeout={500}
@@ -460,14 +507,6 @@ function MessageCenter() {
                           {dayjs(msg.timestamp).format("hh:mm A")}
                         </div>
                       </div>
-
-                      {/* {msg.sender === String(userId) && msg.receiverImage && (
-                        <img
-                          src={msg.receiverImage}
-                          alt="receiver"
-                          className="w-6 h-6 rounded-full ml-2"
-                        />
-                      )} */}
                     </div>
                   ))}
                 </div>
@@ -476,7 +515,13 @@ function MessageCenter() {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="flex gap-2 mt-2">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              sendMessage();
+            }}
+            className="flex gap-2 mt-2"
+          >
             <input
               type="text"
               value={message}
@@ -485,13 +530,13 @@ function MessageCenter() {
               className="flex-1 border p-2 border-gray-200 rounded-xl"
             />
             <button
-              onClick={sendMessage}
+              type="submit"
               className="bg-(--secondary) text-white w-[40px] h-[40px] cursor-pointer rounded-full flex items-center justify-center transition"
               disabled={!receiverId}
             >
               <img src={plane} alt="Send" className="w-4 h-4" />
             </button>
-          </div>
+          </form>
         </div>
       </div>
 

@@ -4,12 +4,15 @@ import CustomizableDropdown from "../../components/common/CustomizableDropdown";
 import LeaderboardsDashboardUserCard from "../../components/dashboard/teamDashboard/leaderboardsDashboard/LeaderboardsDashboardUserCard";
 import dummyImage from "../../assets/images/Dummy.jpg";
 import { PieChart, Pie, Cell } from "recharts";
-import arrowUpDown from "../../assets/icons/ArrowsDownUp.svg";
-import { DummyData } from "../../utils/DummyData";
 import SearchInput from "../../components/common/SearchInput";
 import { useGetLeaderboardQuery } from "../../lib/rtkQuery/orderApi";
 import TableSkeleton from "../../components/ui/skeleton/TableSkeleton";
 import NoDataRow from "../../components/ui/NoDataRow";
+import SelectField from "../../components/inputs/SelectField";
+import { useForm } from "react-hook-form";
+import { UserTableType } from "../../utils/types";
+import { leaderboardOption } from "../../utils/options";
+import ProgressBar from "../../components/ui/card/ProgressBar";
 
 interface ChartData {
   name: string;
@@ -17,29 +20,48 @@ interface ChartData {
   color: string;
 }
 const LeaderBoards = () => {
-  const [selectedFilter, setSelectedFilter] = useState("Devclan");
   const [searchValue, setSearchValue] = useState("");
 
-  const users = [
-    { rank: 1, name: "Wade Warren", count: 34 },
-    { rank: 2, name: "John Doe", count: 28 },
-    { rank: 3, name: "Jane Smith", count: 25 },
-    { rank: 4, name: "Robert Brown", count: 22 },
-    { rank: 5, name: "Emily Davis", count: 21 },
-  ];
-  const data: ChartData[] = [
-    { name: "Segment 1", value: 25, color: "#EC662A" },
-    { name: "Segment 2", value: 15, color: "#3B3B3B" },
-    { name: "Segment 3", value: 15, color: "#0EA5E9" },
-    { name: "Segment 4", value: 20, color: "#F4A51C" },
-    { name: "Segment 5", value: 25, color: "#8B6DF2" },
-  ];
-  const dummyData = DummyData();
+  const {
+    formState: { errors },
+    watch,
+    control,
+    setValue,
+  } = useForm<UserTableType>();
+  const selectedRole = watch("role") || "";
+  const { data: leaderData, isLoading } = useGetLeaderboardQuery({
+    report: selectedRole,
+  });
+  const totalOrderCount =
+    leaderData?.leaderboard?.reduce(
+      (sum: any, item: any) => sum + item.orderCount,
+      0
+    ) || 0;
 
-  const { data: leaderData, isLoading } = useGetLeaderboardQuery();
+  const rankColors: Record<number, string> = {
+    1: "#FE5100",
+    2: "#0098CE",
+    3: "#F8A219",
+    4: "#404041",
+    5: "#8775FF",
+  };
+
+  const data: ChartData[] =
+    leaderData?.leaderboard?.slice(0, 5).map((user: any) => ({
+      name: user.name,
+      value: parseFloat(user.percentage.replace("%", "")),
+      color: rankColors[user.rank] || "#ccc",
+    })) || [];
+  const rawLeaderboard = leaderData?.leaderboard || [];
+
+  // Make sure we clean and slice the latest fresh data only
+  const leaderboardTop5 = rawLeaderboard
+    .filter((user: any) => user && user.userId && user.name && user.rank)
+    .slice(0, 5);
+
   return (
     <div className="w-full px-4 my-8 font-Poppins">
-      <Breadcrumb items={["Leaderboards", "Leaderboard"]} />
+      <Breadcrumb items={["Leaderboards", "Agent Leaderboard"]} />
       <div className="w-full flex flex-col gap-4 my-7">
         <div className="shadow-(--cardShadow) rounded-2xl bg-white p-4 w-full ">
           <div className="flex justify-between items-center">
@@ -47,29 +69,40 @@ const LeaderBoards = () => {
               Leaderboards
             </h1>
             <div>
-              <CustomizableDropdown
-                height="h-[44px]"
-                options={["Devclan", "Techify", "Lyti", "Title King"]}
-                selected={selectedFilter}
-                setSelected={(e) => setSelectedFilter(e)}
-                width="180px"
+              <SelectField
+                label=""
+                name="role"
+                control={control}
+                options={leaderboardOption}
+                placeholder="Select..."
+                error={errors.role?.message}
+                required={false}
+                className="w-[200px]"
+                height="h-[38px]"
               />
             </div>
           </div>
 
           <div className="flex justify-between gapp-3 items-center w-full">
-            <div className=" w-[70%] flex flex-wrap gap-2 items-center">
-              {users.map((user) => (
-                <LeaderboardsDashboardUserCard
-                  key={user.rank}
-                  image={dummyImage}
-                  rank={user.rank}
-                  name={user.name}
-                  count={user.count}
-                  width="w-[30%]"
-                  border="border border-(--inputBorder)"
-                />
-              ))}
+            <div className="w-[70%] flex flex-wrap gap-2 items-center">
+              {leaderboardTop5.length > 0 ? (
+                leaderboardTop5.map((user: any) => (
+                  <LeaderboardsDashboardUserCard
+                    key={user.userId}
+                    image={user.profileImage || dummyImage}
+                    rank={user.rank}
+                    name={user.name}
+                    count={user.orderCount}
+                    percentage={user.percentage}
+                    width="w-[30%]"
+                    border="border border-(--inputBorder)"
+                  />
+                ))
+              ) : (
+                <p className="text-sm text-gray-500">
+                  No leaderboard data available.
+                </p>
+              )}
             </div>
 
             <div className="relative flex justify-center items-center">
@@ -95,10 +128,13 @@ const LeaderBoards = () => {
               </PieChart>
 
               <div className="absolute text-center">
-                <p className="text-xl font-semibold text-(--secondary)">
-                  2,000
-                </p>
-                <p className=" text-base">Total Appointment Set</p>
+                {!isLoading && (
+                  <div className="text-xl font-semibold text-(--secondary)">
+                    {totalOrderCount}
+                  </div>
+                )}
+
+                <p className=" text-base">Total Appointment Met</p>
               </div>
             </div>
           </div>
@@ -107,7 +143,7 @@ const LeaderBoards = () => {
         <div className="shadow-(--cardShadow) rounded-2xl bg-white w-full px-4 min-h-screen my-6">
           <div className="font-Poppins flex justify-between items-center w-full pt-3 ">
             <h2 className="text-lg text-(--primary) font-semibold">
-              Appointment Set
+              Appointment Met
             </h2>
             <SearchInput
               value={searchValue}
@@ -118,15 +154,15 @@ const LeaderBoards = () => {
           <table className="w-full text-start font-Poppins text-sm font-normal text-[#15120F] mt-7">
             <thead className="text-sm font-normal border-b-[1px] border-[#F4EFE9]">
               <tr>
-                <th className="text-start font-medium">ID</th>
+                <th className="text-start font-medium">Rank</th>
+
                 <th className="text-start font-medium">Name</th>
-                <th className="text-start font-medium">Orders</th>
+                <th className="text-start font-medium">Total count</th>
                 <th className="text-start font-medium">
                   <div className="flex gap-2 items-center">
-                    Orders <span>%</span>
+                    <span>%</span> of total
                   </div>
                 </th>
-                <th className="text-start font-medium">Rank</th>
               </tr>
             </thead>
             <tbody>
@@ -140,13 +176,29 @@ const LeaderBoards = () => {
                     leaderData?.leaderboard?.map((e: any, i: number) => (
                       <tr
                         key={e.userId}
-                        className="font-Jakarta text-sm font-normal text-[#15120F] h-[55px] border-b-[1px] border-[#F4EFE9] bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out"
+                        className="font-Jakarta text-sm font-normal text-[#15120F] h-[70px] border-b-[1px] border-[#F4EFE9] bg-white hover:bg-gray-100 transition-colors duration-500 ease-in-out"
                       >
-                        <td>{e.userId}</td>
-                        <td>{e.name}</td>
-                        <td>{e.orderCount}</td>
-                        <td>{e.percentage}</td>
                         <td>{e.rank}</td>
+
+                        <td>
+                          <div className="flex items-center gap-2">
+                            <img
+                              src={e.profileImage || dummyImage}
+                              alt=""
+                              className="w-[40px] h-[40px] rounded-full"
+                            />
+                            <div>
+                              <h3 className="font-medium ">{e.name}</h3>
+                              <h3 className="text-xs text-(--secondary)">
+                                Account Executive
+                              </h3>
+                            </div>
+                          </div>
+                        </td>
+                        <td>{e.orderCount}</td>
+                        <td>
+                          <ProgressBar key={e.id} percentage={e.percentage} />
+                        </td>
                       </tr>
                     ))
                   )}
