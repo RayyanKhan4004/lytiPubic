@@ -15,7 +15,7 @@ function PublicDashboardNavbar() {
         src={LytiLogo}
         alt="LytiLogo"
         className="w-[100px] h-[100px] font-medium text-base"
-      onClick={() => Navigate("/public")}
+      onClick={() => Navigate("/")}
       />
 
       <div className="flex items-center gap-10">
