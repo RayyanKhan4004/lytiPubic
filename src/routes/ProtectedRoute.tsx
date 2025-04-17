@@ -6,7 +6,7 @@ import { RootState } from "../lib/store/store";
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = useSelector((state: RootState) => state.auth.access_token);
   if (!token) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/public" replace />;
   }
   return <>{children}</>;
 };
