@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import ScreenLogo from "../../../assets/icons/ScreenLogo.svg";
 import PublicDashboardNavbar from "./PublicDashboardNavbar";
 
 
 function PublicNavbar() {
+const Navigate = useNavigate()
   return (
     <div>
       <div className="flex justify-center p-[60px] pt-0 ">
@@ -33,7 +35,9 @@ function PublicNavbar() {
                 </p>
                 <div className="mt-[10px] ">
                   <div className="flex gap-[16px]">
-                  <button className=" bg-[#333333] text-[20px] font-semibold font-poppin text-white w-[246px] h-[54px] rounded-[10px]">
+                  <button className=" bg-[#333333] text-[20px] font-semibold font-poppin text-white w-[246px] h-[54px] rounded-[10px]"
+                        onClick={() => Navigate("/public/pricing")}
+                  >
                     Pricing and Free Trial
                   </button>
                   <button className="bg-[#F3F3F3] w-[91px] h-[54px] text-[20px] font-semibold text-[#007FC4] font-poppin rounded-[10px]">
