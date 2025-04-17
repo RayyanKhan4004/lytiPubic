@@ -65,70 +65,9 @@ import ActivityLog from "../pages/report/activity/ActivityLog";
 // import MessageCenter from "../pages/message-center/messageCenter";
 
 export const router = createBrowserRouter([
+ 
   {
     path: "/",
-    element: <ProtectedLayout />,
-    children: [
-      { index: true, element: <Navigate to="record" replace /> },
-      { path: "record", element: <Record /> },
-      { path: "dashboard/snapShot", element: <SnapShot /> },
-      { path: "dashboard/ceo-dashboard", element: <CeoDashboard /> },
-      { path: "dashboard/personal-dashboard", element: <PersonalDashboard /> },
-      { path: "dashboard/team-dashboard", element: <TeamDashboard /> },
-      { path: "leader-board", element: <LeaderBoards /> },
-      {
-        path: "/leader-board/listing-company",
-        element: <ListingCompanyLeaderBoard />,
-      },
-      {
-        path: "/leader-board/selling-company",
-        element: <SellingCompanyLeaderBoard />,
-      },
-      { path: "admin/dashboard", element: <AdminDashboard /> },
-      { path: "admin/users-table", element: <UsersTable /> },
-      { path: "admin/add-user", element: <AddUser /> },
-      { path: "admin/edit-user", element: <EditUser /> },
-      { path: "admin/listing", element: <ListingTable /> },
-      { path: "admin/selling", element: <SellingTable /> },
-      { path: "admin/challenge", element: <AdminChallengeTable /> },
-      { path: "admin/create-challenge", element: <AddChallenge /> },
-      { path: "admin/lead-source", element: <LeadSource /> },
-      { path: "/leads-source-group", element: <LeadsSourceGroup /> },
-      { path: "admin/team-settings", element: <TeamSettings /> },
-      { path: "admin/tasks", element: <Tasks /> },
-      { path: "admin/commissions", element: <Commission /> },
-      { path: "orders/orders", element: <OrdersTable /> },
-      { path: "orders/create-order", element: <CreateNewOrder /> },
-      { path: "orders/add-order", element: <CreateNewOrder /> },
-      { path: "orders/edit-order", element: <OrderEdit /> },
-      { path: "orders/order-detail", element: <OrderDetail /> },
-      { path: "orders/underwriter-board", element: <UnderwriterBoard /> },
-      { path: "orders/stages-board", element: <StagesBoardDragDrop /> },
-      { path: "orders/statuses-board", element: <StatusesBoard /> },
-      { path: "orders/fee-detail", element: <FeeDetail /> },
-      { path: "account/change-password", element: <ChangePassword /> },
-      { path: "account/profile", element: <Profile /> },
-      { path: "account/ranking", element: <Ranking /> },
-      { path: "account/goals", element: <Goals /> },
-      { path: "challenges", element: <Challenges /> },
-      { path: "challenge-edit", element: <EditChallenge /> },
-      { path: "create-challenge", element: <CreateChallenge /> },
-      { path: "message-center", element: <MessageCenter /> },
-      { path: "report/activity-agent", element: <ActivityAgent /> },
-      { path: "report/activity-log", element: <ActivityLog /> },
-      { path: "*", element: <NotFoundPage /> },
-    ],
-  },
-  {
-    path: "/login",
-    element: (
-      <PublicRoute>
-        <Login />
-      </PublicRoute>
-    ),
-  },
-  {
-    path: "/public",
     element: (
       <PublicRoute>
         <PublicDashBoard />
