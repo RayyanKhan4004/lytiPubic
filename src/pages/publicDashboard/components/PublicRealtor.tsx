@@ -2,7 +2,7 @@ import PublicRetailorCards from "./PublicRetailorCards"
 
 function PublicRealtor() {
   return (
-    <div>
+    <div className="mx-[50px]">
     <div className="relative h-[561px]  flex  justify-center items-center mt-[80px]">
       
       <div className="absolute z-10 transform translate-x-[50%] taranslate-y-[50%] -left-[50%] h-full w-full">

@@ -35,38 +35,33 @@ function PublicDashBoard() {
      <PublicHeadings />
       <PublicTestimonial/>
 
-      <div className="relative">
-        <div className="px-[40px]">
-      <h1 className="font-poppin font-semibold text-[40px] flex flex-row justify-start">Why Choose Us</h1>
-      </div>
-      
-      <img src={bg} alt="" className="absolute top-0 left-0 w-full h-full -z-10" />
-      <div className="p-15  gap-[50px] flex flex-col justify-center"> 
-       
+      <div className="relative m-[20px]">
+        <div className="flex justify-center items-center">
         
-        <div className="flex flex-col gap-[30px]">
-          
-        <div className="flex justify-start gap-[20px]">
+     
+      </div>
+      <div className="flex flex-col-justify-center items-center m-[83px]">
+      <img src={bg} alt="" className="absolute top-0 left-0 w-full h-full -z-10" />
 
-        {
+     <div className="flex justify-center w-full items-center gap-[50px] ">
+      <div className="w-[1200px] ">      <h3 className="font-poppin font-semibold  text-[40px] mb-[20px] flex flex-row self-start">Why Choose Us</h3>
+        <div className="w-full flex flex-col gap-[50px]">
+          <div className="flex justify-start items-start  w-full" >        {
         card2.map((item , ind)=>(
           <PublicWhyChoseus  ind={ind} number={item.num} text={item.text}/>
         ))
       }
-
-        </div>
-        <div className="flex justify-end gap-[20px]">
-
-        {
+</div>
+          <div className="flex justify-end items-end w-full" >     {
         card1.map((item , ind)=>(
           <PublicWhyChoseus  ind={ind} number={item.num} text={item.text}/>
         ))
       }
-        
-        </div>
+</div>
         </div>
       </div>
-   
+     </div>
+      </div>
     </div>
  
       <PublicRealtor/>
