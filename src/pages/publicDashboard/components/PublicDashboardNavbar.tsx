@@ -1,22 +1,36 @@
 import PhoneLogo from "../../../assets/icons/PhoneLogo.svg";
 import LytiLogo from "../../../assets/icons/LytiLogo.svg";
 import ArrowDown from "./assets/ArrowDown.svg";
-import CustomizableDropdown from "../../../components/common/CustomizableDropdown";
+// import CustomizableDropdown from "../../../components/common/CustomizableDropdown";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 function PublicDashboardNavbar() {
+  const Navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [DropDownType, setDropDownType] = useState("");
   return (
     <div className="flex items-center justify-between bg-white  w-full p-4.5 font-poppin">
       <img
         src={LytiLogo}
         alt="LytiLogo"
         className="w-[100px] h-[100px] font-medium text-base"
+      onClick={() => Navigate("/public")}
       />
 
       <div className="flex items-center gap-10">
-        <h3 className="text-[14px] font-medium font-poppin">
+        <div className="relative flex items-center gap-1">
+
+        <h3 className="text-[14px] font-medium font-poppin" 
+       onClick={() =>{ setIsOpen(!isOpen); setDropDownType("pricing")}}>
           Pricing and Free Trial
+          {isOpen && DropDownType === "pricing" &&  <div className="absolute top-6 left-0 bg-white shadow-lg rounded-lg p-4 z-10 flex flex-col gap-2">
+          <Link  to="/public/pricing">pricing</Link>
+          </div>}
         </h3>
+        </div>
         <div className="flex items-center gap-1">
-          <h3 className="text-[14px] font-medium font-poppin">Product</h3>
+          <Link to="/public/products" className="text-[14px] font-medium font-poppin">Product</Link>
           {/* <img src={ArrowDown} alt="" className="w-5 h-5" /> */}
           {/* <CustomizableDropdown
           customBorder={"border-0"}
@@ -28,7 +42,18 @@ function PublicDashboardNavbar() {
 
         </div>
         <div className="flex items-center gap-1">
-          <h3 className="text-[14px] font-medium font-poppin">Company</h3>
+          <div className="relative flex items-center gap-1">
+          <div className="text-[14px] font-medium font-poppin"
+          onClick={() =>{ setIsOpen(!isOpen); setDropDownType("company")}}>
+          Company</div>
+        {isOpen && DropDownType === "company" &&  <div className="absolute top-6 left-0 bg-white shadow-lg rounded-lg p-4 z-10 flex flex-col gap-2">
+          <Link  to="/public/company">company</Link>
+          <Link  to="/public/Company/aboutus">About us</Link>
+          <Link  to="/public/Company/aboutus">About us</Link>
+
+          <Link  to="/public/company/news">news</Link>
+          </div>}
+          </div>
           <img src={ArrowDown} alt="" className="w-5 h-5" />
         </div>
         <div className="flex items-center gap-1">

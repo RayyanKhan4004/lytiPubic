@@ -21,7 +21,7 @@ function PublicTestimonial() {
             </button>
           </div>
         </div>
-        <div className="relative flex flex-col font-poppin mr-[10%] min-h-[450px]">
+        <div className="relative flex flex-col font-poppin ml-[60px] mr-[10%] min-h-[450px]">
           <div className="relative  mr-[10%] ">
 
             <ProfileCard
