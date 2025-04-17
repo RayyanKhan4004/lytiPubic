@@ -1,5 +1,5 @@
 import HomeImage from "./assets/HomeImage.svg";
-import LinkedinLogo from "./assets/LinkedinLogo.svg"
+import LinkedinLogo from "./assets/LinkedInLogo.svg"
 import FacebookLogo from "./assets/FacebookLogo.svg"
 import TwitterLogo from "./assets/TwitterLogo.svg"
 function PublicFooter({hideImage} : {hideImage  ?: boolean}) {
