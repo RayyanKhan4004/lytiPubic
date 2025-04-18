@@ -75,8 +75,8 @@ function CompanyAboutUs() {
         </div>
 
         {/* Right Side: Paragraph */}
-        <div className="w-[831px] absolute right-[50px] mt-[59px]">
-          <p className="font-poppin font-normal text-[20px] ">
+        <div className="w-[531px] absolute right-[50px] mt-[50px] ">
+          <p className="font-poppin font-normal text-justify text-[16px] ">
             Sisu is a Finnish concept that means bravery, determination, grit,
             courage, and resilience, and was founded to elevate the real estate
             industry.Years ago when the founder of Sisu entered the real estate
@@ -107,11 +107,10 @@ function CompanyAboutUs() {
           </p>
         </div>
       </div>
-      
-      <img src={Footerimg} alt="" className="relative" />
-      
+      <img src={Footerimg} alt="" className="relative bottom-0" />
     </div>
   );
 }
 
 export default CompanyAboutUs;
+
