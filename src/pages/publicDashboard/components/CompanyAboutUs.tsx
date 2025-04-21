@@ -57,7 +57,7 @@ import PublicDashboardNavbar from "./PublicDashboardNavbar";
 import Footerimg from "./assets/ConmpanyFooterimg.svg";
 function CompanyAboutUs() {
   return (
-    <div>
+    <div className="max-w-[1200px]">
       <PublicDashboardNavbar />
       <div className="flex">
         {/* Left Side: Image and Heading */}

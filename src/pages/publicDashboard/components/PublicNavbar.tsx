@@ -13,8 +13,9 @@ const Navigate = useNavigate()
         >
           <div className="flex-col w-full ">
             <PublicDashboardNavbar />
+            <div className="flex items-center justify-center">
             <div
-              className="flex items-center justify-between p-[60px]  "
+              className="flex items-center max-w-[800px] justify-center"
             >
               <img
                 src={ScreenLogo}
@@ -22,8 +23,8 @@ const Navigate = useNavigate()
                 className="w-[437px] h-[437px]"
               />
               <div className="flex flex-col gap-[30px] font-poppin ">
-                <h1 className="font-bold text-[28px]  ">
-                  Analytics Platform and <br /> Transaction Management Built-In
+                <h1 className="font-bold text-[28px]">
+                  Analytics Platform and Transaction Management Built-In
                 </h1>
                 <p className="font-normal text-[16px] text-[#000000]">
                   With Sisu, Teams And Brokers Unlock Game-Changing Business
@@ -46,6 +47,7 @@ const Navigate = useNavigate()
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>

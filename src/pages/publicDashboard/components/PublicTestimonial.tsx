@@ -4,7 +4,7 @@ import DotsGrid from "./DotsGrid";
 import ProfileCard from "./ProfileCard";
 
 interface PublicTestimonialProps{
-  onclick:boolean;
+  onclick: any;
 }
 
 function PublicTestimonial({ onclick }: PublicTestimonialProps) {

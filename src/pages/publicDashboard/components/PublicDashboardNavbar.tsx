@@ -1,7 +1,6 @@
 import PhoneLogo from "../../../assets/icons/PhoneLogo.svg";
 import LytiLogo from "../../../assets/icons/LytiLogo.svg";
 import ArrowDown from "./assets/ArrowDown.svg";
-// import CustomizableDropdown from "../../../components/common/CustomizableDropdown";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -10,7 +9,8 @@ function PublicDashboardNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [DropDownType, setDropDownType] = useState("");
   return (
-    <div className="flex items-center hover:cursor-pointer justify-between bg-white  w-full p-4.5 font-poppin">
+    
+    <div className="flex items-center hover:cursor-pointer justify-between bg-white w-full p-4.5 font-poppin">
       <img
         src={LytiLogo}
         alt="LytiLogo"

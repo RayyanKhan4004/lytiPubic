@@ -32,7 +32,7 @@ const cardData = [1, 2, 3, 4, 5];
 export default function SisuTransactionCenter() {
   return (
     <div
-      className="  flex flex-col items-center justify-center"
+      className="m-[50px] flex flex-col items-center justify-center"
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
       <img src={BoxesImagebg} alt="" className="z-0 absolute transform translate-x-[50%] taranslate-y-[50%] right-[50%] overflow-hidden " />

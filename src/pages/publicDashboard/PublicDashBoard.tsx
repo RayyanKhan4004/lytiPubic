@@ -33,7 +33,7 @@ function PublicDashBoard() {
     <div>
      <PublicNavbar/>
      <PublicHeadings />
-      <PublicTestimonial/>
+      <PublicTestimonial onclick={false}/>
 
       <div className="relative m-[20px]">
         <div className="flex justify-center items-center">
